@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebase.report.dao.RptDatasourceMapper">
+    <resultMap id="BaseResultMap" type="com.ebase.report.model.RptDatasource">
+        <id column="DATASOURCE_ID" jdbcType="BIGINT" property="datasourceId" />
+        <result column="DATASOURCE_NAME" jdbcType="VARCHAR" property="datasourceName" />
+        <result column="DATABASE_TYPE" jdbcType="VARCHAR" property="databaseType" />
+        <result column="CONNPOOL_TYPE" jdbcType="VARCHAR" property="connpoolType" />
+        <result column="DATASOURCE_URL" jdbcType="VARCHAR" property="datasourceUrl" />
+        <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+        <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+        <result column="INITIAL_SIZE" jdbcType="INTEGER" property="initialSize" />
+        <result column="MAX_ACTIVE" jdbcType="INTEGER" property="maxActive" />
+        <result column="MAX_WAIT" jdbcType="INTEGER" property="maxWait" />
+        <result column="MAX_IDLE" jdbcType="INTEGER" property="maxIdle" />
+        <result column="REMOVE_STATUS" jdbcType="TINYINT" property="removeStatus" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATED_DT" jdbcType="TIMESTAMP" property="createdDt" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATED_DT" jdbcType="TIMESTAMP" property="updatedDt" />
+        <result column="DATASOURCE_CHINESE_NAME" jdbcType="VARCHAR" property="datasourceChineseName" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        DATASOURCE_ID, DATASOURCE_NAME, DATABASE_TYPE, CONNPOOL_TYPE, DATASOURCE_URL, USER_NAME, 
+        PASSWORD, INITIAL_SIZE, MAX_ACTIVE, MAX_WAIT, MAX_IDLE, REMOVE_STATUS, CREATED_BY, 
+        CREATED_DT, UPDATED_BY, UPDATED_DT, DATASOURCE_CHINESE_NAME
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from rpt_datasource
+        where DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+    </select>
+    <select id="selectByTableId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        a.DATASOURCE_ID,
+        a.DATASOURCE_NAME,
+        a.DATABASE_TYPE,
+        a.CONNPOOL_TYPE,
+        a.DATASOURCE_URL,
+        a.USER_NAME,
+        a.PASSWORD,
+        a.INITIAL_SIZE,
+        a.MAX_ACTIVE,
+        a.MAX_WAIT,
+        a.MAX_IDLE,
+        a.REMOVE_STATUS,
+        a.CREATED_BY,
+        a.CREATED_DT,
+        a.UPDATED_BY,
+        a.UPDATED_DT,
+        a.DATASOURCE_CHINESE_NAME
+        from rpt_datasource a
+        left join rpt_data_Table b
+        on a.DATASOURCE_ID = b.DATASOURCE_ID
+        where table_id = #{tableId,jdbcType=BIGINT}
+    </select>
+    <select id="selectByTableIds" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        a.DATASOURCE_ID,
+        a.DATASOURCE_NAME,
+        a.DATABASE_TYPE,
+        a.CONNPOOL_TYPE,
+        a.DATASOURCE_URL,
+        a.USER_NAME,
+        a.PASSWORD,
+        a.INITIAL_SIZE,
+        a.MAX_ACTIVE,
+        a.MAX_WAIT,
+        a.MAX_IDLE,
+        a.REMOVE_STATUS,
+        a.CREATED_BY,
+        a.CREATED_DT,
+        a.UPDATED_BY,
+        a.UPDATED_DT,
+        a.DATASOURCE_CHINESE_NAME
+        from rpt_datasource a
+        left join rpt_data_Table b
+        on a.DATASOURCE_ID = b.DATASOURCE_ID
+        where 1 = 1
+        <if test="tableIds != null">
+            AND table_id in
+            <foreach collection="tableIds" close=")" open="(" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+      UPDATE rpt_datasource
+      SET REMOVE_STATUS = 1
+      WHERE DATASOURCE_ID = #{datasourceId}
+    </delete>
+    <insert id="insert" parameterType="com.ebase.report.model.RptDatasource">
+        insert into rpt_datasource (DATASOURCE_ID, DATASOURCE_NAME, DATABASE_TYPE, 
+            CONNPOOL_TYPE, DATASOURCE_URL, USER_NAME, 
+            PASSWORD, INITIAL_SIZE, MAX_ACTIVE, 
+            MAX_WAIT, MAX_IDLE, REMOVE_STATUS, 
+            CREATED_BY, CREATED_DT, UPDATED_BY, 
+            UPDATED_DT,DATASOURCE_CHINESE_NAME)
+        values (#{datasourceId,jdbcType=BIGINT}, #{datasourceName,jdbcType=VARCHAR}, #{databaseType,jdbcType=VARCHAR}, 
+            #{connpoolType,jdbcType=VARCHAR}, #{datasourceUrl,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+            #{password,jdbcType=VARCHAR}, #{initialSize,jdbcType=INTEGER}, #{maxActive,jdbcType=INTEGER}, 
+            #{maxWait,jdbcType=INTEGER}, #{maxIdle,jdbcType=INTEGER}, #{removeStatus,jdbcType=TINYINT}, 
+            #{createdBy,jdbcType=VARCHAR}, #{createdDt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+            #{updatedDt,jdbcType=TIMESTAMP}, #{datasourceChineseName,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ebase.report.model.RptDatasource">
+        insert into rpt_datasource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="datasourceId != null">
+                DATASOURCE_ID,
+            </if>
+            <if test="datasourceName != null">
+                DATASOURCE_NAME,
+            </if>
+            <if test="databaseType != null">
+                DATABASE_TYPE,
+            </if>
+            <if test="connpoolType != null">
+                CONNPOOL_TYPE,
+            </if>
+            <if test="datasourceUrl != null">
+                DATASOURCE_URL,
+            </if>
+            <if test="userName != null">
+                USER_NAME,
+            </if>
+            <if test="password != null">
+                PASSWORD,
+            </if>
+            <if test="initialSize != null">
+                INITIAL_SIZE,
+            </if>
+            <if test="maxActive != null">
+                MAX_ACTIVE,
+            </if>
+            <if test="maxWait != null">
+                MAX_WAIT,
+            </if>
+            <if test="maxIdle != null">
+                MAX_IDLE,
+            </if>
+            <if test="removeStatus != null">
+                REMOVE_STATUS,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+            <if test="datasourceChineseName != null">
+                DATASOURCE_CHINESE_NAME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="datasourceId != null">
+                #{datasourceId,jdbcType=BIGINT},
+            </if>
+            <if test="datasourceName != null">
+                #{datasourceName,jdbcType=VARCHAR},
+            </if>
+            <if test="databaseType != null">
+                #{databaseType,jdbcType=VARCHAR},
+            </if>
+            <if test="connpoolType != null">
+                #{connpoolType,jdbcType=VARCHAR},
+            </if>
+            <if test="datasourceUrl != null">
+                #{datasourceUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="initialSize != null">
+                #{initialSize,jdbcType=INTEGER},
+            </if>
+            <if test="maxActive != null">
+                #{maxActive,jdbcType=INTEGER},
+            </if>
+            <if test="maxWait != null">
+                #{maxWait,jdbcType=INTEGER},
+            </if>
+            <if test="maxIdle != null">
+                #{maxIdle,jdbcType=INTEGER},
+            </if>
+            <if test="removeStatus != null">
+                #{removeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="datasourceChineseName != null">
+                #{datasourceChineseName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.RptDatasource">
+        update rpt_datasource
+        <set>
+            <if test="datasourceName != null">
+                DATASOURCE_NAME = #{datasourceName,jdbcType=VARCHAR},
+            </if>
+            <if test="databaseType != null">
+                DATABASE_TYPE = #{databaseType,jdbcType=VARCHAR},
+            </if>
+            <if test="connpoolType != null">
+                CONNPOOL_TYPE = #{connpoolType,jdbcType=VARCHAR},
+            </if>
+            <if test="datasourceUrl != null">
+                DATASOURCE_URL = #{datasourceUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                USER_NAME = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="initialSize != null">
+                INITIAL_SIZE = #{initialSize,jdbcType=INTEGER},
+            </if>
+            <if test="maxActive != null">
+                MAX_ACTIVE = #{maxActive,jdbcType=INTEGER},
+            </if>
+            <if test="maxWait != null">
+                MAX_WAIT = #{maxWait,jdbcType=INTEGER},
+            </if>
+            <if test="maxIdle != null">
+                MAX_IDLE = #{maxIdle,jdbcType=INTEGER},
+            </if>
+            <if test="removeStatus != null">
+                REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="datasourceChineseName != null">
+                DATASOURCE_CHINESE_NAME = #{datasourceChineseName,jdbcType=VARCHAR}
+            </if>
+
+        </set>
+        where DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.RptDatasource">
+        update rpt_datasource
+        set DATASOURCE_NAME = #{datasourceName,jdbcType=VARCHAR},
+            DATABASE_TYPE = #{databaseType,jdbcType=VARCHAR},
+            CONNPOOL_TYPE = #{connpoolType,jdbcType=VARCHAR},
+            DATASOURCE_URL = #{datasourceUrl,jdbcType=VARCHAR},
+            USER_NAME = #{userName,jdbcType=VARCHAR},
+            PASSWORD = #{password,jdbcType=VARCHAR},
+            INITIAL_SIZE = #{initialSize,jdbcType=INTEGER},
+            MAX_ACTIVE = #{maxActive,jdbcType=INTEGER},
+            MAX_WAIT = #{maxWait,jdbcType=INTEGER},
+            MAX_IDLE = #{maxIdle,jdbcType=INTEGER},
+            REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT},
+            CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+            UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
+            DATASOURCE_CHINESE_NAME = #{datasourceChineseName,jdbcType=VARCHAR}
+        where DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+    </update>
+    <select id="select" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from rpt_datasource
+        <include refid="Base_Where_Column_List" />
+        order by DATASOURCE_ID desc
+    </select>
+    <sql id="Base_Where_Column_List">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="datasourceId != null">
+                and DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+            </if>
+            <if test="datasourceName != null">
+                and DATASOURCE_NAME = #{datasourceName,jdbcType=VARCHAR}
+            </if>
+            <if test="databaseType != null">
+                and DATABASE_TYPE = #{databaseType,jdbcType=VARCHAR}
+            </if>
+            <if test="connpoolType != null">
+                and CONNPOOL_TYPE = #{connpoolType,jdbcType=VARCHAR}
+            </if>
+            <if test="datasourceUrl != null">
+                and DATASOURCE_URL = #{datasourceUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null">
+                and USER_NAME = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="password != null">
+                and PASSWORD = #{password,jdbcType=VARCHAR}
+            </if>
+            <if test="initialSize != null">
+                and INITIAL_SIZE = #{initialSize,jdbcType=INTEGER}
+            </if>
+            <if test="maxActive != null">
+                and MAX_ACTIVE = #{maxActive,jdbcType=INTEGER}
+            </if>
+            <if test="maxWait != null">
+                and MAX_WAIT = #{maxWait,jdbcType=INTEGER}
+            </if>
+            <if test="maxIdle != null">
+                and MAX_IDLE = #{maxIdle,jdbcType=INTEGER}
+            </if>
+            <if test="removeStatus != null">
+                and REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT}
+            </if>
+            <if test="createdBy != null">
+                and CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createdDt != null">
+                and CREATED_DT = #{createdDt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatedBy != null">
+                and UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updatedDt != null">
+                and UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="datasourceChineseName != null">
+                and DATASOURCE_CHINESE_NAME = #{datasourceChineseName,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+      select
+      <include refid="Base_Column_List" />
+      from `rpt_datasource`
+      where REMOVE_STATUS = 0
+      order by DATASOURCE_ID desc
+    </select>
+
+    <!--分页+高级查询-->
+    <select id="queryForList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from `rpt_datasource`
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <if test="datasourceId != null and datasourceId != ''">
+                and DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+            </if>
+            <if test="datasourceName != null and datasourceName != ''">
+                and DATASOURCE_NAME like CONCAT('%', #{datasourceName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="databaseType != null and databaseType != ''">
+                and DATABASE_TYPE = #{databaseType,jdbcType=VARCHAR}
+            </if>
+            <if test="connpoolType != null and connpoolType != ''">
+                and CONNPOOL_TYPE = #{connpoolType,jdbcType=VARCHAR}
+            </if>
+            <if test="removeStatus != null and removeStatus != ''">
+                and REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT}
+            </if>
+            <if test="datasourceChineseName != null and datasourceChineseName != ''">
+                and DATASOURCE_CHINESE_NAME = #{datasourceChineseName,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        order by DATASOURCE_ID desc
+    </select>
+
+    <select id="selectAllByDatasourceName" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from `rpt_datasource`
+        <trim prefix="WHERE" prefixOverrides="AND |OR">
+            <if test="datasourceName != null and datasourceName != ''">
+                and DATASOURCE_NAME = #{datasourceName,jdbcType=VARCHAR}
+            </if>
+            <if test="datasourceChineseName != null and datasourceChineseName != ''">
+                and DATASOURCE_CHINESE_NAME = #{datasourceChineseName,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        order by DATASOURCE_ID desc
+    </select>
+</mapper>

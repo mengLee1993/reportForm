@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebase.report.dao.RptDataFieldMapper">
+    <resultMap id="BaseResultMap" type="com.ebase.report.model.RptDataField">
+        <id column="FIELD_ID" jdbcType="BIGINT" property="fieldId" />
+        <result column="TABLE_ID" jdbcType="BIGINT" property="tableId" />
+        <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+        <result column="TABLE_CODE" jdbcType="VARCHAR" property="tableCode" />
+        <result column="DATASOURCE_NAME" jdbcType="VARCHAR" property="datasourceName" />
+        <result column="FIELD_CODE" jdbcType="VARCHAR" property="fieldCode" />
+        <result column="FIELD_NAME" jdbcType="VARCHAR" property="fieldName" />
+        <result column="FIELD_TYPE" jdbcType="VARCHAR" property="fieldType" />
+        <result column="DIMENSION_INDEX" jdbcType="VARCHAR" property="dimensionIndex" />
+        <result column="ACCURACY" jdbcType="INTEGER" property="accuracy" />
+        <result column="ROW_LEVEL_AUTH" jdbcType="TINYINT" property="rowLevelAuth" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="METADATA_COUNT" jdbcType="INTEGER" property="metadataCount" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATED_DT" jdbcType="TIMESTAMP" property="createdDt" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATED_DT" jdbcType="TIMESTAMP" property="updatedDt" />
+        <result column="DATASOURCE_CHINESE_NAME" jdbcType="VARCHAR" property="datasourceChineseName" />
+    </resultMap>
+    <resultMap id="fileds" type="com.ebase.report.model.RptDataField">
+        <result column="COLUMN_NAME" property="fieldCode" />
+        <result column="COLUMN_COMMENT" property="fieldName" />
+        <result column="data_type" property="fieldType" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        FIELD_ID, TABLE_ID, FIELD_CODE, FIELD_NAME, FIELD_TYPE, DIMENSION_INDEX, ACCURACY, 
+        ROW_LEVEL_AUTH, REMARK, METADATA_COUNT, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from rpt_data_field
+        where FIELD_ID = #{fieldId,jdbcType=BIGINT}
+    </select>
+    <insert id="insert" parameterType="com.ebase.report.model.RptDataField">
+        insert into rpt_data_field (FIELD_ID, TABLE_ID, FIELD_CODE, 
+            FIELD_NAME, FIELD_TYPE, DIMENSION_INDEX, 
+            ACCURACY, ROW_LEVEL_AUTH, REMARK, METADATA_COUNT,
+            CREATED_BY, CREATED_DT, UPDATED_BY, 
+            UPDATED_DT)
+        values (#{fieldId,jdbcType=BIGINT}, #{tableId,jdbcType=BIGINT}, #{fieldCode,jdbcType=VARCHAR}, 
+            #{fieldName,jdbcType=VARCHAR}, #{fieldType,jdbcType=VARCHAR}, #{dimensionIndex,jdbcType=VARCHAR}, 
+            #{accuracy,jdbcType=INTEGER}, #{rowLevelAuth,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{metadataCount,jdbcType=VARCHAR},
+            #{createdBy,jdbcType=VARCHAR}, #{createdDt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+            #{updatedDt,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ebase.report.model.RptDataField">
+        insert into rpt_data_field
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fieldId != null">
+                FIELD_ID,
+            </if>
+            <if test="tableId != null">
+                TABLE_ID,
+            </if>
+            <if test="fieldCode != null">
+                FIELD_CODE,
+            </if>
+            <if test="fieldName != null">
+                FIELD_NAME,
+            </if>
+            <if test="fieldType != null">
+                FIELD_TYPE,
+            </if>
+            <if test="dimensionIndex != null">
+                DIMENSION_INDEX,
+            </if>
+            <if test="accuracy != null">
+                ACCURACY,
+            </if>
+            <if test="rowLevelAuth != null">
+                ROW_LEVEL_AUTH,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="metadataCount != null">
+                METADATA_COUNT,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fieldId != null">
+                #{fieldId,jdbcType=BIGINT},
+            </if>
+            <if test="tableId != null">
+                #{tableId,jdbcType=BIGINT},
+            </if>
+            <if test="fieldCode != null">
+                #{fieldCode,jdbcType=VARCHAR},
+            </if>
+            <if test="fieldName != null">
+                #{fieldName,jdbcType=VARCHAR},
+            </if>
+            <if test="fieldType != null">
+                #{fieldType,jdbcType=VARCHAR},
+            </if>
+            <if test="dimensionIndex != null">
+                #{dimensionIndex,jdbcType=VARCHAR},
+            </if>
+            <if test="accuracy != null">
+                #{accuracy,jdbcType=INTEGER},
+            </if>
+            <if test="rowLevelAuth != null">
+                #{rowLevelAuth,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="metadataCount != null">
+                #{metadataCount,jdbcType=VARCHAR},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch">
+        insert into rpt_data_field (FIELD_ID, TABLE_ID, FIELD_CODE,
+            FIELD_NAME, FIELD_TYPE, DIMENSION_INDEX,
+            ACCURACY, ROW_LEVEL_AUTH, REMARK, METADATA_COUNT,
+            CREATED_BY, CREATED_DT, UPDATED_BY,
+            UPDATED_DT)
+        values
+        <foreach collection ="fields" item="field" separator =",">
+            (#{field.fieldId,jdbcType=BIGINT}, #{field.tableId,jdbcType=BIGINT}, #{field.fieldCode,jdbcType=VARCHAR},
+            #{field.fieldName,jdbcType=VARCHAR}, #{field.fieldType,jdbcType=VARCHAR}, #{field.dimensionIndex,jdbcType=VARCHAR},
+            #{field.accuracy,jdbcType=INTEGER}, #{field.rowLevelAuth,jdbcType=TINYINT}, #{field.remark,jdbcType=VARCHAR},#{field.metadataCount,jdbcType=VARCHAR},
+            #{field.createdBy,jdbcType=VARCHAR}, #{field.createdDt,jdbcType=TIMESTAMP}, #{field.updatedBy,jdbcType=VARCHAR},
+            #{field.updatedDt,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.RptDataField">
+        update rpt_data_field
+        <set>
+            <if test="tableId != null">
+                TABLE_ID = #{tableId,jdbcType=BIGINT},
+            </if>
+            <if test="fieldCode != null">
+                FIELD_CODE = #{fieldCode,jdbcType=VARCHAR},
+            </if>
+            <if test="fieldName != null">
+                FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
+            </if>
+            <if test="fieldType != null">
+                FIELD_TYPE = #{fieldType,jdbcType=VARCHAR},
+            </if>
+            <if test="dimensionIndex != null">
+                DIMENSION_INDEX = #{dimensionIndex,jdbcType=VARCHAR},
+            </if>
+            <if test="accuracy != null">
+                ACCURACY = #{accuracy,jdbcType=INTEGER},
+            </if>
+            <if test="rowLevelAuth != null">
+                ROW_LEVEL_AUTH = #{rowLevelAuth,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="metadataCount != null">
+                METADATA_COUNT = #{metadataCount,jdbcType=INTEGER},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where FIELD_ID = #{fieldId,jdbcType=BIGINT}
+    </update>
+
+    <sql id="Base_Where_Column_List">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="fieldId != null">
+                and FIELD_ID = #{fieldId,jdbcType=BIGINT}
+            </if>
+            <if test="tableId != null">
+                and TABLE_ID = #{tableId,jdbcType=BIGINT}
+            </if>
+            <if test="fieldCode != null">
+                and FIELD_CODE = #{fieldCode,jdbcType=VARCHAR}
+            </if>
+            <if test="fieldName != null">
+                and FIELD_NAME = #{fieldName,jdbcType=VARCHAR}
+            </if>
+            <if test="fieldType != null">
+                and FIELD_TYPE = #{fieldType,jdbcType=VARCHAR}
+            </if>
+            <if test="dimensionIndex != null">
+                and DIMENSION_INDEX = #{dimensionIndex,jdbcType=VARCHAR}
+            </if>
+            <if test="accuracy != null">
+                and ACCURACY = #{accuracy,jdbcType=INTEGER}
+            </if>
+            <if test="rowLevelAuth != null">
+                and ROW_LEVEL_AUTH = #{rowLevelAuth,jdbcType=TINYINT}
+            </if>
+            <if test="remark != null">
+                and REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="metadataCount != null">
+                and METADATA_COUNT = #{metadataCount,jdbcType=INTEGER}
+            </if>
+            <if test="createdBy != null">
+                and CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createdDt != null">
+                and CREATED_DT = #{createdDt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatedBy != null">
+                and UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updatedDt != null">
+                and UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="queryForList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM rpt_data_field
+        <trim prefix="where" prefixOverrides="and | or">
+        <if test="tableId != null">
+            and TABLE_ID = #{tableId}
+        </if>
+        </trim>
+    </select>
+
+<!--批量删除-->
+    <select id="deleteByIds">
+        delete from rpt_data_field
+        where FIELD_ID in
+        <foreach collection="list" item="ids" index = "index"
+                 open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </select>
+
+    <select id="selectByTableName" resultMap="fileds">
+        SELECT COLUMN_NAME,COLUMN_COMMENT,DATA_TYPE
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = #{tableName}
+    </select>
+    
+    <select id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from rpt_data_field
+        where FIELD_ID = #{fieldId}
+    </select>
+
+    <resultMap id="BaseResultMap2" type="com.ebase.report.model.RptDataField" extends="BaseResultMap">
+        <collection property="rptDataDicts" select="com.ebase.report.dao.RptDataDictMapper.selectByFieldId" column="{fieldId=FIELD_ID}" fetchType="eager"/>
+    </resultMap>
+    <select id="selectByTableId" parameterType="java.util.Map" resultMap="BaseResultMap2">
+        select
+        <include refid="Base_Column_List" />
+        from rpt_data_field
+        where TABLE_ID = #{tableId,jdbcType=BIGINT}
+        and DIMENSION_INDEX = #{dimensionIndex,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectList" parameterType="com.ebase.report.model.RptDataField" resultMap="BaseResultMap">
+        select
+        a.FIELD_ID,
+        a.TABLE_ID,
+        a.FIELD_CODE,
+        a.FIELD_CODE,
+        a.FIELD_NAME,
+        a.FIELD_TYPE,
+        a.DIMENSION_INDEX,
+        a.ACCURACY,
+        a.ROW_LEVEL_AUTH,
+        a.REMARK,
+        a.METADATA_COUNT,
+        a.CREATED_BY,
+        a.CREATED_DT,
+        a.UPDATED_BY,
+        a.UPDATED_DT,
+        b.TABLE_NAME,
+        b.TABLE_CODE,
+        c.DATASOURCE_NAME,
+        c.DATASOURCE_CHINESE_NAME
+        from rpt_data_field a
+        left join rpt_data_table b
+        on a.TABLE_ID = b.TABLE_ID
+        left join rpt_datasource c
+        on b.DATASOURCE_ID = c.DATASOURCE_ID
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="fieldId != null">
+                and a.FIELD_ID = #{fieldId,jdbcType=BIGINT}
+            </if>
+            <if test="tableId != null">
+                and a.TABLE_ID = #{tableId,jdbcType=BIGINT}
+            </if>
+            <if test="tableName != null">
+                and b.TABLE_NAME like CONCAT('%',#{tableName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="fieldCode != null">
+                and a.FIELD_CODE like CONCAT('%',#{fieldCode,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="fieldName != null">
+                and a.FIELD_NAME like CONCAT('%',#{fieldName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="fieldType != null">
+                and a.FIELD_TYPE = #{fieldType,jdbcType=VARCHAR}
+            </if>
+            <if test="dimensionIndex != null">
+                and a.DIMENSION_INDEX = #{dimensionIndex,jdbcType=VARCHAR}
+            </if>
+            <if test="accuracy != null">
+                and a.ACCURACY = #{accuracy,jdbcType=INTEGER}
+            </if>
+            <if test="rowLevelAuth != null">
+                and a.ROW_LEVEL_AUTH = #{rowLevelAuth,jdbcType=TINYINT}
+            </if>
+            <if test="remark != null">
+                and a.REMARK = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="metadataCount != null">
+                and a.METADATA_COUNT = #{metadataCount,jdbcType=INTEGER}
+            </if>
+            <if test="createdBy != null">
+                and a.CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createdDt != null">
+                and a.CREATED_DT = #{createdDt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatedBy != null">
+                and a.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updatedDt != null">
+                and a.UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        and c.REMOVE_STATUS = 0
+    </select>
+
+</mapper>
