@@ -1,0 +1,187 @@
+package com.ebase.report.vo;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ */
+public class RptAnalyseLogVO implements Serializable {
+    /**
+     * Database Column Remarks:
+     *   日志ID
+     */
+    private Long logId;
+
+    /**
+     * Database Column Remarks:
+     *   操作人ID
+     */
+    private String opUserid;    //用户
+
+    /**
+     * 操作人名称
+     */
+    private String opUserName;
+
+    /**
+     * Database Column Remarks:
+     *   操作IP
+     */
+    private String opIp;
+
+    /**
+     * Database Column Remarks:
+     *   日志时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date logTime;
+
+    /**
+     * Database Column Remarks:
+     *   执行sql内容
+     */
+    private String analyseSql;
+
+
+
+    /**
+     */
+    private static final long serialVersionUID = 1L;
+
+
+
+    private Long datasourceId;          //数据源表中的ID
+
+    private String datasourceName;      //数据源表中的名字
+
+    private Long tableId;               //数据表的ID
+
+    private String tableName;           //数据表的名字
+
+    private Long personalSubjectId;  //主题ID
+
+    private String subjectName;  //主题名称
+
+    private int pageNum = 1;
+
+    private int pageSize = 10;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date makeTime ;             //操作时间
+
+
+    public Date getMakeTime() {
+        return makeTime;
+    }
+
+    public void setMakeTime(Date makeTime) {
+        this.makeTime = makeTime;
+    }
+
+    public int getPageNum() { return pageNum; }
+
+    public void setPageNum(int pageNum) { this.pageNum = pageNum; }
+
+    public int getPageSize() { return pageSize; }
+
+    public void setPageSize(int pageSize) { this.pageSize = pageSize; }
+
+    public Long getDatasourceId() { return datasourceId; }
+
+    public void setDatasourceId(Long datasourceId) { this.datasourceId = datasourceId; }
+
+    public String getDatasourceName() { return datasourceName; }
+
+    public void setDatasourceName(String datasourceName) { this.datasourceName = datasourceName; }
+
+    public Long getTableId() { return tableId; }
+
+    public void setTableId(Long tableId) { this.tableId = tableId;  }
+
+    public String getTableName() { return tableName;  }
+
+    public void setTableName(String tableName) { this.tableName = tableName; }
+
+
+    public Long getLogId() {
+        return logId;
+    }
+
+    public void setLogId(Long logId) {
+        this.logId = logId;
+    }
+
+    public String getOpUserid() {
+        return opUserid;
+    }
+
+    public void setOpUserid(String opUserid) {
+        this.opUserid = opUserid == null ? null : opUserid.trim();
+    }
+
+    public String getOpIp() {
+        return opIp;
+    }
+
+    public void setOpIp(String opIp) {
+        this.opIp = opIp == null ? null : opIp.trim();
+    }
+
+    public Date getLogTime() {
+        return logTime;
+    }
+
+    public void setLogTime(Date logTime) {
+        this.logTime = logTime;
+    }
+
+    public String getAnalyseSql() {
+        return analyseSql;
+    }
+
+    public void setAnalyseSql(String analyseSql) {
+        this.analyseSql = analyseSql == null ? null : analyseSql.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", logId=").append(logId);
+        sb.append(", opUserid=").append(opUserid);
+        sb.append(", opIp=").append(opIp);
+        sb.append(", logTime=").append(logTime);
+        sb.append(", analyseSql=").append(analyseSql);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public Long getPersonalSubjectId() {
+        return personalSubjectId;
+    }
+
+    public void setPersonalSubjectId(Long personalSubjectId) {
+        this.personalSubjectId = personalSubjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getOpUserName() {
+        return opUserName;
+    }
+
+    public void setOpUserName(String opUserName) {
+        this.opUserName = opUserName;
+    }
+}
