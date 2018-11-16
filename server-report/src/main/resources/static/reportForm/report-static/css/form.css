@@ -1,0 +1,121 @@
+@charset "UTF-8";
+/*
+按钮注释：整体页面级别为一级按钮（背景加色，字体白色）   部分模块级别按钮为二级按钮（背景白色，字体加色）
+背景注释：按钮置灰做成原色的30%透明度
+*/
+/*
+/*
+字体内容文字是#838383
+标题文字是#515A6D
+边框是#eeeeee
+表格所有色值均为#515A6D
+*/
+/*
+主色
+*/
+/*
+辅助色 assist
+*/
+/************************************************************************************
+字体
+************************************************************************************/
+/*导航*/
+/*表格*/
+/*按钮*/
+/*其他*/
+/************************************************************************************
+背景
+************************************************************************************/
+/*导航*/
+/*表格*/
+/*按钮*/
+/*其他*/
+/************************************************************************************
+边框
+************************************************************************************/
+/************************************************************************************
+
+/*按钮*/
+.formcontainer { width: 100%; height: 100%; }
+
+.formcontainer .formcontainer-nav { width: 14%; float: left; height: 100%; background: #fff; min-width: 7%; overflow: auto; overflow-x: scroll; }
+
+.formcontainer .formcontainer-nav .formcontainer-nav__text { height: 40px; color: #0375D7; font-size: 14px; line-height: 40px; text-indent: 15px; }
+
+.formcontainer .formcontainer-nav .firstParent__icon { width: 20px; height: 20px; display: inline-block; background: url("../images/photo.png") 0 no-repeat; background-position: -270px -148px; }
+
+.formcontainer .formcontainer-nav ul { width: 100%; margin: 0; }
+
+.formcontainer .formcontainer-nav li { width: 100%; line-height: 40px; }
+
+.formcontainer .formcontainer-nav li .firstParent { width: 100%; height: 40px; }
+
+.formcontainer .formcontainer-nav li .firstParent__icon { font-size: 18px; }
+
+.formcontainer .formcontainer-nav li .chkClass { margin-right: 6px; }
+
+.formcontainer .formcontainer-refreshTiele { height: 40px; }
+
+.formcontainer .formcontainer-tool { width: 85%; height: 50px; background: #fff; margin-left: 0.5%; float: left; }
+
+.formcontainer .formcontainer-tool__icon { width: 20px; height: 20px; display: inline-block; background: url("../images/photo.png") 0 no-repeat; background-position: -270px -148px; }
+
+.formcontainer .formcontainer-tool__bar { width: 1px; height: 11px; background: #eee; color: #eee; margin-left: 30px; }
+
+.formcontainer .formcontainer-tool__model { width: 90px; display: inline-block; margin-top: 10px; text-align: center; }
+
+.formcontainer .formcontainer-main { width: 59%; overflow-x: auto; height: 91%; background: #fff; float: left; margin-left: 0.5%; margin-top: 0.5%; overflow-x: auto; position: relative; min-width: 20%; }
+
+.formcontainer .formcontainer-main .formcontainer-mainover { height: 89%; width: 100%; }
+
+.formcontainer .formcontainer-main .formcontainer-table { width: 100%; }
+
+.formcontainer .formcontainer-main .formcontainer-table .formcontainer-table__td { border: 1px solid #dee3e6; height: 40px; text-align: center; }
+
+.formcontainer .formcontainer-main .formcontainer-table__thead { height: 40px; border: 1px solid #dee3e6; }
+
+.formcontainer .formcontainer-main .tcdPageCode { position: absolute; bottom: 0; }
+
+.formcontainer .formcontainer-right { width: 25.5%; height: 100%; float: left; margin-left: 0.5%; margin-top: 0.5%; position: relative; }
+
+.formcontainer .formcontainer-right .formcontainer-nav__text { height: 30px; color: #0375D7; font-size: 14px; line-height: 30px; text-indent: 35px; background: #e5e5e5; }
+
+.formcontainer .formcontainer-right ul { width: 87%; margin: 0; }
+
+.formcontainer .formcontainer-right li { width: 100%; line-height: 40px; }
+
+.formcontainer .formcontainer-right li .firstParent { width: 100%; height: 40px; }
+
+.formcontainer .formcontainer-right li .firstParent__icon { font-size: 18px; }
+
+.formcontainer .formcontainer-right li .chkClass { margin-right: 6px; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partOne { width: 100%; height: 25%; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo { width: 100%; height: 30%; background: #e5e5e5; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-right__left { width: 50%; height: 100%; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-nav__append { height: 100%; background: #fff; overflow-y: scroll; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-right__right { width: 48%; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-nav__appendLine { height: 35px; width: 100%; line-height: 35px; text-indent: 10px; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-nav__textevey { height: 30px; color: #0375D7; font-size: 14px; line-height: 30px; text-indent: 25px; background: #e5e5e5; width: 100%; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-nav__appendV { height: 30%; background: #fff; }
+
+.formcontainer .formcontainer-right .formcontainer-right__foot { height: 10%; position: absolute; bottom: 15px; }
+
+.content-choose__left { width: 389px; height: 403px; border: 1px solid #e5e5e5; float: left; margin-left: 30px; margin-top: 20px; }
+
+.content-choose__right { width: 389px; height: 403px; border: 1px solid #e5e5e5; float: left; margin-top: 20px; margin-left: 50px; }
+
+.supplier-list-con { border: 1px solid #e5e5e5; }
+
+.firstParent__icon { width: 20px; height: 20px; display: inline-block; background: url("../images/photo.png") 0 no-repeat; background-position: -270px -148px; }
+
+.tabMenu-two { background: none; }
+
+#cloneTreeRow { height: 35px; line-height: 35px; }
