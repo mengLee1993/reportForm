@@ -7,6 +7,8 @@ import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
+import com.ebase.report.model.AnalysisShareBody;
+import com.ebase.report.model.jurisdiction.AcctInfo;
 import com.ebase.report.service.RptPersonalAnalysisService;
 import com.ebase.report.vo.RptPersonalAnalysisVO;
 import com.github.pagehelper.PageHelper;
@@ -89,7 +91,31 @@ public class RptPersonalAnalysisController {
 			throw new BusinessException("204");
 		return jsonResponse;
 	}
-	
+
+
+	/**
+	 * 查看分享列表
+	 */
+	@RequestMapping("/listAnalysisShareBody")
+	public JsonResponse<PageDTO<AnalysisShareBody>> listAnalysisShareBody(@RequestBody JsonRequest<AnalysisShareBody> jsonRequest){
+
+		JsonResponse<PageDTO<AnalysisShareBody>> jsonResponse = new JsonResponse<>();
+
+		try{
+			AnalysisShareBody analysisShareBody = jsonRequest.getReqBody();
+
+			PageDTO<AnalysisShareBody> pageDTO = rptPersonalAnalysisService.listAnalysisShareBody(analysisShareBody);
+
+			jsonResponse.setRspBody(pageDTO);
+		}catch (Exception e){
+			logger.error("error = {}",e);
+			jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+		}
+
+		return jsonResponse;
+	}
+
+
 	/**
 	 * 查询单条记录
 	 * 

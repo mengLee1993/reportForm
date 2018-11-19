@@ -7,6 +7,9 @@ import com.ebase.report.core.utils.BeanCopyUtil;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.dao.RptDataFieldMapper;
 import com.ebase.report.dao.RptPersonalAnalysisMapper;
+import com.ebase.report.dao.jurisdiction.AcctInfoMapper;
+import com.ebase.report.dao.jurisdiction.RoleInfoMapper;
+import com.ebase.report.model.AnalysisShareBody;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptMeasures;
 import com.ebase.report.model.RptPersonalAnalysis;
@@ -14,6 +17,8 @@ import com.ebase.report.model.dynamic.ReportDynamicParam;
 import com.ebase.report.model.dynamic.ReportEchoBody;
 import com.ebase.report.model.dynamic.ReportShareBody;
 import com.ebase.report.model.dynamic.ReportTable;
+import com.ebase.report.model.jurisdiction.AcctInfo;
+import com.ebase.report.model.jurisdiction.RoleInfo;
 import com.ebase.report.service.ReportService;
 import com.ebase.report.service.RptPersonalAnalysisService;
 import com.ebase.report.vo.RptPersonalAnalysisVO;
@@ -35,6 +40,12 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private AcctInfoMapper acctInfoMapper;
+
+    @Autowired
+    private RoleInfoMapper roleInfoMapper;
 
     @Override
     public List<ReportEchoBody> getPersonalSubject(Long personalAnalysisId) {
@@ -139,7 +150,8 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
 
     @Override
     public Integer deleteByPrimaryKey(Long key){
-        return rptPersonalAnalysisMapper.deleteByPrimaryKey(key);
+        rptPersonalAnalysisMapper.deleteByPrimaryKey(key);
+        return rptPersonalAnalysisMapper.deleteByAnalysisSourceId(key);
     }
 
     @Override
@@ -205,6 +217,7 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
                 copy.setRoleId(x);
                 copy.setSharingPersonId(acctId);
                 copy.setSharingPersonName(acctName);
+                copy.setAnalysisSourceId(personalAnalysisId);
                 rptPersonalAnalysisMapper.insertSelective(copy);
             };
         }else{
@@ -214,6 +227,7 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
                 copy.setRoleId(null);
                 copy.setSharingPersonId(acctId);
                 copy.setSharingPersonName(acctName);
+                copy.setAnalysisSourceId(personalAnalysisId);
                 rptPersonalAnalysisMapper.insertSelective(copy);
             };
 
@@ -222,12 +236,49 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
     }
 
     @Override
-    public Integer getReportByName(String reportName) {
+    public Integer getReportByName(String reportName,Long acctId) {
 
-        return rptPersonalAnalysisMapper.selectByName(reportName);
+        return rptPersonalAnalysisMapper.selectByName(reportName,acctId);
     }
 
+    @Override
+    public PageDTO<AnalysisShareBody> listAnalysisShareBody(AnalysisShareBody analysisShareBody) {
+        PageDTO<AnalysisShareBody> pageDTO = new PageDTO<>(analysisShareBody.getPageNum(),analysisShareBody.getPageSize());
 
+        Integer count = rptPersonalAnalysisMapper.listAnalysisShareBodyCount(analysisShareBody);
+        pageDTO.setTotal(count);
+        analysisShareBody.setStartRow(pageDTO.getStartRow());
+
+        List<RptPersonalAnalysis> list = rptPersonalAnalysisMapper.listAnalysisShareBody(analysisShareBody);
+
+        List<AnalysisShareBody> resultList = new ArrayList<>(list.size());
+        for(RptPersonalAnalysis analysis:list){
+            String userId = analysis.getUserId();
+
+            AnalysisShareBody analysisShareBody1 = new AnalysisShareBody();
+            if(userId != null){
+                analysisShareBody1.setType((byte)1);
+                AcctInfo acctInfo = acctInfoMapper.selectByPrimaryKey(Long.parseLong(userId));
+                analysisShareBody1.setName(acctInfo.getName());
+
+            }else{
+                analysisShareBody1.setType((byte)0);
+
+                Long roleId = analysis.getRoleId();
+
+                RoleInfo roleInfo = roleInfoMapper.selectByAcctId(roleId);
+
+                analysisShareBody1.setName(roleInfo.getRoleTitle());
+
+            }
+            analysisShareBody1.setId(analysisShareBody.getId());
+            resultList.add(analysisShareBody1);
+        }
+
+
+        pageDTO.setResultData(resultList);
+        return pageDTO;
+    }
 
 
 }
