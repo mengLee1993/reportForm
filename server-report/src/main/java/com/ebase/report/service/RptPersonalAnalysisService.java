@@ -98,7 +98,7 @@ public interface RptPersonalAnalysisService {
      * @param reportName
      * @return
      */
-    Integer getReportByName(String reportName,Long acctId);
+    Integer getReportByName(String reportName, Long acctId);
 
     /**
      * 查看分享列表
