@@ -1840,7 +1840,7 @@ function limitCodeDeal(domArr,attrName){//codeArr：请求后台，返回code集
             isTrue = true;
         }
         if(!isTrue){//说明domArr集合中没有匹配到后台返回的codeArr集合中的权限整理，则此dom节点没有权限，进行remove操作
-            domArr.eq(nI).remove();
+            domArr.eq(nI).hide();
         }
     }
 
@@ -1862,7 +1862,6 @@ if(!Function.prototype.bind){
         };
     };
 }
-
 
 //cookie读取缓存操作
 function getCookie(c_name)
@@ -1894,21 +1893,4 @@ function setCookie(c_name,value)
 //删除cookie
 function clearCookie(name,jsonHead) {
     setCookie(name, "", -1);
-}
-
-
-
-//scrollDivId   滚动的div的id  表头锁定
-function nayiLock(scrollDivId){
-    jQuery("#" + scrollDivId).scroll(function(){
-        var left = jQuery("#" + scrollDivId).scrollLeft();
-        jQuery(this).find(".lock-col").each(function(){
-            jQuery(this).css({"position":"relative","left":left,"background-color":"white","z-index":jQuery(this).hasClass("lock-row")?20:10});
-        });
-
-        var top = jQuery("#" + scrollDivId).scrollTop();
-        jQuery(this).find(".lock-row").each(function(){
-            jQuery(this).css({"position":"relative","top":top,"background-color":"white","z-index":jQuery(this).hasClass("lock-col")?20:9});
-        });
-    });
 }
