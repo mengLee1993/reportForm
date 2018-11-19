@@ -35,7 +35,7 @@ public class RptAnalyseLogVO implements Serializable {
      * Database Column Remarks:
      *   日志时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "GMT+8")
     private Date logTime;
 
     /**
@@ -68,7 +68,7 @@ public class RptAnalyseLogVO implements Serializable {
 
     private int pageSize = 10;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "GMT+8")
     private Date makeTime ;             //操作时间
 
 
