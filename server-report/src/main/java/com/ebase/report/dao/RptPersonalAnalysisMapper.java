@@ -1,5 +1,6 @@
 package com.ebase.report.dao;
 
+import com.ebase.report.model.AnalysisShareBody;
 import com.ebase.report.model.RptPersonalAnalysis;
 import com.ebase.report.model.dynamic.ReportTable;
 import org.apache.ibatis.annotations.Param;
@@ -32,7 +33,13 @@ public interface RptPersonalAnalysisMapper {
 
     Integer selectCount(RptPersonalAnalysis model);
 
-    Integer selectByName(String reportName);
+    Integer selectByName(String reportName,Long acctId);
 
     int deleteBySubjectId(@Param("longs") List<Long> longs);
+
+    Integer deleteByAnalysisSourceId(Long key);
+
+    Integer listAnalysisShareBodyCount(AnalysisShareBody analysisShareBody);
+
+    List<RptPersonalAnalysis> listAnalysisShareBody(AnalysisShareBody analysisShareBody);
 }

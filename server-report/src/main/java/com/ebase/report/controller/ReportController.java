@@ -252,7 +252,7 @@ public class ReportController {
             reqBody.setUserId(acctId.toString());
             reqBody.setCreatedBy(acctId.toString());
 
-            Integer count = rptPersonalAnalysisService.getReportByName(reqBody.getReportName());
+            Integer count = rptPersonalAnalysisService.getReportByName(reqBody.getReportName(),acctId);
 
             if(count > 0){
                 jsonResponse.setRetCode("500");

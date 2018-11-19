@@ -18,6 +18,9 @@ public class ReportEchoBody {
     //数据源名称
     private String datasourceName;
 
+    //数据源中文名称
+    private String datasourceChineseName;
+
     //数据库类型
     private String databaseType;
 
@@ -141,5 +144,13 @@ public class ReportEchoBody {
 
     public void setIsChecked(Byte isChecked) {
         this.isChecked = isChecked;
+    }
+
+    public String getDatasourceChineseName() {
+        return datasourceChineseName;
+    }
+
+    public void setDatasourceChineseName(String datasourceChineseName) {
+        this.datasourceChineseName = datasourceChineseName;
     }
 }

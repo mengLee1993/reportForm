@@ -269,11 +269,12 @@
         <result column="subjectType" jdbcType="VARCHAR" property="subjectType" />
         <result column="personalSubjectId" jdbcType="BIGINT" property="personalSubjectId" />
         <result column="subjectSourceEnum" jdbcType="VARCHAR" property="subjectSourceEnum" />
+        <result column="datasourceChineseName" jdbcType="VARCHAR" property="datasourceChineseName" />
         <collection property="reportTables" select="com.ebase.report.dao.RptDataTableMapper.selectReportTableByTableId" column="{tableId=tableId}" fetchType="eager"/>
     </resultMap>
     <select id="getThemeDataSource" parameterType="java.lang.Long" resultMap="BaseResultMapSource">
            SELECT datasource.DATASOURCE_NAME AS 'datasourceName',datasource.DATABASE_TYPE AS 'databaseType',z.SUBJECT_TYPE AS 'subjectType',
-            z.TABLE_ID AS 'tableId',z.SUBJECT_SOURCE AS 'subjectSourceEnum',z.SUBJECT_NAME
+            z.TABLE_ID AS 'tableId',z.SUBJECT_SOURCE AS 'subjectSourceEnum',z.SUBJECT_NAME,datasource.DATASOURCE_CHINESE_NAME as 'datasourceChineseName'
             FROM RPT_DATASOURCE  datasource , (
 
             SELECT s.TABLE_ID,s.SUBJECT_TYPE,date_tab.DATASOURCE_ID,s.SUBJECT_SOURCE,s.SUBJECT_NAME FROM RPT_DATA_TABLE date_tab ,(

@@ -74,6 +74,11 @@ public class RptPersonalAnalysis implements Serializable {
      */
     private String sharingPersonName;
 
+    /**
+     * 数据来源id
+     */
+    private Long analysisSourceId;
+
 
     private ReportEchoBody reportEchoBody;
 
@@ -86,6 +91,9 @@ public class RptPersonalAnalysis implements Serializable {
      * 数据表 名称
      */
     private String tableName;
+
+
+
 
     private int pageSize = 10;
 
@@ -255,5 +263,13 @@ public class RptPersonalAnalysis implements Serializable {
 
     public void setSharingPersonName(String sharingPersonName) {
         this.sharingPersonName = sharingPersonName;
+    }
+
+    public Long getAnalysisSourceId() {
+        return analysisSourceId;
+    }
+
+    public void setAnalysisSourceId(Long analysisSourceId) {
+        this.analysisSourceId = analysisSourceId;
     }
 }

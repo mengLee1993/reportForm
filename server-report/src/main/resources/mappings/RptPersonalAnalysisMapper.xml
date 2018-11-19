@@ -14,6 +14,8 @@
         <result column="ROLE_ID" jdbcType="BIGINT" property="roleId" />
         <result column="SHARING_PERSON_ID" jdbcType="BIGINT" property="sharingPersonId" />
         <result column="SHARING_PERSON_NAME" jdbcType="VARCHAR" property="sharingPersonName" />
+
+        <result column="ANALYSIS_SOURCE_ID" jdbcType="BIGINT" property="analysisSourceId" />
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ebase.report.model.RptPersonalAnalysis">
         <result column="CONFIG_JSON" jdbcType="LONGVARCHAR" property="configJson" />
@@ -22,7 +24,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         PERSONAL_ANALYSIS_ID, PERSONAL_SUBJECT_ID, REPORT_NAME, USER_ID, CREATED_BY, CREATED_DT, 
-        UPDATED_BY, UPDATED_DT,ROLE_ID,SHARING_PERSON_ID,SHARING_PERSON_NAME
+        UPDATED_BY, UPDATED_DT,ROLE_ID,SHARING_PERSON_ID,SHARING_PERSON_NAME,ANALYSIS_SOURCE_ID
     </sql>
     <sql id="Blob_Column_List">
         CONFIG_JSON
@@ -43,12 +45,12 @@
         insert into rpt_personal_analysis (PERSONAL_ANALYSIS_ID, PERSONAL_SUBJECT_ID, 
             REPORT_NAME, USER_ID, CREATED_BY, 
             CREATED_DT, UPDATED_BY, UPDATED_DT, 
-            CONFIG_JSON,ROLE_ID,SHARING_PERSON_ID,SHARING_PERSON_NAME)
+            CONFIG_JSON,ROLE_ID,SHARING_PERSON_ID,SHARING_PERSON_NAME,ANALYSIS_SOURCE_ID)
         values (#{personalAnalysisId,jdbcType=BIGINT}, #{personalSubjectId,jdbcType=BIGINT}, 
             #{reportName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
             #{createdDt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updatedDt,jdbcType=TIMESTAMP}, 
             #{configJson,jdbcType=LONGVARCHAR},#{roleId,jdbcType=BIGINT},#{sharingPersonId,jdbcType=BIGINT},
-            #{sharingPersonName,jdbcType=VARCHAR})
+            #{sharingPersonName,jdbcType=VARCHAR},#{analysisSourceId,jdbcType=BIGINT})
     </insert>
     <insert id="insertSelective" parameterType="com.ebase.report.model.RptPersonalAnalysis" useGeneratedKeys="true" keyProperty="personalAnalysisId">
         insert into rpt_personal_analysis
@@ -86,6 +88,9 @@
             <if test="sharingPersonName != null">
                 SHARING_PERSON_NAME,
             </if>
+            <if test="analysisSourceId != null">
+                ANALYSIS_SOURCE_ID,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="personalSubjectId != null">
@@ -120,6 +125,9 @@
             </if>
             <if test="sharingPersonName != null">
                 #{sharingPersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="analysisSourceId != null">
+                #{analysisSourceId,jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
@@ -159,6 +167,9 @@
             <if test="sharingPersonName != null">
                 SHARING_PERSON_NAME = #{sharingPersonName,jdbcType=VARCHAR},
             </if>
+            <if test="analysisSourceId != null">
+                ANALYSIS_SOURCE_ID = #{analysisSourceId,jdbcType=BIGINT},
+            </if>
         </set>
         where PERSONAL_ANALYSIS_ID = #{personalAnalysisId,jdbcType=BIGINT}
     </update>
@@ -171,7 +182,8 @@
             CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
             UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
             UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
-            CONFIG_JSON = #{configJson,jdbcType=LONGVARCHAR}
+            CONFIG_JSON = #{configJson,jdbcType=LONGVARCHAR},
+             ANALYSIS_SOURCE_ID = #{analysisSourceId,jdbcType=BIGINT}
         where PERSONAL_ANALYSIS_ID = #{personalAnalysisId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.RptPersonalAnalysis">
@@ -182,7 +194,8 @@
             CREATED_BY = #{createdBy,jdbcType=VARCHAR},
             CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
             UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
-            UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+            UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
+              ANALYSIS_SOURCE_ID = #{analysisSourceId,jdbcType=BIGINT}
         where PERSONAL_ANALYSIS_ID = #{personalAnalysisId,jdbcType=BIGINT}
     </update>
     <select id="select" resultMap="ResultMapWithBLOBs" >
@@ -254,6 +267,9 @@
             <if test="configJson != null">
                 and CONFIG_JSON = #{configJson,jdbcType=LONGVARCHAR}
             </if>
+            <if test="analysisSourceId != null">
+                and ANALYSIS_SOURCE_ID = #{analysisSourceId,jdbcType=BIGINT}
+            </if>
         </trim>
     </sql>
 
@@ -268,7 +284,7 @@
         FROM RPT_PERSONAL_SUBJECT s
             LEFT JOIN RPT_DATA_TABLE t ON s.TABLE_ID = t.TABLE_ID
             LEFT JOIN RPT_DATASOURCE  d ON d.DATASOURCE_ID = t.DATASOURCE_ID
-         WHERE (s.ROLE_ID = #{acctId} OR s.USER_ID = #{roleId})
+         WHERE (s.ROLE_ID = #{roleId} OR s.USER_ID = #{acctId})
          <if test="term != null and term != ''">
              and (t.TABLE_NAME LIKE CONCAT('%',#{term},'%')
              or
@@ -282,7 +298,7 @@
         t.TABLE_CODE AS 'tableCode',d.DATASOURCE_NAME AS 'datasourceName',t.DEMO AS 'demo',d.DATABASE_TYPE AS 'tableType' FROM RPT_PERSONAL_SUBJECT s
 		LEFT JOIN RPT_DATA_TABLE t ON s.TABLE_ID = t.TABLE_ID
 		LEFT JOIN RPT_DATASOURCE  d ON d.DATASOURCE_ID = t.DATASOURCE_ID
-        WHERE (s.ROLE_ID = #{acctId} OR s.USER_ID = #{roleId})
+        WHERE (s.ROLE_ID = #{roleId} OR s.USER_ID = #{acctId})
         <if test="term != null and term != ''">
             and ( t.TABLE_NAME LIKE CONCAT('%',#{term},'%')
             or
@@ -330,8 +346,8 @@
         </trim>
     </select>
 
-    <select id="selectByName" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select count(PERSONAL_ANALYSIS_ID) from rpt_personal_analysis where REPORT_NAME = #{reportName,jdbcType=VARCHAR}
+    <select id="selectByName" resultType="java.lang.Integer" >
+        select count(PERSONAL_ANALYSIS_ID) from rpt_personal_analysis where REPORT_NAME = #{arg0} and USER_ID = #{arg1}
     </select>
 
     <delete id="deleteBySubjectId" parameterType="java.lang.Long" >
@@ -343,4 +359,15 @@
         </foreach>
         )
     </delete>
+    <delete id="deleteByAnalysisSourceId" parameterType="java.lang.Long">
+         delete from rpt_personal_analysis
+                where ANALYSIS_SOURCE_ID = #{key,jdbcType=BIGINT}
+    </delete>
+    <select id="listAnalysisShareBodyCount" resultType="java.lang.Integer" parameterType="com.ebase.report.model.AnalysisShareBody">
+        SELECT COUNT(id) FROM rpt_personal_analysis WHERE ANALYSIS_SOURCE_ID = #{id}
+    </select>
+    <select id="listAnalysisShareBody" resultMap="BaseResultMap" parameterType="com.ebase.report.model.AnalysisShareBody">
+        select * from RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{id}
+        limit #{startRow},#{pageSize}
+    </select>
 </mapper>
