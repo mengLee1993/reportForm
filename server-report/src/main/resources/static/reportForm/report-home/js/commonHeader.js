@@ -58,7 +58,8 @@
 		});
 
 		$("#quitOperate").on("click",function () {
-			jumpUrl("../../../login.html","0000000",0)
+			getAjaxResult("/acct/delCacheUser","POST",{},"quitOpeCallBack(data)");
+			//jumpUrl("../../../login.html","0000000",0)
         });
 
 		//hexiaojuan
@@ -440,6 +441,12 @@
 		return sum;
 	}
 
-
+	//退出接口
+	function quitOpeCallBack(data){
+		data = JSON.parse(data);
+		if(data.retCode == "0000000"){
+            jumpUrl("../../../login.html","0000000",0);
+		}
+    }
 
 	
