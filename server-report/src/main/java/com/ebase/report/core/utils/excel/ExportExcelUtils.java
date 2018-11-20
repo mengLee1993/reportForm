@@ -798,8 +798,8 @@ public class ExportExcelUtils {
 			arr.add(x);
 			dataList.add(tmp.get(x));
 		});
-
-		String[] headers = (String[])arr.toArray();
+		String[] headers = arr.toArray(new String[0]);
+//		String[] headers = (String[])arr.toArray();
 		if (ArrayUtils.isEmpty(headers)) {
 			throw new RuntimeException("表头不能为空");
 		}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebase.report.dao.RptDimensionGroupMapper">
+    <resultMap id="BaseResultMap" type="com.ebase.report.model.RptDimensionGroup">
+        <result column="DIMENSION_GROUP_ID" jdbcType="BIGINT" property="dimensionGroupId" />
+        <result column="DIMENSION_ID" jdbcType="BIGINT" property="dimensionId" />
+        <result column="TABLE_ID" jdbcType="BIGINT" property="tableId" />
+        <result column="FIELD_ID" jdbcType="BIGINT" property="fieldId" />
+        <result column="DIMENSION_NAME" jdbcType="VARCHAR" property="dimensionName" />
+        <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    </resultMap>
+    <insert id="insert" parameterType="com.ebase.report.model.RptDimensionGroup">
+        insert into rpt_dimension_group (DIMENSION_GROUP_ID, DIMENSION_ID, TABLE_ID, 
+            FIELD_ID, DIMENSION_NAME, SEQ
+            )
+        values (#{dimensionGroupId,jdbcType=BIGINT}, #{dimensionId,jdbcType=BIGINT}, #{tableId,jdbcType=BIGINT}, 
+            #{fieldId,jdbcType=BIGINT}, #{dimensionName,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}
+            )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ebase.report.model.RptDimensionGroup">
+        insert into rpt_dimension_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dimensionGroupId != null">
+                DIMENSION_GROUP_ID,
+            </if>
+            <if test="dimensionId != null">
+                DIMENSION_ID,
+            </if>
+            <if test="tableId != null">
+                TABLE_ID,
+            </if>
+            <if test="fieldId != null">
+                FIELD_ID,
+            </if>
+            <if test="dimensionName != null">
+                DIMENSION_NAME,
+            </if>
+            <if test="seq != null">
+                SEQ,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dimensionGroupId != null">
+                #{dimensionGroupId,jdbcType=BIGINT},
+            </if>
+            <if test="dimensionId != null">
+                #{dimensionId,jdbcType=BIGINT},
+            </if>
+            <if test="tableId != null">
+                #{tableId,jdbcType=BIGINT},
+            </if>
+            <if test="fieldId != null">
+                #{fieldId,jdbcType=BIGINT},
+            </if>
+            <if test="dimensionName != null">
+                #{dimensionName,jdbcType=VARCHAR},
+            </if>
+            <if test="seq != null">
+                #{seq,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="select" resultMap="BaseResultMap">
+        select 
+      <!--  <include refid="Base_Column_List" />-->
+        from rpt_dimension_group
+        <include refid="Base_Where_Column_List" />
+    </select>
+    <sql id="Base_Where_Column_List">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="dimensionGroupId != null">
+                and DIMENSION_GROUP_ID = #{dimensionGroupId,jdbcType=BIGINT}
+            </if>
+            <if test="dimensionId != null">
+                and DIMENSION_ID = #{dimensionId,jdbcType=BIGINT}
+            </if>
+            <if test="tableId != null">
+                and TABLE_ID = #{tableId,jdbcType=BIGINT}
+            </if>
+            <if test="fieldId != null">
+                and FIELD_ID = #{fieldId,jdbcType=BIGINT}
+            </if>
+            <if test="dimensionName != null">
+                and DIMENSION_NAME = #{dimensionName,jdbcType=VARCHAR}
+            </if>
+            <if test="seq != null">
+                and SEQ = #{seq,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </sql>
+</mapper>

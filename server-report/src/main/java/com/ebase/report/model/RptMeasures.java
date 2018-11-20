@@ -1,6 +1,7 @@
 package com.ebase.report.model;
 
 import com.ebase.report.core.utils.JsonUtil;
+import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.model.dynamic.ReportMeasure;
 import com.ebase.report.model.dynamic.RptFieldIndex;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -87,6 +88,9 @@ public class RptMeasures implements Serializable {
      *   指标表达式
      */
     private String measureRule;
+
+    //添加组合名称
+    private String combinationName;
 
 
 //    private RptMeasuresBody rptMeasuresBody;
@@ -278,5 +282,13 @@ public class RptMeasures implements Serializable {
 
     public void setPersonalAnalysisId(Long personalAnalysisId) {
         this.personalAnalysisId = personalAnalysisId;
+    }
+
+    public String getCombinationName() {
+        return StringUtil.assemblingView(fieldCode, fieldName);
+    }
+
+    public void setCombinationName(String combinationName) {
+        this.combinationName = combinationName;
     }
 }

@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebase.report.dao.jurisdiction.AcctInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ebase.report.model.jurisdiction.AcctInfo" >
+    <id column="ACCT_ID" property="acctId" jdbcType="BIGINT" />
+    <result column="ENT_ID" property="entId" jdbcType="BIGINT" />
+    <result column="LOGIN_SOURCE" property="loginSource" jdbcType="VARCHAR" />
+    <result column="ACCT_TITLE" property="acctTitle" jdbcType="VARCHAR" />
+    <result column="ACCT_PASSWORD" property="acctPassword" jdbcType="VARCHAR" />
+    <result column="ACCT_CODE" property="acctCode" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DEPT" property="dept" jdbcType="VARCHAR" />
+    <result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="REGISTER_TIME" property="registerTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="ENT_TIME" property="entTime" jdbcType="TIMESTAMP" />
+    <result column="A_COMPANY_ID" property="aCompanyId" jdbcType="BIGINT" />
+    <result column="O_INFO_ID" property="oInfoId" jdbcType="VARCHAR" />
+    <result column="orgTitle" property="orgTitle" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId"/>
+    <result column="ACCT_TYPE" property="acctType" jdbcType="BIGINT" />
+    <result column="sysTitle" property="sysTitle" jdbcType="VARCHAR" />
+    <result column="sysId" property="sysId" jdbcType="BIGINT" />
+    <collection property="roleInfo" ofType="com.ebase.report.model.jurisdiction.RoleInfo">
+      <id column="ROLE_ID" property="roleId"/>
+      <result column="APP_ID" property="appId"/>
+      <result column="ENT_ID" property="entId"/>
+      <result column="ROLE_CODE" property="roleCode"/>
+      <result column="ROLE_TITLE" property="roleTitle"/>
+      <result column="ROLE_STATE" property="roleState"/>
+      <result column="ROLE_DESC" property="roleDesc"/>
+      <result column="IS_DELETE" property="isDelete"/>
+      <result column="STATUS" property="status"/>
+      <result column="CREATED_BY" property="createdBy"/>
+      <result column="CREATED_TIME" property="createdTime"/>
+      <result column="UPDATED_BY" property="updatedBy"/>
+      <result column="UPDATED_TIME" property="updatedTime"/>
+      <result column="ROLE_TYPE" property="roleType"/>
+      <result column="START_TIME" property="startTime"/>
+      <result column="END_TIME" property="endTime"/>
+      <result column="ROLE_TYPE_TITLE" property="roleTypeTitle"/>
+    </collection>
+  </resultMap>
+
+
+
+  <resultMap id="BaseResultMap2" type="com.ebase.report.model.jurisdiction.AcctInfo" >
+    <id column="ACCT_ID" property="acctId" jdbcType="BIGINT" />
+    <result column="ENT_ID" property="entId" jdbcType="BIGINT" />
+    <result column="ACCT_TYPE" property="acctType" jdbcType="BIGINT" />
+    <result column="LOGIN_SOURCE" property="loginSource" jdbcType="VARCHAR" />
+    <result column="ACCT_TITLE" property="acctTitle" jdbcType="VARCHAR" />
+    <result column="ACCT_PASSWORD" property="acctPassword" jdbcType="VARCHAR" />
+    <result column="ACCT_CODE" property="acctCode" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DEPT" property="dept" jdbcType="VARCHAR" />
+    <result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="REGISTER_TIME" property="registerTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="ENT_TIME" property="entTime" jdbcType="TIMESTAMP" />
+    <result column="A_COMPANY_ID" property="aCompanyId" jdbcType="BIGINT" />
+    <result column="O_INFO_ID" property="oInfoId" jdbcType="VARCHAR" />
+    <result column="O_INFO_NAME" property="oInfoName" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId"/>
+    <collection property="arr" ofType="com.ebase.report.model.jurisdiction.AcctRoleReal">
+      <id column="RELA_ID" property="relaId" jdbcType="BIGINT" />
+      <result column="ACCT_ID" property="acctId" jdbcType="BIGINT" />
+      <result column="ROLE_ID" property="roleId" jdbcType="BIGINT" />
+      <result column="STATUS" property="status" jdbcType="TINYINT" />
+      <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+      <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+      <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+      <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP" />
+
+      <association property="role" javaType="com.ebase.report.model.jurisdiction.RoleInfo">
+        <id column="ROLE_ID" property="roleId" jdbcType="BIGINT" />
+        <result column="APP_ID" property="appId" jdbcType="BIGINT" />
+        <result column="ENT_ID" property="entId" jdbcType="BIGINT" />
+        <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+        <result column="ROLE_TITLE" property="roleTitle" jdbcType="VARCHAR" />
+        <result column="ROLE_STATE" property="roleState" jdbcType="TINYINT" />
+        <result column="ROLE_DESC" property="roleDesc" jdbcType="VARCHAR" />
+        <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+        <result column="STATUS" property="status" jdbcType="TINYINT" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+        <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP" />
+
+        <result column="ROLE_TYPE" property="roleType" jdbcType="TINYINT" />
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+
+        <result column="ROLE_TYPE_TITLE" property="roleTypeTitle" jdbcType="VARCHAR" />
+
+        <result column="ORG_ID" property="orgId" jdbcType="BIGINT" />
+      </association>
+
+    </collection>
+
+    
+
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ACCT_ID, ENT_ID, LOGIN_SOURCE, ACCT_TITLE, ACCT_PASSWORD, ACCT_CODE, NAME, DEPT,
+    MOBILE_PHONE, EMAIL, REGISTER_TIME, LAST_LOGIN_TIME, IS_DELETE, UPDATED_BY, UPDATED_TIME,
+    STATUS, START_TIME, ENT_TIME, A_COMPANY_ID,O_INFO_ID,O_INFO_NAME,ACCT_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from acct_info
+    where ACCT_ID = #{acctId,jdbcType=BIGINT}  and is_delete = 0
+  </select>
+  <!--验证是否有多个系统管理员-->
+  <select id="verAcctInfoSysId" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from acct_info a
+    LEFT JOIN acct_user_sys aus on aus.acct_id=a.acct_id
+    where a.O_INFO_ID=#{oInfoId}  and a.is_delete = 0
+    and aus.sys_id=#{sysId}
+    <if test="acctId != null" >
+      and a.ACCT_ID not in (#{acctId})
+    </if>
+  </select>
+  <!--验证是否有多个管理员-->
+  <select id="verAcctInfoType" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from acct_info a
+    where a.O_INFO_ID=#{oInfoId}  and a.is_delete = 0
+    <if test="acctType != null" >
+      and a.ACCT_TYPE = #{acctType}
+    </if>
+    <if test="acctId != null" >
+      and a.ACCT_ID not in (#{acctId})
+    </if>
+  </select>
+  <select id="verAcctInfo" resultType="com.ebase.report.model.jurisdiction.AcctInfo" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" >
+    select *
+    from acct_info a
+    where a.ACCT_TITLE = #{acctTitle} and a.O_INFO_ID=#{oInfoId}  and a.is_delete = 0
+    <if test="acctId != null" >
+      and a.ACCT_ID not in (#{acctId})
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from acct_info
+    where ACCT_ID = #{acctId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" >
+    insert into acct_info (ACCT_ID, ENT_ID, LOGIN_SOURCE,
+      ACCT_TITLE, ACCT_PASSWORD, ACCT_CODE,
+      NAME, DEPT, MOBILE_PHONE,
+      EMAIL, REGISTER_TIME, LAST_LOGIN_TIME,
+      IS_DELETE, UPDATED_BY, UPDATED_TIME,
+      STATUS, START_TIME, ENT_TIME,
+      A_COMPANY_ID)
+    values (#{acctId,jdbcType=BIGINT}, #{entId,jdbcType=BIGINT}, #{loginSource,jdbcType=VARCHAR},
+      #{acctTitle,jdbcType=VARCHAR}, #{acctPassword,jdbcType=VARCHAR}, #{acctCode,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR},
+      #{email,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP},
+      #{isDelete,jdbcType=TINYINT}, #{updatedBy,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP},
+      #{status,jdbcType=TINYINT}, #{startTime,jdbcType=TIMESTAMP}, #{entTime,jdbcType=TIMESTAMP},
+      #{aCompanyId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" >
+    insert into acct_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="acctId != null" >
+        ACCT_ID,
+      </if>
+      <if test="entId != null" >
+        ENT_ID,
+      </if>
+      <if test="loginSource != null" >
+        LOGIN_SOURCE,
+      </if>
+      <if test="acctTitle != null" >
+        ACCT_TITLE,
+      </if>
+      <if test="acctPassword != null" >
+        ACCT_PASSWORD,
+      </if>
+      <if test="acctCode != null" >
+        ACCT_CODE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="dept != null" >
+        DEPT,
+      </if>
+      <if test="mobilePhone != null" >
+        MOBILE_PHONE,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+      <if test="registerTime != null" >
+        REGISTER_TIME,
+      </if>
+      <if test="lastLoginTime != null" >
+        LAST_LOGIN_TIME,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedTime != null" >
+        UPDATED_TIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="entTime != null" >
+        ENT_TIME,
+      </if>
+      <if test="aCompanyId != null" >
+        A_COMPANY_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="acctId != null" >
+        #{acctId,jdbcType=BIGINT},
+      </if>
+      <if test="entId != null" >
+        #{entId,jdbcType=BIGINT},
+      </if>
+      <if test="loginSource != null" >
+        #{loginSource,jdbcType=VARCHAR},
+      </if>
+      <if test="acctTitle != null" >
+        #{acctTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="acctPassword != null" >
+        #{acctPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="acctCode != null" >
+        #{acctCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null" >
+        #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null" >
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entTime != null" >
+        #{entTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aCompanyId != null" >
+        #{aCompanyId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" >
+    update acct_info
+    <set >
+      <if test="entId != null" >
+        ENT_ID = #{entId,jdbcType=BIGINT},
+      </if>
+      <if test="loginSource != null" >
+        LOGIN_SOURCE = #{loginSource,jdbcType=VARCHAR},
+      </if>
+      <if test="acctTitle != null" >
+        ACCT_TITLE = #{acctTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="acctPassword != null" >
+        ACCT_PASSWORD = #{acctPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="acctCode != null" >
+        ACCT_CODE = #{acctCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null" >
+        DEPT = #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null" >
+        REGISTER_TIME = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entTime != null" >
+        ENT_TIME = #{entTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aCompanyId != null" >
+        A_COMPANY_ID = #{aCompanyId,jdbcType=BIGINT},
+      </if>
+
+      <if test="oInfoId != null" >
+        O_INFO_ID = #{oInfoId},
+      </if>
+
+      <if test="acctType != null" >
+        ACCT_TYPE = #{acctType},
+      </if>
+
+    </set>
+    where ACCT_ID = #{acctId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" >
+    update acct_info
+    set ENT_ID = #{entId,jdbcType=BIGINT},
+      LOGIN_SOURCE = #{loginSource,jdbcType=VARCHAR},
+      ACCT_TITLE = #{acctTitle,jdbcType=VARCHAR},
+      ACCT_PASSWORD = #{acctPassword,jdbcType=VARCHAR},
+      ACCT_CODE = #{acctCode,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      DEPT = #{dept,jdbcType=VARCHAR},
+      MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      REGISTER_TIME = #{registerTime,jdbcType=TIMESTAMP},
+      LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=TINYINT},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      ENT_TIME = #{entTime,jdbcType=TIMESTAMP},
+      A_COMPANY_ID = #{aCompanyId,jdbcType=BIGINT}
+    where ACCT_ID = #{acctId,jdbcType=BIGINT}
+  </update>
+  <!--  <select id="find" resultMap="BaseResultMap">
+      SELECT
+        comp.`COMPANY_ID`,comp.`COMPANY_CODE`,comp.`COMPANY_NAME`,
+        <include refid="Base_Column_List"/>
+        FROM acct_info acct LEFT JOIN company_info comp ON  acct.A_COMPANY_ID = comp.COMPANY_ID
+
+      <trim prefix="WHERE" prefixOverrides="AND |OR">
+        <if test="acctId != null" >
+          AND ACCT_ID = #{acctId}
+        </if>
+        <if test="acctCode != null and acctCode != ''" >
+          AND ACCT_CODE LIKE CONCAT('%',#{acctCode},'%')
+        </if>
+        <if test="acctTitle != null and acctTitle != ''" >
+          AND ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%')
+        </if>
+        <if test="aCompanyId != null" >
+          AND A_COMPANY_ID = #{aCompanyId}
+        </if>
+        <if test="companyName != null and companyName != ''" >
+          AND COMPANY_NAME LIKE CONCAT('%',#{companyName},'%')
+        </if>
+        <if test="email != null and email != ''" >
+          AND EMAIL LIKE CONCAT('%',#{email},'%')
+        </if>
+        <if test="acctIds != null and acctIds.size > 0">
+          AND ACCT_ID in
+          <foreach collection="acctIds" close=")" item="acctId" open="(" separator=",">
+              #{acctId}
+          </foreach>
+        </if>
+      </trim>
+    </select>-->
+
+  <!-- 查询全部数据 -->
+  <select id="listSysAcct2Role" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" resultMap="BaseResultMap">
+		SELECT * FROM
+		role_info a
+		LEFT JOIN acct_role_real b ON a.ROLE_ID =b.ROLE_ID
+		LEFT JOIN acct_info c ON c.ACCT_ID =b.ACCT_ID WHERE b.ACCT_ID = #{acctId} and ORG_ID = #{orgId}  and c.is_delete = 0
+	</select>
+
+  <!--用户管理 修改用户信息-->
+  <update id="updateAcctInfo" parameterType="com.ebase.report.model.jurisdiction.AcctInfo">
+ update acct_info set ENT_ID = #{entId,jdbcType=BIGINT}, LOGIN_SOURCE = #{loginSource,jdbcType=VARCHAR},
+  ACCT_TITLE = #{acctTitle,jdbcType=VARCHAR}, ACCT_PASSWORD = #{acctPassword,jdbcType=VARCHAR},
+   ACCT_CODE = #{acctCode,jdbcType=VARCHAR}, NAME = #{name,jdbcType=VARCHAR},
+    DEPT = #{dept,jdbcType=VARCHAR}, MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR},
+     EMAIL = #{email,jdbcType=VARCHAR}, REGISTER_TIME = #{registerTime,jdbcType=TIMESTAMP},
+     LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}, IS_DELETE = #{isDelete,jdbcType=TINYINT},
+     UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}, UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+     STATUS = #{status,jdbcType=TINYINT}, START_TIME = #{startTime,jdbcType=TIMESTAMP},
+     ENT_TIME = #{entTime,jdbcType=TIMESTAMP}, A_COMPANY_ID = #{aCompanyId,jdbcType=BIGINT}
+     where ACCT_ID = #{acctId,jdbcType=BIGINT} </update>
+
+  <!--用户管理 添加用户-->
+  <insert id="insertAcctInfo" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" keyProperty="acctId" useGeneratedKeys="true">
+    insert into acct_info
+
+    <trim suffixOverrides="," suffix=")" prefix="(">
+
+      <if test="entId != null"> ENT_ID, </if>
+
+      <if test="loginSource != null"> LOGIN_SOURCE, </if>
+
+      <if test="acctTitle != null"> ACCT_TITLE, </if>
+
+      <if test="acctPassword != null"> ACCT_PASSWORD, </if>
+
+      <if test="acctCode != null"> ACCT_CODE, </if>
+
+      <if test="name != null"> NAME, </if>
+
+      <if test="dept != null"> DEPT, </if>
+
+      <if test="mobilePhone != null"> MOBILE_PHONE, </if>
+
+      <if test="email != null"> EMAIL, </if>
+
+      <if test="registerTime != null"> REGISTER_TIME, </if>
+
+      <if test="lastLoginTime != null"> LAST_LOGIN_TIME, </if>
+
+      <if test="isDelete != null"> IS_DELETE, </if>
+
+      <if test="updatedBy != null"> UPDATED_BY, </if>
+
+      <if test="updatedTime != null"> UPDATED_TIME, </if>
+
+      <if test="status != null"> STATUS, </if>
+
+      <if test="startTime != null"> START_TIME, </if>
+
+      <if test="entTime != null"> ENT_TIME, </if>
+
+      <if test="aCompanyId != null"> A_COMPANY_ID, </if>
+
+      <if test="oInfoId != null"> O_INFO_ID, </if>
+
+      <if test="oInfoName != null"> O_INFO_NAME, </if>
+
+      <if test="acctType != null"> ACCT_TYPE, </if>
+
+    </trim>
+
+
+    <trim suffixOverrides="," suffix=")" prefix="values (">
+
+      <if test="entId != null"> #{entId,jdbcType=BIGINT}, </if>
+
+      <if test="loginSource != null"> #{loginSource,jdbcType=VARCHAR}, </if>
+
+      <if test="acctTitle != null"> #{acctTitle,jdbcType=VARCHAR}, </if>
+
+      <if test="acctPassword != null"> #{acctPassword,jdbcType=VARCHAR}, </if>
+
+      <if test="acctCode != null"> #{acctCode,jdbcType=VARCHAR}, </if>
+
+      <if test="name != null"> #{name,jdbcType=VARCHAR}, </if>
+
+      <if test="dept != null"> #{dept,jdbcType=VARCHAR}, </if>
+
+      <if test="mobilePhone != null"> #{mobilePhone,jdbcType=VARCHAR}, </if>
+
+      <if test="email != null"> #{email,jdbcType=VARCHAR}, </if>
+
+      <if test="registerTime != null"> #{registerTime,jdbcType=TIMESTAMP}, </if>
+
+      <if test="lastLoginTime != null"> #{lastLoginTime,jdbcType=TIMESTAMP}, </if>
+
+      <if test="isDelete != null"> #{isDelete,jdbcType=TINYINT}, </if>
+
+      <if test="updatedBy != null"> #{updatedBy,jdbcType=VARCHAR}, </if>
+
+      <if test="updatedTime != null"> #{updatedTime,jdbcType=TIMESTAMP}, </if>
+
+      <if test="status != null"> #{status,jdbcType=TINYINT}, </if>
+
+      <if test="startTime != null"> #{startTime,jdbcType=TIMESTAMP}, </if>
+
+      <if test="entTime != null"> #{entTime,jdbcType=TIMESTAMP}, </if>
+
+      <if test="aCompanyId != null"> #{aCompanyId,jdbcType=BIGINT}, </if>
+
+      <if test="oInfoId != null"> #{oInfoId}, </if>
+
+      <if test="oInfoName != null"> #{oInfoName}, </if>
+
+      <if test="acctType != null"> #{acctType}, </if>
+
+    </trim>
+
+  </insert>
+
+  <!--查询用户信息-->
+  <select id="find" resultMap="BaseResultMap">
+    SELECT
+    *,(select o.ORG_NAME from org_info o where o.id=acct.O_INFO_ID) as orgTitle
+    FROM
+    acct_info acct
+    LEFT JOIN acct_role_real arr
+    ON acct.`ACCT_ID` = arr.`ACCT_ID`
+    LEFT JOIN role_info role
+    ON arr.`ROLE_ID` = role.`ROLE_ID`
+    where 1=1 and acct.is_delete = 0
+      <if test="entId != null"> AND ENT_ID = #{entId,jdbcType=BIGINT} </if>
+
+      <if test="loginSource != null"> LOGIN_SOURCE = #{loginSource,jdbcType=VARCHAR}, </if>
+
+      <if test="acctTitle != null"> AND ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%') </if>
+
+      <if test="acctPassword != null"> AND ACCT_PASSWORD = #{acctPassword,jdbcType=VARCHAR} </if>
+
+      <if test="acctCode != null"> AND ACCT_CODE = #{acctCode,jdbcType=VARCHAR} </if>
+
+      <if test="name != null"> AND NAME = #{name,jdbcType=VARCHAR} </if>
+
+      <if test="dept != null"> AND DEPT = #{dept,jdbcType=VARCHAR} </if>
+
+      <if test="mobilePhone != null"> AND MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR} </if>
+
+      <if test="email != null"> AND EMAIL = #{email,jdbcType=VARCHAR} </if>
+
+      <if test="registerTime != null"> AND REGISTER_TIME = #{registerTime,jdbcType=TIMESTAMP} </if>
+
+      <if test="lastLoginTime != null"> AND LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP} </if>
+
+      <if test="isDelete != null"> AND IS_DELETE = #{isDelete,jdbcType=TINYINT} </if>
+
+      <if test="updatedBy != null"> AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR} </if>
+
+      <if test="updatedTime != null"> AND UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP} </if>
+
+      <if test="status != null"> AND STATUS = #{status,jdbcType=TINYINT} </if>
+
+      <if test="startTime != null"> AND START_TIME = #{startTime,jdbcType=TIMESTAMP} </if>
+
+      <if test="entTime != null"> AND ENT_TIME = #{entTime,jdbcType=TIMESTAMP} </if>
+
+      <if test="aCompanyId != null"> AND A_COMPANY_ID = #{aCompanyId,jdbcType=BIGINT} </if>
+
+      <if test="oInfoId != null"> AND O_INFO_ID = #{oInfoId,jdbcType=VARCHAR} </if>
+
+      <if test="oInfoName != null"> AND O_INFO_NAME = #{oInfoName,jdbcType=BIGINT} </if>
+
+      <if test="acctType != null"> AND ACCT_TYPE = #{acctType,jdbcType=BIGINT} </if>
+  </select>
+  <!--查询用户信息-->
+  <select id="findPage" resultMap="BaseResultMap">
+    SELECT
+    *,(select o.ORG_NAME from org_info o where o.id=acct.O_INFO_ID) as orgTitle
+    FROM
+    acct_info acct
+    where 1=1 and acct.is_delete = 0
+    <if test="entId != null"> AND ENT_ID = #{entId,jdbcType=BIGINT} </if>
+
+    <if test="loginSource != null"> LOGIN_SOURCE = #{loginSource,jdbcType=VARCHAR}, </if>
+
+    <if test="acctTitle != null"> AND ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%') </if>
+
+    <if test="acctPassword != null"> AND ACCT_PASSWORD = #{acctPassword,jdbcType=VARCHAR} </if>
+
+    <if test="acctCode != null"> AND ACCT_CODE = #{acctCode,jdbcType=VARCHAR} </if>
+
+    <if test="name != null"> AND NAME = #{name,jdbcType=VARCHAR} </if>
+
+    <if test="dept != null"> AND DEPT = #{dept,jdbcType=VARCHAR} </if>
+
+    <if test="mobilePhone != null"> AND MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR} </if>
+
+    <if test="email != null"> AND EMAIL = #{email,jdbcType=VARCHAR} </if>
+
+    <if test="registerTime != null"> AND REGISTER_TIME = #{registerTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="lastLoginTime != null"> AND LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="isDelete != null"> AND IS_DELETE = #{isDelete,jdbcType=TINYINT} </if>
+
+    <if test="updatedBy != null"> AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR} </if>
+
+    <if test="updatedTime != null"> AND UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="status != null"> AND STATUS = #{status,jdbcType=TINYINT} </if>
+
+    <if test="startTime != null"> AND START_TIME = #{startTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="entTime != null"> AND ENT_TIME = #{entTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="aCompanyId != null"> AND A_COMPANY_ID = #{aCompanyId,jdbcType=BIGINT} </if>
+
+    <if test="oInfoId != null"> AND O_INFO_ID like CONCAT(#{oInfoId,jdbcType=VARCHAR},'%') </if>
+
+    <if test="oInfoName != null"> AND O_INFO_NAME = #{oInfoName,jdbcType=BIGINT} </if>
+
+    <if test="acctType != null"> AND ACCT_TYPE = #{acctType,jdbcType=BIGINT} </if>
+  </select>
+
+
+<!--用户查询角色-->
+  <select id="findAcctRoleInfo" resultMap="BaseResultMap">
+    SELECT
+    acct.ACCT_ID, acct.ENT_ID, acct.LOGIN_SOURCE, acct.ACCT_TITLE, acct.ACCT_PASSWORD, acct.ACCT_CODE, acct.NAME, acct.DEPT,
+    acct.MOBILE_PHONE, acct.EMAIL, acct.REGISTER_TIME, acct.LAST_LOGIN_TIME, acct.IS_DELETE, acct.UPDATED_BY, acct.UPDATED_TIME,
+    acct.STATUS, acct.START_TIME, acct.ENT_TIME, acct.A_COMPANY_ID,acct.O_INFO_ID,acct.O_INFO_NAME,acct.ACCT_TYPE,
+    role.ROLE_ID,
+    role.ROLE_CODE,
+    role.ROLE_TITLE,
+    role.ROLE_STATE,role.ROLE_DESC,
+    role.ROLE_TYPE,role.ROLE_TYPE_TITLE,o.ORG_NAME AS orgTitle,
+    s.sys_title AS sysTitle,
+    s.sys_id AS sysId
+    FROM
+    acct_info acct
+    LEFT JOIN acct_role_real arr ON acct.`ACCT_ID` = arr.`ACCT_ID`
+    LEFT JOIN org_info o on o.id=acct.O_INFO_ID
+    LEFT JOIN role_info role ON arr.`ROLE_ID` = role.`ROLE_ID`  AND role.is_delete = 0
+    LEFT JOIN acct_user_sys aus ON aus.acct_id = acct.acct_id
+    LEFT JOIN sys_info s ON s.sys_id = aus.sys_id
+    where 1=1 and acct.is_delete = 0
+    <if test="entId != null"> AND ENT_ID = #{entId,jdbcType=BIGINT} </if>
+
+    <if test="loginSource != null"> LOGIN_SOURCE = #{loginSource,jdbcType=VARCHAR}, </if>
+
+    <if test="acctTitle != null"> AND ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%') </if>
+
+    <if test="acctPassword != null"> AND ACCT_PASSWORD = #{acctPassword,jdbcType=VARCHAR} </if>
+
+    <if test="acctCode != null"> AND ACCT_CODE = #{acctCode,jdbcType=VARCHAR} </if>
+
+    <if test="name != null"> AND NAME = #{name,jdbcType=VARCHAR} </if>
+
+    <if test="dept != null"> AND DEPT = #{dept,jdbcType=VARCHAR} </if>
+
+    <if test="mobilePhone != null"> AND MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR} </if>
+
+    <if test="email != null"> AND EMAIL = #{email,jdbcType=VARCHAR} </if>
+
+    <if test="registerTime != null"> AND REGISTER_TIME = #{registerTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="lastLoginTime != null"> AND LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="isDelete != null"> AND IS_DELETE = #{isDelete,jdbcType=TINYINT} </if>
+
+    <if test="updatedBy != null"> AND UPDATED_BY = #{updatedBy,jdbcType=VARCHAR} </if>
+
+    <if test="updatedTime != null"> AND UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="status != null"> AND STATUS = #{status,jdbcType=TINYINT} </if>
+
+    <if test="startTime != null"> AND START_TIME = #{startTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="entTime != null"> AND ENT_TIME = #{entTime,jdbcType=TIMESTAMP} </if>
+
+    <if test="aCompanyId != null"> AND A_COMPANY_ID = #{aCompanyId,jdbcType=BIGINT} </if>
+
+    <if test="oInfoId != null"> AND O_INFO_ID like CONCAT(#{oInfoId,jdbcType=VARCHAR},'%') </if>
+
+    <if test="oInfoName != null"> AND O_INFO_NAME = #{oInfoName,jdbcType=BIGINT} </if>
+
+    <if test="acctType != null"> AND ACCT_TYPE = #{acctType,jdbcType=BIGINT} </if>
+
+    <if test="acctId != null"> AND acct.ACCT_ID = #{acctId} </if>
+  </select>
+
+
+  <select id="getAcctOrgid" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT
+			COUNT(O_INFO_ID)
+		FROM
+			acct_info
+		WHERE
+			1 = 1  and is_delete = 0
+		AND O_INFO_ID IN
+		<foreach item="list" collection="cascadeDeletionOrgInfo" index ="index" open="(" separator="," close=")">
+			#{list}
+		</foreach>			
+	</select>
+
+	
+	<select id="getAcctInfo" parameterType="java.lang.Long" resultType="java.lang.String">
+		SELECT
+			O_INFO_ID
+		FROM
+			`acct_info`
+		WHERE
+			ACCT_ID = #{acctId,jdbcType=BIGINT}
+	</select>
+
+
+  <select id="LoginAcct" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" resultType="com.ebase.report.model.jurisdiction.AcctInfo">
+    SELECT
+    *
+    FROM
+    `acct_info`
+    WHERE
+    ACCT_TITLE = #{acctTitle} and ACCT_PASSWORD = #{acctPassword}  and is_delete = 0s
+  </select>
+
+  <select id="selectRoleIdAcctInfo" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" resultType="com.ebase.report.model.jurisdiction.AcctInfo">
+    select * from acct_info a
+  LEFT JOIN acct_role_real arr on arr.ACCT_ID=a.ACCT_ID
+  LEFT JOIN role_info r on r.ROLE_ID=arr.ROLE_ID
+  where r.ROLE_ID=#{roleId} and arr.ROLE_ID is not null
+   and a.is_delete = 0
+  </select>
+
+
+  <select id="selectOrgIdAcctInfo" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" resultType="com.ebase.report.model.jurisdiction.AcctInfo">
+
+select a.acct_id,r.ROLE_TITLE,a.ACCT_TITLE from acct_info a
+LEFT JOIN acct_role_real arr on arr.ACCT_ID=a.ACCT_ID
+LEFT JOIN role_info r on r.ROLE_ID=arr.ROLE_ID
+where  arr.ROLE_ID is not null  and
+a.O_INFO_ID=#{orgId}
+and a.IS_DELETE = 0
+and r.ROLE_ID in (select r.ROLE_ID from role_info r
+LEFT JOIN acct_role_purchase arp on arp.role_id=r.ROLE_ID
+where r.IS_DELETE = 0 and r.`STATUS`=1  and
+r.ORG_ID=#{orgId} and arp.PURCHASE_TYPE=#{purchaseType}
+and arp.role_id is not null )
+      <if test="acctTitle != null"> AND a.ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%') </if>
+  </select>
+
+  <select id="selectByLogin" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select *,acct_title as name,O_INFO_ID as orgId
+    from acct_info
+    where ACCT_TITLE = #{acctId,jdbcType=VARCHAR} and is_delete=0
+    and O_INFO_ID is not null
+  </select>
+
+  <select id="selectShareReport" resultMap="BaseResultMap" resultType="com.ebase.report.model.jurisdiction.AcctInfo">
+    select * from acct_info
+    where 1 = 1
+    and IS_DELETE = 0
+    and STATUS = 1
+    <if test="acctTitle != null and acctTitle != ''">
+      and ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%')
+    </if>
+  </select>
+
+  <select id="selectShareReportCount" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" resultType="java.lang.Integer">
+    select COUNT(*) from acct_info
+    where 1 = 1
+    and IS_DELETE = 0
+    and STATUS = 1
+    <if test="acctTitle != null and acctTitle != ''">
+      and ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%')
+    </if>
+  </select>
+
+
+</mapper>

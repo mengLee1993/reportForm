@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebase.report.dao.RptPersonalTableFieldMapper">
+    <resultMap id="BaseResultMap" type="com.ebase.report.model.RptPersonalTableField">
+        <id column="PERSIONAL_TABLE_FIELD_ID" jdbcType="BIGINT" property="persionalTableFieldId" />
+        <result column="TABLE_ID" jdbcType="BIGINT" property="tableId" />
+        <result column="FIELD_ID" jdbcType="BIGINT" property="fieldId" />
+        <result column="FIELD_NAME" jdbcType="VARCHAR" property="fieldName" />
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATED_DT" jdbcType="TIMESTAMP" property="createdDt" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATED_DT" jdbcType="TIMESTAMP" property="updatedDt" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        PERSIONAL_TABLE_FIELD_ID, TABLE_ID, FIELD_ID, FIELD_NAME, USER_ID, CREATED_BY, CREATED_DT, 
+        UPDATED_BY, UPDATED_DT
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from rpt_personal_table_field
+        where PERSIONAL_TABLE_FIELD_ID = #{persionalTableFieldId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from rpt_personal_table_field
+        where PERSIONAL_TABLE_FIELD_ID = #{persionalTableFieldId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.ebase.report.model.RptPersonalTableField">
+        insert into rpt_personal_table_field (PERSIONAL_TABLE_FIELD_ID, TABLE_ID, FIELD_ID, 
+            FIELD_NAME, USER_ID, CREATED_BY, 
+            CREATED_DT, UPDATED_BY, UPDATED_DT
+            )
+        values (#{persionalTableFieldId,jdbcType=BIGINT}, #{tableId,jdbcType=BIGINT}, #{fieldId,jdbcType=BIGINT}, 
+            #{fieldName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+            #{createdDt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updatedDt,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ebase.report.model.RptPersonalTableField">
+        insert into rpt_personal_table_field
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="persionalTableFieldId != null">
+                PERSIONAL_TABLE_FIELD_ID,
+            </if>
+            <if test="tableId != null">
+                TABLE_ID,
+            </if>
+            <if test="fieldId != null">
+                FIELD_ID,
+            </if>
+            <if test="fieldName != null">
+                FIELD_NAME,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="persionalTableFieldId != null">
+                #{persionalTableFieldId,jdbcType=BIGINT},
+            </if>
+            <if test="tableId != null">
+                #{tableId,jdbcType=BIGINT},
+            </if>
+            <if test="fieldId != null">
+                #{fieldId,jdbcType=BIGINT},
+            </if>
+            <if test="fieldName != null">
+                #{fieldName,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.RptPersonalTableField">
+        update rpt_personal_table_field
+        <set>
+            <if test="tableId != null">
+                TABLE_ID = #{tableId,jdbcType=BIGINT},
+            </if>
+            <if test="fieldId != null">
+                FIELD_ID = #{fieldId,jdbcType=BIGINT},
+            </if>
+            <if test="fieldName != null">
+                FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where PERSIONAL_TABLE_FIELD_ID = #{persionalTableFieldId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.RptPersonalTableField">
+        update rpt_personal_table_field
+        set TABLE_ID = #{tableId,jdbcType=BIGINT},
+            FIELD_ID = #{fieldId,jdbcType=BIGINT},
+            FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
+            USER_ID = #{userId,jdbcType=VARCHAR},
+            CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+            UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+        where PERSIONAL_TABLE_FIELD_ID = #{persionalTableFieldId,jdbcType=BIGINT}
+    </update>
+    <select id="select" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from rpt_personal_table_field
+        <include refid="Base_Where_Column_List" />
+    </select>
+    <sql id="Base_Where_Column_List">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="persionalTableFieldId != null">
+                and PERSIONAL_TABLE_FIELD_ID = #{persionalTableFieldId,jdbcType=BIGINT}
+            </if>
+            <if test="tableId != null">
+                and TABLE_ID = #{tableId,jdbcType=BIGINT}
+            </if>
+            <if test="fieldId != null">
+                and FIELD_ID = #{fieldId,jdbcType=BIGINT}
+            </if>
+            <if test="fieldName != null">
+                and FIELD_NAME = #{fieldName,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null">
+                and USER_ID = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="createdBy != null">
+                and CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createdDt != null">
+                and CREATED_DT = #{createdDt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatedBy != null">
+                and UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updatedDt != null">
+                and UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from rpt_personal_table_field
+    </select>
+</mapper>

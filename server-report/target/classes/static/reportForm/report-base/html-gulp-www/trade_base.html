@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>公共样式</title>
+	<link rel="stylesheet" href="../../../plugin/WdatePickerBlue/My97DatePicker/skin/WdatePicker.css">
+	<link rel="stylesheet" href="../../../plugin/page/css/table_blue.css">
+	<link rel="stylesheet" href="../../../plugin/select/chosen_blue.css">
+	<link rel="stylesheet" href="../../../plugin/popup/css/manhuaDialog.1.0_blue.css">
+	<link rel="stylesheet" href="../css/trade_base.css">
+    <script src="../../../base/js/jquery.js"></script>
+    <script src="../../../plugin/select/chosen.jquery.js"></script>
+	<script src="../../../base/js/public.js"></script>
+	<script src="../../../base/js/docassistant.js"></script>
+	<script src="http://static.ennew.dev/static/plugin/WdatePickerBlue/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="../../..//plugin/page/script/jquery.page.js"></script>
+	<script src="../../../plugin/popup/script/manhuaDialog.1.0.js"></script>
+	<script src="../../../base/js/ajaxupload.js"></script>
+	<script type="text/javascript" src="../../../reqConfig.js"></script>
+	<script>
+		var requestUrl = "";
+	</script>
+	<style>
+		h1{
+			font-size: 20px;
+		    line-height: 30px;
+		    background-color: lightpink;
+		    border: 1px dashed red;
+		    margin: 10px auto;
+		}
+		.lh40{
+			line-height:40px;
+		}
+		.font-title{
+			font-weight:bold;
+			font-size:14px;
+		}
+	</style>
+</head>
+<body>
+	<div class="trade_base pl20 pt20 pr20">
+		<i class="icon iconfont icon-roundcheckfill"></i>
+	    <h1 class="lh40 font-title">一. 主色</h1>
+	    <div class="clearfix pt10 pb10">
+	        <div class="circle bg_main mr30"></div>
+	        <div class="circle bg_m0 mr30"></div>
+	    </div>
+	    <h1 class="lh40 font-title">二. 辅助色</h1>
+	    <div class="clearfix pt10 pb10">
+	        <div class="circle as_93c mr30"></div>
+	        <div class="circle as_ee mr30"></div>
+	        <div class="circle as_ec4 mr30"></div>
+	        <div class="circle as_00a mr30"></div>
+	        <div class="circle as_5dd mr30"></div>
+	        <div class="circle as_1f2 mr30"></div>
+	        <div class="circle as_515 mr30"></div>
+	        <div class="circle as_83 mr30"></div>
+	        <div class="circle as_f0 mr30"></div>
+	    </div>
+	    <h1 class="lh40 font-title">三. 按钮</h1>
+	    <div class="clearfix pt10 pb10">
+	        <a href="#" class="btn_kind_1 mr20">查看详情</a>
+			<a href="#" class="btn_kind_2 mr20">确定</a>
+			<a href="#" class="btn_kind_3 mr20">筛选</a>
+			<a href="#" class="btn_kind_4 mr20">月业务状态</a>
+			<a href="#" class="btn_kind_5 mr20">年度业务状态</a>
+			<a href="#" class="btn_kind_6 mr20">查看</a>
+			<a href="#" class="btn_kind_del mr20">删除</a>
+			<a href="#" class="btn_kind_6 mr20">编辑</a>
+			<a href="#" class="btn_kind_6 mr20">更多</a>
+			<a href="#" class="btn_kind_add mr20">添加 +</a>
+			<a href="#" class="btn_kind_import mr20">导出 =></a>
+	    </div>
+	    <h1 class="lh40 font-title">四. 输入框</h1>
+	    <div class="clearfix pt10 pb10">
+	    	<div style="background:#0375D7;width:100%;height:50px;padding:10px;box-sizing: border-box;">
+	    		<div class="input_searchbox">
+	    			<input type="text" class="input_search" placeholder="全局搜索">
+	    			<i class="input_searchicon"></i>
+	    		</div>
+	    		<input type="text" class="input_search" placeholder="全局搜索">
+	    	</div>
+	    	<div class="mt10">
+	    		<div class="inputBaseBox">
+	    			<input type="text" class="inputBase" placeholder="搜索">
+	    			<i class="inputBaseBox__icon"></i>
+	    		</div>
+	    		<input type="text" class="inputBase" placeholder="搜索">
+	    	</div>
+	    	<div class="mt10 textin">
+	            <label>下拉框</label>
+	            <select name="" id="testSel" class="initSelSty selectbase" style="width:300px;">
+	                <option value="1">成功</option>
+	                <option value="1">失败</option>
+	            </select>
+	        </div>
+	    </div>
+	   	<h1 class="lh40 font-title">五. 选项卡</h1>
+	    <div class="tabs">
+	    	<p class="mr20 mt20">选项卡--工贸</p>
+	        <div>
+	            <ul class="tabMenu-zero" comtype="tabCtrl">
+	                <li class="tabTitLi">
+	                	<p class="tabMenu-zero_p">业务伙伴</p>
+	                </li>
+	                <li>
+	                	<p class="tabMenu-zero_p">机组维护</p>
+	                </li>
+	                <li>
+	                	<p class="tabMenu-zero_p">产地维护</p>
+	                </li>
+	                <li>
+	                	<p class="tabMenu-zero_p tabMenu-zero_p--last">仓库维护</p>
+	                </li>
+	            </ul>
+	        </div>
+	        <p class="mr20 mt20">选项卡一</p>
+	        <div>
+	            <ul class="tabMenu-one" comtype="tabCtrl">
+	                <li class="tabTitLi"><span>商品详情</span></li>
+	                <li><span>累计评价</span></li>
+	                <li><span>服务详情</span></li>
+	            </ul>
+	        </div>
+	        <p class="mr20 mt20">选项卡二</p>
+	        <div>
+	            <ul class="tabMenu-two" comtype="tabCtrl">
+	                <li class="tabTitLi"><span>最近交易记录</span></li>
+	                <li><span>充值记录</span></li>
+	                <li><span>退款记录</span></li>
+	            </ul>
+	        </div>
+	        <div>
+	            <ul class="tabMenu-two-sm" comtype="tabCtrl">
+	                <li class="tabTitLi"><span>最近交易记录</span></li>
+	                <li><span>充值记录</span></li>
+	                <li><span>退款记录</span></li>
+	            </ul>
+	        </div>
+	        <p class="mr20 mt20">选项卡三</p>
+	        <div>
+	            <ul class="tabMenu-three" comtype="tabCtrl">
+	                <li class="tabTitLi"><span>全部商品</span></li>
+	                <li><span>待审核</span></li>
+	                <li><span>在售商品</span></li>
+	            </ul>
+	        </div>
+	        <p class="mr20 mt20">选项卡四</p>
+	        <div>
+	            <ul class="tabMenu-four" comtype="tabCtrl" contentCls="tabCon">
+	                <li class="tabTitLi"><span>全部商品</span></li>
+	                <li><span>仓库中</span></li>
+	                <li><span>违规的商品</span></li>
+	                <li><span>等待审核</span></li>
+	            </ul>
+	            <div>
+	                <div class="tabCon">1</div>
+	                <div class="tabCon" style="display: none;">2</div>
+	                <div class="tabCon" style="display: none;">3</div>
+	                <div class="tabCon" style="display: none;">4</div>
+	            </div>
+	        </div>
+	        <div>
+	            <p class="mr20 mt20">选项卡五</p>
+	            <ul class="tabMenu-five" comtype="tabCtrl">
+	                <li class="tabTitLi"><span>全部商品<i class="x-icon"></i></span></li>
+	                <li><span>待审核<i class="x-icon"></i></span></li>
+	                <li><span>在售商品<i class="x-icon"></i></span></li>
+	            </ul>
+	        </div>
+	    </div>
+	    <h1 class="lh40 font-title">六. 表格</h1>
+	    <h1 class="lh40 font-title">标准表格</h1>
+	    <div class="clearfix">
+	    	<table cellspacing="0" cellpadding="0" id="" templateId="templateRow" comType="standardTableCtrl" reqPath="" reqParam='{}' page="addPage" noData="noDataCon" class="table-list">
+	    		<thead>
+	    			<tr class="table-list-header">
+	    				<th style="width:10%;" class="table-list-header__th">序号</th>
+	    				<th style="width:25%;" class="table-list-header__th">姓名</th>
+	    				<th style="width:25%;" class="table-list-header__th">年龄</th>
+	    				<th style="width:20%;" class="table-list-header__th">工龄</th>
+	    				<th style="width:20%;" class="table-list-header__th">性别</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<tr id="templateRow" style="display:none;" class="table-list-tr">
+	    				<td class="table-list-tr__item">1</td>
+	    				<td class="table-list-tr__item">二哈</td>
+	    				<td class="table-list-tr__item">19</td>
+	    				<td class="table-list-tr__item">2</td>
+	    				<td class="table-list-tr__item">随便</td>
+	    			</tr>
+	    			<tr id="" class="table-list-tr">
+	    				<td class="table-list-tr__item">1</td>
+	    				<td class="table-list-tr__item">二哈</td>
+	    				<td class="table-list-tr__item">19</td>
+	    				<td class="table-list-tr__item">2</td>
+	    				<td class="table-list-tr__item">随便</td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	    	<div class="noDataCon">
+	            <i></i>
+	            <p>暂无数据......</p>
+	        </div>
+	    	<div style="float: right;" class="tcdPageCode fr addPage" style="text-align: center"></div>
+	    </div>
+		<h1 class="lh40 font-title">七.上传插件</h1>
+        <div comType="uploadCtrl" uploadType="" uploadBgSrc="../images/comUploadBg1.png" reqPath="" uploadSize='{"w":"100","h":"100"}' filetype="custom" fileExt="rar|zip|doc|docx|pdf" fileSize="2097152">
+        </div>
+        <!-- <div comtype="uploadCtrl" uploadtype="" uploadbgsrc="../images/comUploadBg1.png" reqpath="" uploadsize="{&quot;w&quot;:&quot;100&quot;,&quot;h&quot;:&quot;100&quot;}" filetype="custom" fileext="rar|zip|doc|docx|pdf" filesize="2097152" class="comUpload" style="width: 100px !important; height: 100px !important;"><a href="javascript:;" class="imgDelete"></a><img src="../images/comUploadBg1.png" alt="" class="comShowImg"><p id="uploadBtn" class="uploadBtn   " style="width: 100px !important; height: 100px !important;"></p></div> -->
+	</div>
+</body>
+<script>
+	// 分页代码
+    $(".tcdPageCode").createPage({
+        pageCount: 6,
+        current: 1,
+        backFn: function (p) {
+        		onRefresh();
+    	}
+	});
+	//下拉框
+	$($("#testSel")[0]).chosen({
+        //disable_search_threshold: 5,
+        no_results_text: "没有匹配结果!",
+        enable_split_word_search: false,
+        placeholder_text_single: '请选择'
+    });
+</script>
+</html>
