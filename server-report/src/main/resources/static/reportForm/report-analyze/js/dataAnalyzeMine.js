@@ -115,7 +115,7 @@ function clsMethodLee$parse(){
     $("#userShare")[0].cacheArr = [];
     $("#roleShare")[0].cacheArr = [];
     this.operate();
-    if(this.personalAnalysisId){
+    /*if(this.personalAnalysisId){
         this.resourceTreeOperate.click().remove();
         this.boardOperate.click().remove();
         this.setUpChart.remove();
@@ -123,7 +123,7 @@ function clsMethodLee$parse(){
         this.saveOperate.remove();
         this.shareOperate.remove();
         this.rowColTranslate.remove();
-    }
+    }*/
 }
 
 function clsMethodLee$operate(){
@@ -1005,7 +1005,7 @@ function rightJsonJoin(){
     }*/
     for(var i=0;i<$(".selDimensionContent *[id=cloneRow]").length;i++)//待选区
     {
-        $(".selDimensionContent *[id=cloneRow]").eq(i).find(".content")[0].jsonData.isChecked = 1;
+        $(".selDimensionContent *[id=cloneRow]")[i].jsonData.isChecked = 1;
         document.body.jsLee.jsonAll.reportDynamicParam.tbs.push($(".selDimensionContent *[id=cloneRow]")[i].jsonData);
 
     }
