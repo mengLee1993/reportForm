@@ -37,6 +37,8 @@ public class RptDataTable implements Serializable {
      */
     private String tableCode;
 
+    private String comment;                     //表功能的中文描述
+
     /**
      * Database Column Remarks:
      *   备注
@@ -102,8 +104,16 @@ public class RptDataTable implements Serializable {
     public void setRemoveStatus(int removeStatus) {
         this.removeStatus= RemoveStatusEnum.getRemoveStatusEnumFromCode(removeStatus);
     }
-    //--------------------------------------------------------------------------------
 
+
+    //--------------------------------------------------------------------------------
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public String getDatasourceChineseName() {
         return datasourceChineseName;
