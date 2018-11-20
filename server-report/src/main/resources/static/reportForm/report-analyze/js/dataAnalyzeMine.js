@@ -122,6 +122,7 @@ function clsMethodLee$parse(){
         this.refreshOperate.remove();
         this.saveOperate.remove();
         this.shareOperate.remove();
+        this.rowColTranslate.remove();
     }
 }
 
