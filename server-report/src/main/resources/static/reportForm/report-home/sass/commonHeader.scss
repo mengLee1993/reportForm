@@ -286,7 +286,7 @@ body,html{
 	&__link{
 		display:block;
 		width:100%;
-		line-height:48px;
+		line-height:38px;
 		color:$fc_83;
 		position:relative;
 		cursor:pointer;
@@ -296,7 +296,7 @@ body,html{
 	}
 	&__text{
 		width:100%;
-		color:$fc_83;
+		//color:$fc_83;
 	}
 	&__icon{
 		position:absolute;
