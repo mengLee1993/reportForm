@@ -1,21 +1,20 @@
 package com.ebase.report.core.db.handler;
 
 import com.ebase.report.common.*;
+import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataBaseUtil;
 import com.ebase.report.core.db.DataDetailSQL;
 import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.model.RptDataField;
+import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -455,5 +454,70 @@ public class ReportAccessorMySql extends AbstractAccessor {
 
         return selectSql;
 
+    }
+
+    @Override
+    public List<RptDataTable> queryAllTables(Connection conn, DataBaseType dataBaseType) throws DbException {
+        List<RptDataTable> tables = new ArrayList<RptDataTable>();
+        ResultSet rs = null;
+
+        try {
+
+            DatabaseMetaData dbMetaData = conn.getMetaData();
+
+            // 数据库
+            String catalog = null;
+            // 数据库的用户
+            String schemaPattern = null;// meta.getUserName();
+            // 表名
+            String tableNamePattern = null;
+
+            //可为:"TABLE",   "VIEW",   "SYSTEM   TABLE",
+            //"GLOBAL   TEMPORARY",   "LOCAL   TEMPORARY",   "ALIAS",   "SYNONYM"
+            String[] types = {"TABLE"};/*只要表*/
+
+            if (DataBaseType.DB_TYPE_ORACLE.equals(dataBaseType)) {
+                schemaPattern = dbMetaData.getUserName().toUpperCase();
+            } else if (DataBaseType.DB_TYPE_MYSQL.equals(dataBaseType)) {
+                // MySQL 的 table 这一级别查询不到备注信息
+
+//            }  else if (DATABASETYPE.SQLSERVER.equals(dbtype) || DATABASETYPE.SQLSERVER2005.equals(dbtype)) {
+//                // SqlServer
+//                tableNamePattern = "%";
+//            }  else if (DATABASETYPE.DB2.equals(dbtype)) {
+//                // DB2查询
+//                schemaPattern = "jence_user";
+//                tableNamePattern = "%";
+//            } else if (DATABASETYPE.INFORMIX.equals(dbtype)) {
+//                // SqlServer
+//                tableNamePattern = "%";
+            } else if (DataBaseType.DB_TYPE_HIVE.equals(dataBaseType)) {
+                // hive
+                tableNamePattern = "%";
+            } else {
+                throw new RuntimeException("不认识的数据库类型!");
+            }
+
+            rs = dbMetaData.getTables(null, schemaPattern, tableNamePattern, types);
+
+            String sql = "show table status";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                //只要表名这一列
+                // System.out.println(rs.getObject("TABLE_NAME"));
+                System.out.println(rs.getObject("Name")+"-------->"+rs.getObject("Comment"));
+                RptDataTable rptDataTable = new RptDataTable();
+                rptDataTable.setTableCode(rs.getObject("Name").toString());
+                rptDataTable.setComment(rs.getObject("Comment").toString());
+                tables.add(rptDataTable);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e);
+        } finally {
+            DataBaseUtil.closeResultSet(rs);
+        }
+
+        return tables;
     }
 }
