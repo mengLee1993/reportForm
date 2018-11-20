@@ -10,6 +10,7 @@ public class RptDataTableVO  implements Serializable {
 
     private  String datasourceChineseName; //数据库中文名称
 
+    private String comment;                //表功能的中文描述
     /**
      * Database Column Remarks:
      *   数据表ID
@@ -119,8 +120,18 @@ public class RptDataTableVO  implements Serializable {
     public void setRemoveStatus(int removeStatus) {
         this.removeStatus= RemoveStatusEnum.getRemoveStatusEnumFromCode(removeStatus);
     }
+
+
     //--------------------------------------------------------------------------------
 
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public String getDatasourceChineseName() {
         return datasourceChineseName;

@@ -3,11 +3,11 @@ package com.ebase.report.service.impl;
 import com.ebase.report.common.SubjectTypeEnum;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.dao.*;
-import com.ebase.report.model.jurisdiction.AcctInfo;
 import com.ebase.report.model.RptDataAuth;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.RptDatasource;
 import com.ebase.report.model.RptPersonalSubject;
+import com.ebase.report.model.jurisdiction.AcctInfo;
 import com.ebase.report.service.RptDataAuthService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -82,7 +82,14 @@ public class RptDataAuthServiceImpl implements RptDataAuthService {
             x.setRptDataTables(dataTables);
         });
 
-
+        //赋值给RptDataTable中的datasourceChineseName字段,仅仅是为了便于前端方便渲染
+        for (RptDatasource rptDs:list) {
+            List<RptDataTable> rptTbs = rptDs.getRptDataTables();
+            for(RptDataTable  rptTb : rptTbs){
+                rptTb.setDatasourceChineseName(rptTb.getTableName());
+                rptTb.setDatasourceName(rptTb.getTableCode());
+            }
+        }
         return list;
     }
 
