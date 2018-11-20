@@ -1033,7 +1033,7 @@ body{
 .as_f0{
   background-color: $as_f0;
 }
-//边框  
+//边框
 .bd_main{
   border: 1px solid $bd_main;
 }
@@ -1131,7 +1131,7 @@ body{
   height: 132px;
   margin-top: 20px;
   margin-bottom: 10px;
-  //background: url(../images/public-icons.png) -137px -1178px no-repeat;
+  background: url(../images/public-icons.png) -137px -1178px no-repeat;
 }
 
 .noDataCon p{
@@ -1141,28 +1141,28 @@ body{
 
 // /*三、input框*/
 .input_searchbox{
-    display:inline-block;
-    height:20px;
-    position:relative;
+  display:inline-block;
+  height:20px;
+  position:relative;
 }
 .input_searchicon{
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    position: absolute;
-    right: 10px;
-    top: 5px;
-    background: url(../images/icon.png) no-repeat -465px -95px;
-    cursor: pointer;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  background: url(../images/icon.png) no-repeat -465px -95px;
+  cursor: pointer;
 }
 .input_search{
-    padding:0 10px;
-    min-width:134px;
-    height:20px;
-    border:1px solid $fc_ee;
-    border-radius:120px;
-    background-color: inherit;
-    color:$fc_ee;
+  padding:0 10px;
+  min-width:134px;
+  height:20px;
+  border:1px solid $fc_ee;
+  border-radius:120px;
+  background-color: inherit;
+  color:$fc_ee;
 }
 .input_search::-webkit-input-placeholder{
   color: $fc_ee;
@@ -1226,186 +1226,186 @@ body{
 }
 // /*四、btn按钮*/
 .btn_kind_1{
-    padding:0 15px;
-    height:32px;
-    line-height:32px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_515;
-    font-size:12px;
-    border:1px solid $bd_ee;
-    border-radius:2px;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 15px;
+  height:32px;
+  line-height:32px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_515;
+  font-size:12px;
+  border:1px solid $bd_ee;
+  border-radius:2px;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_1:hover{
-    border-color:$bg_93c;
-    color:$fc_93c;
+  border-color:$bg_93c;
+  color:$fc_93c;
 }
 .btn_kind_1:active{
-    background-color:$bg_93c;
-    color:$fc_ff;
+  background-color:$bg_93c;
+  color:$fc_ff;
 }
 .btn_kind_2{
-    padding:0 15px;
-    height:26px;
-    line-height:26px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_515;
-    font-size:12px;
-    border:1px solid $bd_515;
-    border-radius:120px;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 15px;
+  height:26px;
+  line-height:26px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_515;
+  font-size:12px;
+  border:1px solid $bd_515;
+  border-radius:120px;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_2:hover{
-    border-color:$bd_037;
-    color:$fc_037;
+  border-color:$bd_037;
+  color:$fc_037;
 }
 .btn_kind_2:active{
-    background-color:$bg_main;
-    color:$fc_ff;
+  background-color:$bg_main;
+  color:$fc_ff;
 }
 .btn_kind_3{
-    padding:0 20px;
-    height:26px;
-    line-height:26px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_515;
-    font-size:12px;
-    border:1px solid $bd_515;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 20px;
+  height:26px;
+  line-height:26px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_515;
+  font-size:12px;
+  border:1px solid $bd_515;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_3:hover{
-    border-color:$bd_037;
-    color:$fc_037;
+  border-color:$bd_037;
+  color:$fc_037;
 }
 .btn_kind_3:active{
-    background-color:$bg_main;
-    color:$fc_ff;
+  background-color:$bg_main;
+  color:$fc_ff;
 }
 .btn_kind_4{
-    padding:0 20px;
-    height:32px;
-    line-height:32px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_037;
-    font-size:12px;
-    border:1px solid $bd_main;
-    border-radius:3px;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 20px;
+  height:32px;
+  line-height:32px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_037;
+  font-size:12px;
+  border:1px solid $bd_main;
+  border-radius:3px;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_4:hover{
-    background-color:$bg_f7;
+  background-color:$bg_f7;
 }
 .btn_kind_4:active{
-    background-color:$bg_f7;
-    border-color:$bd_018;
+  background-color:$bg_f7;
+  border-color:$bd_018;
 }
 .btn_kind_5{
-    padding:0 20px;
-    height:32px;
-    line-height:32px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_5dd;
-    font-size:12px;
-    border:1px solid $bd_5dd;
-    border-radius:3px;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 20px;
+  height:32px;
+  line-height:32px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_5dd;
+  font-size:12px;
+  border:1px solid $bd_5dd;
+  border-radius:3px;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_5:hover{
-    background-color:$bg_f7;
+  background-color:$bg_f7;
 }
 .btn_kind_5:active{
-    background-color:$bg_f7;
-    border-color:$bd_23e; 
+  background-color:$bg_f7;
+  border-color:$bd_23e;
 }
 .btn_kind_6{
-    padding:0 15px;
-    height:26px;
-    line-height:26px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_037;
-    font-size:12px;
-    border:1px solid $bd_037;
-    border-radius:120px;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 15px;
+  height:26px;
+  line-height:26px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_037;
+  font-size:12px;
+  border:1px solid $bd_037;
+  border-radius:120px;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_6:hover{
-    background-color:$bg_f7;
+  background-color:$bg_f7;
 }
 .btn_kind_6:active{
-    background-color:$bg_f7;
-    border-color:$bd_018; 
+  background-color:$bg_f7;
+  border-color:$bd_018;
 }
 .btn_kind_del{
-    padding:0 15px;
-    height:32px;
-    line-height:32px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_037;
-    font-size:12px;
-    border:1px solid $bd_037;
-    border-radius:120px;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 15px;
+  height:32px;
+  line-height:32px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_037;
+  font-size:12px;
+  border:1px solid $bd_037;
+  border-radius:120px;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_del:hover{
-    background-color:$bg_f7;
+  background-color:$bg_f7;
 }
 .btn_kind_del:active{
-    background-color:$bg_f7;
-    border-color:$bd_ff3; 
+  background-color:$bg_f7;
+  border-color:$bd_ff3;
 }
 .btn_kind_add{
-    padding:0 20px;
-    height:32px;
-    line-height:32px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_ec4;
-    font-size:12px;
-    border:1px solid $bd_ec4;
-    border-radius:120px;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 20px;
+  height:32px;
+  line-height:32px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_ec4;
+  font-size:12px;
+  border:1px solid $bd_ec4;
+  border-radius:120px;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_add:hover{
-    background-color:$bg_f7;
+  background-color:$bg_f7;
 }
 .btn_kind_add:active{
-    background-color:$bg_f7;
-    border-color:$bd_018; 
+  background-color:$bg_f7;
+  border-color:$bd_018;
 }
 .btn_kind_import{
-    padding:0 20px;
-    height:32px;
-    line-height:32px;
-    text-align:center;
-    background-color:$bg_ff;
-    color:$fc_00a;
-    font-size:12px;
-    border:1px solid $bd_00a;
-    border-radius:120px;
-    display:inline-block;
-    cursor:pointer;
+  padding:0 20px;
+  height:32px;
+  line-height:32px;
+  text-align:center;
+  background-color:$bg_ff;
+  color:$fc_00a;
+  font-size:12px;
+  border:1px solid $bd_00a;
+  border-radius:120px;
+  display:inline-block;
+  cursor:pointer;
 }
 .btn_kind_import:hover{
-    background-color:$bg_f7;
+  background-color:$bg_f7;
 }
 .btn_kind_import:active{
-    background-color:$bg_f7;
-    border-color:$bd_15b; 
+  background-color:$bg_f7;
+  border-color:$bd_15b;
 }
 /*.btnBaseCommonImg{
   text-align: center;
