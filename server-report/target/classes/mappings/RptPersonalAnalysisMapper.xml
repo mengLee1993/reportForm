@@ -370,7 +370,7 @@
                 where ANALYSIS_SOURCE_ID = #{key,jdbcType=BIGINT}
     </delete>
     <select id="listAnalysisShareBodyCount" resultType="java.lang.Integer" parameterType="com.ebase.report.model.AnalysisShareBody">
-        SELECT COUNT(id) FROM rpt_personal_analysis WHERE ANALYSIS_SOURCE_ID = #{id}
+        SELECT COUNT(ANALYSIS_SOURCE_ID) FROM rpt_personal_analysis WHERE ANALYSIS_SOURCE_ID = #{id}
     </select>
     <select id="listAnalysisShareBody" resultMap="BaseResultMap" parameterType="com.ebase.report.model.AnalysisShareBody">
         select * from RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{id}

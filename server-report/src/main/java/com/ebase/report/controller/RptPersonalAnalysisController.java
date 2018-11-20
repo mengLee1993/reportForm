@@ -84,7 +84,7 @@ public class RptPersonalAnalysisController {
 		JsonResponse<Integer> jsonResponse = new JsonResponse<>();
 		logger.info("delete 参数 = {}", JsonUtil.toJson(jsonRequest));
 		RptPersonalAnalysisVO vo = jsonRequest.getReqBody();
-		Integer result = rptPersonalAnalysisService.deleteByPrimaryKey(vo.getPersonalAnalysisId());
+		Integer result = rptPersonalAnalysisService.deleteByPrimaryKey(vo);
 		if(result > 0)
 			jsonResponse.setRspBody(result);
 		else

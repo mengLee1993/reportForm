@@ -85,6 +85,9 @@ public class RptPersonalAnalysisVO implements Serializable {
      */
     private String sharingPersonName;
 
+
+    private Byte deleteType;  // 0 删除  1  取消分享
+
     /**
      */
     private static final long serialVersionUID = 1L;
@@ -242,5 +245,13 @@ public class RptPersonalAnalysisVO implements Serializable {
 
     public void setSharingPersonName(String sharingPersonName) {
         this.sharingPersonName = sharingPersonName;
+    }
+
+    public Byte getDeleteType() {
+        return deleteType;
+    }
+
+    public void setDeleteType(Byte deleteType) {
+        this.deleteType = deleteType;
     }
 }

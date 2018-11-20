@@ -74,7 +74,7 @@ public interface RptPersonalAnalysisService {
      * @param key
      * @return Integer
      */
-    public Integer deleteByPrimaryKey(Long key);
+    public Integer deleteByPrimaryKey(RptPersonalAnalysisVO vo);
 
 
     List<RptPersonalAnalysisVO>  getByUserId(String userId);
