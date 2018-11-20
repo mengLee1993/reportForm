@@ -115,7 +115,7 @@ function clsMethodLee$parse(){
     $("#userShare")[0].cacheArr = [];
     $("#roleShare")[0].cacheArr = [];
     this.operate();
-    /*if(this.personalAnalysisId){
+    if(this.personalAnalysisId){
         this.resourceTreeOperate.click().remove();
         this.boardOperate.click().remove();
         this.setUpChart.remove();
@@ -123,7 +123,7 @@ function clsMethodLee$parse(){
         this.saveOperate.remove();
         this.shareOperate.remove();
         this.rowColTranslate.remove();
-    }*/
+    }
 }
 
 function clsMethodLee$operate(){
