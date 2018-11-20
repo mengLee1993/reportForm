@@ -15,10 +15,12 @@ public class DataBaseType {
     public static String TYPE_NAME_ORACLE = "oracle";
     public static String TYPE_NAME_MYSQL = "mysql";
     public static String TYPE_NAME_HIVE = "hive";
+    public static String TYPE_NAME_DB2 = "db2";
 
     public static DataBaseType DB_TYPE_ORACLE = new DataBaseType(TYPE_NAME_ORACLE, "Oracle", "oracle.jdbc.driver.OracleDriver", "select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') from dual");
     public static DataBaseType DB_TYPE_MYSQL = new DataBaseType(TYPE_NAME_MYSQL, "MySql", "com.mysql.jdbc.Driver", "select now()");
-    public static DataBaseType DB_TYPE_HIVE = new DataBaseType(TYPE_NAME_HIVE, "Hive", "org.apache.hive.jdbc.HiveDriver", "select now()");
+//    public static DataBaseType DB_TYPE_HIVE = new DataBaseType(TYPE_NAME_HIVE, "Hive", "org.apache.hive.jdbc.HiveDriver", "select now()");
+    public static DataBaseType DB_TYPE_DB2 = new DataBaseType(TYPE_NAME_DB2, "Db2", "com.ibm.db2.jcc.DB2Driver", "SELECT current timestamp FROM sysibm.sysdummy1");
     private String name;
     private String suffix;
     private String driverClassName;
