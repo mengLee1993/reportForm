@@ -182,20 +182,22 @@ $bd_dee: #dee3e6;//主体边框线
 .table-list{
   &__thead{
     background: $bg_f8;
-    border: 1px solid $as_ee;
+    color:#515A6D;
+    border: 1px solid #E2DEDE;
+    font-weight: 900;
   }
   &__Tr{
     height: 40px;
-    cursor: pointer;
   }
   &__str{
     height: 40px;
     text-align: center;
   }
   &__td{
-    border: 1px solid $as_ee;
-    word-break: break-all;
+    border: 1px solid #E2DEDE;
+    color:#515A6D;
     padding: 5px;
+    word-break: break-all;
   }
 }
 .formcontainer-nav-ul{

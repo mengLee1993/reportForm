@@ -112,7 +112,9 @@ $bd_dee: #dee3e6;//主体边框线
 .table-list{
   &__thead{
     background: $bg_f8;
-    border: 1px solid $as_ee;
+    color:#515A6D;
+    border: 1px solid #E2DEDE;
+    font-weight: 900;
   }
   &__Tr{
     height: 35px;
@@ -122,6 +124,7 @@ $bd_dee: #dee3e6;//主体边框线
     text-align: center;
   }
   &__td{
-    border: 1px solid $as_ee;
+    border: 1px solid #E2DEDE;
+    color:#515A6D;
   }
 }

@@ -57,7 +57,9 @@ body,html{
 .table-list{
   &__thead{
     background: $bg_f8;
-    border: 1px solid $as_ee;
+    color:#515A6D;
+    border: 1px solid #E2DEDE;
+    font-weight: 900;
   }
   &__Tr{
     height: 35px;
@@ -67,8 +69,12 @@ body,html{
     text-align: center;
   }
   &__td{
-    border: 1px solid $as_ee;
+    border: 1px solid #E2DEDE;
+    color:#515A6D;
   }
+}
+.inputBase{
+	height: 28px;
 }
 .datareport-colmain{
 	width:100%;

@@ -52,13 +52,15 @@ body, html { width: 100%; height: 100%; }
 
 .datareport-tablelist { width: 100%; }
 
-.table-list__thead { background: #f8f8f9; border: 1px solid #eee; }
+.table-list__thead { background: #f8f8f9; color: #515A6D; border: 1px solid #E2DEDE; font-weight: 900; }
 
 .table-list__Tr { height: 35px; }
 
 .table-list__str { height: 35px; text-align: center; }
 
-.table-list__td { border: 1px solid #eee; }
+.table-list__td { border: 1px solid #E2DEDE; color: #515A6D; }
+
+.inputBase { height: 28px; }
 
 .datareport-colmain { width: 100%; padding: 10px 10px 10px 35px; box-sizing: border-box; }
 
