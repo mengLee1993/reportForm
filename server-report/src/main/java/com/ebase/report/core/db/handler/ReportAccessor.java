@@ -9,6 +9,8 @@ import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.ReportDatasource;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
@@ -38,7 +40,7 @@ interface ReportAccessor {
 
     public Map<String, List<Object>> queryDateil(String sql, Connection conn, Map<String, List<Object>> tmpMap);
 
-    public Map<String, List<Object>> queryFromDetail(Integer count,String sql, Connection conn, Map<String, List<Object>> tmpMap);
+    public List<File> queryFromDetail(Integer count, String sql, Connection conn);
 
     public String toWhereSqlFtiler(ReportDatasource reportDatasource);
 

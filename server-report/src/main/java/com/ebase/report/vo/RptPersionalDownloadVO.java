@@ -54,12 +54,13 @@ public class RptPersionalDownloadVO implements Serializable {
      * Database Column Remarks:
      *   下载时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date downloadTime;
 
     /**
      * 生成时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date crateTime;
     /**
      */

@@ -42,6 +42,7 @@ function clsRptCtrl()
     this.parse		= clsRptCtrl$parse;
     this.parseData	= clsRptCtrl$parseData;
     this.parseTitle	= clsRptCtrl$parseTitle;
+    this.parseTitleAfter	= clsRptCtrl$parseTitleAfter;
     this.getLastRow = clsRptCtrl$getLastRow;
     this.getDimensionData			= clsRptCtrl$getDimensionData;
     this.getDimensionDataCallBack	= clsRptCtrl$getDimensionDataCallBack;
@@ -208,6 +209,12 @@ function clsRptCtrl$parseTitle()
             this.ctrl.appendChild(oRow);
         }
     }
+    this.parseTitleAfter();
+}
+
+function clsRptCtrl$parseTitleAfter(){
+    var numTh = $(this.ctrl).find("tr[rowtype=title] td").length;
+    $(this.ctrl).css("width",(100 * numTh) + "px");
 }
 
 function clsRptCtrl$cloneTd(type)
@@ -310,7 +317,7 @@ function clsRptCtrl$initLayout()
         helper: "clone",
         stop: function(event,ui){
             //重置缓存数组
-            if(ui.item.parents(".selDimensionSearch").length == 1 && ui.item[0].jsonData.fieldName == "Measures"){
+            if(ui.item.parents(".selDimensionSearch").length == 1 && ui.item[0].jsonData.combinationName == "Measures"){
                 return false;
 
                 /*var cloneDom = ui.item.clone(true);
@@ -323,95 +330,95 @@ function clsRptCtrl$initLayout()
             var reqParam = {"schema":"movie_data_10w","tableName":"","line":[],"column":[],"total":false,"measures":[]};
             var blnMeasure = false;
             //var this.jsonDataJoin = {"column":[],"line":[],"tbs":[],"filter":[]};
-            for(var i=0;i<$(".selDimensionRows li").length;i++)
+            for(var i=0;i<$(".selDimensionRows *[id=cloneRow]").length;i++)
             {
                 //编辑按钮设置可用   小计按钮
-                $(".selDimensionRows li").eq(i).find("#fieldNameEdit").show();
-                $(".selDimensionRows li").eq(i).find("#fieldNameEdit").unbind();
-                $(".selDimensionRows li").eq(i).find("#fieldNameEdit").bind("click",function(){
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#fieldNameEdit").show();
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#fieldNameEdit").unbind();
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#fieldNameEdit").bind("click",function(){
                     editOpeRow(this);
                 });
                 //小计按钮显示
-                $(".selDimensionRows li").eq(i).find("#subtotalBox").show();
-                if(ui.item[0].jsonData.subTotal){
-                    $(".selDimensionRows li").eq(i).find("#subtotal").addClass("activeOpe");
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#subtotalBox").show();
+                if($(".selDimensionRows *[id=cloneRow]")[i].jsonData.subTotal){
+                    $(".selDimensionRows *[id=cloneRow]").eq(i).find("#subtotal").addClass("activeOpe");
                 }else{
-                    $(".selDimensionRows li").eq(i).find("#subtotal").removeClass("activeOpe");
+                    $(".selDimensionRows *[id=cloneRow]").eq(i).find("#subtotal").removeClass("activeOpe");
                 }
-                $(".selDimensionRows li").eq(i).find("#subtotal").unbind();
-                $(".selDimensionRows li").eq(i).find("#subtotal").bind("click",function(){
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#subtotal").unbind();
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#subtotal").bind("click",function(){
                     subTotalIsTrue(this);
                 });
                 //设置搜索条件
-                if($(".selDimensionRows li")[i].jsonData.fieldName != "Measures"){
-                    $(".selDimensionRows li").eq(i).find("#searchSetBox").show();
+                if($(".selDimensionRows *[id=cloneRow]")[i].jsonData.combinationName != "Measures"){
+                    $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSetBox").show();
                 }
-                if($(".selDimensionRows li")[i].jsonData.searchTrue){
-                    $(".selDimensionRows li").eq(i).find("#searchSet").addClass("activeOpe");
+                if($(".selDimensionRows *[id=cloneRow]")[i].jsonData.searchTrue){
+                    $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSet").addClass("activeOpe");
                 }
-                $(".selDimensionRows li").eq(i).find("#searchSet").unbind();
-                $(".selDimensionRows li").eq(i).find("#searchSet").bind("click",function(){
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSet").unbind();
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSet").bind("click",function(){
                     searchSetTrue(this);
                 });
 
 
 
-                $(".selDimensionRows li").eq(i).find(".content")[0].jsonData = JSON.parse($(".selDimensionRows li").eq(i).find(".content").attr("jsonData"));
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find(".content")[0].jsonData = JSON.parse($(".selDimensionRows *[id=cloneRow]").eq(i).find(".content").attr("jsonData"));
 
-               /* $(".selDimensionRows li").find("input").unbind("onclick");
-                $(".selDimensionRows li").find("input").click(function(){
+               /* $(".selDimensionRows *[id=cloneRow]").find("input").unbind("onclick");
+                $(".selDimensionRows *[id=cloneRow]").find("input").click(function(){
                     $(this).parents("li:first").find(".content")[0].jsonData.subTotal = that.checked;
                     reqParam = $(".selDimensionRows")[0].reqParam;
                     if(reqParam.column.length == 0)return;
                     document.body.jsRptCtrl.refresh(reqParam);
                 });*/
-                //if(!table.letData.contains(reqParam.line,$(".selDimensionRows li").eq(i).find(".content").html())){
-                $(".selDimensionRows li").eq(i).find(".content")[0].jsonData.subTotal = $(".selDimensionRows li").eq(i).find("input").prop("checked");
-                reqParam.line.push($(".selDimensionRows li").eq(i).find(".content")[0].jsonData);
+                //if(!table.letData.contains(reqParam.line,$(".selDimensionRows *[id=cloneRow]").eq(i).find(".content").html())){
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find(".content")[0].jsonData.subTotal = $(".selDimensionRows *[id=cloneRow]").eq(i).find("input").prop("checked");
+                reqParam.line.push($(".selDimensionRows *[id=cloneRow]").eq(i).find(".content")[0].jsonData);
                 //}
-                if($(".selDimensionRows li").eq(i).find(".content")[0].jsonData.code == "measures")
+                if($(".selDimensionRows *[id=cloneRow]").eq(i).find(".content")[0].jsonData.code == "measures")
                     blnMeasure = true;
 
             }
-            for(var i=0;i<$(".selDimensionCols li").length;i++)
+            for(var i=0;i<$(".selDimensionCols *[id=cloneRow]").length;i++)
             {
                 //编辑按钮设置可用  小计按钮
-                $(".selDimensionCols li").eq(i).find("#fieldNameEdit").show();
-                $(".selDimensionCols li").eq(i).find("#fieldNameEdit").unbind();
-                $(".selDimensionCols li").eq(i).find("#fieldNameEdit").bind("click",function(){
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#fieldNameEdit").show();
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#fieldNameEdit").unbind();
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#fieldNameEdit").bind("click",function(){
                     editOpeCol(this);
                 });
                 //小计操作
-                $(".selDimensionCols li").eq(i).find("#subtotalBox").show();
-                if(ui.item[0].jsonData.subTotal){
-                    $(".selDimensionCols li").eq(i).find("#subtotal").addClass("activeOpe");
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#subtotalBox").show();
+                if($(".selDimensionCols *[id=cloneRow]")[i].jsonData.subTotal){
+                    $(".selDimensionCols *[id=cloneRow]").eq(i).find("#subtotal").addClass("activeOpe");
                 }else{
-                    $(".selDimensionCols li").eq(i).find("#subtotal").removeClass("activeOpe");
+                    $(".selDimensionCols *[id=cloneRow]").eq(i).find("#subtotal").removeClass("activeOpe");
                 }
-                $(".selDimensionCols li").eq(i).find("#subtotal").unbind();
-                $(".selDimensionCols li").eq(i).find("#subtotal").bind("click",function(){
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#subtotal").unbind();
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#subtotal").bind("click",function(){
                     subTotalIsTrue(this);
                 });
                 //设置搜索条件
-                if($(".selDimensionCols li").eq(i).find("#fieldNameEdit") != "Measures"){
-                    $(".selDimensionCols li").eq(i).find("#searchSetBox").show();
+                if($(".selDimensionCols *[id=cloneRow]").eq(i).find("#fieldNameEdit") != "Measures"){
+                    $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSetBox").show();
                 }else{
-                    $(".selDimensionCols li").eq(i).find("#searchSetBox").hide();
+                    $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
                 }
-                if($(".selDimensionCols li")[i].jsonData.searchTrue){
-                    $(".selDimensionCols li").eq(i).find("#searchSet").addClass("activeOpe");
+                if($(".selDimensionCols *[id=cloneRow]")[i].jsonData.searchTrue){
+                    $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSet").addClass("activeOpe");
                 }
-                $(".selDimensionCols li").eq(i).find("#searchSet").unbind();
-                $(".selDimensionCols li").eq(i).find("#searchSet").bind("click",function(){
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSet").unbind();
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSet").bind("click",function(){
                     searchSetTrue(this);
 
                 });
 
 
-                $(".selDimensionCols li").eq(i).find(".content")[0].jsonData = JSON.parse($(".selDimensionCols li").eq(i).find(".content").attr("jsonData"));
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find(".content")[0].jsonData = JSON.parse($(".selDimensionCols *[id=cloneRow]").eq(i).find(".content").attr("jsonData"));
 
 
-               /* $(".selDimensionCols li").find("input").click(function(){
+               /* $(".selDimensionCols *[id=cloneRow]").find("input").click(function(){
                     $(this).parents("li:first").find(".content")[0].jsonData.subTotal = this.checked;
                     reqParam = $(".selDimensionRows")[0].reqParam;
                     if(reqParam.column.length == 0)return;
@@ -420,14 +427,14 @@ function clsRptCtrl$initLayout()
 
                 //暂时
                 //if(i == 0)
-                //	$(".selDimensionCols li").eq(i).find(".content")[0].jsonData.subTotal = true;
+                //	$(".selDimensionCols *[id=cloneRow]").eq(i).find(".content")[0].jsonData.subTotal = true;
 
-                //if(!table.letData.contains(reqParam.column,$(".selDimensionCols li").eq(i).find(".content").html())){
-                $(".selDimensionCols li").eq(i).find(".content")[0].jsonData.subTotal = $(".selDimensionCols li").eq(i).find("input").prop("checked");
-                reqParam.column.push($(".selDimensionCols li").eq(i).find(".content")[0].jsonData);
+                //if(!table.letData.contains(reqParam.column,$(".selDimensionCols *[id=cloneRow]").eq(i).find(".content").html())){
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find(".content")[0].jsonData.subTotal = $(".selDimensionCols *[id=cloneRow]").eq(i).find("input").prop("checked");
+                reqParam.column.push($(".selDimensionCols *[id=cloneRow]").eq(i).find(".content")[0].jsonData);
                 //}
 
-                if($(".selDimensionCols li").eq(i).find(".content")[0].jsonData.code == "measures")
+                if($(".selDimensionCols *[id=cloneRow]").eq(i).find(".content")[0].jsonData.code == "measures")
                     blnMeasure = true;
 
             }
@@ -482,11 +489,26 @@ function clsRptCtrl$initLayout()
 
             }*/
 
-            for(var i = 0; i < $(".selDimensionContent li").length; i++ ){
-                //编辑按钮设置可用
-                $(".selDimensionContent li").eq(i).find("#fieldNameEdit").hide();
-                $(".selDimensionContent li").eq(i).find("#subtotalBox").hide();
-                $(".selDimensionContent li").eq(i).find("#searchSetBox").hide();
+            for(var i = 0; i < $(".selDimensionContent *[id=cloneRow]").length; i++ ){
+                //编辑按钮设置不可用
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#fieldNameEdit").hide();
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#subtotalBox").hide();
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
+                $(".selDimensionContent *[id=cloneRow]")[i].jsonData.searchTrue = false;
+                $(".selDimensionContent *[id=cloneRow]")[i].jsonData.subTotal = false;
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#searchSet").removeClass("activeOpe");
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#subtotal").removeClass("activeOpe");
+                for(var nI = 0; nI < document.body.jsLee.jsonAll.reportDynamicParam.filter.length; nI++ ){
+                    if(document.body.jsLee.jsonAll.reportDynamicParam.filter[nI].code == $(".selDimensionContent *[id=cloneRow]")[i].jsonData.fieldCode){
+                        document.body.jsLee.jsonAll.reportDynamicParam.filter.splice(nI,1);
+                    }
+                }
+            }
+            //刷新过滤区
+            if(document.body.jsLee.jsonAll.reportDynamicParam){
+                initplugData($("#searchTable")[0],"standardTableCtrl",document.body.jsLee.jsonAll.reportDynamicParam.filter);
+            }else{
+                initplugData($("#searchTable")[0],"standardTableCtrl",[]);
             }
 
             //缓存的数据放进保存接口入参json中

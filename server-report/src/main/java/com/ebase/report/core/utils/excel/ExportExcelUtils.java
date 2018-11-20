@@ -792,66 +792,69 @@ public class ExportExcelUtils {
 	 * @return
 	 */
 	public static Workbook createExcelWorkBook(String sheetName, String title, String fileName, Map<String, List<Object>> tmp)throws Exception {
-		List<String> arr = new ArrayList<>(tmp.size());
 
-		List<Object> dataList = new ArrayList<>(tmp.size());
+		XSSFWorkbook workbook = new XSSFWorkbook();// 产生工作薄对象
 
-		tmp.keySet().forEach(x -> {
-			arr.add(x);
-			dataList.add(tmp.get(x));
-		});
-		String[] headers = arr.toArray(new String[0]);
-//		String[] headers = (String[])arr.toArray();
-		if (ArrayUtils.isEmpty(headers)) {
-			throw new RuntimeException("表头不能为空");
+		try {
+			//报表属性
+			XSSFCellStyle createCellStyle = upXssfCellStyle(workbook);
+
+			XSSFSheet sheet = workbook.createSheet(title);
+
+			// 产生表格标题行
+			XSSFRow createRow = sheet.createRow(0);
+
+			Set<String> strings = tmp.keySet();
+			// header ---
+			int i = 0;
+			for(String key:strings){
+
+				XSSFCell cell = createRow.createCell(i);
+
+				// 列数据
+				cell.setCellValue(key);
+				cell.setCellStyle(createCellStyle);
+				sheet.setColumnWidth(i, 5000);
+				i = i + 1;
+			}
+
+
+			//设置单元格数据
+			int s = 0;
+			for(String key:strings){
+				int x = 0;
+				List<Object> values = tmp.get(key);
+				for(Object value:values){
+					XSSFRow row = null;
+					if(sheet.getRow(x + 1) == null){
+						row = sheet.createRow(x + 1);
+					}else{
+						row = sheet.getRow(x + 1);
+					}
+					XSSFCell cell = row.createCell(s);
+
+					if(value != null){
+						cell.setCellValue(value.toString());
+					}
+
+					x = x + 1;
+				}
+				s = s + 1;
+			}
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-		ExportExcelUtils poiExcelUtil = new ExportExcelUtils();
-		// 1.创建 workBook
-		Workbook workBook = poiExcelUtil.createWorkBook();
-		// 2.创建 Sheet
-		Sheet sheet = poiExcelUtil.createSheet(workBook, sheetName);
-
-		// 产生表格标题行
-		Row row = sheet.createRow(0);
-
-		//报表属性
-		CellStyle createCellStyle = upXssfCellStyle(workBook);
-
-		// 列 ---
-		for (int i = 0; i < headers.length; i ++) {
-			String header = headers[i];
-			Cell cell = row.createCell(i);
-
-			// 列数据
-			cell.setCellValue(header);
-			cell.setCellStyle(createCellStyle);
-			sheet.setColumnWidth(i, 5000);
-		}
-
-//		for(int i = 0; i < dataList.size(); i ++){
-//
-//			Row row = sheet.createRow(i + 1);
-//
-//		}
-//		// 3.写入 head
-//		poiExcelUtil.writeHeader(workBook, sheet, headers, title);
-//
-//		// 4,冻结单元格，多行
-//		poiExcelUtil.freezeHeader(2,sheet);
-//
-//		// 5.写入内容
-//		poiExcelUtil.writeContent(workBook, sheet, headers, dataList);
-
-		return workBook;
+		return workbook;
 	}
+
 
 	/**
 	 * 设置workBook 样式
 	 * @param workbook
 	 * @return
 	 */
-	private static CellStyle upXssfCellStyle(Workbook workbook) {
-		CellStyle createCellStyle = workbook.createCellStyle();
+	private static XSSFCellStyle upXssfCellStyle(XSSFWorkbook workbook) {
+		XSSFCellStyle createCellStyle = workbook.createCellStyle();
 		// 设置格式
 		createCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 		createCellStyle.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index); // 设置颜色为红色
@@ -862,6 +865,5 @@ public class ExportExcelUtils {
 
 		return createCellStyle;
 	}
-
 
 }

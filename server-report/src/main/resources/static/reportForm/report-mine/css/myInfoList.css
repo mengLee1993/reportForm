@@ -36,6 +36,8 @@
 /*按钮*/
 .downloadcet { width: 100%; height: 100%; }
 
+.search_btn_class { display: inline-block; height: 28px; width: 80px; margin-left: 10px; background: #00afff; line-height: 28px; text-align: center; color: #fff; cursor: pointer; border-radius: 2px; }
+
 .downloadcet-nav { width: 14%; float: left; height: 100%; background: #fff; overflow: auto; overflow-x: scroll; }
 
 .downloadcet-nav__text { height: 40px; color: #0375D7; font-size: 14px; line-height: 40px; text-indent: 15px; }
@@ -66,12 +68,12 @@
 
 .main-table { width: 100%; height: auto; box-sizing: border-box; padding: 1%; }
 
-.table-list__thead { background: #f8f8f9; border: 1px solid #eee; }
+.table-list__thead { background: #f8f8f9; color: #515A6D; border: 1px solid #E2DEDE; font-weight: 900; }
 
 .table-list__Tr { height: 35px; }
 
 .table-list__str { height: 35px; text-align: center; }
 
-.table-list__td { border: 1px solid #eee; }
+.table-list__td { border: 1px solid #E2DEDE; color: #515A6D; }
 
 .js-jumpBtn { cursor: pointer; }

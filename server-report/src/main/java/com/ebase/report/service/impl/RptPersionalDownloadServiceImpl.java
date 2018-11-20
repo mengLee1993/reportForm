@@ -1,5 +1,6 @@
 package com.ebase.report.service.impl;
 
+import com.ebase.report.core.ZipUtils;
 import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.BeanCopyUtil;
@@ -17,12 +18,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * dal Interface:RptPersionalDownload
@@ -97,28 +97,19 @@ public class RptPersionalDownloadServiceImpl implements RptPersionalDownloadServ
     @Override
     public Boolean downloadReportFile(String filePath) {
 
-	    String path = file_path + filePath;
+	    String path = file_path + "/" + filePath;
 
-	    //从流中读取文件
-        try {
+	    try{
+            //解压一下
+            List<String> paths = ZipUtils.decompressZip(path, file_path);
 
-            InputStream inputStream = new FileInputStream(path);
-
-            Workbook workbook = WorkbookFactory.create(inputStream);
-
-            Long acctId = AssertContext.getAcctId();
-            if(acctId == null){
-                acctId = 1L;
-            }
-            String fileName = new Date().getTime() + acctId + "";
-            ReportExportUtil.OutPutWorkBookResponse(fileName,workbook);
-
-            return true;
+            //下载文件
+            ZipUtils.downLoadZipFile(paths,filePath);
         }catch (Exception e){
-            LOG.error("下载文件 error = {}",e);
+	        e.printStackTrace();
         }
 
-        return false;
+        return true;
     }
 
 

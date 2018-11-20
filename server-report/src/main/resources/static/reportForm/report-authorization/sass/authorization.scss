@@ -6,6 +6,18 @@ body,html{
 .selectBase{
 
 }
+.search_btn_class{
+  display: inline-block;
+  height: 28px;
+  width: 70px;
+  margin-left: 10px;
+  background: $as_00a;
+  line-height: 28px;
+  text-align: center;
+  color: $fc_ff;
+  cursor: pointer;
+  border-radius: 2px;
+}
 .chosen-search{
 	display: none!important;
 }
@@ -45,7 +57,9 @@ body,html{
 .table-list{
   &__thead{
     background: $bg_f8;
-    border: 1px solid $as_ee;
+    color:#515A6D;
+    border: 1px solid #E2DEDE;
+    font-weight: 900;
   }
   &__Tr{
     height: 35px;
@@ -55,8 +69,12 @@ body,html{
     text-align: center;
   }
   &__td{
-    border: 1px solid $as_ee;
+    border: 1px solid #E2DEDE;
+    color:#515A6D;
   }
+}
+.inputBase{
+	height: 28px;
 }
 .datareport-colmain{
 	width:100%;

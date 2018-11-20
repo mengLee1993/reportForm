@@ -240,13 +240,13 @@ body,html{
 .tradebase-side{
 	width:143px;
 	height:100%;
-	background:$bg_323;
+	//background:$bg_323;
 	position:relative;
 	// overflow:hidden;
 	z-index:2;
 }
 .tradebase-innerside{
-	width:143px;
+	width:209px;
 }
 .tradebase-side-all{
 	height:80px;
@@ -265,34 +265,38 @@ body,html{
 	}
 }
 .tradebase-sidebox{
-	width:143px;
+	width:209px;
 	overflow:hidden;
 	height:100%;
 }
 .tradebase-sidebox163{
-	width:163px;
+	width:209px;
 	height:100%;
 	overflow-y:auto;
+	margin-top: 12px
+;
 }
 .tradebase-side-nav{
+	border: 1px solid #E2DEDE;
 	&__item{
 		width:100%;
 		text-align:center;
+		border: 1px solid #E2DEDE;
 	}
 	&__link{
 		display:block;
 		width:100%;
-		line-height:48px;
+		line-height:38px;
 		color:$fc_83;
 		position:relative;
 		cursor:pointer;
-		background:$bg_3d4;
+		//background:$bg_3d4;
 		padding-right: 20px;
     	box-sizing: border-box;
 	}
 	&__text{
 		width:100%;
-		color:$fc_83;
+		//color:$fc_83;
 	}
 	&__icon{
 		position:absolute;
@@ -325,6 +329,10 @@ body,html{
 	&__link:hover{
 		background:$bg_323;
 	}
+}
+.asidePActive{
+	color: #fff!important;
+	background: #00AFFF!important;
 }
 //四级导航
 .menu-hover {
@@ -400,7 +408,7 @@ body,html{
     position: absolute;
     top: 64px;
     left: 0;
-    padding-left:143px;
+    padding-left:209px;
     box-sizing:border-box;
     background: $bg_ff;
 }

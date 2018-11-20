@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,12 +136,12 @@ public class ReportHandler {
      * @param reportDatasource
      * @return
      */
-    public Map<String, List<Object>> reportFromDetail(ReportDatasource reportDatasource, RptPersionalDownloadVO rptPersionalDownloadVO) {
+    public List<File> reportFromDetail(ReportDatasource reportDatasource, RptPersionalDownloadVO rptPersionalDownloadVO) {
         String datasourceName = reportDatasource.getDatasourceName(); //数据源名称
 
         Connection conn = null;
 
-        Map<String,List<Object>> tmpMap = new HashMap<>();
+        List<File> files = new ArrayList<>();
 
         try {
             DataSourceConfig dataSourceConfig = DataSourceManager.get().getDataSourceConfig(datasourceName);
@@ -156,7 +157,7 @@ public class ReportHandler {
             Integer count = reportAccessor.queryCount(dataDetailSQL.getSqlCount(),conn);
 
             //查询详细
-            tmpMap = reportAccessor.queryFromDetail(count,dataDetailSQL.getSql(),conn,tmpMap);
+            files = reportAccessor.queryFromDetail(count,dataDetailSQL.getSql(),conn);
 
             rptPersionalDownloadVO.setDownloadSql(dataDetailSQL.getSql());
         } catch (DbException e) {
@@ -166,7 +167,7 @@ public class ReportHandler {
             DataBaseUtil.closeConnection(conn);
         }
 
-        return tmpMap;
+        return files;
     }
 
     /**

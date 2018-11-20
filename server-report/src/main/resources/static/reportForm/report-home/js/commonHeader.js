@@ -27,7 +27,7 @@
             });
             $(".asideP").each(function(){
                 if($(this).find("*[firstMark]").attr("jumpUrl").indexOf(htmlString) != -1 && $(this).find("*[firstMark]").attr("jumpUrl").indexOf(modelString) != -1) {//找到点击操作的2级菜单
-                    $(this).find("*[firstMark]").css("color","#fff");
+                    $(this).find("*[firstMark]").parents(".tradebase-side-nav__link").addClass("asidePActive");
                     var firstMark = $(this).find("*[firstMark]").attr("firstMark");//找到点击的1级菜单标示，进行2级菜单匹配是否隐藏展示
                     $(".tradebase-topnavinner__text").each(function () {//找到点击的1级菜单标示，进行1级菜单匹配是否隐藏展示
 						if($(this).attr("firstMark") == firstMark){

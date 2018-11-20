@@ -1,24 +1,29 @@
 package com.ebase.report.core.db.handler;
 
 import com.ebase.report.common.*;
-import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataBaseUtil;
 import com.ebase.report.core.db.DataDetailSQL;
 import com.ebase.report.core.db.exception.DbException;
+import com.ebase.report.core.utils.ReportExportUtil;
 import com.ebase.report.core.utils.StringUtil;
+import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.model.RptDataField;
-import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * @Auther: <a mailto:xuyongming@ennew.cn>xuyongming</a>
@@ -312,10 +317,12 @@ public class ReportAccessorMySql extends AbstractAccessor {
     }
 
     @Override
-    public Map<String, List<Object>> queryFromDetail(Integer count,String sql, Connection conn, Map<String, List<Object>> tmpMap) {
+    public List<File> queryFromDetail(Integer count, String sql, Connection conn)  {
+        List<File> files = new ArrayList<>();
+
         //看数据量是否过大
         if(count < LENGTH){
-            tmpMap = super.queryFromDetail(count,sql,conn,tmpMap);
+            generateTmpMap(conn, files, sql);
         }else{
             int size = count / LENGTH;
             size = count % LENGTH == 0 ? size - 1 : size;
@@ -323,13 +330,15 @@ public class ReportAccessorMySql extends AbstractAccessor {
                 String s = LIMIT + (i * LENGTH) + "," + LENGTH;
 
                 String sqlDetail = sql + s;
-
-                tmpMap = super.queryDateil(sqlDetail,conn,tmpMap);
+                generateTmpMap(conn, files, sqlDetail);
             }
         }
 
-        return tmpMap;
+        return files;
     }
+
+
+
 
     /**
      * 根据数据库类型 得sqlwhere条件过滤sql
@@ -454,70 +463,5 @@ public class ReportAccessorMySql extends AbstractAccessor {
 
         return selectSql;
 
-    }
-
-    @Override
-    public List<RptDataTable> queryAllTables(Connection conn, DataBaseType dataBaseType) throws DbException {
-        List<RptDataTable> tables = new ArrayList<RptDataTable>();
-        ResultSet rs = null;
-
-        try {
-
-            DatabaseMetaData dbMetaData = conn.getMetaData();
-
-            // 数据库
-            String catalog = null;
-            // 数据库的用户
-            String schemaPattern = null;// meta.getUserName();
-            // 表名
-            String tableNamePattern = null;
-
-            //可为:"TABLE",   "VIEW",   "SYSTEM   TABLE",
-            //"GLOBAL   TEMPORARY",   "LOCAL   TEMPORARY",   "ALIAS",   "SYNONYM"
-            String[] types = {"TABLE"};/*只要表*/
-
-            if (DataBaseType.DB_TYPE_ORACLE.equals(dataBaseType)) {
-                schemaPattern = dbMetaData.getUserName().toUpperCase();
-            } else if (DataBaseType.DB_TYPE_MYSQL.equals(dataBaseType)) {
-                // MySQL 的 table 这一级别查询不到备注信息
-
-//            }  else if (DATABASETYPE.SQLSERVER.equals(dbtype) || DATABASETYPE.SQLSERVER2005.equals(dbtype)) {
-//                // SqlServer
-//                tableNamePattern = "%";
-//            }  else if (DATABASETYPE.DB2.equals(dbtype)) {
-//                // DB2查询
-//                schemaPattern = "jence_user";
-//                tableNamePattern = "%";
-//            } else if (DATABASETYPE.INFORMIX.equals(dbtype)) {
-//                // SqlServer
-//                tableNamePattern = "%";
-            } else if (DataBaseType.DB_TYPE_HIVE.equals(dataBaseType)) {
-                // hive
-                tableNamePattern = "%";
-            } else {
-                throw new RuntimeException("不认识的数据库类型!");
-            }
-
-            rs = dbMetaData.getTables(null, schemaPattern, tableNamePattern, types);
-
-            String sql = "show table status";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                //只要表名这一列
-                // System.out.println(rs.getObject("TABLE_NAME"));
-                System.out.println(rs.getObject("Name")+"-------->"+rs.getObject("Comment"));
-                RptDataTable rptDataTable = new RptDataTable();
-                rptDataTable.setTableCode(rs.getObject("Name").toString());
-                rptDataTable.setComment(rs.getObject("Comment").toString());
-                tables.add(rptDataTable);
-            }
-        } catch (SQLException e) {
-            throw new DbException(e);
-        } finally {
-            DataBaseUtil.closeResultSet(rs);
-        }
-
-        return tables;
     }
 }
