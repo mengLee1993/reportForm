@@ -36,6 +36,8 @@
 /*按钮*/
 body, html { width: 100%; height: 100%; }
 
+.search_btn_class { display: inline-block; height: 28px; width: 70px; margin-left: 10px; background: #00afff; line-height: 28px; text-align: center; color: #fff; cursor: pointer; border-radius: 2px; }
+
 .chosen-search { display: none !important; }
 
 .datareport { width: 100%; height: 100%; }

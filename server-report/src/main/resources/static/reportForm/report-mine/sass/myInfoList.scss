@@ -6,12 +6,15 @@ $bd_dee: #dee3e6;//主体边框线
 }
 .search_btn_class{
   display: inline-block;
-  height: 30px;
+  height: 28px;
   width: 80px;
+  margin-left: 10px;
   background: $as_00a;
-  line-height: 30px;
+  line-height: 28px;
   text-align: center;
   color: $fc_ff;
+  cursor: pointer;
+  border-radius: 2px;
 }
 .downloadcet-nav{
   width: 14%;

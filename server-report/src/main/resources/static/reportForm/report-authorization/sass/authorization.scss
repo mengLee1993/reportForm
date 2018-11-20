@@ -6,6 +6,18 @@ body,html{
 .selectBase{
 
 }
+.search_btn_class{
+  display: inline-block;
+  height: 28px;
+  width: 70px;
+  margin-left: 10px;
+  background: $as_00a;
+  line-height: 28px;
+  text-align: center;
+  color: $fc_ff;
+  cursor: pointer;
+  border-radius: 2px;
+}
 .chosen-search{
 	display: none!important;
 }

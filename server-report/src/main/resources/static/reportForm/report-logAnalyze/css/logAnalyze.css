@@ -34,6 +34,8 @@
 边框
 ************************************************************************************/
 /*按钮*/
+.search_btn_class { display: inline-block; height: 28px; width: 80px; margin-left: 10px; background: #00afff; line-height: 28px; text-align: center; color: #fff; cursor: pointer; border-radius: 2px; }
+
 .downloadcet { width: 100%; height: 100%; }
 
 .downloadcet-nav { width: 14%; float: left; height: 100%; background: #fff; overflow: auto; overflow-x: scroll; }
