@@ -47,6 +47,12 @@ module.exports={
         "htmlIncAfter":"reportForm/report-logAnalyze/html-www/!*.html",
         "htmlIncBefore":"reportForm/report-logAnalyze/html-gulp-www"
     },*/
+    "report-base":{//公共样式
+        "sassSrc":"reportForm/report-base/sass/*.scss",
+        "cssSrc":"reportForm/report-base/css",
+        "htmlIncAfter":"reportForm/report-base/html-www/!*.html",
+        "htmlIncBefore":"reportForm/report-base/html-gulp-www"
+    },
     "report-home":{//头部
         "sassSrc":"reportForm/report-home/sass/*.scss",
         "cssSrc":"reportForm/report-home/css",
