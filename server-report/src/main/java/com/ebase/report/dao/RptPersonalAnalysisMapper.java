@@ -33,7 +33,7 @@ public interface RptPersonalAnalysisMapper {
 
     Integer selectCount(RptPersonalAnalysis model);
 
-    Integer selectByName(String reportName, Long acctId);
+    Integer selectByName(String reportName,Long acctId);
 
     int deleteBySubjectId(@Param("longs") List<Long> longs);
 

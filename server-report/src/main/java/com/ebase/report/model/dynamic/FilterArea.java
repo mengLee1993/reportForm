@@ -21,6 +21,9 @@ public class FilterArea {
 
     private DBFieldTypeEnum dbFieldTypeEnum = DBFieldTypeEnum.VARCHAR;  // 当前字段的类型 给我一个类型
 
+    //添加组合名称
+    private String combinationName;
+
 
 //    private Map<FilterTypeEnum, List<String>> tmp = new HashMap<>();
 
@@ -80,5 +83,13 @@ public class FilterArea {
 
     public void setFilterJson(String filterJson) {
         this.filterJson = filterJson;
+    }
+
+    public String getCombinationName() {
+        return combinationName;
+    }
+
+    public void setCombinationName(String combinationName) {
+        this.combinationName = combinationName;
     }
 }

@@ -310,6 +310,7 @@ public class ReportController {
                        //自定义报表id
                        Long personalAnalysisId = jsonRequest.getReqBody().getPersonalAnalysisId();
 
+                       personalAnalysisId = 61l;
                        RptPersonalAnalysis rptPersonalAnalysis = reportService.getCustomReport(personalAnalysisId);
 
                        String configJson = rptPersonalAnalysis.getConfigJson();

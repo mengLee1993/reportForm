@@ -1,0 +1,77 @@
+@charset "UTF-8";
+/*
+按钮注释：整体页面级别为一级按钮（背景加色，字体白色）   部分模块级别按钮为二级按钮（背景白色，字体加色）
+背景注释：按钮置灰做成原色的30%透明度
+*/
+/*
+/*
+字体内容文字是#838383
+标题文字是#515A6D
+边框是#eeeeee
+表格所有色值均为#515A6D
+*/
+/*
+主色
+*/
+/*
+辅助色 assist
+*/
+/************************************************************************************
+字体
+************************************************************************************/
+/*导航*/
+/*表格*/
+/*按钮*/
+/*其他*/
+/************************************************************************************
+背景
+************************************************************************************/
+/*导航*/
+/*表格*/
+/*按钮*/
+/*其他*/
+/************************************************************************************
+边框
+************************************************************************************/
+/*按钮*/
+.downloadcet { width: 100%; height: 100%; }
+
+.downloadcet-nav { width: 14%; float: left; height: 100%; background: #fff; overflow: auto; overflow-x: scroll; }
+
+.downloadcet-nav__text { height: 40px; color: #0375D7; font-size: 14px; line-height: 40px; text-indent: 15px; }
+
+.downloadcet-nav-list { width: 100%; margin: 0; }
+
+.downloadcet-nav-list__item { width: 100%; line-height: 40px; }
+
+.downloadcet-nav-list__cet { text-indent: 10px; }
+
+.downloadcet-nav-list__icon { font-size: 18px; width: 20px; height: 20px; display: inline-block; background: url(../images/photo.png) 0 no-repeat; background-position: -270px -148px; }
+
+.downloadcet-main { width: 100%; height: 100%; background: #fff; margin-left: 0.5%; float: left; overflow: auto; overflow-y: scroll; }
+
+.main-title { line-height: 45px; border-bottom: 1px solid #eee; margin: 0 1%; box-sizing: border-box; }
+
+.main-title__sign { float: left; display: inline-block; width: 5px; height: 16px; line-height: 16px; background: #0375D7; margin: 14px 8px 0 0; }
+
+.main-title__name { font-weight: 600; }
+
+.main-box { line-height: 50px; border-bottom: 1px solid #dee3e6; box-sizing: border-box; margin: 0 1%; }
+
+.main-box__name { float: left; }
+
+.main-box__input { float: left; height: 26px; margin-top: 10px; margin-left: 1%; min-width: 20%; padding: 0 1%; border-color: #dee3e6; }
+
+.main-box__search { float: left; margin-top: 10px; margin-right: 1%; margin-left: 10px; border-color: #dee3e6; }
+
+.main-table { width: 100%; height: auto; box-sizing: border-box; padding: 1%; }
+
+.table-list__thead { background: #f8f8f9; border: 1px solid #eee; }
+
+.table-list__Tr { height: 35px; }
+
+.table-list__str { height: 35px; text-align: center; }
+
+.table-list__td { border: 1px solid #eee; }
+
+.js-jumpBtn { cursor: pointer; }

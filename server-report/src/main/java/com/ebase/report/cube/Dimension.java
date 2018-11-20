@@ -58,6 +58,11 @@ public class Dimension {
 
     //是否拖到过过滤区
     private Boolean searchTrue = false;
+
+    //添加组合名称
+    private String combinationName;
+
+
     // !度量值
 //    private MeasureTypeEnum measureEnum = MeasureTypeEnum.COUNT;   //如果是指标 是什么指标
 
@@ -292,5 +297,13 @@ public class Dimension {
     @Override
     public int hashCode() {
         return Objects.hash(fieldId, fieldCode, fieldName);
+    }
+
+    public String getCombinationName() {
+        return combinationName;
+    }
+
+    public void setCombinationName(String combinationName) {
+        this.combinationName = combinationName;
     }
 }

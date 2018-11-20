@@ -1,0 +1,56 @@
+@@include('../../report-home/html-gulp-www/commonHeader.html')
+<link rel="stylesheet" href="../css/myInfoDown.css">
+<div class="downloadcet">
+    <div class="downloadcet-main">
+        <div class="main-title ">
+            <strong class="main-title__sign"></strong>
+            <h1 class="main-title__tie" style="font-weight: 800;">个人主题数据 > 我的数据下载</h1>
+        </div>
+        <div class="main-box clearfix" id="condQuery">
+            <span class="main-box__name">文件名称:</span>
+            <input type="text" class="inputBase main-box__input" id="condfileName">
+            <div class="main-box__search btn_kind_3" comtype="searchBtnCtrl" rule="cond" cond="condfileName" parentId="condQuery" uniontableid="tableList" type="button" id="searchDataBtn">查询</div>
+        </div>
+        <div class="main-table">
+            <table class="table-list" id="tableList" comtype="standardTableCtrl"
+                   templateid="templateRow"  chkid="chkCoding"
+                   page="tcdPageCode" nodata="noDataCon"
+                   reqpath="/report/rptPersionalDownload/findpageresult" reqparam="{}" method="post">
+                <thead>
+                <tr class="table-list__Tr" >
+                    <!-- <th class="table-list__thead" style="width: 5%">
+                        <input type="checkbox" id="allChk" comtype="checkAll" cond="" uniontableid="tableList"  >
+                    </th> -->
+                    <th class="table-list__thead" style="width: 20%">文件名称</th>
+                    <th class="table-list__thead" style="width: 20%">生成时间</th>
+                    <th class="table-list__thead" style="width: 10%">数据下载</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-list__str" id="templateRow" style="display: none;">
+                    <!-- <td class="table-list__td" >
+                        <input type="checkbox"  id="chkCoding">
+                    </td> -->
+                    <td class="table-list__td" id="fileName"></td>
+                    <td class="table-list__td" id="crateTime"></td>
+                    <td class="table-list__td" ><div class="js-download" style="color: #0375d7;cursor: pointer;">下载</div></td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="noDataCon" class="noDataCon" style="display:none">
+                <i></i><p>暂无数据.....</p>
+            </div>
+            <div class="tcdPageCode"></div>
+        </div>
+    </div>
+<script>
+    function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
+        $(cloneRow)
+        .on("click",".js-download",function(){//下载
+            var importParam = "name=" + jsonItem.filePath;
+            $.download(requestUrl + "/report/downloadReportFile", importParam, "POST");
+        });
+    }
+</script>
+</div>
+    @@include('../../report-home/html-gulp-www/commonFooter.html')

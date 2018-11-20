@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title></title>
+	<link rel="stylesheet" href="../../../reportForm/report-base/css/trade_base.css">
+	<link rel="stylesheet" href="../../../base/iconfont/iconfont.css">
+	<link rel="stylesheet" href="../../../reportForm/report-home/css/commonHeader.css">
+	<script src="../../../base/js/jquery.js"></script>
+	<script src="../../../base/js/public.js"></script>
+	<script src="../../../base/js/docassistant.js" ></script>
+	<script src="../../../base/js/validate.js"></script>
+	<script src="../../../base/js/jquery.cookie.js"></script>
+	<script src='../../../titleName.js'></script>
+	<script src="../../../reqConfig.js"></script>
+	<script src="../../../reportForm/report-home/js/commonHeader.js"></script>
+	<!--！！！！！！
+		组件js
+	！！！！！！！-->
+	<script type="text/javascript" src="../../../base/js/ajaxupload.js"></script>
+	<!--时间插件-->
+	<link rel="stylesheet" href="../../../plugin/WdatePickerBlue/My97DatePicker/skin/messageWdatePicker.css">
+	<script src="../../../plugin/WdatePickerBlue/My97DatePicker/WdatePicker.js"></script>
+	<!--弹框插件-->
+	<link rel="stylesheet" href="../../../plugin/popup/css/manhuaDialog.1.0_blue.css">
+	<script src="../../../plugin/popup/script/manhuaDialog.1.0.js"></script>
+	<!--提示校验-->
+	<link rel="stylesheet" href="../../../plugin/tip/css/tip-twitter/tip-twitter.css">
+	<script src="../../../plugin/tip/script/jquery.poshytip.js"></script>
+	<!--滑动校验-->
+	<link rel="stylesheet" href="../../../plugin/dragValidate/css/drag.css">
+	<script src="../../../plugin/dragValidate/js/drag.js"></script>
+	<!--分页-->
+	<link rel="stylesheet" href="../../../plugin/page/css/table.css">
+	<script type="text/javascript" src="../../../plugin/page/script/jquery.page.js"></script>
+	<!--下拉选择-->
+	<link rel="stylesheet" href="../../../plugin/select/chosen_blue.css">
+	<script src="../../../plugin/select/chosen.jquery.js"></script>
+	<!--树插件-->
+	<link rel="stylesheet" href="../../../plugin/treeview/jquery.treeview.css" />
+	<script src="../../../plugin/treeview/jquery.treeview.js"></script>
+	<script type="text/javascript" src="../../../plugin/treeview/demo.js"></script>
+</head>
+<body id="outerBody" class="tradebase">
+	<div class="tradebasebox">
+		<div class="tradebase-top clearfix effectBox" effectType="1">
+			<div class="tradebase-toplogo leftW">
+				<div class="tradebase-toplogo__logo">
+					<img src="../../../reportForm/report-home/images/logo.png" alt="">
+				</div>
+			</div>
+			<div class="tradebase-topnavbox maxVisbleB">
+				<nav>
+					<div class="tradebase-topnav">
+						<div class="tradebase-topnavinner allItemB">
+							<a href="#" class="tradebase-topnavinner__item itemW">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-mine/html-gulp-www/myInfoList.html" firstMark="1">个人主题数据</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-analyze/html-gulp-www/dataAnalyze.html">自定义分析</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-dictionaries/html-gulp-www/dataSourceList.html" firstMark="2">数据字典</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-authorization/html-gulp-www/authorization.html">数据授权</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-logAnalyze/html-gulp-www/logAnalyze.html">分析日志</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/orgFrame.html" firstMark="3">权限管理</p>
+							</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<span class="fr" id="quitOperate" style="cursor: pointer;margin-right: 10px;">
+				<div class="fl" style="background-image: url('../../../reportForm/report-home/images/tc.png');width: 30px;height: 30px;margin-right: 6px;margin-top: 18px;background-size: 30px 30px;"></div>
+				<span class="fl" style="color: #fff;line-height: 64px;">退出</span>
+			</span>
+		</div>
+		<div class="tradebase-btm effectBox" effectType="2">
+			<div class="tradebase-side leftW"  id="bodyLeft">
+				<!--<div class="tradebase-side-all">
+					<i class="tradebase-side-all__btn"></i>
+				</div>-->
+				<div class="tradebase-innerside">
+					<div class="tradebase-sidebox">
+						<div class="tradebase-sidebox163">
+							<ul class="tradebase-side-nav">
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-mine/html-gulp-www/myInfoList.html" firstMark="1">我的数据报表</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-mine/html-gulp-www/selfSearch.html" firstMark="1">我的自定义查询</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-mine/html-gulp-www/myInfoDown.html" firstMark="1">我的数据下载</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-dictionaries/html-gulp-www/dataSourceList.html" firstMark="2">数据源管理列表</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-dictionaries/html-gulp-www/dictionaries.html" firstMark="2">数据字典管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-dictionaries/html-gulp-www/fieldList.html" firstMark="2">元数据管理字段列表</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/orgFrame.html" firstMark="3">组织管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/roleManage.html" firstMark="3">角色管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/resourceManage.html" firstMark="3">资源管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/userManage.html" firstMark="3">人员管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/systemManage.html" firstMark="3">系统管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tradebase-right"  id="bodyRight">
+				<div class="tradebase-rightinner">
+
+					<div class="tradebase-main">
+
+<link rel="stylesheet" href="../css/myInfoList.css">
+<div class="downloadcet">
+    <div class="downloadcet-main">
+        <div class="main-title ">
+            <strong class="main-title__sign"></strong>
+            <h1 class="main-title__tie" style="font-weight: 800;">个人主题数据 > 我的数据报表</h1>
+        </div>
+        <div class="main-box clearfix" id="condQuery">
+            <span class="main-box__name">数据表（名称或编码）:</span>
+            <input type="text" class="inputBase main-box__input" id="condtableName">
+            <div class="main-box__search btn_kind_3" comtype="searchBtnCtrl" rule="cond" cond="condtableName" parentId="condQuery" uniontableid="tableList" type="button" id="searchDataBtn">查询</div>
+        </div>
+        <div class="main-table">
+            <table class="table-list" id="tableList" comtype="standardTableCtrl"
+                   templateid="templateRow"  chkid="chkCoding"
+                   page="tcdPageCode" nodata="noDataCon"
+                   reqpath="/report/listReportForm" reqparam="{}" method="post">
+                <thead>
+                <tr class="table-list__Tr" >
+                    <!-- <th class="table-list__thead" style="width: 5%">
+                        <input type="checkbox" id="allChk" comtype="checkAll" cond="" uniontableid="tableList"  >
+                    </th> -->
+                    <th class="table-list__thead" style="width: 20%">数据表名称</th>
+                    <th class="table-list__thead" style="width: 20%">数据表编码</th>
+                    <th class="table-list__thead" style="width: 20%">所在数据库</th>
+                    <th class="table-list__thead" style="width: 10%">数据表备注</th>
+                    <th class="table-list__thead" style="width: 20%">数据表类型</th>
+                    <th class="table-list__thead" style="width: 20%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-list__str" id="templateRow" style="display: none;">
+                    <!-- <td class="table-list__td" >
+                        <input type="checkbox"  id="chkCoding">
+                    </td> -->
+                    <td class="table-list__td" id="tableName"></td>
+                    <td class="table-list__td" id="tableCode"></td>
+                    <td class="table-list__td" id="datasourceName"></td>
+                    <td class="table-list__td" id="demo"></td>
+                    <td class="table-list__td" id="tableType"></td>
+                    <td class="table-list__td">
+                        <div class="js-jumpBtn" style="color: #0375d7">数据分析</div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <div id="noDataCon" class="noDataCon" style="display:none">
+                <i></i><p>暂无数据.....</p>
+            </div>
+            <div class="tcdPageCode"></div>
+        </div>
+    </div>
+<script>
+    function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
+        $(cloneRow).on("click",".js-jumpBtn",function(){
+            jumpUrl("../../report-analyze/html-gulp-www/dataAnalyze.html?personalSubjectId="+ jsonItem.personalSubjectId,"0000000",0);
+        })
+    }
+</script>
+</div>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+</body>
+</html>

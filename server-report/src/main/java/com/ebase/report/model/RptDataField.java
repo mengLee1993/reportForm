@@ -1,5 +1,7 @@
 package com.ebase.report.model;
 
+import com.ebase.report.core.utils.StringUtil;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,6 +113,9 @@ public class RptDataField implements Serializable {
      *   数据源名称
      */
     private String datasourceName;
+
+    //添加组合名称
+    private String combinationName;
 
 
     private List<RptDataDict>  rptDataDicts;
@@ -324,5 +329,13 @@ public class RptDataField implements Serializable {
 
     public void setIsChecked(Byte isChecked) {
         this.isChecked = isChecked;
+    }
+
+    public String getCombinationName() {
+        return StringUtil.assemblingView(fieldCode, fieldName);
+    }
+
+    public void setCombinationName(String combinationName) {
+        this.combinationName = combinationName;
     }
 }

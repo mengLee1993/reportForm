@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebase.report.dao.jurisdiction.AcctRoleGroupRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.ebase.report.model.jurisdiction.AcctRoleGroupRole" >
+    <id column="RELA_ID" property="relaId" jdbcType="BIGINT" />
+    <result column="ROLE_ID" property="roleId" jdbcType="BIGINT" />
+    <result column="ROLE_GROUP_ID" property="roleGroupId" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    RELA_ID, ROLE_ID, ROLE_GROUP_ID, STATUS, CREATED_BY, CREATED_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from acct_role_group_role
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from acct_role_group_role
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteRoleGroupId" parameterType="java.lang.Long" >
+    delete from acct_role_group_role
+    where ROLE_GROUP_ID = #{roleGroupId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteRoleId" parameterType="java.lang.Long" >
+    delete from acct_role_group_role
+    where ROLE_ID = #{roleId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.ebase.report.model.jurisdiction.AcctRoleGroupRole" >
+    insert into acct_role_group_role (RELA_ID, ROLE_ID, ROLE_GROUP_ID, 
+      STATUS, CREATED_BY, CREATED_TIME
+      )
+    values (#{relaId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{roleGroupId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ebase.report.model.jurisdiction.AcctRoleGroupRole" >
+    insert into acct_role_group_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="relaId != null" >
+        RELA_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="roleGroupId != null" >
+        ROLE_GROUP_ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="relaId != null" >
+        #{relaId,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="roleGroupId != null" >
+        #{roleGroupId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.jurisdiction.AcctRoleGroupRole" >
+    update acct_role_group_role
+    <set >
+      <if test="roleId != null" >
+        ROLE_ID = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="roleGroupId != null" >
+        ROLE_GROUP_ID = #{roleGroupId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.jurisdiction.AcctRoleGroupRole" >
+    update acct_role_group_role
+    set ROLE_ID = #{roleId,jdbcType=BIGINT},
+      ROLE_GROUP_ID = #{roleGroupId,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=TINYINT},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP}
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </update>
+</mapper>
