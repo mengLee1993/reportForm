@@ -224,7 +224,7 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
                     Object columnValue = rs.getString(columnName);
 
-                    columnName = columnName +
+//                    columnName = columnName + "@" + materialCode@4000
                     if(tmpMap.get(columnName) == null){
                         ArrayList<Object> objects = new ArrayList<>();
                         objects.add(columnValue);

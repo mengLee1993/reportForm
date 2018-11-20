@@ -7,12 +7,13 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -808,16 +810,57 @@ public class ExportExcelUtils {
 		Workbook workBook = poiExcelUtil.createWorkBook();
 		// 2.创建 Sheet
 		Sheet sheet = poiExcelUtil.createSheet(workBook, sheetName);
-		// 3.写入 head
-		poiExcelUtil.writeHeader(workBook, sheet, headers, title);
 
-		// 4,冻结单元格，多行
-		poiExcelUtil.freezeHeader(2,sheet);
+		// 产生表格标题行
+		Row row = sheet.createRow(0);
 
-		// 5.写入内容
-		poiExcelUtil.writeContent(workBook, sheet, headers, dataList);
+		//报表属性
+		CellStyle createCellStyle = upXssfCellStyle(workBook);
+
+		// 列 ---
+		for (int i = 0; i < headers.length; i ++) {
+			String header = headers[i];
+			Cell cell = row.createCell(i);
+
+			// 列数据
+			cell.setCellValue(header);
+			cell.setCellStyle(createCellStyle);
+			sheet.setColumnWidth(i, 5000);
+		}
+
+//		for(int i = 0; i < dataList.size(); i ++){
+//
+//			Row row = sheet.createRow(i + 1);
+//
+//		}
+//		// 3.写入 head
+//		poiExcelUtil.writeHeader(workBook, sheet, headers, title);
+//
+//		// 4,冻结单元格，多行
+//		poiExcelUtil.freezeHeader(2,sheet);
+//
+//		// 5.写入内容
+//		poiExcelUtil.writeContent(workBook, sheet, headers, dataList);
 
 		return workBook;
+	}
+
+	/**
+	 * 设置workBook 样式
+	 * @param workbook
+	 * @return
+	 */
+	private static CellStyle upXssfCellStyle(Workbook workbook) {
+		CellStyle createCellStyle = workbook.createCellStyle();
+		// 设置格式
+		createCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		createCellStyle.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index); // 设置颜色为红色
+		createCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+		createCellStyle.setWrapText(true); //自动换行
+		createCellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); //设置居中
+
+		return createCellStyle;
 	}
 
 
