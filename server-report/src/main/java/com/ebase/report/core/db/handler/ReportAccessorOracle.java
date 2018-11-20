@@ -12,6 +12,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -304,10 +305,13 @@ public class ReportAccessorOracle extends AbstractAccessor {
     }
 
     @Override
-    public Map<String, List<Object>> queryFromDetail(Integer count, String sql, Connection conn, Map<String, List<Object>> tmpMap) {
+    public List<File> queryFromDetail(Integer count, String sql, Connection conn)  {
+        List<File> files = new ArrayList<>();
+
+
         //看数据量是否过大
         if(count < LENGTH){
-            tmpMap = super.queryFromDetail(count,sql,conn,tmpMap);
+            generateTmpMap(conn, files, sql);
         }else{
 
             StringBuilder builder = new StringBuilder("SELECT * FROM ( SELECT A.*, ROWNUM AS RN FROM ( ");
@@ -326,12 +330,11 @@ public class ReportAccessorOracle extends AbstractAccessor {
                 StringBuilder s = new StringBuilder(builder);
                 String str = s.append(sqlP).append(sqlS).toString();
 
-                tmpMap = super.queryDateil(str,conn,tmpMap);
+                generateTmpMap(conn, files, str);
             }
         }
 
-
-        return tmpMap;
+        return files;
     }
 
 

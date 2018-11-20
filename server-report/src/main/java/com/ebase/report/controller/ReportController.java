@@ -1,6 +1,7 @@
 package com.ebase.report.controller;
 
 import com.ebase.report.common.FileTypeEnum;
+import com.ebase.report.core.ZipUtils;
 import com.ebase.report.core.db.handler.ReportHandler;
 import com.ebase.report.core.json.JsonRequest;
 import com.ebase.report.core.json.JsonResponse;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -46,7 +49,7 @@ public class ReportController {
 
     private final String EXCEL_NAME = "数据报表明细";
 
-    private final String url = "/report/";
+//    private final String url = "/report/";
 
     @Resource
     private ReportHandler reportHandler;
@@ -302,6 +305,7 @@ public class ReportController {
 
         try{
 
+            Long acctId = AssertContext.getAcctId();
             //直接返回
             Callable<Integer> callable = new Callable<Integer>() {
                 @Override
@@ -321,23 +325,27 @@ public class ReportController {
                            RptPersionalDownloadVO rptPersionalDownloadVO = new RptPersionalDownloadVO();
                            //用这个json 查出所有详细数据
 
-                           Map<String,List<Object>> tmp = reportHandler.reportFromDetail(reportDatasource,rptPersionalDownloadVO);
+                           List<File> files = reportHandler.reportFromDetail(reportDatasource,rptPersionalDownloadVO);
 
-                           Workbook workbook = ExportExcelUtils.createExcelWorkBook(EXCEL_NAME,EXCEL_NAME,EXCEL_NAME + System.currentTimeMillis(),tmp);
 
-                           String fileName = new Date().getTime() + AssertContext.getAcctId() + tmp.size() + ".xls";
-//                           String s = url + ;
-                           String path = file_path + url + fileName ; // 配置
-                           ReportExportUtil.write2FilePath(workbook, path);
+                           String path = file_path ; // 配置
+                           String fileName = new Date().getTime() + files.size() + ".zip";
+                           FileOutputStream fos2 = new FileOutputStream(new File(path + "/" + fileName));
+                           ZipUtils.generateZip(fos2, files);
+
+                           //清空file
+                           for(File file:files){
+                               file.delete();
+                           }
 
                            //插入
-                           rptPersionalDownloadVO.setUserId(AssertContext.getAcctId().toString());
+                           rptPersionalDownloadVO.setUserId(acctId.toString());
 //                           rptPersionalDownloadVO.setDownloadSql();
                            rptPersionalDownloadVO.setFileName(fileName);
                            rptPersionalDownloadVO.setFileType(FileTypeEnum.EXCEL.getName());
-                           rptPersionalDownloadVO.setFilePath(url + fileName);
+                           rptPersionalDownloadVO.setFilePath(fileName);
                            rptPersionalDownloadVO.setFileDesc("描述 哦");
-                           rptPersionalDownloadVO.setDownloadTime(new Date());
+                           rptPersionalDownloadVO.setCrateTime(new Date());
                            rptPersionalDownloadService.insertSelective(rptPersionalDownloadVO);
 
                        }

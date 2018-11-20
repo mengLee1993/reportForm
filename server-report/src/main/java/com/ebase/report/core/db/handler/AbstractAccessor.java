@@ -4,24 +4,27 @@ import com.ebase.report.common.DemandType;
 import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataBaseUtil;
 import com.ebase.report.core.db.exception.DbException;
+import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.cube.DimensionKey;
 import com.ebase.report.model.RptDataDict;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.ReportDatasource;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther: <a mailto:xuyongming@ennew.cn>xuyongming</a>
@@ -31,6 +34,8 @@ public abstract class AbstractAccessor implements ReportAccessor {
     private static Logger logger = LoggerFactory.getLogger(AbstractAccessor.class);
     //固定长度
     public final Integer LENGTH = 10000;
+
+    protected final String EXCEL_NAME = "数据报表明细";
 
     public String getReportSql(ReportDatasource reportDatasource) {
         return null;
@@ -251,8 +256,8 @@ public abstract class AbstractAccessor implements ReportAccessor {
     }
 
     @Override
-    public Map<String, List<Object>> queryFromDetail(Integer count,String sql, Connection conn, Map<String, List<Object>> tmpMap) {
-        return queryDateil(sql,conn,tmpMap);
+    public List<File> queryFromDetail(Integer count,String sql, Connection conn) {
+        return null;
     }
 
     @Override
@@ -305,4 +310,42 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
         return dataDicts;
     }
+
+    //生成map
+    protected void generateTmpMap(Connection conn, List<File> files, String sqlDetail) {
+        Map<String, List<Object>> tmpMap = new HashMap<>();
+        tmpMap = queryDateil(sqlDetail, conn, tmpMap);
+        try {
+            generateFile(files, tmpMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //生成file文件
+    protected void generateFile(List<File> files, Map<String, List<Object>> tmpMap) throws IOException {
+        //生成excel 并生成file
+        String fileName = this.getClass().getResource("/").getPath() + new Date().getTime() + files.size() + ".xls";
+        ;
+        FileOutputStream fout = null;
+        Workbook workbook = null;
+        try {
+            workbook = ExportExcelUtils.createExcelWorkBook(EXCEL_NAME,EXCEL_NAME,EXCEL_NAME + System.currentTimeMillis(),tmpMap);
+
+            File file = new File(fileName);
+            fout = new FileOutputStream(file);
+            workbook.write(fout);
+            files.add(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                fout.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            workbook.close();
+        }
+    }
+
 }

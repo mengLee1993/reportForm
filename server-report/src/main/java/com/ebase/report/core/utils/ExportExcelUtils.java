@@ -497,7 +497,7 @@ public class ExportExcelUtils {
 	 * @param response
 	 * @param exportFileName
 	 */
-	private static void setFileName(HttpServletRequest request, HttpServletResponse response, String exportFileName) {
+	public static void setFileName(HttpServletRequest request, HttpServletResponse response, String exportFileName) {
 		String agentLower = request.getHeader("User-Agent").toLowerCase(); // 获取浏览器
 		try {
 			if (agentLower.contains("firefox")) {// 火狐浏览器使用base64编码
