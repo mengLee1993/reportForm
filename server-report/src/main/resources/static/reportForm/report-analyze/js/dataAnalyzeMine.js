@@ -987,14 +987,14 @@ function rightJsonJoin(){
     document.body.jsLee.jsonAll.reportDynamicParam.column = [];
     /*document.body.jsLee.jsonAll.reportDynamicParam.filter = [];*/
     document.body.jsLee.jsonAll.reportDynamicParam.tbs = [];
-    for(var i=0;i<$(".selDimensionRows li").length;i++)//行
+    for(var i=0;i<$(".selDimensionRows *[id=cloneRow]").length;i++)//行
     {
-        //$(".selDimensionRows li").eq(i).find(".content")[0].jsonData.isChecked = true;
-        document.body.jsLee.jsonAll.reportDynamicParam.line.push($(".selDimensionRows li")[i].jsonData);
+        //$(".selDimensionRows *[id=cloneRow]").eq(i).find(".content")[0].jsonData.isChecked = true;
+        document.body.jsLee.jsonAll.reportDynamicParam.line.push($(".selDimensionRows *[id=cloneRow]")[i].jsonData);
     }
-    for(var i=0;i<$(".selDimensionCols li").length;i++)//列
+    for(var i=0;i<$(".selDimensionCols *[id=cloneRow]").length;i++)//列
     {
-        document.body.jsLee.jsonAll.reportDynamicParam.column.push($(".selDimensionCols li")[i].jsonData);
+        document.body.jsLee.jsonAll.reportDynamicParam.column.push($(".selDimensionCols *[id=cloneRow]")[i].jsonData);
     }
 
     /*for(var i=0;i<$(".selDimensionSearch li").length;i++)//过滤区
