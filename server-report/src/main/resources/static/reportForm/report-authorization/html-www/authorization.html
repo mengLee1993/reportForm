@@ -16,7 +16,9 @@
                             <span class="mr5">帐户名：</span><input type="text" class="inputBase" id="condacctTitle">
                         </li>
                         <li style="display: inline-block;float: none;">
-                            <div class="btn_kind_3 ml10" comType="searchBtnCtrl" cond="condacctTitle" rule="cond" unionTableId="tableUser" parentId="tableUserBoxSearch">查询</div>
+                            <div class="search_btn_class" comType="searchBtnCtrl" cond="condacctTitle" rule="cond" unionTableId="tableUser" parentId="tableUserBoxSearch">
+                                <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
+                            </div>
                         </li>
                     </ul>
                     <table class="datareport-tablelist" id="tableUser" comtype="standardTableCtrl"
@@ -37,7 +39,7 @@
                                 <td class="table-list__td" id="acctTitle"></td>
                                 <td class="table-list__td" id="name"></td>
                                 <td class="table-list__td" id="mobilePhone"></td>
-                                <td class="table-list__td" id="email"></td>
+                                <td class="table-list__td" style="padding: 0 5px"><p style="width: 118px;overflow: hidden;" id="email"></p></td>
                                 <td class="table-list__td"><a href="javascript:;" class="js-accredit" style="margin-top: 2px;color: #0375d7">授权</a></td>
                             </tr>
                         </tbody>
@@ -56,7 +58,9 @@
                             <span class="mr5">角色名称：</span><input style="min-width: 180px" type="text" class="inputBase" id="condroleTitle">
                         </li>
                         <li>
-                            <div class="btn_kind_3 ml10" comType="searchBtnCtrl" cond="condroleCode,condroleTitle" rule="cond" unionTableId="tableRole" parentId="tableRoleBoxSearch">查询</div>
+                            <div class="search_btn_class" comType="searchBtnCtrl" cond="condroleCode,condroleTitle" rule="cond" unionTableId="tableRole" parentId="tableRoleBoxSearch">
+                                <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
+                            </div>
                         </li>
                     </ul>
                     <table class="datareport-tablelist" id="tableRole" comtype="standardTableCtrl"
@@ -104,7 +108,7 @@
                                     <input type="checkbox" class="datareport-treeListTable-tr__input">
                                 </span>
                                 <i class="colmain_icon03"></i>
-                                <span class="datareport-treeListTable-tr__text" id="datasourceName"></span>
+                                <span class="datareport-treeListTable-tr__text" id="datasourceName"></span>--<span id="datasourceChineseName"></span>
                             </div>
                         </td>
                     </tr>

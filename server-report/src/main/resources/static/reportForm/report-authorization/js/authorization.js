@@ -90,6 +90,9 @@ function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
             jsonItem.status = "停用";
         }
     }
+    if(this.ctrl.id == "tableUser"){
+        $(cloneRow).find("#email").attr("title",jsonItem.email)
+    }
 }
 var treeListFun = function(data){
     data = JSON.parse(data);
