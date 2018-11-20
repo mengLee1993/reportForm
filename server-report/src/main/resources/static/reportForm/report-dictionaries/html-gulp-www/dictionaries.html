@@ -315,6 +315,11 @@
                     }
                 })
             });
+            $(cloneRow).find("#deleteTheme").on("click",function(){
+                var alertBox=new clsAlertBoxCtrl();
+                alertBox.Alert("确认删除吗？","提示",1,"","deleteBox");
+                tableId = jsonItem.tableId;
+            })
             // $(cloneRow).hover(function () {
             //     $(this).css("background","#f8f8f9");
             // },function(){
@@ -352,6 +357,20 @@
 //            })
         };
 
+    }
+    var tableId = null;//删除id
+    function clsAlertBoxCtrl$sure() {//成功弹框确定
+        if (this.id == "deleteBox") {
+            getAjaxResult("/report/dataTable/remove","post",{"tableId":tableId},function(data){
+                data = JSON.parse(data);
+                if(data.retCode == "0000000"){
+                    document.body.jsCtrl.ctrl = $("#themeList")[0];
+                    document.body.jsCtrl.init();
+                }else{
+                    aletr(data.retDesc);
+                }
+            });
+        }
     }
     function clsStandardTableCtrl$after() {
         if(this.ctrl.id == "navDatalist"){//初始化业务表
@@ -570,6 +589,7 @@
                             <!--<td class="table-list__td" id="statusTxt"></td>-->
                             <td class="table-list__td">
                                 <a href="javascript:;" id="editTheme">编辑</a>
+                                <a href="javascript:;" id="deleteTheme"></a>
                             </td>
 
                         </tr>
