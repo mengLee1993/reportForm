@@ -27,14 +27,14 @@ $bd_dee: #dee3e6;//主体边框线
       background: url('../images/images.png') no-repeat -211px -181px;
       width: 9px;
       height: 6px;
-      margin: 0 5px;
+      margin: 7px 5px;
     }
     .firstParent__icon1{
       display: inline-block;
       background: url('../images/images.png') no-repeat -421px -181px;
       width: 9px;
       height: 6px;
-      margin: 0 5px;
+      margin: 7px 5px;
     }
     ul{
       width: 100%;
@@ -161,9 +161,6 @@ $bd_dee: #dee3e6;//主体边框线
 
     }
     li{
-      width: 100%;
-
-      line-height: 24px;
       .firstParent{
         width: 100%;
         height: 40px;
@@ -277,7 +274,7 @@ $bd_dee: #dee3e6;//主体边框线
   margin-top: 5px;
 }
 .parentChildTable-child-list-con{
-  width: 82%;margin-left:5px;margin-bottom: 5px;line-height: 24px;text-overflow: ellipsis;white-space: normal;overflow: hidden
+  width: 135px;margin-left:5px;margin-bottom: 5px;line-height: 24px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden
 }
 .parentChildTable-child-list-check{
   margin-top: 6px;
@@ -312,7 +309,7 @@ $bd_dee: #dee3e6;//主体边框线
     background: url('../images/images.png') no-repeat -277px -40px;
     width: 10px;
     height: 10px;
-    margin-top: 6px;
+    margin-top: 8px;
   }
 }
 .management-box-list__Content { width: 950px; margin-top: 4px; margin-left: 22px; }
@@ -429,4 +426,24 @@ $bd_dee: #dee3e6;//主体边框线
   margin-top: 7px;
   margin-left: 15px;
   cursor: pointer;
+}
+.parentChildTable-parent-name{
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ui-sortable-handle .content{
+  line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90px;
+}
+.parentChildTable-childList-thirdList-measure{
+  cursor: pointer;
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
