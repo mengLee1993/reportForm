@@ -82,7 +82,11 @@ function clsMethodLee$init(){
 function clsMethodLee$parse(){
     //初始化左侧父子table
     if(this.personalAnalysisId){
-        getAjaxResult(document.body.jsLee.requestUrl.path8,"POST",{"personalAnalysisId":this.personalAnalysisId},"initHtmlCallBack(data)");
+        getAjaxResultLee(document.body.jsLee.requestUrl.path8,"POST",{"personalAnalysisId":this.personalAnalysisId},"initHtmlCallBack(data)",function(){
+            $("#ajaxWaiting").show();
+        },function () {
+            $("#ajaxWaiting").hide();
+        });
     }else{
         initplugPath($("#parentChildTableList")[0],"parentChildTableCtrl",this.requestUrl.path1,{"personalSubjectId":this.personalSubjectId},"POST");
     }
@@ -111,6 +115,14 @@ function clsMethodLee$parse(){
     $("#userShare")[0].cacheArr = [];
     $("#roleShare")[0].cacheArr = [];
     this.operate();
+    if(this.personalAnalysisId){
+        this.resourceTreeOperate.click().remove();
+        this.boardOperate.click().remove();
+        this.setUpChart.remove();
+        this.refreshOperate.remove();
+        this.saveOperate.remove();
+        this.shareOperate.remove();
+    }
 }
 
 function clsMethodLee$operate(){
@@ -119,7 +131,7 @@ function clsMethodLee$operate(){
     this.createSure.bind("click",function(){
         if(checkTrue()){
             var jsonParam = jsonParamJoin();
-            getAjaxResult(document.body.jsLee.requestUrl.path4,"POST",jsonParam,"createMeasureCallBack(data)");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path4,"POST",jsonParam,"createMeasureCallBack(data)");
         }
     });
     //添加measure弹框取消
@@ -140,7 +152,7 @@ function clsMethodLee$operate(){
         var valiClass=new clsValidateCtrl();
         if(valiClass.validateAll4Ctrl($("#reportNamePop")[0])){
             var jsonParam = {"reportEchoBody":document.body.jsLee.jsonAll,"reportName":$("#reportName").val()};
-            getAjaxResult(document.body.jsLee.requestUrl.path7,"POST",jsonParam,"saveCallBack(data)");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path7,"POST",jsonParam,"saveCallBack(data)");
         }
     });
     //保存取消
@@ -154,7 +166,11 @@ function clsMethodLee$operate(){
             var alertBox = new clsAlertBoxCtrl();
             alertBox.Alert("请保存报表", "失败提示");
         }else{
-            getAjaxResult(document.body.jsLee.requestUrl.path13,"POST",{},"submitCallBack(data)");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path13,"POST",{"personalAnalysisId":document.body.jsLee.personalAnalysisId},"submitCallBack(data)",function(){
+                $("#ajaxWaiting").show();
+            },function () {
+                $("#ajaxWaiting").hide();
+            });
         }
 
     });
@@ -217,7 +233,7 @@ function clsMethodLee$operate(){
             jsonParam.reportDynamicParam.line[nI].position = null;
         }
         for(var nI = 0; nI < jsonParam.reportDynamicParam.column.length ; nI++ ){
-            if(jsonParam.reportDynamicParam.column[nI].fieldName == "Measures"){
+            if(jsonParam.reportDynamicParam.column[nI].combinationName == "Measures"){
                 delete jsonParam.reportDynamicParam.column[nI].Measures;
                 for(var mI = 0; mI < jsonParam.reportDynamicParam.column[nI].rptMeasures.length; mI++ ){
                     delete jsonParam.reportDynamicParam.column[nI].rptMeasures[mI].measureId;
@@ -228,7 +244,7 @@ function clsMethodLee$operate(){
         var importParam = "name=" + JSON.stringify(jsonParam);
         if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表表格
             $.download(requestUrl + document.body.jsLee.requestUrl.path9, importParam, "POST");
-            //getAjaxResult(document.body.jsLee.requestUrl.path9,"POST",importParam,"abc(data)")
+            //getAjaxResultLee(document.body.jsLee.requestUrl.path9,"POST",importParam,"abc(data)")
         }else{
             var alertBox=new clsAlertBoxCtrl();
             alertBox.Alert("请生成table","失败提示");
@@ -365,7 +381,7 @@ function clsParentChildTableCtrl$childProgress(jsonCItem, childCloneRow, jsonIte
 
 function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
     if(this.ctrl.id == "parentChildTableCopy"){
-        $(cloneRow).find("#fieldName").addClass("content").attr("jsonData",JSON.stringify(jsonItem));
+        $(cloneRow).find("#combinationName").addClass("content").attr("jsonData",JSON.stringify(jsonItem));
         if(jsonItem.isChecked == 1){
             $(cloneRow).find(".chkC").attr("checked",true);
         }
@@ -423,12 +439,12 @@ function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
         }
         //赋值勾选框
         if(jsonItem.isChecked){
-            $(cloneRow).find("input").attr("checked",true);
+            $(cloneRow).find("input[type=checkbox]").attr("checked",true);
         }else{
-            $(cloneRow).find("input").attr("checked",false);
+            $(cloneRow).find("input[type=checkbox]").attr("checked",false);
         }
         //勾选搜索方式
-        $(cloneRow).find("input").on("click",function(){
+        $(cloneRow).find("input[type=checkbox]").on("click",function(){
 
             searchSetDeatilCheck(this)
             rightJsonJoin();
@@ -443,6 +459,22 @@ function clsStandardTableCtrl$before() {
     }else if(this.ctrl.id == "roleShare"){
         $("#roleShare #checkAll2").removeAttr("checked");
     }
+}
+
+function clsParentChildTableCtrl$after() {
+    //搜索操作父子树状结构
+    $(".btnSearch").on("click",function(){
+        var inputSearchText = $(this).prev().val();
+        var cloneRows = $(this).parents("#childShow").find("*[id=cloneChildRow]");
+        cloneRows.each(function(){
+            if($(this).find("#combinationName").html().indexOf(inputSearchText) == -1){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        });
+
+    });
 }
 
 function clsStandardTableCtrl$after() {
@@ -522,7 +554,7 @@ function initHtmlData(data){
     for(var mI = 0 ; mI < data.line.length; mI++ ){
         var cloneRowL = $("#parentChildTableCopy #templateRow").clone(true);
         cloneRowL.attr("id","cloneRow").show();
-        cloneRowL.find("#fieldName").addClass("content").html(data.line[mI].fieldName);
+        cloneRowL.find("#combinationName").addClass("content").html(data.line[mI].combinationName);
         //编辑操作
         cloneRowL.find("#fieldNameEdit").show();
         cloneRowL.find(".content").attr("jsonData",JSON.stringify(data.line[mI]));
@@ -544,7 +576,7 @@ function initHtmlData(data){
             subTotalIsTrue(this);
         });
         //是否显示设置过滤
-        if(data.line[mI].fieldName != "Measures"){
+        if(data.line[mI].combinationName != "Measures"){
             cloneRowL.find("#searchSetBox").show();
         }else{
             cloneRowL.find("#searchSetBox").hide();
@@ -566,7 +598,7 @@ function initHtmlData(data){
     for(var oI = 0 ; oI < data.column.length; oI++ ){
         var cloneRowC = $("#parentChildTableCopy #templateRow").clone(true);
         cloneRowC.attr("id","cloneRow").show();
-        cloneRowC.find("#fieldName").addClass("content").html(data.column[oI].fieldName);
+        cloneRowC.find("#combinationName").addClass("content").html(data.column[oI].combinationName);
         cloneRowC.find(".content").attr("jsonData",JSON.stringify(data.column[oI]));
 
         //编辑操作
@@ -588,7 +620,7 @@ function initHtmlData(data){
             subTotalIsTrue(this);
         });
         //是否显示设置过滤
-        if(data.column[oI].fieldName != "Measures"){
+        if(data.column[oI].combinationName != "Measures"){
             cloneRowC.find("#searchSetBox").show();
         }else{
             cloneRowC.find("#searchSetBox").hide();
@@ -626,7 +658,7 @@ function initRowCol(data){
     for(var mI = 0 ; mI < data.line.length; mI++ ){
         var cloneRowL = $("#parentChildTableCopy #templateRow").clone(true);
         cloneRowL.attr("id","cloneRow").show();
-        cloneRowL.find("#fieldName").addClass("content").html(data.line[mI].fieldName);
+        cloneRowL.find("#combinationName").addClass("content").html(data.line[mI].combinationName);
         //编辑操作
         cloneRowL.find("#fieldNameEdit").show();
         cloneRowL.find(".content").attr("jsonData",JSON.stringify(data.line[mI]));
@@ -648,7 +680,7 @@ function initRowCol(data){
             subTotalIsTrue(this);
         });
         //是否显示设置过滤
-        if(data.line[mI].fieldName != "Measures"){
+        if(data.line[mI].combinationName != "Measures"){
             cloneRowL.find("#searchSetBox").show();
         }else{
             cloneRowL.find("#searchSetBox").hide();
@@ -670,7 +702,7 @@ function initRowCol(data){
     for(var oI = 0 ; oI < data.column.length; oI++ ){
         var cloneRowC = $("#parentChildTableCopy #templateRow").clone(true);
         cloneRowC.attr("id","cloneRow").show();
-        cloneRowC.find("#fieldName").addClass("content").html(data.column[oI].fieldName);
+        cloneRowC.find("#combinationName").addClass("content").html(data.column[oI].combinationName);
         cloneRowC.find(".content").attr("jsonData",JSON.stringify(data.column[oI]));
 
         //编辑操作
@@ -692,7 +724,7 @@ function initRowCol(data){
             subTotalIsTrue(this);
         });
         //是否显示设置过滤
-        if(data.column[oI].fieldName != "Measures"){
+        if(data.column[oI].combinationName != "Measures"){
             cloneRowC.find("#searchSetBox").show();
         }else{
             cloneRowC.find("#searchSetBox").hide();
@@ -722,7 +754,7 @@ function initRowCol(data){
 
 //渲染Measures
 function measureInit(cloneRow,jsonItem){
-    $(cloneRow).find("#cloneChildRow")[0].jsonData = {"fieldName":"Measures","rptMeasures":jsonItem.rptMeasures,"Measures":"1","demandType":"MEASURES"};//缓存当前行jsonData
+    $(cloneRow).find("#cloneChildRow")[0].jsonData = {"fieldName":"Measures","combinationName":"Measures","rptMeasures":jsonItem.rptMeasures,"Measures":"1","demandType":"MEASURES"};//缓存当前行jsonData
     if(jsonItem.isChecked == 1){
         $(cloneRow).find("#cloneChildRow .chkC").attr("checked",true);
     }
@@ -744,7 +776,7 @@ function measureInit(cloneRow,jsonItem){
             cloneSpecialRow.find("#measureDeleteOpe").on("click",function () {//指标删除操作
                 var jsonParam = {"measureId":$(this).parents("#cloneSpecialRow")[0].jsonData.measureId};
                 jsonParam.personalAnalysisId = document.body.jsLee.personalAnalysisId;
-                getAjaxResult(document.body.jsLee.requestUrl.path5,"POST",jsonParam,"measureDeleteCallBack(data)")
+                getAjaxResultLee(document.body.jsLee.requestUrl.path5,"POST",jsonParam,"measureDeleteCallBack(data)")
             });
             $(cloneRow).find("#templateSpecialRow").before(cloneSpecialRow);
         }
@@ -766,6 +798,7 @@ function initWaitSelect(cloneRow){
                 var jsonA = {};
                 jsonA = $(this).parents("#cloneChildRow")[0].jsonData.rptMeasures[nI];
                 jsonA.fieldName = $(this).parents("#cloneChildRow")[0].jsonData.rptMeasures[nI].measuresName;
+                jsonA.combinationName = $(this).parents("#cloneChildRow")[0].jsonData.rptMeasures[nI].measuresName;
                 //jsonA.fieldCode = $(this).parents("#cloneChildRow")[0].jsonData.rptMeasures[nI].fieldCode;
             }
             document.body.jsLee.checkedAll.push($(this).parents("#cloneChildRow")[0].jsonData);
@@ -831,6 +864,8 @@ function childListShow(that,cloneRow,jsonItem){
         $("*[id=parentClick] i").removeClass("firstParent__icon1");
         $("#parentChildTableList *[id=parentClick]").attr("clickMark",0);
     }
+    $(cloneRow).find("#inputSearch").val("");
+    $(cloneRow).find(".btnSearch").click();
 }
 
 //添加或者编辑指标，初始化弹框
@@ -845,7 +880,7 @@ function clearpopup(){
     //初始化tab页
     $("#measureTab li:first").click();
     //初始化待选指标path3
-    getAjaxResult(document.body.jsLee.requestUrl.path3,"POST",{"personalSubjectId":document.body.jsLee.subjectId},"waitMeasureInit(data)");
+    getAjaxResultLee(document.body.jsLee.requestUrl.path3,"POST",{"personalSubjectId":document.body.jsLee.subjectId},"waitMeasureInit(data)");
     $("#formulaContent").html("");
 }
 
@@ -1032,13 +1067,18 @@ function initTable(){
     }
     var jsonParam = {"reportDynamicParam":document.body.jsLee.jsonAll.reportDynamicParam,"personalSubjectId":document.body.jsLee.jsonAll.personalSubjectId,"datasourceName":document.body.jsLee.jsonAll.datasourceName,"databaseType":document.body.jsLee.jsonAll.databaseType,"reportTables":document.body.jsLee.jsonAll.reportTables,"subjectType":document.body.jsLee.jsonAll.subjectType};
     if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表表格
-        getAjaxResult(document.body.jsLee.requestUrl.path6,"POST",jsonParam,"initMainTableCallBack(data)");
+        getAjaxResultLee(document.body.jsLee.requestUrl.path6,"POST",jsonParam,"initMainTableCallBack(data)",function(){
+            $("#ajaxWaiting").show();
+        },function () {
+            $("#ajaxWaiting").hide();
+            //
+        });
     }
     /*//行列转换判断
     if(!$("#rowColTranslate").attr("clickMark")){
         var jsonParam = {"reportDynamicParam":document.body.jsLee.jsonAll.reportDynamicParam,"personalSubjectId":document.body.jsLee.jsonAll.personalSubjectId,"datasourceName":document.body.jsLee.jsonAll.datasourceName,"databaseType":document.body.jsLee.jsonAll.databaseType,"reportTables":document.body.jsLee.jsonAll.reportTables,"subjectType":document.body.jsLee.jsonAll.subjectType};
         if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表表格
-            getAjaxResult(document.body.jsLee.requestUrl.path6,"POST",jsonParam,"initMainTableCallBack(data)");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path6,"POST",jsonParam,"initMainTableCallBack(data)");
         }
     }else{
         var jsonParamA = deepCopy(document.body.jsLee.jsonAll);
@@ -1048,7 +1088,7 @@ function initTable(){
         jsonParamA.reportDynamicParam.line = colJson;
         var jsonParam = {"reportDynamicParam":jsonParamA.reportDynamicParam,"personalSubjectId":jsonParamA.personalSubjectId,"datasourceName":jsonParamA.datasourceName,"databaseType":jsonParamA.databaseType,"reportTables":jsonParamA.reportTables,"subjectType":jsonParamA.subjectType};
         if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表表格
-            getAjaxResult(document.body.jsLee.requestUrl.path6,"POST",jsonParam,"initMainTableCallBack(data)");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path6,"POST",jsonParam,"initMainTableCallBack(data)");
         }
     }*/
 
@@ -1071,7 +1111,7 @@ function checkIsFinal(that){
     var lock = true;
     var num = 0;
     $("#tablePopupList *[id=cloneRow]").each(function(){
-        if($(this).find("input").is(":checked")){
+        if($(this).find("input[type=checkbox]").is(":checked")){
             num++;
         }
     })
@@ -1106,7 +1146,7 @@ function tablePopupListJson(that){
 
 //修改弹框中过滤区隐藏jsonData
 function searchSetDeatilCheck(that){
-    $("#searchSetDeatil *[id=cloneRow] input").each(function(){
+    $("#searchSetDeatil *[id=cloneRow] input[type=checkbox]").each(function(){
         $(this).attr("checked",false);
         $(this).parents("#cloneRow")[0].jsonData.isChecked = 0;
     });
@@ -1267,7 +1307,7 @@ function shareSureOperate(){
                 jsonParam.list.push($("#roleShare")[0].cacheArr[nI].acctId);
             }
         }
-        getAjaxResult(document.body.jsLee.requestUrl.path12,"POST",jsonParam,"shareCallBack(data)");
+        getAjaxResultLee(document.body.jsLee.requestUrl.path12,"POST",jsonParam,"shareCallBack(data)");
     }
 }
 
@@ -1400,7 +1440,11 @@ function initChart(){
     jsonParam.chartOptions.chartType = $("input[name=tableChart]:first").is(":checked") ? "BAR" : "PIE";
     jsonParam.chartOptions.positionType = $("#wayShowType option:selected").val() == 0 ? "LINE" : "COLUMN";
     if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表图形
-        getAjaxResult(document.body.jsLee.requestUrl.path14,"POST",jsonParam,"initChartCallBack(data)");
+        getAjaxResultLee(document.body.jsLee.requestUrl.path14,"POST",jsonParam,"initChartCallBack(data)",function(){
+            $("#ajaxWaiting").show();
+        },function () {
+            $("#ajaxWaiting").hide();
+        });
     }else{
         $("#container").parent().html('<div id="container" style="min-width:400px;height:400px;width: 100%;display: none"></div>');
     }
@@ -1410,7 +1454,7 @@ function initChart(){
         jsonParam.chartOptions.chartType = $("input[name=tableChart]:first").is(":checked") ? "BAR" : "PIE";
         jsonParam.chartOptions.positionType = $("#wayShowType option:selected").val() == 0 ? "LINE" : "COLUMN";
         if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表图形
-            getAjaxResult(document.body.jsLee.requestUrl.path14,"POST",jsonParam,"initChartCallBack(data)");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path14,"POST",jsonParam,"initChartCallBack(data)");
         }
     }else{
         var jsonParam = deepCopy(document.body.jsLee.jsonAll);
@@ -1422,7 +1466,7 @@ function initChart(){
         jsonParam.chartOptions.chartType = $("input[name=tableChart]:first").is(":checked") ? "BAR" : "PIE";
         jsonParam.chartOptions.positionType = $("#wayShowType option:selected").val() == 0 ? "LINE" : "COLUMN";
         if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表图形
-            getAjaxResult(document.body.jsLee.requestUrl.path14,"POST",jsonParam,"initChartCallBack(data)");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path14,"POST",jsonParam,"initChartCallBack(data)");
         }
     }*/
 }
@@ -1573,6 +1617,42 @@ function initTableOrChart(){
     }else{
         initChart();
     }
+}
+
+//公用方法
+function getAjaxResultLee(strPath, method, param, callbackMethod, beforeSendFunc,complete , asyncType) {
+    var strPath = (requestUrl == null) ? strPath : requestUrl + strPath;
+    var operId = (param.operId == null) ? "" : param.operId;
+    jsonReqHeaderData.operTitle = operId;
+    var reqParam = {"reqHeader": jsonReqHeaderData};
+    reqParam["reqBody"] = param;
+    asyncType = asyncType || false;
+    $.ajax({
+        url: strPath,
+        type: method,
+        async: asyncType,
+        cache: false,
+        data: JSON.stringify(reqParam),
+        dataType: 'text',
+        contentType: 'application/json',
+        beforeSend: beforeSendFunc ? beforeSendFunc : function () {
+        },
+        success: function (data) {
+            if (typeof(callbackMethod) == "string") {
+                eval(callbackMethod);
+            } else if (typeof(callbackMethod) == "function") {
+                callbackMethod(data);
+            }
+            var jsonResultData = JSON.parse(data);
+            jumpUrl(null, jsonResultData.retCode, null, jsonResultData);
+        },
+        complete: complete ? complete :function(){
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        }
+    });
 }
 
 $(function(){

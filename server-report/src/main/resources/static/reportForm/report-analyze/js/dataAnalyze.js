@@ -42,6 +42,7 @@ function clsRptCtrl()
     this.parse		= clsRptCtrl$parse;
     this.parseData	= clsRptCtrl$parseData;
     this.parseTitle	= clsRptCtrl$parseTitle;
+    this.parseTitleAfter	= clsRptCtrl$parseTitleAfter;
     this.getLastRow = clsRptCtrl$getLastRow;
     this.getDimensionData			= clsRptCtrl$getDimensionData;
     this.getDimensionDataCallBack	= clsRptCtrl$getDimensionDataCallBack;
@@ -208,6 +209,12 @@ function clsRptCtrl$parseTitle()
             this.ctrl.appendChild(oRow);
         }
     }
+    this.parseTitleAfter();
+}
+
+function clsRptCtrl$parseTitleAfter(){
+    var numTh = $(this.ctrl).find("tr[rowtype=title] td").length;
+    $(this.ctrl).css("width",(100 * numTh) + "px");
 }
 
 function clsRptCtrl$cloneTd(type)
@@ -310,7 +317,7 @@ function clsRptCtrl$initLayout()
         helper: "clone",
         stop: function(event,ui){
             //重置缓存数组
-            if(ui.item.parents(".selDimensionSearch").length == 1 && ui.item[0].jsonData.fieldName == "Measures"){
+            if(ui.item.parents(".selDimensionSearch").length == 1 && ui.item[0].jsonData.combinationName == "Measures"){
                 return false;
 
                 /*var cloneDom = ui.item.clone(true);
@@ -343,7 +350,7 @@ function clsRptCtrl$initLayout()
                     subTotalIsTrue(this);
                 });
                 //设置搜索条件
-                if($(".selDimensionRows li")[i].jsonData.fieldName != "Measures"){
+                if($(".selDimensionRows li")[i].jsonData.combinationName != "Measures"){
                     $(".selDimensionRows li").eq(i).find("#searchSetBox").show();
                 }
                 if($(".selDimensionRows li")[i].jsonData.searchTrue){
