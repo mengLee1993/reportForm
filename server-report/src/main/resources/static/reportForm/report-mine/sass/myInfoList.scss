@@ -4,6 +4,15 @@ $bd_dee: #dee3e6;//主体边框线
   width: 100%;
   height: 100%;
 }
+.search_btn_class{
+  display: inline-block;
+  height: 30px;
+  width: 80px;
+  background: $as_00a;
+  line-height: 30px;
+  text-align: center;
+  color: $fc_ff;
+}
 .downloadcet-nav{
   width: 14%;
   float: left;

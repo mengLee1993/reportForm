@@ -36,6 +36,8 @@
 /*按钮*/
 .downloadcet { width: 100%; height: 100%; }
 
+.search_btn_class { display: inline-block; height: 30px; width: 80px; background: #00afff; line-height: 30px; text-align: center; color: #fff; }
+
 .downloadcet-nav { width: 14%; float: left; height: 100%; background: #fff; overflow: auto; overflow-x: scroll; }
 
 .downloadcet-nav__text { height: 40px; color: #0375D7; font-size: 14px; line-height: 40px; text-indent: 15px; }
