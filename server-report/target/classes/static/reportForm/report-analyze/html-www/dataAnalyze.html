@@ -1,0 +1,464 @@
+@@include('../../report-home/html-gulp-www/commonHeader.html')
+<link rel="stylesheet" href="../css/dataAnalyze.css">
+<link rel="stylesheet" href="../css/jquery-ui.css">
+<script src="../js/dataAnalyze.js"></script>
+<script src="../js/dataAnalyzeMine.js"></script>
+<script src="../js/jquery-ui.js"></script>
+<script src="../../../plugin/highcharts/highcharts.js"></script>
+<script src="../../../plugin/highcharts/highcharts-more.js"></script>
+<script src="../../../plugin/highcharts/modules/solid-gauge.js"></script>
+<script src="../../../plugin/highcharts/modules/exporting.js"></script>
+<div class="formcontainer">
+    <div class="formcontainer-nav">
+        <!--id="navigation"-->
+        <div class="formcontainer-left">
+            <p class="formcontainer-nav__text">主题列表</p>
+            <table class="parentChildTable" id="parentChildTableList" comType="" reqParam="{}" reqPath="" reqMethod="POST" templateParentId="templateParentRow" templateChildId="templateChildRow" jsonChildName="rptDataFields" chkC="chkC">
+                <tr id="templateParentRow" style="display: none;">
+                    <td>
+                        <div class="parentChildTable-parent clearfix" id="parentClick" clickMark="0">
+                            <i class="firstParent__icon ego-Solid_arrow_16px fl" ></i>
+                            <span id="subjectName" class="parentChildTable-parent-name fl"></span>
+                        </div>
+                        <ul class="parentChildTable-child" id="childShow" style="display: none;">
+                            <li class="parentChildTable-child-list">
+                                <input type="text" class="parentChildTable-child-list-check fl" style="cursor: auto;" id="inputSearch">
+                                <div class="fl btnSearch" style="margin-top: 6px;line-height: 20px;cursor: pointer">搜索</div>
+                            </li>
+                            <li class="parentChildTable-child-list" id="templateChildRow" style="display: none;">
+                                <input type="checkbox" class="parentChildTable-child-list-check chkC fl">
+                                <div class="parentChildTable-child-list-con fl" id="combinationName"></div>
+                            </li>
+                            <li class="parentChildTable-child-list cloneChildRow clearfix" id="cloneChildRow" style="height: auto;">
+                                <input type="checkbox" class="parentChildTable-child-list-check chkC fl">
+                                <div class="parentChildTable-child-list-con fl" id="combinationName">Measures <i class="parentChildTable-child-listCheck-create fr mr20" id="createMeasure"></i></div>
+                                <ul class="fl parentChildTable-child-list-third">
+                                    <li class="parentChildTable-childList-thirdList" id="templateSpecialRow" style="display: none;">
+                                        <span class="fl parentChildTable-childList-thirdList-measure" id="measuresName"></span>
+                                        <i class="fr parentChildTable-child-listThird-delete" id="measureDeleteOpe"></i>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <!--<p><i>逐渐</i><input type="text" id="id"></p><p><i>逐渐</i><input type="text" id="time"></p>-->
+        <!--<p><i>人</i><input type="text" id="person"></p>-->
+        <!--<p><i>哪里</i><input type="text" id="makeId"></p>-->
+        <!--<button id="byl">按钮</button>-->
+    </div>
+    <div class="formcontainer-tool">
+        <!--<a href="#" class="btnLowNew" comType="searchBtnCtrl" cond=""-->
+        <!--rule="cond" unionTableId="codingList2" parentId="searchDivaa" id="search">查询</a>-->
+        <span id="refreshOperate" class="formcontainer-tool__model"> <i class="formcontainer-tool__icon" style="background-position: -469px -83px;"></i>刷新</span>
+        <i class="formcontainer-tool__bar">|</i>
+        <span id="saveOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position: -509px -83px;"></i>保存</span>
+        <span id="submitOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position: -32px -23px;"></i>数据明细</span>
+        <span id="shareOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-109px -146px;;"></i>分享</span>
+        <i class="formcontainer-tool__bar">|</i>
+        <span id="chartShow" class="formcontainer-tool__model"><i class="tableCss"></i><span>图形</span></span>
+        <span id="resourceTreeOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-395px -83px;"></i>资源数</span>
+        <span id="boardOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-151px -145px;"></i>面板</span>
+        <span id="rowColTranslate" class="formcontainer-tool__model"> <i class="formcontainer-tool__icon" style="background-position:-311px -83px;"></i>行列转换</span>
+        <i class="formcontainer-tool__bar">|</i>
+        <!--<span class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-110px -23px;"></i>设置</span>
+        <span class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-229px -83px;"></i>参数</span>
+        <i class="formcontainer-tool__bar">|</i>-->
+        <span id="exportOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-354px -84px;"></i>导出</span>
+        <!-- <i class="formcontainer-tool__icon" style="background-position:-434px -84px"></i>
+        <span class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-354px -84px"></i>过滤</span>-->
+
+        <!--<span class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-233px -23px;"></i>告警</span>-->
+    </div>
+    <div class="formcontainer-main">
+        <div class="formcontainer-mainover">
+            <ul id="searchBox" class="clearfix" style="padding-top: 5px;"></ul>
+            <table class="formcontainer-table" id="rptList" style="table-layout: fixed">
+               <!-- <tr>
+                    <th class="formcontainer-table__thead" style="width: 10%">产品编号</th>
+                    <th class="formcontainer-table__thead" style="width: 10%">饼干</th>
+                    <th class="formcontainer-table__thead" style="width: 10%">蛋糕</th>
+                    <th class="formcontainer-table__thead" style="width: 10%">桂花糕</th>
+                    <th class="formcontainer-table__thead" style="width: 10%">花生</th>
+                    <th class="formcontainer-table__thead" style="width: 10%">绿地</th>
+
+                </tr>
+                <tr>
+                    <td class="formcontainer-table__td">1</td>
+                    <td class="formcontainer-table__td">1</td>
+                    <td class="formcontainer-table__td">3</td>
+                    <td class="formcontainer-table__td">3</td>
+                    <td class="formcontainer-table__td">e</td>
+                    <td class="formcontainer-table__td">e</td>
+                </tr>-->
+            </table>
+        </div>
+        <div class="formcontainer-mainover"  style="display: none;">
+            <div class="tableChart">
+                <input class="tableChart-input fl" type="radio" name="tableChart" checked="true"></input>
+                <span class="tableChart-name fl">柱图</span>
+                <input class="tableChart-input fl" type="radio" name="tableChart"></input>
+                <span class="tableChart-name fl">饼图</span>
+                <span class="setUpChart fl" id="setUpChart"></span>
+            </div>
+            <div class="tableChartMain">
+                <div id="container" style="min-width:400px;height:400px;width: 100%;display: none"></div>
+            </div>
+        </div>
+    </div>
+    <div class="formcontainer-right">
+        <p class="formcontainer-nav__text">待选列</p>
+        <div  class="formcontainer-right__partOne">
+
+            <div style="background: #fff;overflow-y: scroll;height: 100%;height: 120px;">
+                <ul class="selDimensionContent connectedSortable" id="parentChildTableCopy" comType="" templateId="templateRow" style="min-height: 120px;">
+                    <li id="templateRow" class="clearfix" style="display: none;">
+                        <span class="fl" id="combinationName" style="width: 40%"></span>
+                        <span class="fl" style="width: 58%">
+                           <!-- <span class="fl" id="subtotalBox" style="display: none">
+                                <input type="checkbox" id="subtotal">
+                                <span>小计</span>
+                            </span>
+                            <span class="fl" id="searchSetBox" style="display: none">
+                                <input type="checkbox" id="searchSet">
+                                <span>设置过滤</span>
+                            </span>-->
+                            <span class="fr fieldNameEdit" id="fieldNameEdit" style="display: none;"></span>
+                            <span class="fr" id="subtotalBox" style="display: none;">
+                                <span class="subtotal" id="subtotal">小计</span>
+                            </span>
+                            <span class="fr" id="searchSetBox" style="display: none;">
+                                <span class="searchSet" id="searchSet">设置过滤</span>
+                            </span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div  class="formcontainer-right__partOne" style="height: 23%">
+            <p class="formcontainer-nav__text">行区</p>
+            <ul class="selDimensionRows connectedSortable" style="background: #fff;overflow-y: scroll;height: 100%;min-height: 120px;">
+            </ul>
+        </div>
+        <div  class="formcontainer-right__partOne" style="height: 23%">
+            <p class="formcontainer-nav__text">列区</p>
+            <ul class="selDimensionCols connectedSortable" style="background: #fff;overflow-y: scroll;height: 100%;min-height: 120px;">
+            </ul>
+        </div>
+        <div  class="formcontainer-right__partOne" style="height: 23%">
+            <p class="formcontainer-nav__text">过滤区</p>
+            <ul class="selDimensionSearch connectedSortable" id="searchTable" comType="" templateId="templateRow" style="background: #fff;overflow-y: scroll;height: 100%;min-height: 120px;">
+                <li id="templateRow" style="display: none;">
+                    <span id="name"></span>
+                    <span class="fr fieldNameEdit" id="nameEdit" style="margin-right: 5px;"></span>
+                </li>
+            </ul>
+        </div>
+        <!--<div class="formcontainer-right__partTwo clearfix">
+
+            <div class="fl formcontainer-right__left">
+                <p class="formcontainer-nav__textevey">行区</p>
+                <ul class="formcontainer-nav__append selDimensionRows connectedSortable" style="min-height: 120px;overflow-y: scroll">
+                </ul>
+            </div>
+            <div class="fl formcontainer-right__right">
+                <p class="formcontainer-nav__textevey">列区</p>
+                <ul class="formcontainer-nav__appendV selDimensionCols connectedSortable" style="min-height: 120px;overflow-y: scroll">
+
+                </ul>
+            </div>
+        </div>-->
+        <div class="formcontainer-right__foot">
+            <span><input id="immediatelyRefresh" type="checkbox">立即刷新</span>
+        </div>
+    </div>
+</div>
+<!--弹框-->
+<div id="tablePopupListPopup" class="popup" style="display: none">
+    <div class="title">
+        <h2></h2>
+        <div>
+            <a class="min" href="javascript:;" title="最小化" style="display:none;"></a>
+            <a class="max" href="javascript:;" title="最大化" style="display:none;"></a>
+            <a class="revert" href="javascript:;" title="还原" style="display:none;"></a>
+            <a class="close" href="javascript:;" title="关闭" style=" "></a>
+        </div>
+    </div>
+    <div class="content supplier-list-con">
+        <div style="padding: 5%;width: 90%">
+            <table cellspacing="0" cellpadding="0" id="tablePopupList" templateId="templateRow" comType="" reqPath="" reqParam='{}' class="table-list" style="table-layout: fixed">
+                <tr class="table-list-header">
+                    <th style="width:20%;" class="table-list-header__th">选择</th>
+                    <th style="width:80%;" class="table-list-header__th">数据源</th>
+                </tr>
+                <tr id="templateRow" style="display:none;" class="table-list-tr">
+                    <td class="table-list-tr__item">
+                        <input type="checkbox">
+                    </td>
+                    <td class="table-list-tr__item" id="fieldValue"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="searchSetPopup" class="popup" style="display: none">
+    <div class="title">
+        <h2></h2>
+        <div>
+            <a class="min" href="javascript:;" title="最小化" style="display:none;"></a>
+            <a class="max" href="javascript:;" title="最大化" style="display:none;"></a>
+            <a class="revert" href="javascript:;" title="还原" style="display:none;"></a>
+            <a class="close" href="javascript:;" title="关闭" style=" "></a>
+        </div>
+    </div>
+    <div class="content supplier-list-con">
+        <div style="padding: 5%;width: 90%">
+            <table cellspacing="0" cellpadding="0" id="searchSetDeatil" templateId="templateRow" comType="" reqPath="" reqParam='{}' class="table-list" style="table-layout: fixed">
+                <tr class="table-list-header">
+                    <th style="width:20%;" class="table-list-header__th">选择</th>
+                    <th style="width:80%;" class="table-list-header__th">搜索条件</th>
+                </tr>
+                <tr id="templateRow" style="display:none;" class="table-list-tr">
+                    <td class="table-list-tr__item">
+                        <input type="checkbox">
+                    </td>
+                    <td class="table-list-tr__item" id="fieldValA"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="createMeasurePop" class="popup gc_box" style="display:none">
+    <div class="title" style="">
+        <h2>添加指标</h2>
+        <div>
+            <a class="min" href=" " title="最小化" style="display:none;"></a>
+            <a class="max" href="javascript:;" title="最大化" style="display:none;"></a>
+            <a class="revert" href="javascript:;" title="还原" style="display:none;"></a>
+            <a class="close" href="javascript:;" title="关闭" style="display:block;"></a>
+        </div>
+    </div>
+    <div class="content">
+        <ul class="tabMenu-four" comtype="tabCtrl" contentCls="tabCon" id="measureTab">
+            <li class="tabTitLi"><span>自定义指标（函数）</span></li>
+            <li><span>自定义指标（表达式）</span></li>
+        </ul>
+        <div>
+            <div class="tabCon" id="systemMeasure">
+                <ul class="management-box-list__Content clearfix" id="auditPopup" style="width: 400px;">
+                    <!--<li class="userNewPopup-ulist-list">
+                        <span class="userNewPopup-ulist-list-name fl">指标名称:</span>
+                        <input id="measuresName" type="text" class="userNewPopup-ulist-list-input required">
+                    </li>-->
+                    <li class="userNewPopup-ulist-list">
+                        <span class="userNewPopup-ulist-list-name fl">指标字段:</span>
+                        <select id="fieldId" class="userNewPopup-ulist-list-input" selCode="fieldId" selValue="fieldName" style="width: 200px;"></select>
+                    </li>
+                    <li class="userNewPopup-ulist-list">
+                        <span class="userNewPopup-ulist-list-name fl">函数名称:</span>
+                        <select id="measureType" class="userNewPopup-ulist-list-input">
+                            <option value="">请选择</option>
+                            <!--<option value="SUM">求和</option>-->
+                            <option value="COUNT">总数</option>
+                            <option value="AVG">平均值</option>
+                            <option value="MAX">最大值</option>
+                            <option value="MIN">最小值</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="tabCon" id="mineMeasure" style="display: none;">
+                <ul class="management-box-list__Content clearfix" id="auditPopup" style="width: 400px;">
+                    <li class="userNewPopup-ulist-list">
+                        <span class="userNewPopup-ulist-list-name fl">指标名称:</span>
+                        <input id="measuresName" type="text" class="userNewPopup-ulist-list-input required">
+                    </li>
+                    <li class="userNewPopup-ulist-list">
+                        <span class="userNewPopup-ulist-list-name fl">待选指标:</span>
+                        <ul class="userNewPopup-ulist-list-ulWait fl clearfix" id="waitDimensionBox">
+                            <!--<li class="userNewPopup-ulist-list-nameWait fl">哈哈</li>
+                            <li class="userNewPopup-ulist-list-nameWait fl">指标哈哈哈</li>-->
+                        </ul>
+                    </li>
+                    <li class="userNewPopup-ulist-list">
+                        <span class="userNewPopup-ulist-list-name fl">运算符:</span>
+                        <span id="symbolBox">
+                            <!--<span class="userNewPopup-ulist-list-calculate fl">+</span>
+                            <span class="userNewPopup-ulist-list-calculate fl">-</span>
+                            <span class="userNewPopup-ulist-list-calculate fl">*</span>
+                            <span class="userNewPopup-ulist-list-calculate fl">/</span>
+                            <span class="userNewPopup-ulist-list-calculate fl">(</span>
+                            <span class="userNewPopup-ulist-list-calculate fl">)</span>-->
+                        </span>
+                    </li>
+                    <li class="userNewPopup-ulist-list">
+                        <span class="userNewPopup-ulist-list-name fl">公式:</span>
+                        <div class="userNewPopup-ulist-list-input fl" id="formulaContent"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="">
+            <div class="btnBaseCommon product-save" style="margin-left: 200px;" id="createSure">保存</div>
+            <div class="btnBaseCancel product-submit" id="createCancel">取消</div>
+        </div>
+    </div>
+</div>
+<div id="reportNamePop" class="popup gc_box" style="display:none">
+    <div class="title" style="">
+        <h2>请输入报表名称</h2>
+        <div>
+            <a class="min" href=" " title="最小化" style="display:none;"></a>
+            <a class="max" href="javascript:;" title="最大化" style="display:none;"></a>
+            <a class="revert" href="javascript:;" title="还原" style="display:none;"></a>
+            <a class="close" href="javascript:;" title="关闭" style="display:block;"></a>
+        </div>
+    </div>
+    <div class="content">
+        <div style="margin-left: 10px;margin-top: 10px;">
+            <span>报表名称：</span>
+            <input id="reportName" type="text" class="inputBase required">
+        </div>
+        <div class="">
+            <div id="savePopSure" class="btnBaseCommon product-save" style="margin-left: 236px;margin-right: 20px;margin-top: 10px;">确定</div>
+            <div id="savePopCancel" class="btnBaseCancel product-submit">取消</div>
+        </div>
+    </div>
+</div>
+
+<div id="personSharePop" class="popup" style="display: none">
+    <div class="title">
+        <h2></h2>
+        <div>
+            <a class="min" href="javascript:;" title="最小化" style="display:none;"></a>
+            <a class="max" href="javascript:;" title="最大化" style="display:none;"></a>
+            <a class="revert" href="javascript:;" title="还原" style="display:none;"></a>
+            <a class="close" href="javascript:;" title="关闭" style=" "></a>
+        </div>
+    </div>
+    <div class="content supplier-list-con">
+        <div style="padding: 5%;width: 90%">
+            <div style="margin-bottom: 10px;">
+                <span style="margin-right: 5px;">分享类型：</span>
+                <select id="shareType" name="" id="">
+                    <option value="1">人员</option>
+                    <option value="0">角色</option>
+                </select>
+            </div>
+            <div class="userRole">
+                <ul class="clearfix" style="margin-bottom: 10px;" id="searchBox1">
+                    <li class="fl" style="margin-right: 5px;">
+                        <span style="margin-right: 5px;">人员名称：</span>
+                        <input id="condacctTitle" type="text" class="inputBase" />
+                    </li>
+                    <li class="fl">
+                        <div class="btnLowNew" comType="searchBtnCtrl" cond="condacctTitle" rule="cond" unionTableId="userShare" parentId="searchBox1">查询</div>
+                        <div class="btnLowNew shareSure" style="margin-left: 10px;">分享</div>
+                    </li>
+                </ul>
+
+                <table cellspacing="0" cellpadding="0" id="userShare" templateId="templateRow" comType="" reqPath="" reqParam='{}' page="tcdPageCode1" noData="nonDataA" chkId="chkCoding" isCacheCond="acctId" clsChk="clsChk1" clsallchk="clsAllChk1" class="table-list" style="table-layout: fixed;margin-top: 10px;">
+                    <tr class="table-list-header">
+                        <th style="width:20%;" class="table-list-header__th">
+                            <input type="checkbox" id="checkAll1" comType="checkAll" cond="" class="clsAllChk1" uniontableId="userShare" chkId="chkCoding">
+                        </th>
+                        <th style="width:80%;" class="table-list-header__th">人员信息</th>
+                    </tr>
+                    <tr id="templateRow" style="display:none;" class="table-list-tr">
+                        <td class="table-list-tr__item">
+                            <input type="checkbox"  id="chkCoding" class="clsChk1">
+                        </td>
+                        <td class="table-list-tr__item" id="acctTitle"></td>
+                    </tr>
+                </table>
+                <div class="tcdPageCode tcdPageCode1"></div>
+                <div id="nonDataA" class="noDataCon" style="display: none">
+                    <i></i>
+                    <p>暂无数据......</p>
+                </div>
+            </div>
+            <div class="userRole">
+                <ul class="clearfix" style="margin-bottom: 10px;" id="searchBox2">
+                    <li class="fl" style="margin-right: 5px;">
+                        <span style="margin-right: 5px;">人员名称：</span>
+                        <input id="condacctTitle" type="text" class="inputBase" />
+                    </li>
+                    <li class="fl">
+                        <div class="btnLowNew" comType="searchBtnCtrl" cond="condacctTitle" rule="cond" unionTableId="roleShare" parentId="searchBox2">查询</div>
+                        <div class="btnLowNew shareSure" style="margin-left: 10px;">分享</div>
+                    </li>
+                </ul>
+
+                <table cellspacing="0" cellpadding="0" id="roleShare" templateId="templateRow" comType="" reqPath="" reqParam='{}' page="tcdPageCode2" noData="nonDataB" chkId="chkCoding" isCacheCond="acctId" clsChk="clsChk2" clsallchk="clsAllChk2" class="table-list" style="table-layout: fixed;margin-top: 10px;">
+                    <tr class="table-list-header">
+                        <th style="width:20%;" class="table-list-header__th">
+                            <input type="checkbox" id="checkAll2" comType="checkAll" cond="" class="clsAllChk2" uniontableId="roleShare" chkId="chkCoding">
+                        </th>
+                        <th style="width:80%;" class="table-list-header__th">角色信息</th>
+                    </tr>
+                    <tr id="templateRow" style="display:none;" class="table-list-tr">
+                        <td class="table-list-tr__item">
+                            <input type="checkbox" id="chkCoding" class="clsChk2">
+                        </td>
+                        <td class="table-list-tr__item" id="acctTitle"></td>
+                    </tr>
+                </table>
+                <div class="tcdPageCode tcdPageCode2"></div>
+                <div id="nonDataB" class="noDataCon" style="display: none">
+                    <i></i>
+                    <p>暂无数据......</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="wayShow" class="popup gc_box" style="display:none">
+    <div class="title" style="">
+        <h2>设置</h2>
+        <div>
+            <a class="min" href=" " title="最小化" style="display:none;"></a>
+            <a class="max" href="javascript:;" title="最大化" style="display:none;"></a>
+            <a class="revert" href="javascript:;" title="还原" style="display:none;"></a>
+            <a class="close" href="javascript:;" title="关闭" style="display:block;"></a>
+        </div>
+    </div>
+    <div class="content">
+        <div style="margin-left: 10px;margin-top: 10px;">
+            <span>生成方式：</span>
+            <select id="wayShowType" type="text" class="inputBase">
+                <option value="0">按行生成</option>
+                <option value="1">按列生成</option>
+            </select>
+        </div>
+        <div class="">
+            <div id="wayShowSure" class="btnBaseCommon product-save" style="margin-left: 236px;margin-right: 20px;margin-top: 10px;">确定</div>
+            <div id="wayShowCancel" class="btnBaseCancel product-submit">取消</div>
+        </div>
+    </div>
+</div>
+<style>
+    #loading {
+        width:170px;
+        height:25px;
+        border:3px solid #C3DAF9;
+        position:absolute;
+        top:300px;
+        left:600px;
+        z-index:10000;
+        background-color:#F7F9FC;
+        line-height:25px;
+        vertical-align:middle;
+        font-size:11pt;
+        /*display:none;*/
+    }
+</style>
+<div style="width: 100%;height: 100%;background: #000;opacity: 0.3;position: absolute;top: 0;display: none;" id="ajaxWaiting">
+    <div id="loading"><img src="../images/wait.gif" alt="" style="width: 16px;height: 16px;"/>正在加载数据,请稍候...</div>
+</div>
+@@include('../../report-home/html-gulp-www/commonFooter.html')

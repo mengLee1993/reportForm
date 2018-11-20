@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" style="    height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义主题</title>
+    <link rel="stylesheet" href="../../../../trade_base/css/trade_base.css">
+    <link rel="stylesheet" href="../../../../plugin/page/css/table_blue.css">
+    <link rel="stylesheet" href="../../../../plugin/page/css/messagePage.css">
+    <link rel="stylesheet" href="../../../../plugin/treeview/jquery.treeview.css" />
+    <link rel="stylesheet" href="../css/selftheme.css">
+    <script src="../../../../base/js/jquery.js"></script>
+    <script src="../../../../base/js/jquery.cookie.js"></script>
+    <script src="../../../../base/js/public.js"></script>
+    <script src="../../../../base/js/docassistant.js"></script>
+    <script src="../../../../plugin/treeview/jquery.treeview.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../../../plugin/treeview/demo.js"></script>
+    <script type="text/javascript" src="../../../../plugin/page/script/jquery.page.js"></script>
+    <script>
+        var requestUrl="";
+        var jsonReqHeaderData=""
+    </script>
+</head>
+<body style="background: #e5e5e5;height: 100%;overflow: hidden;min-width: auto">
+
+  <div class="downloadcet">
+        <!--<div class="downloadcet-nav">-->
+            <!--<p class="downloadcet-nav__text">待选列</p>-->
+            <!--&lt;!&ndash;treeListCtrl&ndash;&gt;-->
+            <!--<ul  class="downloadcet-nav-list" id=""  t="categoryNamePath" c="children" jsonid="channelCategoryId" comType="" treetype="treeList2" templateid="templateTreeRow"-->
+                <!--treecell="treeCell" reqparam='{}' reqmethod="POST" reqpath="" >-->
+
+                <!--<li id="templateTreeRow" class="downloadcet-nav-list__item" >-->
+
+                    <!--<p style="text-indent: 10px" class="downloadcet-nav-list__cet" id="treeCell">-->
+                        <!--<i class="downloadcet-nav-list__icon"></i>-->
+                        <!--<a href="?1">主题数据</a></p>-->
+                <!--</li>-->
+
+            <!--</ul>-->
+        <!--</div>-->
+        <div class="downloadcet-main">
+            <div class="main-title ">
+                <strong class="main-title__sign"></strong>
+                <h1 class="main-title__tie">查询条件</h1>
+            </div>
+            <div class="main-box clearfix">
+                <span class="main-box__name">名称（方案或主题):</span>
+                <input type="text" class="inputBase main-box__input">
+                 <div class="main-box__search btn_kind_3">查询</div>
+            </div>
+            <div class="main-table">
+                <table class="table-list" id="tableList" comtype=""
+                       templateid="templateRow"  chkid="chkCoding"
+                       page="tcdPageCode" nodata="noDataCon"
+                       reqpath="" reqparam="{}" method="post">
+                    <thead>
+                    <tr class="table-list__Tr" >
+                        <th class="table-list__thead" style="width: 5%">
+                            <input type="checkbox" id="allChk" comtype="checkAll" cond="" uniontableid="tableList"  >
+                        </th>
+                        <th class="table-list__thead" style="width: 20%">主题名称</th>
+                        <th class="table-list__thead" style="width: 20%">主题表</th>
+                        <th class="table-list__thead" style="width: 10%">分享者</th>
+                        <th class="table-list__thead" style="width: 20%">数据分析</th>
+                        <th class="table-list__thead" style="width: 20%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-list__str" id="templateRow">
+                        <td class="table-list__td" >
+                            <input type="checkbox"  id="chkCoding">
+                        </td>
+                        <td class="table-list__td" >质量损失主题</td>
+                        <td class="table-list__td" >2018-10-23 13：32：26</td>
+                        <td class="table-list__td" >
+                        </td>
+                        <th class="table-list__thead" style="width: 30%">分享者</th>
+                        <th class="table-list__thead" style="width: 30%">
+                            <div class="btn_kind_6 table-list__down">数据下载</div>
+                            <a href="javascript:;">下载</a>
+                            <a href="javascript:;">删除</a>
+                        </th>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <div id="noDataCon" class="noDataCon" style="display:none">
+                    <i></i><p>暂无数据.....</p>
+                </div>
+                <div class="tcdPageCode"></div>
+            </div>
+        </div>
+  </div>
+
+
+</div>
+
+</body>
+</html>

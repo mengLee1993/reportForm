@@ -4,6 +4,7 @@ import com.ebase.report.common.RemoveStatusEnum;
 import com.ebase.report.controller.IndexController;
 import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.conn.ConnPoolType;
+import com.ebase.report.core.db.conn.DataSourceManager;
 import com.ebase.report.core.db.conn.DbConnFactory;
 import com.ebase.report.core.db.handler.ReportHandler;
 import com.ebase.report.core.pageUtil.PageInfo;
@@ -228,6 +229,9 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
     public ServiceResponse<Integer> changeStatus(RptDatasourceVO vo) {
         ServiceResponse<Integer> sR = new ServiceResponse<Integer>();
         RptDatasource RptDatasource = BeanCopyUtil.copy(vo, RptDatasource.class);
+
+        //需要删除 数据源
+        DataSourceManager.destroy(vo.getDatasourceName());
         sR.setRetContent(dsMapper.updateByPrimaryKeySelective(RptDatasource));
         return sR;
     }

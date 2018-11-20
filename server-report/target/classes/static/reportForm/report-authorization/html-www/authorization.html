@@ -1,0 +1,154 @@
+@@include('../../report-home/html-gulp-www/commonHeader.html')
+<link rel="stylesheet" href="../css/authorization.css">
+	<div class="datareport">
+		<div class="datareport-col">
+			<div class="datareport-coltit">
+				<h1 class="datareport-coltit__tit">授权对象</h1>
+				<select name="" id="switchType" class="selectCommom selectBase">
+					<option value="0" selected="selected">用户</option>
+                    <option value="1">角色</option>
+				</select>
+			</div>
+			<div id="tableBox" class="datareport-colmain">
+                <div id="tableUserBox">
+                    <ul class="clearfix mb10" id="tableUserBoxSearch" style="text-align: center;margin-top: 10px;">
+                        <li class="ml20 mb10" style="display: inline-block;float: none;">
+                            <span class="mr5">帐户名：</span><input type="text" class="inputBase" id="condacctTitle">
+                        </li>
+                        <li style="display: inline-block;float: none;">
+                            <div class="search_btn_class" comType="searchBtnCtrl" cond="condacctTitle" rule="cond" unionTableId="tableUser" parentId="tableUserBoxSearch">
+                                <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <table class="datareport-tablelist" id="tableUser" comtype="standardTableCtrl"
+                    templateid="templateRow"  chkid="chkCoding"
+                    page="tcdPageCodeUser" nodata="noDataCon"
+                    reqpath="/report/listShareReport" reqparam="{}" method="post" style="table-layout: fixed">
+                        <thead>
+                            <tr class="table-list__Tr">
+                                <th class="table-list__thead" style="width: 15%">账户名</th>
+                                <th class="table-list__thead" style="width: 15%">姓名</th>
+                                <th class="table-list__thead" style="width: 18%">手机号</th>
+                                <th class="table-list__thead">电子邮件</th>
+                                <th class="table-list__thead" style="width: 10%;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-list__str" id="templateRow" style="display: none;">
+                                <td class="table-list__td" id="acctTitle"></td>
+                                <td class="table-list__td" id="name"></td>
+                                <td class="table-list__td" id="mobilePhone"></td>
+                                <td class="table-list__td" style="padding: 0 5px"><p style="" id="email"></p></td>
+                                <td class="table-list__td"><a href="javascript:;" class="js-accredit" style="margin-top: 2px;color: #0375d7">授权</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="noDataCon" class="noDataCon" style="display:none">
+                        <i></i><p>暂无数据.....</p>
+                    </div>
+                    <div class="tcdPageCode tcdPageCodeUser" style="text-align: center;"></div>
+                </div>
+                <div id="tableRoleBox" style="display: none;">
+                    <ul class="clearfix mb10" id="tableRoleBoxSearch" style="margin-top: 10px;">
+                        <li class="fl ml10 mb10">
+                            <span class="mr5">角色编码：</span><input style="min-width: 180px" type="text" class="inputBase" id="condroleCode">
+                        </li>
+                        <li class="fl ml10 mb10">
+                            <span class="mr5">角色名称：</span><input style="min-width: 180px" type="text" class="inputBase" id="condroleTitle">
+                        </li>
+                        <li>
+                            <div class="search_btn_class" comType="searchBtnCtrl" cond="condroleCode,condroleTitle" rule="cond" unionTableId="tableRole" parentId="tableRoleBoxSearch">
+                                <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <table class="datareport-tablelist" id="tableRole" comtype="standardTableCtrl"
+                    templateid="templateRow"  chkid="chkCoding"
+                    page="tcdPageCodeRole" nodata="noDataCon"
+                    reqpath="/roleInfo/findpageresult" reqparam="{}" method="post" style="table-layout: fixed">
+                        <thead>
+                            <tr class="table-list__Tr">
+                                <th class="table-list__thead">角色编码</th>
+                                <th class="table-list__thead">角色名称</th>
+                                <th class="table-list__thead">状态</th>
+                                <th class="table-list__thead">描述</th>
+                                <th class="table-list__thead">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-list__str" id="templateRow" style="display: none;">
+                                <td class="table-list__td" id="roleCode"></td>
+                                <td class="table-list__td" id="roleTitle"></td>
+                                <td class="table-list__td" id="status"></td>
+                                <td class="table-list__td" id="roleDesc"></td>
+                                <td class="table-list__td"><a href="javascript:;" class="js-accredit" style="margin-top: 2px;color: #0375d7">授权</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="noDataCon" class="noDataCon" style="display:none">
+                        <i></i><p>暂无数据.....</p>
+                    </div>
+                    <div class="tcdPageCode tcdPageCodeRole" style="text-align: center;"></div>
+                </div>
+			</div>
+		</div>
+        <div class="datareport-col">
+            <div class="datareport-coltit">
+                <h1 class="datareport-coltit__tit">数据表资源</h1><div class="btn_kind_1 fr" id="js-save">保存</div>
+            </div>
+            <div class="datareport-colmain">
+                <table class="datareport-treeListTable" t="datasourceName" c="rptDataTables" jsonId="tableId"  id="treeList1" treeType="treeList2" templateId="templateTreeRow" treeCell="treeCell" comtype="">
+                    <tr class="datareport-treeListTable-tr" id="templateTreeRow" style="display:none;cursor:pointer;">
+                        <td class="datareport-treeListTable-tr__item">
+                            <div id="treeCell">
+                                <i class="colmain_icon1"></i>
+                                <span class="datareport-treeListTable-tr__inputbox">
+                                    <!-- <i class="colmain_icon2"></i> -->
+                                    <input type="checkbox" class="datareport-treeListTable-tr__input">
+                                </span>
+                                <i class="colmain_icon03"></i>
+                                <span class="datareport-treeListTable-tr__text" id="datasourceName"></span>--<span id="datasourceChineseName"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--<div class="datareport-col datareport-col&#45;&#45;nobd">
+            <div class="datareport-coltit">
+                <h1 class="datareport-coltit__tit">数据资源</h1>
+                &lt;!&ndash; <select name="" id="" class="selectCommom selectBase">
+                    <option value="">请选择</option>
+                    <option value="0" selected="selected">用户</option>
+                </select> &ndash;&gt;
+            </div>
+            <div class="datareport-colmain">
+                <table class="datareport-treeListTable" t="categoryName" c="dictCategoryDTO" jsonId="categoryId"  id="treeList2" treeType="treeList2" templateId="templateTreeRow" treeCell="treeCell" comtype="treeListCtrl">
+                    <tr class="datareport-treeListTable-tr" id="templateTreeRow" style="display:none;cursor:pointer;">
+                        <td class="datareport-treeListTable-tr__item">
+                            <div id="treeCell">
+                                <i class="colmain_icon1"></i>
+                                <span class="datareport-treeListTable-tr__inputbox">
+                                    <i class="colmain_icon2"></i>
+                                    &lt;!&ndash; <input type="checkbox" class="datareport-treeListTable-tr__input"> &ndash;&gt;
+                                </span>
+                                <i class="colmain_icon03"></i>
+                                <span class="datareport-treeListTable-tr__text" id="categoryName"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>-->
+	</div>
+<script>
+	//下拉框
+	$(".selectCommom").chosen({
+        width:"140px",
+        no_results_text: "没有匹配结果!",
+        enable_split_word_search: false
+    });
+</script>
+<script src="../js/authorization.js"></script>
+@@include('../../report-home/html-gulp-www/commonFooter.html')

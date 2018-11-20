@@ -1,0 +1,145 @@
+@charset "UTF-8";
+/*
+按钮注释：整体页面级别为一级按钮（背景加色，字体白色）   部分模块级别按钮为二级按钮（背景白色，字体加色）
+背景注释：按钮置灰做成原色的30%透明度
+*/
+/*
+主色
+*/
+/************************************************************************************
+字体
+************************************************************************************/
+/*导航*/
+/*表格*/
+/*按钮*/
+/*其他*/
+/************************************************************************************
+背景
+************************************************************************************/
+/*导航*/
+/*表格*/
+/*按钮*/
+/*其他*/
+/************************************************************************************
+边框
+************************************************************************************/
+/*按钮*/
+body, html { width: 100%; height: 100%; }
+
+.scp-body { width: 100%; height: 100%; position: relative; }
+
+.formcontainer-nav { width: 14%; height: 100%; background: #fff; min-width: 100px; overflow: auto; overflow-x: scroll; position: absolute; top: 0; left: 0; }
+
+.formcontainer-nav .formcontainer-nav__text { height: 40px; color: #6390f3; font-size: 14px; line-height: 40px; text-indent: 15px; }
+
+.formcontainer-nav .firstParent__icon { width: 20px; height: 20px; display: inline-block; background: url("../images/photo.png") 0 no-repeat; background-position: -270px -148px; }
+
+.formcontainer-nav ul { width: 100%; margin: 0; padding: 0; }
+
+.formcontainer-nav li { width: 100%; line-height: 40px; }
+
+.formcontainer-nav li .firstParent { width: 100%; height: 40px; }
+
+.formcontainer-nav li .firstParent__icon { font-size: 18px; }
+
+.formcontainer-nav li .chkClass { margin-right: 6px; }
+
+.formcontainer-refreshTiele { height: 40px; }
+
+/*头部*/
+.scp-product { width: 85%; height: 100%; padding: .3% .8%; box-sizing: border-box; position: relative; background: #fff; margin-left: 0.5%; float: right; overflow: auto; overflow-y: scroll; }
+
+.scp-product .scp-record { width: 100%; height: 17.4%; min-height: 100px; }
+
+.scp-product .scp-record .scp-title { height: 41%; }
+
+.scp-product .scp-record .scp-title span { display: inline-block; line-height: 14px; padding: 16px 0 14px 0; text-align: left; font-family: PingFangSC-Semibold; font-size: 14px; font-weight: bold; color: #0375D7; letter-spacing: -0.34px; }
+
+.scp-product .scp-content { height: 59%; border-radius: 5px; }
+
+.scp-product .scp-content .scp-content-text { box-sizing: border-box; width: 100%; height: 100%; resize: none; border: 1px solid #eee; padding-left: 10px; }
+
+/*按钮*/
+.scp-storage { width: 100%; height: 36px; margin: 10px 0; clear: both; }
+
+.scp-storage .scp-storage-btn { float: right; padding: 7px 19px; background: #0375D7; border-radius: 3px; font-family: PingFangSC-Regular; font-size: 12px; color: #fff; letter-spacing: -0.29px; text-decoration: none; }
+
+/*菜单栏*/
+.scp-show { height: 36px; line-height: 36px; font-size: 0; background: #F8F8F9; border: 1px solid #eee; border-bottom: 0; position: relative; }
+
+.scp-show .scp-triLift, .scp-show .scp-setUp, .scp-show .scp-triDown { display: inline-block; background: url("../images/icon.png") no-repeat; }
+
+.scp-show .scp-triLift { width: 8px; height: 12px; margin-left: 20px; margin-right: 37px; background-position: -157px  -29px; }
+
+.scp-show .scp-text { font-family: PingFangSC-Semibold; font-size: 14px; color: #515A6D; letter-spacing: -0.34px; }
+
+.scp-show .scp-setUp { width: 14px; height: 14px; position: absolute; right: 38px; top: 11px; background-position: -115px  -30px; }
+
+.scp-show .scp-triDown { width: 6px; height: 3px; position: absolute; right: 26px; top: 16px; background-position: -277px -215px; }
+
+/*小图标*/
+.scp-operation { height: 31px; line-height: 31px; font-size: 0; border: 1px solid #eee; border-top: 0; border-bottom: 0; }
+
+.scp-operation .scp-plus, .scp-operation .scp-textBok, .scp-operation .scp-fz { display: inline-block; vertical-align: middle; background: url("../images/icon.png") no-repeat; }
+
+.scp-operation .scp-plus { width: 14px; height: 14px; margin-left: 20px; margin-right: 24px; background-position: -77px  -29px; cursor: pointer; }
+
+.scp-operation .scp-textBok { width: 14px; height: 14px; margin-right: 24px; background-position: -195px  -90px; }
+
+.scp-operation .scp-fz { width: 14px; height: 14px; margin-right: 7px; background-position: -36px  -29px; }
+
+.scp-operation .scp-gate { font-family: PingFangSC-Regular; font-size: 12px; color: #838383; letter-spacing: -0.29px; }
+
+/*table表格*/
+.scr-table { height: 43%; overflow-y: auto; }
+
+.scr-table .table-record { width: 100%; border-collapse: collapse; border-spacing: 0; }
+
+.scr-table .table-record thead tr { height: 28px; line-height: 28px; }
+
+.scr-table .table-record thead tr th { font-size: 14px; font-family: PingFangSC-Semibold; text-align: center; color: #0375D7; border: 1px solid #eee; }
+
+.scr-table .table-record tbody tr { height: 26px; line-height: 26px; }
+
+.scr-table .table-record tbody tr td { max-width: 120px; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: ArialMT; font-size: 12px; color: #838383; letter-spacing: -0.34px; border: 1px solid #eee; }
+
+.scr-table .table-record tbody tr .table-sclect { border: 0; overflow: inherit; }
+
+.scr-table .chosen-results { padding: 0; }
+
+/*弹窗*/
+.popup .title scp-content-texth2 { color: #0375D7; }
+
+.popup .content { margin-top: 9px; border-top: 1px solid #eee; }
+
+.popup .content .content-div { text-align: left; }
+
+.popup .content .content-div ul { padding: 0; margin: 0; }
+
+.popup .content .content-div ul li { list-style: none; text-decoration: none; }
+
+.popup .content .content-div ul li .form-label { display: inline-block; width: 90px; text-align: left; padding-left: 0; font-family: PingFangSC-Semibold; font-size: 14px; color: #515A6D; letter-spacing: -0.34px; }
+
+.popup .content .content-div ul li .main-name { width: 140px; height: 25px; line-height: 25px; border: 1px solid #eee; border-radius: 4px; padding-left: 10px; }
+
+.popup .content .content-div ul li .main-eng-span { vertical-align: top; }
+
+.popup .content .content-div ul li .main-engineering { width: 364px; height: 108px; border: 1px solid #eee; padding-left: 10px; }
+
+.popup .content .content-div ul li .main-select { width: 200px; height: 25px; padding-left: 10px; font-size: 14px; color: #838383; border: 1px solid #eee; }
+
+.popup .content .content-div ul .li-main-name, .popup .content .content-div ul .li-main-select { height: 46px; line-height: 46px; }
+
+.popup .content .content-div ul .last-li-main { height: 30px; margin-top: 13px; }
+
+.popup .content .content-div ul .last-li-main .main-eng-span { height: 30px; }
+
+.popup .content .content-div ul .last-li-main .small-icons { display: inline-block; width: 364px; }
+
+.popup .content .content-div ul .last-li-main .small-icons li { float: left; width: 20px; height: 26px; line-height: 28px; margin-right: 7px; border: 1px solid #eee; text-align: center; color: #838383; }
+
+.popup .content .content-div ul .last-li-main .small-icons .reset-btn { width: 60px; height: 26px; float: right; border: 1px solid #838383; border-radius: 100px; }
+
+.popup .content .content-div ul .last-li-main .small-icons .reset-btn a { display: inline-block; width: 100%; line-height: 26px; text-align: center; font-size: 12px; color: #838383; text-decoration: none; }
+
+.popup .content .btn .btnStyle1 { border-radius: 100px; }

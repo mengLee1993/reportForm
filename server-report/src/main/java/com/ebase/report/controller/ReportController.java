@@ -314,7 +314,7 @@ public class ReportController {
                        //自定义报表id
                        Long personalAnalysisId = jsonRequest.getReqBody().getPersonalAnalysisId();
 
-                       personalAnalysisId = 61l;
+//                       personalAnalysisId = 61l;
                        RptPersonalAnalysis rptPersonalAnalysis = reportService.getCustomReport(personalAnalysisId);
 
                        String configJson = rptPersonalAnalysis.getConfigJson();
@@ -357,8 +357,7 @@ public class ReportController {
             };
             FutureTask<Integer> futureTask = new FutureTask<>(callable);
             new Thread(futureTask).start();
-            //失败
-            Integer integer = futureTask.get();
+//            Integer integer = futureTask.get();   //获取返回 会取消异步
 
         }catch (Exception e){
             LOG.error("error = {}",e);

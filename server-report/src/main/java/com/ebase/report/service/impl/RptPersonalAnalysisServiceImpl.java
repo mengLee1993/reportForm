@@ -179,7 +179,7 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
         tmp.put("acctId",acctId);
         tmp.put("roleId",roleId);
         tmp.put("term",reqBody.getTableName());
-
+        tmp.put("datasourceName",reqBody.getDatasourceName());
         Integer count = rptPersonalAnalysisMapper.listReportFormCount(tmp);
 
         PageDTO<ReportTable> pageDTO = new PageDTO<>(reqBody.getPageNum(),reqBody.getPageSize());

@@ -1,0 +1,318 @@
+@@include("../../report-home/html-gulp-www/commonHeader.html")
+<link rel="stylesheet" href="../css/selfSearch.css">
+  <div class="downloadcet">
+        <div class="downloadcet-main">
+            <div class="main-title ">
+                <strong class="main-title__sign"></strong>
+                <h1 class="main-title__tie" style="font-weight: 800;">个人主题数据 > 我的自定义查询</h1>
+            </div>
+            <div class="main-box clearfix" id="condQuery">
+                <span class="main-box__name">名称（方案或主题):</span>
+                <input type="text" class="inputBase main-box__input"  id="condreportName">
+                <div class="search_btn_class" comtype="searchBtnCtrl" rule="cond" cond="condreportName" parentId="condQuery" uniontableid="tableList" type="button" id="searchDataBtn">
+                    <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
+                </div>
+            </div>
+            <div class="main-table">
+                <table class="table-list" id="tableList" comtype="standardTableCtrl"
+                       templateid="templateRow"  chkid="chkCoding"
+                       page="tcdPageCode" nodata="noDataCon"
+                       reqpath="/report/rptPersonalAnalysis/findpageresult" reqparam="{}" method="post">
+                    <thead>
+                    <tr class="table-list__Tr" >
+                        <th class="table-list__thead" style="width: 20%">报表名称</th>
+                        <th class="table-list__thead" style="width: 20%">主题名称</th>
+                        <th class="table-list__thead" style="width: 20%">主题表</th>
+                        <th class="table-list__thead" style="width: 10%">分享者</th>
+                        <th class="table-list__thead" style="width: 20%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-list__str" id="templateRow" style="display: none;">
+                        <td class="table-list__td" id="reportName"></td>
+                        <td class="table-list__td" id="subjectName"></td>
+                        <td class="table-list__td" id="tableName"></td>
+                        <td class="table-list__td" id="sharingPersonName"></td>
+                        <td class="table-list__td">
+                            <a class="js-jumpBtn" href="javascript:;" style="color: #0375d7">数据分析</a>
+                            <a class="js-share ml10 mr10" href="javascript:;" style="color: #0375d7">分享</a>
+                            <a class="js-delete" href="javascript:;" style="color: #0375d7">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div id="noDataCon" class="noDataCon" style="display:none">
+                    <i></i><p>暂无数据.....</p>
+                </div>
+                <div class="tcdPageCode"></div>
+            </div>
+        </div>
+  </div>
+  <div id="personSharePop" class="popup" style="display: none">
+    <div class="title">
+        <h2></h2>
+        <div>
+            <a class="min" href="javascript:;" title="最小化" style="display:none;"></a>
+            <a class="max" href="javascript:;" title="最大化" style="display:none;"></a>
+            <a class="revert" href="javascript:;" title="还原" style="display:none;"></a>
+            <a class="close" href="javascript:;" title="关闭" style=" "></a>
+        </div>
+    </div>
+    <div class="content supplier-list-con">
+        <div style="padding: 5%;width: 90%">
+            <div style="margin-bottom: 10px;">
+                <span style="margin-right: 5px;">分享类型：</span>
+                <select id="shareType" name="" id="">
+                    <option value="1">人员</option>
+                    <option value="0">角色</option>
+                </select>
+            </div>
+            <div class="userRole">
+                <ul class="clearfix" style="margin-bottom: 10px;" id="searchBox1">
+                    <li class="fl" style="margin-right: 5px;">
+                        <span style="margin-right: 5px;">人员名称：</span>
+                        <input id="condacctTitle" type="text" class="inputBase" />
+                    </li>
+                    <li class="fl">
+                        <div class="btnLowNew" comType="searchBtnCtrl" cond="condacctTitle" rule="cond" unionTableId="userShare" parentId="searchBox1">查询</div>
+                        <div class="btnLowNew shareSure" style="margin-left: 10px;">分享</div>
+                    </li>
+                </ul>
+
+                <table cellspacing="0" cellpadding="0" id="userShare" templateId="templateRow" comType="" reqPath="" reqParam='{}' page="tcdPageCode1" noData="nonDataA" chkId="chkCoding" isCacheCond="acctId" clsChk="clsChk1" clsallchk="clsAllChk1" class="table-list" style="table-layout: fixed;margin-top: 10px;">
+                    <tr class="table-list-header">
+                        <th style="width:20%;" class="table-list-header__th">
+                            <input type="checkbox" id="checkAll1" comType="checkAll" cond="" class="clsAllChk1" uniontableId="userShare" chkId="chkCoding">
+                        </th>
+                        <th style="width:80%;" class="table-list-header__th">人员信息</th>
+                    </tr>
+                    <tr id="templateRow" style="display:none;" class="table-list-tr">
+                        <td class="table-list-tr__item">
+                            <input type="checkbox"  id="chkCoding" class="clsChk1">
+                        </td>
+                        <td class="table-list-tr__item" id="acctTitle"></td>
+                    </tr>
+                </table>
+                <div class="tcdPageCode tcdPageCode1"></div>
+                <div id="nonDataA" class="noDataCon" style="display: none">
+                    <i></i>
+                    <p>暂无数据......</p>
+                </div>
+            </div>
+            <div class="userRole">
+                <ul class="clearfix" style="margin-bottom: 10px;" id="searchBox2">
+                    <li class="fl" style="margin-right: 5px;">
+                        <span style="margin-right: 5px;">人员名称：</span>
+                        <input id="condacctTitle" type="text" class="inputBase" />
+                    </li>
+                    <li class="fl">
+                        <div class="btnLowNew" comType="searchBtnCtrl" cond="condacctTitle" rule="cond" unionTableId="roleShare" parentId="searchBox2">查询</div>
+                        <div class="btnLowNew shareSure" style="margin-left: 10px;">分享</div>
+                    </li>
+                </ul>
+
+                <table cellspacing="0" cellpadding="0" id="roleShare" templateId="templateRow" comType="" reqPath="" reqParam='{}' page="tcdPageCode2" noData="nonDataB" chkId="chkCoding" isCacheCond="acctId" clsChk="clsChk2" clsallchk="clsAllChk2" class="table-list" style="table-layout: fixed;margin-top: 10px;">
+                    <tr class="table-list-header">
+                        <th style="width:20%;" class="table-list-header__th">
+                            <input type="checkbox" id="checkAll2" comType="checkAll" cond="" class="clsAllChk2" uniontableId="roleShare" chkId="chkCoding">
+                        </th>
+                        <th style="width:80%;" class="table-list-header__th">角色信息</th>
+                    </tr>
+                    <tr id="templateRow" style="display:none;" class="table-list-tr">
+                        <td class="table-list-tr__item">
+                            <input type="checkbox" id="chkCoding" class="clsChk2">
+                        </td>
+                        <td class="table-list-tr__item" id="acctTitle"></td>
+                    </tr>
+                </table>
+                <div class="tcdPageCode tcdPageCode2"></div>
+                <div id="nonDataB" class="noDataCon" style="display: none">
+                    <i></i>
+                    <p>暂无数据......</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $("#shareType").chosen({
+            no_results_text: "暂无结果",
+            width: "200PX",
+            enable_split_word_search: false,
+            placeholder_text_single: '邮箱验证',
+        });
+
+        $("#shareType").on("change",function(){
+            shareTypeClick(this);
+        });
+        //分享确认操作
+        $(".shareSure").on("click",function(){
+            shareSureOperate();
+        });
+
+    });
+    var personalAnalysisId = null;//删除id
+    function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
+        
+        if(this.ctrl.id == "userShare"){//人员列表
+            checkboxIsTrue(jsonItem,cloneRow,$("#userShare")[0],"acctId");
+        }else if(this.ctrl.id == "roleShare"){//角色列表
+            checkboxIsTrue(jsonItem,cloneRow,$("#roleShare")[0],"acctId");
+        }else if(this.ctrl.id == "tableList"){
+            $(cloneRow)
+            .on("click",".js-jumpBtn",function(){//数据分析
+                jumpUrl("../../report-analyze/html-gulp-www/dataAnalyze.html?personalAnalysisId="+ jsonItem.personalAnalysisId,"0000000",0);
+            })
+            .on("click",".js-delete",function(){//删除
+                //弹出提示
+                var alertBox=new clsAlertBoxCtrl();
+                alertBox.Alert("确认删除吗？","提示",1,"","deleteBox");
+                personalAnalysisId = jsonItem.personalAnalysisId
+            })
+            .on("click",".js-share",function(){//分享
+                 personalAnalysisId = jsonItem.personalAnalysisId
+                openWin("800", "600", "personSharePop", true);
+                //初始化弹框
+                $("#shareType").find("option[value=1]").attr("selected",true);
+                $("#shareType").trigger('chosen:updated');
+                $(".userRole").hide();
+                $(".userRole:first").show();
+                //设置人员列表和角色列表缓存数组为空
+                $("#userShare")[0].cacheArr = [];
+                $("#roleShare")[0].cacheArr = [];
+                initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{},"POST");
+
+            })
+        }
+    }
+    function clsAlertBoxCtrl$sure() {//成功弹框确定
+        if (this.id == "deleteBox") {
+            getAjaxResult("/report/rptPersonalAnalysis/remove","post",{"personalAnalysisId":personalAnalysisId},function(data){
+                data = JSON.parse(data);
+                if(data.retCode == "0000000"){
+                    document.body.jsCtrl.ctrl = $("#tableList")[0];
+                    document.body.jsCtrl.init();
+                }else{
+                    aletr(data.retDesc);
+                }
+            });
+        }
+    }
+
+
+    //插件渲染前操作
+    function clsStandardTableCtrl$before() {
+        if(this.ctrl.id == "userShare"){
+            $("#userShare #checkAll1").removeAttr("checked");
+        }else if(this.ctrl.id == "roleShare"){
+            $("#roleShare #checkAll2").removeAttr("checked");
+        }
+    }
+
+    function clsStandardTableCtrl$after() {
+        if(this.ctrl.id == "userShare"){//人员列表
+            isAllCheck($("#userShare")[0],$("#userShare #checkAll1"));
+        }else if(this.ctrl.id == "roleShare"){//角色列表
+            isAllCheck($("#roleShare")[0],$("#roleShare #checkAll2"));
+        }
+
+    }
+
+
+
+    //未知数组，已有接口，初始化插件;
+    function initplugPath(docm,comType,reqPath,reqParam,reqMethod){
+        if(reqPath != null){
+            $(docm).attr("reqPath",reqPath);
+        }
+        if(reqParam != null){
+            $(docm).attr("reqParam",JSON.stringify(reqParam));
+        }
+        if(reqMethod != null){
+            $(docm).attr("reqMethod",reqMethod);
+        }
+        $(docm).attr("comType",comType);
+        document.body.jsCtrl.ctrl = docm;
+        document.body.jsCtrl.init();
+    }
+    //分享切换人员和角色点击
+    function shareTypeClick(that){
+        if($(that).find("option:selected").val() == 1){//人员
+            $("#searchBox1 #condacctTitle").val("");
+            $("#userShare")[0].cacheArr = [];
+            $(".userRole:first").show();
+            $(".userRole:last").hide();
+            $(".userRole:first input[type=checkbox]").attr("checked",false);
+            initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{},"POST");
+        }else{//角色
+            $("#searchBox2 #condacctTitle").val("");
+            $("#roleShare")[0].cacheArr = [];
+            $(".userRole:first").hide();
+            $(".userRole:last").show();
+            $(".userRole:last input[type=checkbox]").attr("checked",false);
+            initplugPath($("#roleShare")[0],"standardTableCtrl","/report/listShareReport",{},"POST");
+
+        }
+    }
+    //点击分享确认操作
+    function shareSureOperate(){
+        if($("#shareType option:selected").val() == 1 && $("#userShare")[0].cacheArr.length == 0){//人员
+            var alertBox=new clsAlertBoxCtrl();
+            alertBox.Alert("请勾选分享人员","失败提示");
+        }else if($("#shareType option:selected").val() == 0 && $("#roleShare")[0].cacheArr.length == 0){//角色
+            var alertBox=new clsAlertBoxCtrl();
+            alertBox.Alert("请勾选分享角色","失败提示");
+        }else{
+            var jsonParam = {"type":$("#shareType option:selected").val(),"personalAnalysisId":personalAnalysisId,"list":[]};
+            if($("#shareType option:selected").val() == 1){//人员
+                //jsonParam.list = $("#userShare")[0].cacheArr;
+                for(var nI = 0 ; nI < $("#userShare")[0].cacheArr.length ; nI++ ){
+                    jsonParam.list.push($("#userShare")[0].cacheArr[nI].acctId);
+                }
+            }else{//角色
+                //jsonParam.list = $("#roleShare")[0].cacheArr;
+                for(var nI = 0 ; nI < $("#roleShare")[0].cacheArr.length ; nI++ ){
+                    jsonParam.list.push($("#roleShare")[0].cacheArr[nI].acctId);
+                }
+            }
+            getAjaxResult("/report/addShareReport","POST",jsonParam,"shareCallBack(data)");
+        }
+    }
+    //分享成功回调
+    function shareCallBack(data){
+        data = JSON.parse(data);
+        if(data.retCode == "0000000"){
+            var alertBox=new clsAlertBoxCtrl();
+            alertBox.Alert(data.retDesc,"成功提示");
+        }
+    }
+
+    //判断插件是否全选
+    function isAllCheck(tableDom,checkDom){
+    //判断是否全选
+        var listCheck = $(tableDom).find("*[id=cloneRow] #chkCoding");
+        var numLength = 0;
+        for (var mI = 0; mI < listCheck.length; mI++){
+            if(listCheck.eq(mI).is(":checked")){
+                numLength++;
+            }
+        }
+        if(numLength == listCheck.length && numLength > 0){
+            $(checkDom).attr("checked",true);
+        }
+    }
+    //刷新列表数据勾选初始化
+    function checkboxIsTrue(jsonItem,cloneRow,tableDom,mark){//tableDom——table节点     mark——主键id
+        var arrCache = $(tableDom)[0].cacheArr;
+        for(var nI = 0; nI < arrCache.length; nI++ ){
+            if(jsonItem[mark] == arrCache[nI][mark]){
+                $(cloneRow).find("#chkCoding").attr("checked",true);
+            }
+        }
+    }
+
+</script>
+
+</div>
+@@include('../../report-home/html-gulp-www/commonFooter.html')

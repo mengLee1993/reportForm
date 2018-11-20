@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebase.report.dao.jurisdiction.AcctOperPrivRelaMapper" >
+  <resultMap id="BaseResultMap" type="com.ebase.report.model.jurisdiction.AcctOperPrivRela" >
+    <id column="RELA_ID" property="relaId" jdbcType="BIGINT" />
+    <result column="ROLE_ID" property="roleId" jdbcType="BIGINT" />
+    <result column="FUNCTION_ID" property="functionId" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    RELA_ID, ROLE_ID, FUNCTION_ID, STATUS, CREATED_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from acct_oper_priv_rela
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteRoleId" parameterType="java.lang.Long" >
+    delete from acct_oper_priv_rela
+    where ROLE_ID = #{roleId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteFunctionId" parameterType="java.lang.Long" >
+    delete from acct_oper_priv_rela
+    where FUNCTION_ID = #{functionId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteFunctionIdAll" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    delete from acct_oper_priv_rela
+    where FUNCTION_ID in
+    <foreach collection="allIds" close=")" open="(" item="all" separator=",">
+      #{all}
+    </foreach>
+  </delete>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from acct_oper_priv_rela
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ebase.report.model.jurisdiction.AcctOperPrivRela" >
+    insert into acct_oper_priv_rela (RELA_ID, ROLE_ID, FUNCTION_ID, 
+      STATUS, CREATED_BY, CREATED_TIME, 
+      UPDATED_BY, UPDATED_TIME)
+    values (#{relaId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{functionId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertCopy" parameterType="com.ebase.report.model.jurisdiction.RoleInfo" >
+    insert into acct_oper_priv_rela (ROLE_ID, FUNCTION_ID,
+    STATUS)
+    select #{roleId}, FUNCTION_ID,
+    STATUS from acct_oper_priv_rela where ROLE_ID=#{copyId}
+  </insert>
+  <insert id="insertSelective" parameterType="com.ebase.report.model.jurisdiction.AcctOperPrivRela" >
+    insert into acct_oper_priv_rela
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="relaId != null" >
+        RELA_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="functionId != null" >
+        FUNCTION_ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedTime != null" >
+        UPDATED_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="relaId != null" >
+        #{relaId,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="functionId != null" >
+        #{functionId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.jurisdiction.AcctOperPrivRela" >
+    update acct_oper_priv_rela
+    <set >
+      <if test="roleId != null" >
+        ROLE_ID = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="functionId != null" >
+        FUNCTION_ID = #{functionId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.jurisdiction.AcctOperPrivRela" >
+    update acct_oper_priv_rela
+    set ROLE_ID = #{roleId,jdbcType=BIGINT},
+      FUNCTION_ID = #{functionId,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=TINYINT},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP}
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -44,7 +44,10 @@ public class RptAnalyseLogVO implements Serializable {
      */
     private String analyseSql;
 
-
+    /**
+     * sql执行时间
+     */
+    private Long sqlExecutionTime;
 
     /**
      */
@@ -183,5 +186,13 @@ public class RptAnalyseLogVO implements Serializable {
 
     public void setOpUserName(String opUserName) {
         this.opUserName = opUserName;
+    }
+
+    public Long getSqlExecutionTime() {
+        return sqlExecutionTime;
+    }
+
+    public void setSqlExecutionTime(Long sqlExecutionTime) {
+        this.sqlExecutionTime = sqlExecutionTime;
     }
 }
