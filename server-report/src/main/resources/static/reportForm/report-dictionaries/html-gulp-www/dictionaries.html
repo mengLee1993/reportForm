@@ -417,7 +417,7 @@
                     <div class="btn_kind_1  supplier-top-submit fr mr10 mb10" id="moreArradd">批量添加</div>
                     <table class="table-list" id="tableList" comtype=""
                            templateid="templateRow2"  chkid="chkCoding"
-                           nodata="noDataCon"
+                           nodata="noDataAdd"
                            reqpath="/report/dataTable/queryAllTableForDataSource" reqparam="{}" method="post" style="table-layout: fixed">
                         <thead>
                         <tr class="table-list__Tr" >
@@ -428,7 +428,7 @@
                             <!--<th class="table-list__thead" style="width: 20%">数据源code</th>-->
                             <!--<th class="table-list__thead" style="width: 20%">数据表</th>-->
                             <th class="table-list__thead" style="width: 15%">数据表编码</th>
-                            <th class="table-list__thead" style="width: 20%">描述</th>
+                            <th class="table-list__thead" style="width: 20%">描述</th>dd
                             <!--<th class="table-list__thead" style="width: 20%">数据表名称</th>-->
                             <!--<th class="table-list__thead" style="width: 20%">备注</th>-->
                             <th class="table-list__thead" style="width: 10%">状态</th>
@@ -455,9 +455,9 @@
                         </tr>
                         </tbody>
                     </table>
-                    <!--<div id="noDataCon" class="noDataCon" style="display:none">-->
-                        <!--<i></i><p>暂无数据.....</p>-->
-                    <!--</div>-->
+                    <div id="noDataAdd" class="noDataAdd" style="display:none">
+                        <i></i><p>暂无数据.....</p>
+                    </div>
                     <!--<div class="tcdPageCode"></div>-->
                 </div>
             </div>
@@ -603,7 +603,7 @@
                     <div class="btn_kind_1  supplier-top-submit fr" id="savefieldList">保存</div>
                     <table class="table-list" id="fieldList" comtype=""
                            templateid="templateRowfield"  chkid="chkCoding"
-                           page="tcdPageCode" nodata="noDataCon"
+                           page="tcdPageCode1" nodata="noDataCon1"
                            reqpath="/report/dataField/list" reqparam="{}" method="post" style="table-layout: fixed">
                         <thead>
                         <tr class="table-list__Tr" >
@@ -652,10 +652,10 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div id="noDataCon" class="noDataCon" style="display:none">
+                    <div id="noDataCon1" class="noDataCon" style="display:none">
                         <i></i><p>暂无数据.....</p>
                     </div>
-                    <div class="tcdPageCode"></div>
+                    <div class="tcdPageCode1"></div>
                 </div>
             </div>
         </div>
@@ -700,7 +700,7 @@
             </div>
         </div>
     </div>
-    //字段表修改
+    <!-- //字段表修改 -->
     <div id="edit-field" class="popup" style="display: none">
         <div class="title" style="border-bottom:1px solid #0375D7">
             <h2>修改字段表</h2>
