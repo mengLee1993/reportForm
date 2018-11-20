@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" style="    height: 100%;">
+<head>
+	<span id="hiddenSpan" style="display:none">0,4,2</span>
+	<meta charset="UTF-8">
+    <title>日志</title>
+    <link rel="stylesheet" href="../../../../base/css/baseBlue.css">
+    <link rel="stylesheet" href="../../../../plugin/select/chosen_blue.css">
+    <link rel="stylesheet" href="../../../../plugin/tip/css/tip-twitter/tip-twitter.css">
+    <link rel="stylesheet" href="../../../../plugin/popup/css/manhuaDialog.1.0_blue.css">
+    <link rel="stylesheet" href="../../../../base/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../css/dataLog.css">
+
+    <link rel="stylesheet" href="../../../../trade_base/css/trade_base.css">
+    <link rel="stylesheet" href="../../../..//plugin/page/css/table_blue.css">
+    <link rel="stylesheet" href="../../../../plugin/treeview/jquery.treeview.css" />
+    <link rel="stylesheet" href="../../../../trade_base/css/trade_base.css">
+    <script src="../../../../base/js/jquery.js"></script>
+    <script src="../../../../base/js/docassistant.js"></script>
+    <script src="../../../../plugin/page/script/jquery.page.js"></script>
+    <script src="../../../../plugin/select/chosen.jquery.js"></script>
+    <script src="../../../../base/js/public.js"></script>
+    <script src="../../../../plugin/popup/script/manhuaDialog.1.0.js" type="text/javascript"></script>
+    <script src="../../../../base/js/reqConfig.js"></script>
+    <script src="../../../../base/js/jquery.cookie.js"></script>
+    <script src="../../../../plugin/treeview/jquery.treeview.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../../../plugin/treeview/demo.js"></script>
+    
+
+</head>
+<body style="min-width: auto; height: 100%" >
+	<div class="dt-log">
+		<div class="dt-nav">
+			<div class="dt-title">
+				<span class="dt-title-icon"></span>
+				<span class="dt-title-name">查询条件</span>
+			</div>
+			<div class="dt-search">
+				<div class="dt-search-left">
+					<span>用户名</span>
+					<input type="text" name="" style="border: 1px solid #dddddd">
+				</div>
+				<div class="dt-search-right">
+					<span>查询类型</span>
+					<input type="text" name="" style="border: 1px solid #dddddd">
+				</div>
+				<div class="dt-search-btm"><a class="dt-search-a" href="javascript:;">查询</a></div>
+			</div>
+		</div>
+<!-- 记录集 -->
+    <div class="dt-show">
+        <span class="dt-icon"></span>
+        <span class="dt-name">记录集</span>
+    </div>
+<!-- 表 -->
+<div class="dt-table">
+        <table cellspacing="0" cellpadding="0" id="" templateId="templateRow" comType="standardTableCtrl" reqPath="" reqParam='{}' page="tcdPageCode" noData="noDataCon" class="table-list">
+            <thead>
+            <tr>
+                <th style="width: 3%;">
+                    <input type="checkbox">
+                </th>
+                <th style="width: 8%">用户</th>
+                <th style="width: 13%">操作时间</th>
+                <th style="width: 10%">操作IP</th>
+                <th style="width: 8%">操作类型</th>
+                <th style="width: 7%">主题SCHEMA</th>
+                <th style="width: 7%">主题表</th>
+                <th style="width: 30%">执行SQL</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr class="table-tr" id="templateRow" style="display: none">
+                <td>
+                    <input type="checkbox" id="codingList">
+                </td>
+                <td>dev</td>
+                <td>2018-07-18 16:16:16</td>
+                <td>10.70.61.48</td>
+                
+                <td>汇总数据查询</td>
+                <td>SGZLSU</td>
+                <td>SGZLSU</td>
+                <td>LELECT * FROM (SELECT row_number(over))</td>
+                
+            </tr>
+            <tr class="table-tr">
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td>dev</td>
+                <td>2018-07-18 16:16:16</td>
+                <td>10.70.61.48</td>               
+                <td>汇总数据查询</td>
+                <td>SGZLSU</td>
+                <td>SGZLSU</td>
+                <td>LELECT * FROM (SELECT row_number(over))</td>
+                
+            </tr>
+            <tr class="table-tr">
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td>dev</td>
+                <td>2018-07-18 16:16:16</td>
+                <td>10.70.61.48</td>               
+                <td>汇总数据查询</td>
+                <td>SGZLSU</td>
+                <td>SGZLSU</td>
+                <td>LELECT * FROM (SELECT row_number(over))</td>
+                
+            </tr>
+            <tr class="table-tr">
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td>dev</td>
+                <td>2018-07-18 16:16:16</td>
+                <td>10.70.61.48</td>
+               
+                <td>汇总数据查询</td>
+                <td>SGZLSU</td>
+                <td>SGZLSU</td>
+                <td>LELECT * FROM (SELECT row_number(over))</td>
+                
+            </tr>
+            <tr class="table-tr">
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td>dev</td>
+                <td>2018-07-18 16:16:16</td>
+                <td>10.70.61.48</td>
+                
+                <td>汇总数据查询</td>
+                <td>SGZLSU</td>
+                <td>SGZLSU</td>
+                <td>LELECT * FROM (SELECT row_number(over))</td>
+                
+            </tr>
+            <tr class="table-tr">
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td>dev</td>
+                <td>2018-07-18 16:16:16</td>
+                <td>10.70.61.48</td>
+                
+                <td>汇总数据查询</td>
+                <td>SGZLSU</td>
+                <td>SGZLSU</td>
+                <td>LELECT * FROM (SELECT row_number(over))</td>
+                
+            </tr>
+            <tr class="table-tr">
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td>dev</td>
+                <td>2018-07-18 16:16:16</td>
+                <td>10.70.61.48</td>
+                
+                <td>汇总数据查询</td>
+                <td>SGZLSU</td>
+                <td>SGZLSU</td>
+                <td>LELECT * FROM (SELECT row_number(over))</td>
+                
+            </tr>
+            <tr class="table-tr">
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td>dev</td>
+                <td>2018-07-18 16:16:16</td>
+                <td>10.70.61.48</td>
+                <td>汇总数据查询</td>
+                <td>SGZLSU</td>
+                <td>SGZLSU</td>
+                <td>LELECT * FROM (SELECT row_number(over))</td>
+                
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <!-- 分页 -->
+    <div class="tcdPageCode"></div>
+	</div>
+
+</body>
+</html>

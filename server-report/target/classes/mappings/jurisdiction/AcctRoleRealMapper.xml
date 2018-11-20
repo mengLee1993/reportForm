@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebase.report.dao.jurisdiction.AcctRoleRealMapper" >
+  <resultMap id="BaseResultMap" type="com.ebase.report.model.jurisdiction.AcctRoleReal" >
+    <id column="RELA_ID" property="relaId" jdbcType="BIGINT" />
+    <result column="ACCT_ID" property="acctId" jdbcType="BIGINT" />
+    <result column="ROLE_ID" property="roleId" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    RELA_ID, ACCT_ID, ROLE_ID, STATUS, CREATED_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from acct_role_real
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from acct_role_real
+    where ACCT_ID = #{acctId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ebase.report.model.jurisdiction.AcctRoleReal" >
+    insert into acct_role_real (RELA_ID, ACCT_ID, ROLE_ID, 
+      STATUS, CREATED_BY, CREATED_TIME, 
+      UPDATED_BY, UPDATED_TIME)
+    values (#{relaId,jdbcType=BIGINT}, #{acctId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ebase.report.model.jurisdiction.AcctRoleReal" >
+    insert into acct_role_real
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="relaId != null" >
+        RELA_ID,
+      </if>
+      <if test="acctId != null" >
+        ACCT_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updatedTime != null" >
+        UPDATED_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="relaId != null" >
+        #{relaId,jdbcType=BIGINT},
+      </if>
+      <if test="acctId != null" >
+        #{acctId,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.jurisdiction.AcctRoleReal" >
+    update acct_role_real
+    <set >
+      <if test="acctId != null" >
+        ACCT_ID = #{acctId,jdbcType=BIGINT},
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID = #{roleId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null" >
+        UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.jurisdiction.AcctRoleReal" >
+    update acct_role_real
+    set ACCT_ID = #{acctId,jdbcType=BIGINT},
+      ROLE_ID = #{roleId,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=TINYINT},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP}
+    where RELA_ID = #{relaId,jdbcType=BIGINT}
+  </update>
+
+  <!-- 中间表 添加 来源：zhaoyichen-->
+  <insert id="addSysAcct2Role" parameterType="com.ebase.report.model.jurisdiction.AcctRoleReal">
+		insert into acct_role_real(ACCT_ID,ROLE_ID) values(#{acctId},#{roleId})
+	</insert>
+  <!-- 中间表 删除 来源：zhaoyichen-->
+  <delete id="deleteByPrimaryKey2" parameterType="java.lang.Long" >
+		delete from acct_role_real where ROLE_ID in (#{roleId})
+	</delete>
+
+  <!--删除中间表 按用户id  来源：zhaoyichen-->
+  <delete id="deleteByPrimaryKey3" parameterType="com.ebase.report.model.jurisdiction.AcctRoleReal">
+    delete from acct_role_real where ACCT_ID = #{acctId,jdbcType=BIGINT} and ROLE_ID = #{roleId,jdbcType=BIGINT}</delete>
+
+
+  <!--查询 按用户id 来源：zhaoyichen-->
+  <select id="selectAcctRoleRealListByAcctId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List"/>
+  from acct_role_real where ACCT_ID=#{acctId}
+</select>
+
+
+    <!--添加 用户角色中间-->
+  <insert id="insertAcctRole" parameterType="com.ebase.report.model.jurisdiction.AcctRoleReal">
+    <!--添加 用户角色中间   映射有问题！谁的代码记得改一下-->
+
+  insert into acct_role_real
+
+  <trim suffixOverrides="," suffix=")" prefix="(">
+
+  <if test="relaId != null"> RELA_ID, </if>
+
+  <if test="acctId != null"> ACCT_ID, </if>
+
+  <if test="roleId != null"> ROLE_ID, </if>
+
+  <if test="status != null"> STATUS, </if>
+
+  <if test="createdBy != null"> CREATED_BY, </if>
+
+  <if test="createdTime != null"> CREATED_TIME, </if>
+
+  <if test="updatedBy != null"> UPDATED_BY, </if>
+
+  <if test="updatedTime != null"> UPDATED_TIME, </if>
+
+</trim>
+
+
+  <trim suffixOverrides="," suffix=")" prefix="values (">
+
+  <if test="relaId != null"> #{relaId,jdbcType=BIGINT}, </if>
+
+  <if test="acctId != null"> #{acctId,jdbcType=BIGINT}, </if>
+
+  <if test="roleId != null"> #{roleId,jdbcType=BIGINT}, </if>
+
+  <if test="status != null"> #{status,jdbcType=TINYINT}, </if>
+
+  <if test="createdBy != null"> #{createdBy,jdbcType=VARCHAR}, </if>
+
+  <if test="createdTime != null"> #{createdTime,jdbcType=TIMESTAMP}, </if>
+
+  <if test="updatedBy != null"> #{updatedBy,jdbcType=VARCHAR}, </if>
+
+  <if test="updatedTime != null"> #{updatedTime,jdbcType=TIMESTAMP}, </if>
+
+</trim>
+
+</insert>
+
+  <delete id="deleteAcctRole" parameterType="com.ebase.report.model.jurisdiction.AcctRoleReal" >
+
+    delete from acct_role_real where ACCT_ID = #{acctId,jdbcType=BIGINT} and role_id > 0
+  </delete>
+
+</mapper>

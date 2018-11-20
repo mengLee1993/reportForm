@@ -189,4 +189,13 @@ public class StringUtil extends StringUtils {
 		String path=filPath;
 		return path;
 	}
+
+
+	//报表core 拼装前端返回参数
+	public static String assemblingView(String code,String name){
+		if(code != null && name != null){
+			return name + "[" + code + "]";
+		}
+		return null;
+	}
 }

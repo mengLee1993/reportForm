@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebase.report.dao.jurisdiction.FunctionManageMapper" >
+  <resultMap id="BaseResultMap" type="com.ebase.report.model.jurisdiction.FunctionManage" >
+    <id column="FUNCTION_ID" property="functionId" jdbcType="BIGINT" />
+    <result column="FUNCTION_CODE" property="functionCode" jdbcType="VARCHAR" />
+    <result column="FUNCTION_TITLE" property="functionTitle" jdbcType="VARCHAR" />
+    <result column="FUNCTION_DESC" property="functionDesc" jdbcType="VARCHAR" />
+    <result column="ID_FULL_PATH" property="idFullPath" jdbcType="VARCHAR" />
+    <result column="TITLE_FULL_PATH" property="titleFullPath" jdbcType="VARCHAR" />
+    <result column="IS_LAST_LEVEL" property="isLastLevel" jdbcType="TINYINT" />
+    <result column="PARENT_APPLICATION_ID" property="parentApplicationId" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="FUNCTION_TYPE" property="functionType" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP" />
+
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+    <result column="FUNCTION_PATH" property="functionPath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    FUNCTION_ID, FUNCTION_CODE, FUNCTION_TITLE, FUNCTION_DESC, ID_FULL_PATH, TITLE_FULL_PATH, 
+    IS_LAST_LEVEL, PARENT_APPLICATION_ID, STATUS, CREATED_BY, CREATED_TIME, UPDATED_BY, 
+    UPDATED_TIME,FUNCTION_TYPE ,ORG_ID ,IS_DELETE,FUNCTION_PATH
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from function_manage
+    where FUNCTION_ID = #{functionId,jdbcType=BIGINT}
+  </select>
+
+  <select id="maxCode" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select max(function_code) as function_code from function_manage where 1=1
+
+    <if test="parentApplicationId != null and parentApplicationId != '' " >
+      and PARENT_APPLICATION_ID=#{parentApplicationId,jdbcType=BIGINT}
+    </if>
+    <if test="parentApplicationId == null " >
+      and PARENT_APPLICATION_ID is null
+    </if>
+
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from function_manage
+    where FUNCTION_ID = #{functionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ebase.report.model.jurisdiction.FunctionManage" >
+    insert into function_manage (FUNCTION_ID, FUNCTION_CODE, FUNCTION_TITLE, 
+      FUNCTION_DESC, ID_FULL_PATH, TITLE_FULL_PATH, 
+      IS_LAST_LEVEL, PARENT_APPLICATION_ID, STATUS, 
+      CREATED_BY, CREATED_TIME, UPDATED_BY, 
+      UPDATED_TIME)
+    values (#{functionId,jdbcType=BIGINT}, #{functionCode,jdbcType=VARCHAR}, #{functionTitle,jdbcType=VARCHAR}, 
+      #{functionDesc,jdbcType=VARCHAR}, #{idFullPath,jdbcType=VARCHAR}, #{titleFullPath,jdbcType=VARCHAR}, 
+      #{isLastLevel,jdbcType=TINYINT}, #{parentApplicationId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyProperty="functionId" useGeneratedKeys="true" keyColumn="FUNCTION_ID" parameterType="com.ebase.report.model.jurisdiction.FunctionManage" >
+    insert into function_manage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="functionId != null and functionId != '' " >
+        FUNCTION_ID,
+      </if>
+      <if test="functionCode != null and functionCode != '' " >
+        FUNCTION_CODE,
+      </if>
+      <if test="functionTitle != null and functionTitle !='' " >
+        FUNCTION_TITLE,
+      </if>
+      <if test="functionDesc != null and functionDesc !='' " >
+        FUNCTION_DESC,
+      </if>
+      <if test="idFullPath != null and idFullPath != '' " >
+        ID_FULL_PATH,
+      </if>
+      <if test="titleFullPath != null and titleFullPath !='' " >
+        TITLE_FULL_PATH,
+      </if>
+      <if test="isLastLevel != null and isLastLevel != '' " >
+        IS_LAST_LEVEL,
+      </if>
+      <if test="parentApplicationId != null and parentApplicationId != '' " >
+        PARENT_APPLICATION_ID,
+      </if>
+      <if test="status != null and status != '' " >
+        STATUS,
+      </if>
+      <if test="createdBy != null and createdBy != '' " >
+        CREATED_BY,
+      </if>
+      <if test="createdTime != null " >
+        CREATED_TIME,
+      </if>
+      <if test="updatedBy != null and updatedBy != '' " >
+        UPDATED_BY,
+      </if>
+      <if test="updatedTime != null   " >
+        UPDATED_TIME,
+      </if>
+      <if test="orgId != null and orgId !='' " >
+        ORG_ID,
+      </if>
+      <if test="isDelete != null and isDelete !='' " >
+        IS_DELETE,
+      </if>
+      <if test="functionPath != null and functionPath !='' " >
+        FUNCTION_PATH,
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="functionId != null and functionId != '' " >
+        #{functionId,jdbcType=BIGINT},
+      </if>
+      <if test="functionCode != null and functionCode != '' " >
+        #{functionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="functionTitle != null and functionTitle != '' " >
+        #{functionTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="functionDesc != null and functionDesc != '' " >
+        #{functionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="idFullPath != null and idFullPath != '' " >
+        #{idFullPath,jdbcType=VARCHAR},
+      </if>
+      <if test="titleFullPath != null and titleFullPath !='' " >
+        #{titleFullPath,jdbcType=VARCHAR},
+      </if>
+      <if test="isLastLevel != null and isLastLevel != '' " >
+        #{isLastLevel,jdbcType=TINYINT},
+      </if>
+      <if test="parentApplicationId != null and parentApplicationId !='' " >
+        #{parentApplicationId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null and status !='' " >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null and createdBy != '' " >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null  " >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null and updatedBy != '' " >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null   " >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+
+      <if test="orgId != null and orgId !='' " >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null and isDelete !='' " >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="functionPath != null and functionPath !='' " >
+        #{functionPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSysId" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    update function_manage
+    set IS_DELETE = 1
+    where FUNCTION_ID in (select a.FUNCTION_ID from ACCT_FUNCTION_SYS a where a.SYS_ID=#{sysId})
+  </update>
+
+  <update id="updateFunctionIdAll" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    update function_manage
+    set IS_DELETE = 1
+    where FUNCTION_ID in
+    <foreach collection="allIds" close=")" open="(" item="all" separator=",">
+    #{all}
+  </foreach>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.jurisdiction.FunctionManage" >
+    update function_manage
+    <set >
+      <if test="functionCode != null and functionCode != '' " >
+        FUNCTION_CODE = #{functionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="functionTitle != null and functionTitle != '' " >
+        FUNCTION_TITLE = #{functionTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="functionDesc != null and functionDesc != '' " >
+        FUNCTION_DESC = #{functionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="idFullPath != null and idFullPath != '' " >
+        ID_FULL_PATH = #{idFullPath,jdbcType=VARCHAR},
+      </if>
+      <if test="titleFullPath != null and titleFullPath != '' " >
+        TITLE_FULL_PATH = #{titleFullPath,jdbcType=VARCHAR},
+      </if>
+      <if test="isLastLevel != null and isLastLevel != '' " >
+        IS_LAST_LEVEL = #{isLastLevel,jdbcType=TINYINT},
+      </if>
+      <if test="parentApplicationId != null and parentApplicationId != '' " >
+        PARENT_APPLICATION_ID = #{parentApplicationId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null and status !='' " >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null and createdBy != '' " >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null  " >
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null and updatedBy != '' " >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null  " >
+        UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgId != null and orgId !='' " >
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null and isDelete !='' " >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="functionPath != null and functionPath !='' " >
+        FUNCTION_PATH = #{functionPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where FUNCTION_ID = #{functionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.jurisdiction.FunctionManage" >
+    update function_manage
+    set FUNCTION_CODE = #{functionCode,jdbcType=VARCHAR},
+      FUNCTION_TITLE = #{functionTitle,jdbcType=VARCHAR},
+      FUNCTION_DESC = #{functionDesc,jdbcType=VARCHAR},
+      ID_FULL_PATH = #{idFullPath,jdbcType=VARCHAR},
+      TITLE_FULL_PATH = #{titleFullPath,jdbcType=VARCHAR},
+      IS_LAST_LEVEL = #{isLastLevel,jdbcType=TINYINT},
+      PARENT_APPLICATION_ID = #{parentApplicationId,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=TINYINT},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP}
+    where FUNCTION_ID = #{functionId,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="findPath" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    select f2.* from ( select
+    f.*
+    from function_manage f
+    where 1=1
+      and f.IS_DELETE = 0
+    ) as f2 <trim prefix="WHERE" prefixOverrides="AND |OR">
+      <if test="parentApplicationName != null and parentApplicationName != '' "  >
+        OR f2.FUNCTION_TITLE  LIKE CONCAT(CONCAT('%',#{parentApplicationName},'%'))
+      </if>
+      <if test="parentApplicationName != null and parentApplicationName != '' "  >
+        OR f2.FUNCTION_CODE  LIKE CONCAT(CONCAT('%',#{parentApplicationName},'%'))
+      </if>
+  </trim>
+  </select>
+
+  <select id="findParentApplicationId" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+   select
+    f.*
+    from function_manage f
+    where 1=1
+    and f.IS_DELETE = 0
+    and f.FUNCTION_ID=#{functionId}
+  </select>
+
+  <select id="find" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    select
+    f.*
+    from function_manage f
+    LEFT JOIN acct_function_sys afs on afs.function_id=f.function_id
+    where
+    f.PARENT_APPLICATION_ID is null
+    and f.IS_DELETE = 0
+
+    <if test="status != null and status != '' " >
+      AND f.STATUS = #{status}
+    </if>
+    <if test="sysId != null and sysId != '' " >
+      AND afs.SYS_ID = #{sysId}
+    </if>
+
+  </select>
+  <select id="findThree" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    select
+    f.*
+    from function_manage f
+    LEFT JOIN acct_function_sys afs on afs.function_id=f.function_id
+    where
+     1=1
+    and f.IS_DELETE = 0
+
+      <if test="parentApplicationId != null and parentApplicationId != '' ">
+        AND f.PARENT_APPLICATION_ID = #{parentApplicationId}
+      </if>
+      <if test="status != null and status != '' " >
+         AND f.STATUS = #{status}
+      </if>
+    <if test="sysId != null and sysId != '' " >
+      AND afs.SYS_ID = #{sysId}
+    </if>
+
+  </select>
+
+
+
+
+  <select id="findRole" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    SELECT
+    CASE f2.functionstatus
+    WHEN 0 THEN
+    0
+    ELSE
+    1
+    END AS status,f2.*
+    FROM
+    (
+    SELECT
+    f1.*, IFNULL(
+    (
+    SELECT
+    IFNULL(f.FUNCTION_ID, 0)
+    FROM
+    function_manage f
+    LEFT JOIN acct_oper_priv_rela ao ON ao.FUNCTION_ID = f.function_id
+    LEFT JOIN role_info ri ON ri.ROLE_ID = ao.ROLE_ID
+    WHERE
+    f. STATUS = 1
+    <if test="roleId != null and roleId != '' ">
+      AND ri.role_id = #{roleId}
+    </if>
+    AND f1.function_id = f.function_id
+    ),
+    0
+    ) AS functionstatus
+    FROM
+    function_manage f1
+    WHERE
+    f1. STATUS = 1
+    ) AS f2
+    LEFT JOIN acct_function_sys afs on afs.function_id=f2.function_id
+    WHERE
+    f2.PARENT_APPLICATION_ID IS NULL
+    AND f2. STATUS = 1
+    AND f2.IS_DELETE = 0
+    and afs.sys_id = #{sysId}
+  </select>
+  <select id="findRoleThree" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    SELECT
+    CASE f2.functionstatus
+    WHEN 0 THEN
+    0
+    ELSE
+    1
+    END AS status,f2.*
+    FROM
+    (
+    SELECT
+    f1.*, IFNULL(
+    (
+    SELECT
+    IFNULL(f.FUNCTION_ID, 0)
+    FROM
+    function_manage f
+    LEFT JOIN acct_oper_priv_rela ao ON ao.FUNCTION_ID = f.function_id
+    LEFT JOIN role_info ri ON ri.ROLE_ID = ao.ROLE_ID
+    WHERE
+    f. STATUS = 1
+    <if test="roleId != null and roleId != '' ">
+      AND ri.role_id = #{roleId}
+    </if>
+    AND f1.function_id = f.function_id
+    ),
+    0
+    ) AS functionstatus
+    FROM
+    function_manage f1
+    WHERE
+    f1. STATUS = 1
+    ) AS f2
+    LEFT JOIN acct_function_sys afs on afs.function_id=f2.function_id
+    WHERE 1=1
+    AND f2. STATUS = 1
+    AND f2.IS_DELETE = 0
+    <if test="parentApplicationId != null and parentApplicationId != '' ">
+      AND f2.PARENT_APPLICATION_ID = #{parentApplicationId}
+    </if>
+    and afs.sys_id = #{sysId}
+  </select>
+
+
+  <select id="verificationDeleteFunction" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    select * from function_manage f
+    LEFT JOIN acct_oper_priv_rela ao ON ao.FUNCTION_ID = f.function_id
+    LEFT JOIN role_info ri ON ri.ROLE_ID = ao.ROLE_ID
+    where 1=1 and ri.`STATUS`=1 and ri.IS_DELETE=0 and ao.FUNCTION_ID is not null
+    <if test="functionId != null and functionId != '' ">
+      AND f.FUNCTION_ID = #{functionId}
+    </if>
+  </select>
+
+  <select id="verificationFunIsTtitle" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+    select * from function_manage f
+      LEFT JOIN acct_function_sys afs on afs.function_id=f.function_id
+    where 1=1 and f.IS_DELETE=0
+
+    <if test="functionTitle != null and functionTitle != '' ">
+      AND f.FUNCTION_TITLE = #{functionTitle}
+    </if>
+    and afs.sys_id = #{sysId}
+  </select>
+  
+  <select id="selsctUserFunctionAll" parameterType="com.ebase.report.model.jurisdiction.AcctInfo" resultMap="BaseResultMap">
+  	SELECT
+  	DISTINCT
+		fm.FUNCTION_ID,
+		fm.FUNCTION_CODE,
+		fm.FUNCTION_TITLE,
+		fm.FUNCTION_DESC,
+		fm.ID_FULL_PATH,
+		fm.TITLE_FULL_PATH,
+		fm.IS_LAST_LEVEL,
+		fm.PARENT_APPLICATION_ID,
+		fm.STATUS,
+		fm.CREATED_BY,
+		fm.CREATED_TIME,
+		fm.UPDATED_BY,
+		fm.UPDATED_TIME,
+		fm.FUNCTION_TYPE,
+		fm.ORG_ID,
+		fm.IS_DELETE,
+		fm.FUNCTION_PATH
+	FROM
+		acct_info ai
+	LEFT JOIN acct_role_real arr ON ai.ACCT_ID = arr.ACCT_ID
+	LEFT JOIN role_info ri ON ri.ROLE_ID = arr.ROLE_ID
+	LEFT JOIN acct_oper_priv_rela aopr ON ri.ROLE_ID = aopr.ROLE_ID
+	LEFT JOIN function_manage fm ON aopr.FUNCTION_ID = fm.FUNCTION_ID
+	WHERE
+		ai.ACCT_ID = #{acctId}
+    AND fm.FUNCTION_ID IS NOT NULL
+    and fm.is_delete=0 and ri.is_delete=0 and ri.status=1
+  </select>
+
+</mapper>

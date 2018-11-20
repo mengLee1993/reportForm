@@ -1,0 +1,42 @@
+﻿@@include('../../report-home/html-gulp-www/commonHeader.html')
+    <link rel="stylesheet" href="../css/login.css" >
+    <script src="../js/mlogin.js"></script>
+    <div class="login__index">
+        <div class="loginFrom">
+            <div id="js-loginFrom__tittle" class="loginFrom__tittle">
+               <!-- <div class="loginFrom__tittle-headFirst">Welcome</div>-->
+                <div class="loginFrom__tittle-headSecond">客户登录</div>
+            </div>
+            <div id="js-loginFrom__errorHint--hide" class="loginFrom__errorHint--hide"  style="display: none;">
+                <span id="js-loginFrom__hintContent"  class="loginFrom__hintContent"></span>
+                <span class="loginChangePassword__icon--del" id="hideErrContent" style="cursor: pointer;"></span>
+            </div>
+            <div class="loginFrom__item">
+                <div class="login__icon login__icon--user"></div>
+                <input type="text" id="js-input--username" class="input-l loginFrom__input required" placeholder="用户名">
+            </div>
+            <div class="loginFrom__item">
+                <div class="login__icon login__icon--password"></div>
+                <input type="password" id="js-input-password" class="input-l loginFrom__input required" placeholder="密码">
+            </div>
+            <div class="loginFrom__item">
+                <div id="dragMark" class="drag" dragMark="loginMark"></div>
+            </div>
+            <!--<div class="loginFrom__checkBox">
+                <div class="loginFrom__checkBoxLeft">
+                    <input type="checkbox" style="cursor:pointer;" id="isSavePassword">
+                    记住密码
+                </div>
+                <div class="loginFrom__checkBoxRight">
+                    <a href="register.html" style="color:#333;">注册</a>
+                    <span>|</span>
+                    <a href="forgetPassword.html" style="color:#333;">忘记密码？</a>
+                </div>
+            </div>-->
+            <div class="login__btn">
+                <button type="button" id="js-login__btn--login" value="登录" class="login__btn--login">登陆</button>
+            </div>
+
+        </div>
+    </div>
+@@include('../../report-home/html-gulp-www/commonFooter.html')

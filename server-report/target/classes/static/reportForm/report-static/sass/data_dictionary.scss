@@ -1,0 +1,269 @@
+@import "../../../../trade_base/sass/tradebaseVar";
+
+.dictionary {
+    width: 100%;
+    height: 100%;
+}
+
+.dictionary-content {
+    width:100%;
+    height: 100%;
+    background: #e5e5e5;
+    margin-left: 0.5%;
+    float: left;
+}
+
+.dictionary-every {
+    width:100% !important;
+    height: 100%;
+    padding: .3% .8%;
+    box-sizing: border-box;
+    position: relative;
+    background: #fff;
+    margin-left: 0.5%;
+    float: right; 
+}
+
+.dictionary-title {
+    &_tit {
+        font-size: 14px;
+        height: 57px;
+        line-height: 57px;
+        margin-left: 20px;
+        color: #0375D7;
+        font-weight: bold;
+
+    }
+
+    &_content {
+        margin-left:20px;
+        width:97%;
+        height:33%;
+        border-radius: 5px;
+    }
+
+    &_text {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        resize: none;
+        border: 1px solid $bd_ee;
+        padding-left: 10px;
+    }
+    &_submit{
+        float: right;
+        width:41px;
+        margin-right:17px;
+        margin-top:12px;
+
+    }
+}
+
+.dictionary-box {
+    width: 100%;
+    overflow-x: auto;
+    height: 91%;
+    background: $fc_ff;
+    float: left;
+    margin-left: 0.5%;
+    margin-top: 0.5%;
+    overflow-x: auto;
+    position: relative;
+    min-width: 20%;
+
+    &_add {
+        margin: 12px 16px 12px 908px;
+        width: 40px;
+    }
+
+    &_del {
+        width: 40px;
+        margin-right: 16px;
+    }
+
+    &_save {
+        width: 40px;
+        margin-right: 16px;
+    }
+}
+
+.dictionary-box1 {
+    width: 100%;
+    overflow-x: auto;
+    height: 91%;
+    background: #e5e5e5;
+    float: left;
+    margin-top: 0.5%;
+    overflow-x: auto;
+    position: relative;
+    min-width: 20%;
+}
+
+.dictionary-aside {
+    margin-top:0.5%;
+    width: 14%;
+    margin-left:-12px;
+    float: left;
+    height: 100%;
+    background: $fc_ff;
+    overflow: auto;
+    overflow-x: scroll;
+}
+.scp{
+    width: 85%;
+    height: 100%;
+    background: white;
+    margin-left: 0.5%;
+    float: left;  
+}
+.dictionary-table {
+    width: 85%;
+    height: 100%;
+    background: white;
+    margin-left: 0.5%;
+    float: left;
+}
+
+.table-list {
+    width: 100%;
+    border: 1px solid #dee3e6;
+    font-size: 12px;
+}
+
+.table-list-currentrow-theader {
+    height: 40px;
+    color: #484848;
+    background-color: #f2f2f2;
+    border: 1px solid #dee3e6;
+}
+
+.table-list-currentrow-tdetail {
+    text-align: center;
+    height: 43px;
+}
+
+.resourchSe {
+    .resourchSe-ul {
+        display: flex;
+        flex-wrap: wrap;
+
+        textarea {
+            width: 151px;
+            height: 50px;
+            resize: none;
+            border: 1px solid #eeeeee;
+        }
+
+        width:100%;
+    }
+
+    .resourchSe-ul li {
+        display: flex;
+        margin-top: 20px;
+        margin: 14px 42px;
+        width: 240px;
+    }
+
+    .resourchSe-ul .chosen-single {
+        margin-left: -12px;
+    }
+
+    .required {
+        width: 160px;
+        border: 1px solid #eeeeee;
+        height: 28px;
+        padding-left: 5px;
+    }
+
+    .resourchSe-ul label {
+        width: 70px;
+        text-align: left;
+        display: inline-block;
+        line-height: 30px;
+        vertical-align: top;
+        text-align: center;
+    }
+
+    .resourchSe-ul input[type=text] {
+        width: 150px;
+        border: 1px solid #eeeeee;
+        height: 28px;
+        padding-left: 5px;
+    }
+}
+
+.content-tab-list {
+    border-top: none !important;
+    border-left: none !important;
+    table-layout: fixed;
+    width: 2990px !important;
+
+    .content-tab-listbody {
+        text-align: center;
+        border-left: none !important;
+    }
+}
+
+.content-tab-listhead {
+    border-top: none !important;
+    border-left: none !important;
+}
+
+.content-button {
+    position: absolute;
+    bottom:-90px;
+    width: 545px;
+    height: 46px;
+    float: right;
+    margin-left: 20px;
+    margin-bottom: 100px;
+}
+
+.content-button-ensure {
+    margin-right: 20px;
+    margin-top: 14px;
+    margin-left: 340px;
+    font: 12px/28px "Microsoft Yahei";
+    width: 50px;
+    height: 28px;
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    display: inline-block;
+    border-radius: 100px;
+}
+
+.content-button-cancel {
+    width: 50px;
+    height: 28px;
+    text-align: center;
+    border: 1px solid #e5e5e5;
+    border-radius: 100px;
+}
+.content-Every{
+    text-align: center;
+    margin: 20px 0 10px 0; 
+    float: left;
+    width: 260px;
+    height: 28px;
+    line-height: 28px;
+}
+.content-list{
+    float: left;
+    display: inline-block;
+    width:120px;
+    height: 28px;
+    text-align: right;
+    margin-right:4px;
+}
+.content-input{
+    width: 134px !important; 
+    height:28px;
+    line-height:28px;
+    border:1px solid #dee3e6;
+}
+.chosen-container{
+    margin-left:0;
+    width: 136px !important;
+    border:none !important;
+    border:1px solid #dee3e6;
+}

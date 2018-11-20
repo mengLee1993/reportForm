@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebase.report.dao.RptDataTableMapper">
+    <resultMap id="BaseResultMap" type="com.ebase.report.model.RptDataTable">
+        <id column="TABLE_ID" jdbcType="BIGINT" property="tableId" />
+        <result column="DATASOURCE_ID" jdbcType="BIGINT" property="datasourceId" />
+        <result column="DATASOURCE_NAME" jdbcType="VARCHAR" property="datasourceName" />
+        <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+        <result column="TABLE_CODE" jdbcType="VARCHAR" property="tableCode" />
+        <result column="DEMO" jdbcType="VARCHAR" property="demo" />
+        <result column="REMOVE_STATUS" jdbcType="TINYINT" property="removeStatus" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATED_DT" jdbcType="TIMESTAMP" property="createdDt" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATED_DT" jdbcType="TIMESTAMP" property="updatedDt" />
+        <result column="DATASOURCE_CHINESE_NAME" jdbcType="VARCHAR" property="datasourceChineseName" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        TABLE_ID, DATASOURCE_ID, TABLE_NAME, TABLE_CODE, DEMO, REMOVE_STATUS, CREATED_BY, 
+        CREATED_DT, UPDATED_BY, UPDATED_DT
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from rpt_data_table
+        where TABLE_ID = #{tableId,jdbcType=BIGINT}
+    </select>
+    <select id="selectByTableId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        a.TABLE_ID,
+        a.DATASOURCE_ID,
+        a.TABLE_NAME,
+        a.TABLE_CODE,
+        a.DEMO,
+        a.REMOVE_STATUS,
+        a.CREATED_BY,
+        a.CREATED_DT,
+        a.UPDATED_BY,
+        a.UPDATED_DT,
+        b.DATASOURCE_NAME
+        FROM rpt_data_table a
+        left join rpt_datasource b
+        on a.DATASOURCE_ID = b.DATASOURCE_ID
+        where a.TABLE_ID = #{tableId,jdbcType=BIGINT}
+    </select>
+    <select id="selectByTableIds" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        a.TABLE_ID,
+        a.DATASOURCE_ID,
+        a.TABLE_NAME,
+        a.TABLE_CODE,
+        a.DEMO,
+        a.REMOVE_STATUS,
+        a.CREATED_BY,
+        a.CREATED_DT,
+        a.UPDATED_BY,
+        a.UPDATED_DT,
+        b.DATASOURCE_NAME
+        FROM rpt_data_table a
+        left join rpt_datasource b
+        on a.DATASOURCE_ID = b.DATASOURCE_ID
+        where 1 = 1
+        <if test="tableIds != null">
+            AND table_id in
+            <foreach collection="tableIds" close=")" open="(" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+      UPDATE rpt_data_table
+      SET REMOVE_STATUS = 1
+      WHERE TABLE_ID = #{tableId}
+    </delete>
+    <insert id="insert" parameterType="com.ebase.report.model.RptDataTable">
+        insert into rpt_data_table (TABLE_ID, DATASOURCE_ID, TABLE_NAME, 
+            TABLE_CODE, DEMO, REMOVE_STATUS, 
+            CREATED_BY, CREATED_DT, UPDATED_BY, 
+            UPDATED_DT)
+        values (#{tableId,jdbcType=BIGINT}, #{datasourceId,jdbcType=BIGINT}, #{tableName,jdbcType=VARCHAR}, 
+            #{tableCode,jdbcType=VARCHAR}, #{demo,jdbcType=VARCHAR}, #{removeStatus,jdbcType=TINYINT}, 
+            #{createdBy,jdbcType=VARCHAR}, #{createdDt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+            #{updatedDt,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="tableId">
+        insert into rpt_data_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tableId != null">
+                TABLE_ID,
+            </if>
+            <if test="datasourceId != null">
+                DATASOURCE_ID,
+            </if>
+            <if test="tableName != null">
+                TABLE_NAME,
+            </if>
+            <if test="tableCode != null">
+                TABLE_CODE,
+            </if>
+            <if test="demo != null">
+                DEMO,
+            </if>
+            <if test="removeStatus != null">
+                REMOVE_STATUS,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tableId != null">
+                #{tableId,jdbcType=BIGINT},
+            </if>
+            <if test="datasourceId != null">
+                #{datasourceId,jdbcType=BIGINT},
+            </if>
+            <if test="tableName != null">
+                #{tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="tableCode != null">
+                #{tableCode,jdbcType=VARCHAR},
+            </if>
+            <if test="demo != null">
+                #{demo,jdbcType=VARCHAR},
+            </if>
+            <if test="removeStatus != null">
+                #{removeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.RptDataTable">
+        update rpt_data_table
+        <set>
+            <if test="datasourceId != null">
+                DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT},
+            </if>
+            <if test="tableName != null">
+                TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="tableCode != null">
+                TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
+            </if>
+            <if test="demo != null">
+                DEMO = #{demo,jdbcType=VARCHAR},
+            </if>
+            <if test="removeStatus != null">
+                REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDt != null">
+                CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedDt != null">
+                UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where TABLE_ID = #{tableId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.RptDataTable">
+        update rpt_data_table
+        set DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT},
+            TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+            TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
+            DEMO = #{demo,jdbcType=VARCHAR},
+            REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT},
+            CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
+            UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+        where TABLE_ID = #{tableId,jdbcType=BIGINT}
+    </update>
+    <select id="select" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from rpt_data_table
+        <include refid="Base_Where_Column_List" />
+    </select>
+    <sql id="Base_Where_Column_List">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="tableId != null">
+                and TABLE_ID = #{tableId,jdbcType=BIGINT}
+            </if>
+            <if test="datasourceId != null">
+                and DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+            </if>
+            <if test="tableName != null">
+                and TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+            </if>
+            <if test="tableCode != null">
+                and TABLE_CODE = #{tableCode,jdbcType=VARCHAR}
+            </if>
+            <if test="demo != null">
+                and DEMO = #{demo,jdbcType=VARCHAR}
+            </if>
+            <if test="removeStatus != null">
+                and REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT}
+            </if>
+            <if test="createdBy != null">
+                and CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createdDt != null">
+                and CREATED_DT = #{createdDt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatedBy != null">
+                and UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updatedDt != null">
+                and UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+
+
+    <select id="queryAllByDataSource" resultMap="BaseResultMap">
+        SELECT*
+        FROM rpt_data_table
+        <trim prefix="where" prefixOverrides="and | or">
+        <if test="datasourceId != null">
+            and DATASOURCE_ID = #{datasourceId}
+        </if>
+        </trim>
+    </select>
+
+    <select id="selectReportTableByTableId"  resultType="com.ebase.report.model.dynamic.ReportTable">
+        select  TABLE_ID as 'tableId', TABLE_CODE as 'tableCode', TABLE_NAME as 'tableName'
+         from rpt_data_table
+        where TABLE_ID = #{tableId,jdbcType=BIGINT}
+    </select>
+    <select id="queryThemeTable" resultMap="BaseResultMap" parameterType="com.ebase.report.model.dynamic.ReportTable">
+        select
+        a.TABLE_ID,
+        a.DATASOURCE_ID,
+        a.TABLE_NAME,
+        a.TABLE_CODE,
+        a.DEMO,
+        a.REMOVE_STATUS,
+        a.CREATED_BY,
+        a.CREATED_DT,
+        a.UPDATED_BY,
+        a.UPDATED_DT,
+        b.DATASOURCE_NAME,
+        b.DATASOURCE_CHINESE_NAME
+        FROM rpt_data_table a
+        left join rpt_datasource b
+        on a.DATASOURCE_ID = b.DATASOURCE_ID
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="tableId != null">
+                and a.TABLE_ID = #{tableId,jdbcType=BIGINT}
+            </if>
+            <if test="datasourceId != null">
+                and a.DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+            </if>
+            <if test="datasourceName != null">
+                and b.DATASOURCE_NAME like CONCAT('%',#{datasourceName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="tableName != null">
+                and a.TABLE_NAME like CONCAT('%',#{tableName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="tableCode != null">
+                and a.TABLE_CODE like CONCAT('%',#{tableCode,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="demo != null">
+                and a.DEMO = #{demo,jdbcType=VARCHAR}
+            </if>
+            <if test="removeStatus != null">
+                and a.REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT}
+            </if>
+            <if test="createdBy != null">
+                and a.CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createdDt != null">
+                and a.CREATED_DT = #{createdDt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatedBy != null">
+                and a.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updatedDt != null">
+                and a.UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+    <select id="selectbyTableName" resultMap="BaseResultMap" parameterType="com.ebase.report.model.dynamic.ReportTable">
+        select
+        <include refid="Base_Column_List" />
+        from rpt_data_table
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="tableId != null">
+                and TABLE_ID = #{tableId,jdbcType=BIGINT}
+            </if>
+            <if test="datasourceId != null">
+                and DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+            </if>
+            <if test="tableName != null">
+                and TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+            </if>
+            <if test="tableCode != null">
+                and TABLE_CODE = #{tableCode,jdbcType=VARCHAR}
+            </if>
+            <if test="demo != null">
+                and DEMO = #{demo,jdbcType=VARCHAR}
+            </if>
+            <if test="removeStatus != null">
+                and REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT}
+            </if>
+            <if test="createdBy != null">
+                and CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createdDt != null">
+                and CREATED_DT = #{createdDt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatedBy != null">
+                and UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updatedDt != null">
+                and UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByDatasourceId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rpt_data_table
+        where DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+    </select>
+</mapper>

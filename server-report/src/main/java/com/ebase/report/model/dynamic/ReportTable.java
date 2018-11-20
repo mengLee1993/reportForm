@@ -1,6 +1,7 @@
 package com.ebase.report.model.dynamic;
 
 
+import com.ebase.report.core.utils.StringUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -29,6 +30,9 @@ public class ReportTable {
     //主题id
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long personalSubjectId;
+
+    //添加组合名称
+    private String combinationName;
 
 
     private int pageSize = 10 ;
@@ -106,5 +110,13 @@ public class ReportTable {
 
     public void setDatasourceName(String datasourceName) {
         this.datasourceName = datasourceName;
+    }
+
+    public String getCombinationName() {
+        return StringUtil.assemblingView(tableCode, tableName);
+    }
+
+    public void setCombinationName(String combinationName) {
+        this.combinationName = combinationName;
     }
 }

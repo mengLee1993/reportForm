@@ -1,0 +1,17 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.ebase.report.cache.CacheProperty",
+      "name": "ehcache",
+      "type": "com.ebase.report.cache.CacheProperty"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.ebase.report.cache.CacheProperty",
+      "name": "ehcache.disk-path",
+      "type": "java.lang.String"
+    }
+  ]
+}
