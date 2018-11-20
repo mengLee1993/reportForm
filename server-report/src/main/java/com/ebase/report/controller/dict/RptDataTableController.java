@@ -189,8 +189,8 @@ public class RptDataTableController {
         return jR;
     }
 
-    /**
-     * 删除
+    /**删除,假删除改变removeState-->1
+     * 界面:数据字典-->数据字典管理-->主题表-->删除操作
      * @param jsonRequest
      * @return
      */
@@ -207,9 +207,13 @@ public class RptDataTableController {
         try{
 
             RptDataTableVO vo = jsonRequest.getReqBody();
-            ServiceResponse<Integer> sR = dataTableService.deleteByPrimaryKey(vo);
+            ServiceResponse<Integer> sR = dataTableService.removeByPrimaryKey(vo.getTableId());
             Integer num = sR.getRetContent();
-            jR.setRspBody(num);
+            if(num == null || num == 0){
+               jR.setRspBody(0);
+            }else{
+                jR.setRspBody(num);
+            }
         }catch (Exception e){
             logger.error("删除失败", e);
             jR.setRetCode(JsonResponse.SYS_EXCEPTION);

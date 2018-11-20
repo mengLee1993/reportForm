@@ -5,6 +5,8 @@ import com.ebase.report.core.json.JsonRequest;
 import com.ebase.report.core.json.JsonResponse;
 import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
+import com.ebase.report.core.session.AcctSession;
+import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.service.RptAnalyseLogService;
 import com.ebase.report.vo.RptAnalyseLogVO;
@@ -118,7 +120,7 @@ public class RptAnalyseLogController {
 		try {
 			logger.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
 			RptAnalyseLogVO vo = jsonRequest.getReqBody();
-
+			vo.setOpUserName(AssertContext.getAcctName());
 			PageDTO<RptAnalyseLogVO> pages = rptAnalyseLogService.findSelective(vo);
 
 			jsonResponse.setRspBody(pages);

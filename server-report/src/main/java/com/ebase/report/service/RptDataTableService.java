@@ -13,6 +13,7 @@ public interface RptDataTableService {
 
     ServiceResponse<Integer> add(RptDataTableVO vo);
 
+    //假删除-->主题表删除操作
     ServiceResponse<Integer> removeByPrimaryKey(Long tableId);
 
     ServiceResponse<Integer> updateByPrimaryKey(RptDataTableVO vo);

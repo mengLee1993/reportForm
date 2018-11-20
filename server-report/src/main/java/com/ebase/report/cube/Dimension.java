@@ -225,58 +225,59 @@ public class Dimension {
      */
     public String toWHereSql(String dbTypeEnum) {
 
-        String wSql = null;
+        String wSql = "";
         if (demandType.equals(DemandType.DIMENSION)) {
-            if (DataBaseType.TYPE_NAME_MYSQL.equals(dbTypeEnum)) {
-                //mysql
-                StringBuilder builder = new StringBuilder("");
-                //是行级别授权
-                if ((rowLevelAuth == (byte) 1)) {
-                    if (CollectionUtils.isNotEmpty(rptDataDicts)) {
-                        StringBuilder stringBuilder = new StringBuilder(" and " + fieldCode + " in ( ");
+//            if (DataBaseType.TYPE_NAME_MYSQL.equals(dbTypeEnum)) {
+//
+//            } else if (DataBaseType.TYPE_NAME_ORACLE.equals(dbTypeEnum)) {
+//                //oracle
+//            }
 
-                        if (DBFieldTypeEnum.isNumber(dbFieldTypeEnum)) {
-                            rptDataDicts.stream().filter(x -> x.getIsChecked() == 1).forEach(z -> {
-                                stringBuilder.append(z.getFieldValue() + ",");
-                            });
-                        } else {
-                            rptDataDicts.stream().filter(x -> x.getIsChecked() == 1).forEach(z -> {
-                                stringBuilder.append(" '" + z.getFieldValue() + "', ");
-                            });
-                        }
-                        String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(",")).toString();
-                        builder.append(s);
-                        builder.append(" ) ");
-                    }
-                }
+            //mysql
+            StringBuilder builder = new StringBuilder("");
+            //是行级别授权
+            if ((rowLevelAuth == (byte) 1)) {
+                if (CollectionUtils.isNotEmpty(rptDataDicts)) {
+                    StringBuilder stringBuilder = new StringBuilder(" and " + fieldCode + " in ( ");
 
-                for (FilterTypeEnum cond : expressionTmp.keySet()) {
-                    //是否是范围
-                    if (FilterTypeEnum.isScope(cond)) {
-                        //是范围
-                        builder.append(" and " + fieldCode + cond.getName() + " '" + expressionTmp.get(cond).get(0) + "' ");
-                    } else {
-                        String whw = "";
-                        if (cond.equals(FilterTypeEnum.EQ)) {
-                            whw = "in";
-                        } else {
-                            whw = "not in";
-                        }
-                        StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.append(" and " + fieldCode + " " + whw + " (");
-                        expressionTmp.get(cond).forEach(y -> {
-                            stringBuilder.append(" '" + y + "',");
+                    if (DBFieldTypeEnum.isNumber(dbFieldTypeEnum)) {
+                        rptDataDicts.stream().filter(x -> x.getIsChecked() == 1).forEach(z -> {
+                            stringBuilder.append(z.getFieldValue() + ",");
                         });
-                        String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(","));
-                        builder.append(s);
-                        builder.append(") ");
+                    } else {
+                        rptDataDicts.stream().filter(x -> x.getIsChecked() == 1).forEach(z -> {
+                            stringBuilder.append(" '" + z.getFieldValue() + "', ");
+                        });
                     }
+                    String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(",")).toString();
+                    builder.append(s);
+                    builder.append(" ) ");
                 }
-                wSql = builder.toString();
-            } else if (DataBaseType.TYPE_NAME_ORACLE.equals(dbTypeEnum)) {
-                //oracle
-
             }
+
+            for (FilterTypeEnum cond : expressionTmp.keySet()) {
+                //是否是范围
+                if (FilterTypeEnum.isScope(cond)) {
+                    //是范围
+                    builder.append(" and " + fieldCode + cond.getName() + " '" + expressionTmp.get(cond).get(0) + "' ");
+                } else {
+                    String whw = "";
+                    if (cond.equals(FilterTypeEnum.EQ)) {
+                        whw = "in";
+                    } else {
+                        whw = "not in";
+                    }
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append(" and " + fieldCode + " " + whw + " (");
+                    expressionTmp.get(cond).forEach(y -> {
+                        stringBuilder.append(" '" + y + "',");
+                    });
+                    String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(","));
+                    builder.append(s);
+                    builder.append(") ");
+                }
+            }
+            wSql = builder.toString();
         } else if (demandType.equals(DemandType.MEASURES)) {
             //度量值  不算where 条件的
         }
