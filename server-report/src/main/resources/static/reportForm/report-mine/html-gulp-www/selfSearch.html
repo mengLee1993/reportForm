@@ -400,6 +400,12 @@
                 openWin("800", "600", "lookpersonSharePop", true);
                 initplugPath($("#userShareLook")[0],"standardTableCtrl","/report/listAnalysisShareBody",{"id":jsonItem.personalAnalysisId},"POST");
             })
+            .on("click",".js-cannelshare",function(){//取消分享
+                //弹出提示
+                var alertBox=new clsAlertBoxCtrl();
+                alertBox.Alert("确认删除吗？","提示",1,"","cancelBox");
+                personalAnalysisId = jsonItem.personalAnalysisId
+            })
         }
         if(this.ctrl.id == "userShareLook"){
             if(jsonItem.type == 0){
@@ -411,7 +417,18 @@
     }
     function clsAlertBoxCtrl$sure() {//成功弹框确定
         if (this.id == "deleteBox") {
-            getAjaxResult("/report/rptPersonalAnalysis/remove","post",{"personalAnalysisId":personalAnalysisId},function(data){
+            getAjaxResult("/report/rptPersonalAnalysis/remove","post",{"personalAnalysisId":personalAnalysisId,"deleteType":0},function(data){
+                data = JSON.parse(data);
+                if(data.retCode == "0000000"){
+                    document.body.jsCtrl.ctrl = $("#tableList")[0];
+                    document.body.jsCtrl.init();
+                }else{
+                    aletr(data.retDesc);
+                }
+            });
+        }
+        if (this.id == "cancelBox") {
+            getAjaxResult("/report/rptPersonalAnalysis/remove","post",{"personalAnalysisId":personalAnalysisId,"deleteType":1},function(data){
                 data = JSON.parse(data);
                 if(data.retCode == "0000000"){
                     document.body.jsCtrl.ctrl = $("#tableList")[0];
