@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ebase.report.dao.jurisdiction.RoleGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.ebase.report.model.jurisdiction.RoleGroup" >
+    <id column="ROLE_GROUP_ID" property="roleGroupId" jdbcType="BIGINT" />
+    <result column="ROLE_GROUP_CODE" property="roleGroupCode" jdbcType="VARCHAR" />
+    <result column="ROLE_GROUP_TITLE" property="roleGroupTitle" jdbcType="VARCHAR" />
+    <result column="ROLE_GROUP_DESC" property="roleGroupDesc" jdbcType="VARCHAR" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP" />
+
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+
+    <result column="TITLE_FULL_PATH" property="titleFullPath" jdbcType="VARCHAR" />
+    <result column="ID_FULL_PATH" property="idFullPath" jdbcType="VARCHAR" />
+    <result column="PARENT_APPLICATION_ID" property="parentApplicationId" jdbcType="BIGINT" />
+
+    <result column="SYS_ID" property="sysId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ROLE_GROUP_ID, ROLE_GROUP_TITLE, ROLE_GROUP_DESC, IS_DELETE, STATUS,
+    CREATED_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME ,ROLE_GROUP_CODE,ORG_ID,
+    PARENT_APPLICATION_ID,TITLE_FULL_PATH,ID_FULL_PATH,SYS_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from role_group
+    where ROLE_GROUP_ID = #{roleGroupId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from role_group
+    where ROLE_GROUP_ID = #{roleGroupId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ebase.report.model.jurisdiction.RoleGroup" >
+    insert into role_group (ROLE_GROUP_ID, ROLE_GROUP_TITLE,
+      ROLE_GROUP_DESC, IS_DELETE, STATUS, 
+      CREATED_BY, CREATED_TIME, UPDATED_BY, 
+      UPDATED_TIME)
+    values (#{roleGroupId,jdbcType=BIGINT}, #{roleGroupTitle,jdbcType=VARCHAR},
+      #{roleGroupDesc,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT}, #{status,jdbcType=TINYINT},
+      #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyProperty="roleGroupId" useGeneratedKeys="true" keyColumn="ROLE_GROUP_ID"  parameterType="com.ebase.report.model.jurisdiction.RoleGroup" >
+    insert into role_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleGroupId != null and roleGroupId != '' " >
+        ROLE_GROUP_ID,
+      </if>
+      <if test="roleGroupCode != null and roleGroupCode != '' " >
+        ROLE_GROUP_CODE,
+      </if>
+      <if test="roleGroupTitle != null and roleGroupTitle != '' " >
+        ROLE_GROUP_TITLE,
+      </if>
+      <if test="roleGroupDesc != null and roleGroupDesc != '' " >
+        ROLE_GROUP_DESC,
+      </if>
+      <if test="isDelete != null and isDelete != '' " >
+        IS_DELETE,
+      </if>
+      <if test="status != null and status != '' " >
+        STATUS,
+      </if>
+      <if test="createdBy != null and createdBy != '' " >
+        CREATED_BY,
+      </if>
+      <if test="createdTime != null  " >
+        CREATED_TIME,
+      </if>
+      <if test="updatedBy != null and updatedBy != '' " >
+        UPDATED_BY,
+      </if>
+      <if test="updatedTime != null   " >
+        UPDATED_TIME,
+      </if>
+      <if test="orgId != null and orgId!='' " >
+        ORG_ID ,
+      </if>
+
+      <if test="idFullPath != null and idFullPath != '' " >
+        ID_FULL_PATH,
+      </if>
+      <if test="titleFullPath != null and titleFullPath !='' " >
+        TITLE_FULL_PATH,
+      </if>
+      <if test="parentApplicationId != null and parentApplicationId != '' " >
+        PARENT_APPLICATION_ID,
+      </if>
+
+      <if test="sysId != null and sysId != '' " >
+        SYS_ID,
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleGroupId != null and roleGroupId != '' " >
+        #{roleGroupId,jdbcType=BIGINT},
+      </if>
+      <if test="roleGroupCode != null and roleGroupCode != '' " >
+        #{roleGroupCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleGroupTitle != null and roleGroupTitle != '' " >
+        #{roleGroupTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="roleGroupDesc != null and roleGroupDesc != '' " >
+        #{roleGroupDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null and isDelete != '' " >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="status != null and status != '' " >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null and createdBy != '' " >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null  " >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null and updatedBy != '' " >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null   " >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orgId != null and orgId != '' " >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+
+      <if test="idFullPath != null and idFullPath != '' " >
+        #{idFullPath},
+      </if>
+      <if test="titleFullPath != null and titleFullPath !='' " >
+        #{titleFullPath},
+      </if>
+      <if test="parentApplicationId != null and parentApplicationId != '' " >
+        #{parentApplicationId},
+      </if>
+
+      <if test="sysId != null and sysId != '' " >
+        #{sysId},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.jurisdiction.RoleGroup" >
+    update role_group
+    <set >
+      <if test="roleGroupCode != null and roleGroupCode != '' " >
+        ROLE_GROUP_CODE = #{roleGroupCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleGroupTitle != null and roleGroupTitle != '' " >
+        ROLE_GROUP_TITLE = #{roleGroupTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="roleGroupDesc != null and roleGroupDesc != '' " >
+        ROLE_GROUP_DESC = #{roleGroupDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null and isDelete != '' " >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="status != null and status != '' " >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdBy != null and createdBy != '' " >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null   " >
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null and updatedBy != '' " >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedTime != null  " >
+        UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+
+      <if test="orgId != null and orgId != '' " >
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+
+      <if test="idFullPath != null and idFullPath != '' " >
+        ID_FULL_PATH = #{idFullPath},
+      </if>
+      <if test="titleFullPath != null and titleFullPath !='' " >
+        TITLE_FULL_PATH = #{titleFullPath},
+      </if>
+      <if test="parentApplicationId != null and parentApplicationId != '' " >
+        PARENT_APPLICATION_ID = #{parentApplicationId},
+      </if>
+
+      <if test="sysId != null and sysId != '' " >
+        SYS_ID = #{sysId},
+      </if>
+    </set>
+    where ROLE_GROUP_ID = #{roleGroupId,jdbcType=BIGINT}
+  </update>
+
+
+
+  <update id="updateIsStatus" parameterType="com.ebase.report.model.jurisdiction.RoleGroup" >
+    update role_group
+    <set >
+      <if test="isDelete != null and isDelete != '' " >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="status != null and status != '' " >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    <trim prefix="WHERE" prefixOverrides="AND |OR">
+      <if test="orgIdAlls != null">
+    AND role_group_id in
+    <foreach collection="orgIdAlls" close=")" open="(" item="all" separator=",">
+      #{all}
+    </foreach>
+    </if>
+    </trim>
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.jurisdiction.RoleGroup" >
+    update role_group
+    set ROLE_GROUP_TITLE = #{roleGroupTitle,jdbcType=VARCHAR},
+      ROLE_GROUP_STATE = #{roleGroupState,jdbcType=TINYINT},
+      ROLE_GROUP_DESC = #{roleGroupDesc,jdbcType=VARCHAR},
+      IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      STATUS = #{status,jdbcType=TINYINT},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP}
+    where ROLE_GROUP_ID = #{roleGroupId,jdbcType=BIGINT}
+  </update>
+
+  <select id="find" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.RoleGroup">
+    select rg.*,o.ORG_NAME as orgTitle from (
+    select r.* from role_group r
+    <trim prefix="WHERE" prefixOverrides="AND |OR">
+    <if test="isDelete != null and isDelete != '' " >
+      AND r.IS_DELETE = #{isDelete}
+    </if>
+    <if test="orgIdAlls != null">
+      AND r.ORG_ID in
+      <foreach collection="orgIdAlls" close=")" open="(" item="all" separator=",">
+        #{all}
+      </foreach>
+    </if>
+    </trim>
+    ) as rg
+    left join org_info o on o.id=rg.org_id
+    <trim prefix="WHERE" prefixOverrides="AND |OR">
+      <if test="roleGroupCode != null and roleGroupCode != '' " >
+        OR rg.ROLE_GROUP_CODE  LIKE CONCAT(CONCAT('%',#{roleGroupCode},'%'))
+      </if>
+      <if test="roleGroupTitle != null and roleGroupTitle != '' " >
+        OR rg.ROLE_GROUP_TITLE  LIKE CONCAT(CONCAT('%',#{roleGroupTitle},'%'))
+      </if>
+    </trim>
+
+  </select>
+
+
+  <select id="findARoleGroupTree" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.RoleGroup">
+    select *
+    from role_group
+    where 1=1
+    <if test="parentApplicationId != null and parentApplicationId != '' ">
+      AND  PARENT_APPLICATION_ID = #{parentApplicationId}
+    </if>
+
+  </select>
+
+  <select id="verificationDeleteRoleGroup" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.RoleGroup">
+
+    select r.role_id from role_info r
+    LEFT JOIN acct_role_group_role argr on argr.role_id=r.role_id
+    LEFT JOIN role_group rg on rg.role_group_id=argr.role_group_id
+    where 1=1 and r.IS_DELETE=0 and r.IS_DELETE=0 and argr.role_group_id is not null
+    <if test="roleGroupId != null and roleGroupId != '' " >
+      and rg.ROLE_GROUP_ID= #{roleGroupId}
+    </if>
+  </select>
+
+
+  <!--根据分类ID查看是否分类下的角色是否被用户使用-->
+  <select id="findAcctId" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.RoleGroup">
+
+    select ai.ACCT_ID from acct_info ai
+    LEFT JOIN acct_role_real arr on ai.acct_id= arr.acct_id
+    LEFT JOIN role_info ri on ri.role_id=arr.role_id
+    where ri.role_id in (select r.role_id from role_info r
+    LEFT JOIN acct_role_group_role argr on argr.role_id=r.role_id
+    LEFT JOIN role_group rg on rg.role_group_id=argr.role_group_id
+    where 1=1 and r.IS_DELETE=0 and r.status=1
+    <if test="orgIdAlls != null">
+    AND rg.role_group_id in
+    <foreach collection="orgIdAlls" close=")" open="(" item="all" separator=",">
+      #{all}
+    </foreach>
+    </if>
+    )
+   and ai.IS_DELETE=0 and ai.status=1
+  </select>
+
+
+  <select id="findRoleInfoId" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.RoleGroup">
+
+    select r.role_id from role_info r
+    LEFT JOIN acct_role_group_role argr on argr.role_id=r.role_id
+    LEFT JOIN role_group rg on rg.role_group_id=argr.role_group_id
+    where 1=1 and r.`STATUS`=1  and r.IS_DELETE=0
+    <if test="orgIdAlls != null">
+    AND rg.role_group_id in
+    <foreach collection="orgIdAlls" close=")" open="(" item="all" separator=",">
+      #{all}
+    </foreach>
+  </if>
+
+  </select>
+
+
+  <select id="findAll" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.RoleGroup">
+    select
+    <include refid="Base_Column_List" />
+    from role_group
+    <trim prefix="WHERE" prefixOverrides="AND |OR">
+
+      <if test="isDelete != null and isDelete != '' " >
+        AND IS_DELETE = #{isDelete}
+      </if>
+      <if test="status != null and status != '' " >
+        AND STATUS = #{status}
+      </if>
+
+      <if test="orgIdAlls != null">
+        AND ORG_ID in
+        <foreach collection="orgIdAlls" close=")" open="(" item="all" separator=",">
+          #{all}
+        </foreach>
+      </if>
+    </trim>
+
+  </select>
+
+
+  <select id="findRoleGroupTitle" resultMap="BaseResultMap" parameterType="com.ebase.report.model.jurisdiction.RoleGroup">
+    select
+    <include refid="Base_Column_List" />
+    from role_group
+    where 1=1 and IS_DELETE = 0
+      <if test="roleGroupTitle != null and roleGroupTitle != '' " >
+        AND ROLE_GROUP_TITLE = #{roleGroupTitle}
+      </if>
+
+      <if test="orgIdAlls != null">
+        AND ORG_ID in
+        <foreach collection="orgIdAlls" close=")" open="(" item="all" separator=",">
+          #{all}
+        </foreach>
+      </if>
+
+  </select>
+
+
+
+</mapper>

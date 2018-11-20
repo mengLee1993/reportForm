@@ -1,0 +1,203 @@
+@charset "UTF-8";
+/*
+按钮注释：整体页面级别为一级按钮（背景加色，字体白色）   部分模块级别按钮为二级按钮（背景白色，字体加色）
+背景注释：按钮置灰做成原色的30%透明度
+*/
+/*
+/*
+字体内容文字是#838383
+标题文字是#515A6D
+边框是#eeeeee
+表格所有色值均为#515A6D
+*/
+/*
+主色
+*/
+/*
+辅助色 assist
+*/
+/************************************************************************************
+字体
+************************************************************************************/
+/*导航*/
+/*表格*/
+/*按钮*/
+/*其他*/
+/************************************************************************************
+背景
+************************************************************************************/
+/*导航*/
+/*表格*/
+/*按钮*/
+/*其他*/
+/************************************************************************************
+边框
+************************************************************************************/
+/*按钮*/
+.formcontainer { width: 100%; height: 100%; min-height: 700px; background: #fff; }
+
+.formcontainer .formcontainer-nav { width: 14%; float: left; height: 700px; background: #F8F8F9; min-height: 100px; min-width: 7%; overflow: auto; overflow-x: scroll; }
+
+.formcontainer .formcontainer-nav .formcontainer-nav__text { height: 40px; color: #0375D7; font-size: 14px; line-height: 40px; text-indent: 15px; background: #e5e5e5; }
+
+.formcontainer .formcontainer-nav .firstParent__icon { display: inline-block; background: url("../images/images.png") no-repeat -211px -181px; width: 9px; height: 6px; margin: 7px 5px; }
+
+.formcontainer .formcontainer-nav .firstParent__icon1 { display: inline-block; background: url("../images/images.png") no-repeat -421px -181px; width: 9px; height: 6px; margin: 7px 5px; }
+
+.formcontainer .formcontainer-nav ul { width: 100%; margin: 0; }
+
+.formcontainer .formcontainer-nav li { width: 100%; line-height: 24px; }
+
+.formcontainer .formcontainer-nav li .firstParent { width: 100%; height: 40px; }
+
+.formcontainer .formcontainer-nav li .firstParent__icon { font-size: 18px; }
+
+.formcontainer .formcontainer-nav li .chkClass { margin-right: 6px; }
+
+.formcontainer .formcontainer-refreshTiele { height: 40px; }
+
+.formcontainer .tableCss { width: 20px; height: 20px; display: inline-block; background: url("../images/photo.png") 0 no-repeat; cursor: pointer; background-position: -270px -83px; }
+
+.formcontainer .chartCss { width: 20px; height: 20px; display: inline-block; cursor: pointer; background: url("../images/biaoge2.png") 0 no-repeat; background-position: 5px 8px; }
+
+.formcontainer .formcontainer-tool { width: 85%; height: 50px; background: #fff; margin-left: 0.5%; float: left; overflow: auto; }
+
+.formcontainer .formcontainer-tool__icon { width: 20px; height: 20px; display: inline-block; background: url("../images/photo.png") 0 no-repeat; background-position: -270px -148px; cursor: pointer; }
+
+.formcontainer .formcontainer-tool__bar { width: 1px; height: 11px; background: #eee; color: #eee; margin-left: 30px; }
+
+.formcontainer .formcontainer-tool__model { width: 90px; display: inline-block; margin-top: 10px; text-align: center; cursor: pointer; }
+
+.formcontainer .formcontainer-main { width: 65%; /*overflow-x: auto;*/ height: 91%; background: #fff; float: left; margin-left: 0.5%; margin-top: 0.5%; /*overflow-x: auto;*/ position: relative; min-width: 20%; }
+
+.formcontainer .formcontainer-main .formcontainer-mainover { width: 100%; height: 634px; overflow: scroll; padding-bottom: 10px; }
+
+.formcontainer .formcontainer-main .formcontainer-table { width: 100%; }
+
+.formcontainer .formcontainer-main .formcontainer-table .formcontainer-table__td { border: 1px solid #dee3e6; height: 40px; text-align: center; word-break: break-all; }
+
+.formcontainer .formcontainer-main .formcontainer-table__thead { height: 40px; background: #f0f0f0; border: 1px solid #dee3e6; word-break: break-all; }
+
+.formcontainer .formcontainer-main .tcdPageCode { position: absolute; bottom: 0; }
+
+.formcontainer .formcontainer-right { width: 20%; height: 100%; float: left; margin-left: 0.5%; margin-top: 0.5%; position: relative; }
+
+.formcontainer .formcontainer-right .formcontainer-nav__text { height: 30px; color: #0375D7; font-size: 14px; line-height: 30px; text-indent: 35px; background: #e5e5e5; }
+
+.formcontainer .formcontainer-right ul { width: 98%; margin: 0; padding-left: 2%; }
+
+.formcontainer .formcontainer-right li .firstParent { width: 100%; height: 40px; }
+
+.formcontainer .formcontainer-right li .firstParent__icon { font-size: 18px; }
+
+.formcontainer .formcontainer-right li .chkClass { margin-right: 6px; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partOne { width: 100%; height: 14%; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo { width: 100%; height: 30%; background: #e5e5e5; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-right__left { width: 50%; height: 100%; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-nav__append { height: 100%; background: #fff; overflow-y: scroll; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-right__right { width: 48%; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-nav__appendLine { height: 35px; width: 100%; line-height: 35px; text-indent: 10px; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-nav__textevey { height: 30px; color: #0375D7; font-size: 14px; line-height: 30px; text-indent: 25px; background: #e5e5e5; width: 100%; }
+
+.formcontainer .formcontainer-right .formcontainer-right__partTwo .formcontainer-nav__appendV { height: 30%; background: #fff; }
+
+.formcontainer .formcontainer-right .formcontainer-right__foot { height: 10%; }
+
+.content-choose__left { width: 389px; height: 403px; border: 1px solid #e5e5e5; float: left; margin-left: 30px; margin-top: 20px; }
+
+.content-choose__right { width: 389px; height: 403px; border: 1px solid #e5e5e5; float: left; margin-top: 20px; margin-left: 50px; }
+
+.supplier-list-con { border: 1px solid #e5e5e5; }
+
+.firstParent__icon { width: 20px; height: 20px; display: inline-block; background: url("../images/photo.png") 0 no-repeat; background-position: -270px -148px; }
+
+.tabMenu-two { background: none; }
+
+#cloneTreeRow { height: 35px; line-height: 35px; }
+
+.liveoLi { float: left; width: 90px; }
+
+.padding0 { padding-left: 10px; }
+
+.padding1 { padding-left: 20px; }
+
+.padding2 { padding-left: 30px; }
+
+.parentChildTable { width: 100%; background: #00AFFF; }
+
+.parentChildTable-child { width: 95% !important; padding-left: 22px; color: #778CA2; background: #F8F8F9; }
+
+.parentChildTable-child-list { line-height: 24px; height: 24px; margin-top: 5px; }
+
+.parentChildTable-child-list-con { width: 135px; margin-left: 5px; margin-bottom: 5px; line-height: 24px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+
+.parentChildTable-child-list-check { margin-top: 6px; cursor: pointer; }
+
+.parentChildTable-child-listCheck-create { cursor: pointer; background: url("../images/images.png") no-repeat -489px -37px; width: 12px; height: 12px; margin-top: 6px; }
+
+.parentChildTable-parent { cursor: pointer; background: #00AFFF; color: #fff; }
+
+.formcontainer .formcontainer-nav .parentChildTable-child-list-third { width: 90%; padding-left: 10%; background: #F8F8F9; }
+
+.formcontainer .formcontainer-nav .parentChildTable-childList-thirdList { line-height: 24px; margin-bottom: 5px; width: 100%; float: left; min-height: 24px; }
+
+.formcontainer .formcontainer-nav .parentChildTable-childList-thirdList .parentChildTable-child-listThird-delete { margin-right: 35px; cursor: pointer; background: url("../images/images.png") no-repeat -277px -40px; width: 10px; height: 10px; margin-top: 8px; }
+
+.management-box-list__Content { width: 950px; margin-top: 4px; margin-left: 22px; }
+
+.userNewPopup-ulist-list { float: left; width: 100%; margin-bottom: 15px; }
+
+.userNewPopup-ulist-list-name { width: 80px; text-align: right; line-height: 30px; margin-right: 20px; }
+
+.userNewPopup-ulist-list-input { width: 200px; min-height: 30px; border: 1px solid #eee; padding-left: 10px; border-radius: 4px; line-height: 30px; }
+
+.userNewPopup-ulist-list select { width: 200px; margin-left: -10px; }
+
+.tabMenu-four { background: #fff !important; border: none; }
+
+.tabCon { border: none; }
+
+.userNewPopup-ulist-list-calculate { margin-right: 5px; width: 30px; height: 30px; line-height: 30px; text-align: center; background: #e5e5e5; cursor: pointer; font-size: 20px; }
+
+.userNewPopup-ulist-list-nameWait { margin-right: 5px; height: 30px; padding: 0 3px; line-height: 30px; margin-bottom: 3px; border: 1px solid #e5e5e5; cursor: pointer; }
+
+.userNewPopup-ulist-list-ulWait { width: 290px; min-height: 30px; }
+
+.fieldNameEdit { display: inline; color: #0375d7; line-height: 24px; background: url("../images/images.png") no-repeat -558px -36px; width: 15px; height: 15px; margin-top: 4px; margin-right: 5px; cursor: pointer; }
+
+.subtotal, .searchSet { margin-right: 5px; border: 1px solid #e5e5e5; padding: 0 2px; cursor: pointer; color: #666; }
+
+.activeOpe { margin-right: 5px; border: 1px solid #00AFFF; padding: 0 2px; cursor: pointer; color: #00AFFF; }
+
+.searchContent { padding: 2px; margin-bottom: 5px; }
+
+.searchContent input { width: 100px; margin-right: 5px; margin-left: 5px; min-width: 100px; }
+
+.searchContent select { width: 100px; margin-right: 5px; margin-left: 5px; min-width: 100px; }
+
+.searchContent .chosen-container { width: 100px !important; margin-right: 5px; margin-left: 5px; }
+
+.chosen-container { margin-top: -2px; }
+
+.tableChart { height: 28px; line-height: 28px; padding: 5px; margin-bottom: 5px; }
+
+.tableChart-input { margin-right: 5px; cursor: pointer; margin-top: 7px; }
+
+.tableChart-name { margin-right: 5px; }
+
+.tableChartMain { width: 100%; height: 200px; }
+
+.setUpChart { background: url("../images/photo.png") no-repeat -115px -29px; width: 14px; height: 14px; margin-top: 7px; margin-left: 15px; cursor: pointer; }
+
+.parentChildTable-parent-name { width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.ui-sortable-handle .content { line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 90px; }
+
+.parentChildTable-childList-thirdList-measure { cursor: pointer; width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

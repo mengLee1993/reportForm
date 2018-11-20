@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebase.report.dao.jurisdiction.SysInfoMapper">
+    <resultMap id="BaseResultMap" type="com.ebase.report.model.jurisdiction.SysInfo">
+        <id column="SYS_ID" jdbcType="BIGINT" property="sysId" />
+        <result column="SYS_CODE" jdbcType="VARCHAR" property="sysCode" />
+        <result column="SYS_TITLE" jdbcType="VARCHAR" property="sysTitle" />
+        <result column="SYS_DESC" jdbcType="VARCHAR" property="sysDesc" />
+        <result column="IS_DELETE" jdbcType="TINYINT" property="isDelete" />
+        <result column="STATUS" jdbcType="TINYINT" property="status" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+        <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        SYS_ID, SYS_CODE, SYS_TITLE, SYS_DESC, IS_DELETE, STATUS, CREATED_BY, CREATED_TIME, 
+        UPDATED_BY, UPDATED_TIME, ORG_ID
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from sys_info
+        where SYS_ID = #{sysId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sys_info
+        where SYS_ID = #{sysId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        insert into sys_info (SYS_ID, SYS_CODE, SYS_TITLE, 
+            SYS_DESC, IS_DELETE, STATUS, 
+            CREATED_BY, CREATED_TIME, UPDATED_BY, 
+            UPDATED_TIME, ORG_ID)
+        values (#{sysId,jdbcType=BIGINT}, #{sysCode,jdbcType=VARCHAR}, #{sysTitle,jdbcType=VARCHAR}, 
+            #{sysDesc,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT}, #{status,jdbcType=TINYINT},
+            #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+            #{updatedTime,jdbcType=TIMESTAMP}, #{orgId,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyProperty="sysId" useGeneratedKeys="true" keyColumn="SYS_ID"  parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        insert into sys_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sysId != null">
+                SYS_ID,
+            </if>
+            <if test="sysCode != null">
+                SYS_CODE,
+            </if>
+            <if test="sysTitle != null">
+                SYS_TITLE,
+            </if>
+            <if test="sysDesc != null">
+                SYS_DESC,
+            </if>
+            <if test="isDelete != null">
+                IS_DELETE,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedTime != null">
+                UPDATED_TIME,
+            </if>
+            <if test="orgId != null">
+                ORG_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sysId != null">
+                #{sysId,jdbcType=BIGINT},
+            </if>
+            <if test="sysCode != null">
+                #{sysCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sysTitle != null">
+                #{sysTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDesc != null">
+                #{sysDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null">
+                #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        update sys_info
+        <set>
+            <if test="sysCode != null">
+                SYS_CODE = #{sysCode,jdbcType=VARCHAR},
+            </if>
+            <if test="sysTitle != null">
+                SYS_TITLE = #{sysTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="sysDesc != null">
+                SYS_DESC = #{sysDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="isDelete != null">
+                IS_DELETE = #{isDelete,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null">
+                UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orgId != null">
+                ORG_ID = #{orgId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where SYS_ID = #{sysId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        update sys_info
+        set SYS_CODE = #{sysCode,jdbcType=VARCHAR},
+            SYS_TITLE = #{sysTitle,jdbcType=VARCHAR},
+            SYS_DESC = #{sysDesc,jdbcType=VARCHAR},
+            IS_DELETE = #{isDelete,jdbcType=TINYINT},
+            STATUS = #{status,jdbcType=TINYINT},
+            CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+            UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+            ORG_ID = #{orgId,jdbcType=VARCHAR}
+        where SYS_ID = #{sysId,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="selectSysInfoOrgSee" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.STATUS, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{orgId} and s.is_delete = 0
+    </select>
+
+    <select id="selectSysOrgSeeAcct" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.STATUS, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        LEFT JOIN acct_user_sys aus on aus.sys_Id=s.sys_id
+        where aos.org_id = #{orgId} and s.is_delete = 0
+        and aus.acct_id=#{acctId}
+    </select>
+
+
+    <select id="selectSysInfoOrgId" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.STATUS, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{orgId} and s.is_delete = 0
+    </select>
+
+    <select id="selectSysEstablish" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.STATUS, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{orgId} and s.is_delete = 0 and aos.status = 0 and s.status=1
+    </select>
+
+
+    <select id="selectSysSubgrade" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus,1 as status
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{orgId} and s.is_delete = 0 and aos.status = 1
+        and s.sys_id not in (select s.SYS_ID
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id like CONCAT(#{orgId}, '%') and aos.ORG_ID != #{orgId} and s.is_delete = 0 and aos.status = 0 and s.status=1)
+
+        UNION all
+
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus,case when s.sys_id in (select s.SYS_ID
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{orgId} and s.is_delete = 0 and aos.status = 1 and s.status=1) then 1 else 0 end as status
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id like CONCAT(#{orgId}, '%') and aos.ORG_ID != #{orgId} and s.is_delete = 0 and aos.status = 0 and s.status=1
+    </select>
+
+
+    <select id="selectSysOrg" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE,s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus,1 as status
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{quoteOrgId} and s.is_delete = 0 and aos.status = 1
+				and s.sys_id not in (select s.SYS_ID
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{orgId} and s.is_delete = 0 and aos.status = 0 and s.status=1)
+
+        UNION all
+
+
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus,case when s.sys_id in (select s.SYS_ID
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{quoteOrgId} and s.is_delete = 0 and aos.status = 1 and s.status=1) then 1 else 0 end as status
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{orgId} and s.is_delete = 0 and aos.status = 0 and s.status=1
+    </select>
+
+    <select id="selectSysSuperYinyong" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE,s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus,case when s.sys_id in (select s.SYS_ID
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{quoteOrgId} and s.is_delete = 0 and aos.status = 1 and s.status=1) then 1 when s.sys_id in (select s.SYS_ID
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{quoteOrgId} and s.is_delete = 0 and aos.status = 0 and s.status=1) then 1 else 0 end as status
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where s.is_delete = 0 and aos.status = 0 and s.status=1
+    </select>
+
+    <select id="selectSysSuper" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE,s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus,case when s.sys_id in (select s.SYS_ID
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{quoteOrgId} and s.is_delete = 0 and aos.status = 1 and s.status=1) then 1 when s.sys_id in (select s.SYS_ID
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.org_id = #{quoteOrgId} and s.is_delete = 0 and aos.status = 0 and s.status=1) then 1 else 0 end as status
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where s.is_delete = 0 and aos.status = 0 and s.status=1
+    </select>
+
+
+
+    <select id="selectSysInfoOrgCreate" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where s.is_delete = 0 and aos.status = 0 and s.status=1
+        aos.org_id = #{orgId}
+    </select>
+
+    <select id="selectSysInfoSuper" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.FunctionManage">
+        select s.SYS_ID, s.SYS_CODE, s.SYS_TITLE, s.SYS_DESC, s.IS_DELETE, s.STATUS, s.CREATED_BY, s.CREATED_TIME,
+        s.UPDATED_BY, s.UPDATED_TIME, s.ORG_ID,aos.status as relaStatus
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.status = 0 and s.is_delete = 0
+    </select>
+
+
+    <select id="verSysInfo" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select *
+        from sys_info s
+        LEFT JOIN  ACCT_ORG_SYS aos on aos.sys_id=s.sys_id
+        where aos.status=1 and s.sys_id = #{sysId}
+    </select>
+
+    <select id="verInsertSysInfo" resultType="com.ebase.report.model.jurisdiction.SysInfo" parameterType="com.ebase.report.model.jurisdiction.SysInfo">
+        select *
+        from sys_info s
+        where s.SYS_TITLE = #{sysTitle} and s.is_delete = 0
+        <if test="sysId != null">
+            and s.SYS_ID not in (#{sysId,jdbcType=BIGINT})
+        </if>
+    </select>
+
+    <select id="select" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from sys_info
+        <include refid="Base_Where_Column_List" />
+    </select>
+    <sql id="Base_Where_Column_List">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="sysId != null">
+                and SYS_ID = #{sysId,jdbcType=BIGINT}
+            </if>
+            <if test="sysCode != null">
+                and SYS_CODE = #{sysCode,jdbcType=VARCHAR}
+            </if>
+            <if test="sysTitle != null">
+                and SYS_TITLE = #{sysTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="sysDesc != null">
+                and SYS_DESC = #{sysDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="isDelete != null">
+                and IS_DELETE = #{isDelete,jdbcType=TINYINT}
+            </if>
+            <if test="status != null">
+                and STATUS = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="createdBy != null">
+                and CREATED_BY = #{createdBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createdTime != null">
+                and CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatedBy != null">
+                and UPDATED_BY = #{updatedBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updatedTime != null">
+                and UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="orgId != null">
+                and ORG_ID = #{orgId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+</mapper>

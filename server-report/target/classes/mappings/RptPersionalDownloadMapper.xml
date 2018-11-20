@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebase.report.dao.RptPersionalDownloadMapper">
+    <resultMap id="BaseResultMap" type="com.ebase.report.model.RptPersionalDownload">
+        <id column="DOWNLOAD_ID" jdbcType="BIGINT" property="downloadId" />
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+        <result column="DOWNLOAD_SQL" jdbcType="VARCHAR" property="downloadSql" />
+        <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName" />
+        <result column="FILE_TYPE" jdbcType="VARCHAR" property="fileType" />
+        <result column="FILE_PATH" jdbcType="VARCHAR" property="filePath" />
+        <result column="FILE_DESC" jdbcType="VARCHAR" property="fileDesc" />
+        <result column="DOWNLOAD_TIME" jdbcType="TIMESTAMP" property="downloadTime" />
+
+        <result column="CRATE_TIME" jdbcType="TIMESTAMP" property="crateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        DOWNLOAD_ID, USER_ID, DOWNLOAD_SQL, FILE_NAME, FILE_TYPE, FILE_PATH, FILE_DESC, DOWNLOAD_TIME,CRATE_TIME
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from rpt_persional_download
+        where DOWNLOAD_ID = #{downloadId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from rpt_persional_download
+        where DOWNLOAD_ID = #{downloadId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.ebase.report.model.RptPersionalDownload">
+        insert into rpt_persional_download (DOWNLOAD_ID, USER_ID, DOWNLOAD_SQL, 
+            FILE_NAME, FILE_TYPE, FILE_PATH, 
+            FILE_DESC, DOWNLOAD_TIME,CRATE_TIME)
+        values (#{downloadId,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{downloadSql,jdbcType=VARCHAR}, 
+            #{fileName,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
+            #{fileDesc,jdbcType=VARCHAR}, #{downloadTime,jdbcType=TIMESTAMP},#{crateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ebase.report.model.RptPersionalDownload">
+        insert into rpt_persional_download
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="downloadId != null">
+                DOWNLOAD_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="downloadSql != null">
+                DOWNLOAD_SQL,
+            </if>
+            <if test="fileName != null">
+                FILE_NAME,
+            </if>
+            <if test="fileType != null">
+                FILE_TYPE,
+            </if>
+            <if test="filePath != null">
+                FILE_PATH,
+            </if>
+            <if test="fileDesc != null">
+                FILE_DESC,
+            </if>
+            <if test="downloadTime != null">
+                DOWNLOAD_TIME,
+            </if>
+            <if test="crateTime != null">
+                CRATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="downloadId != null">
+                #{downloadId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="downloadSql != null">
+                #{downloadSql,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null">
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null">
+                #{fileType,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="fileDesc != null">
+                #{fileDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="downloadTime != null">
+                #{downloadTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="crateTime != null">
+                #{crateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.RptPersionalDownload">
+        update rpt_persional_download
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="downloadSql != null">
+                DOWNLOAD_SQL = #{downloadSql,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null">
+                FILE_NAME = #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null">
+                FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                FILE_PATH = #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="fileDesc != null">
+                FILE_DESC = #{fileDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="downloadTime != null">
+                DOWNLOAD_TIME = #{downloadTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="crateTime != null">
+                CRATE_TIME = #{crateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where DOWNLOAD_ID = #{downloadId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.RptPersionalDownload">
+        update rpt_persional_download
+        set USER_ID = #{userId,jdbcType=VARCHAR},
+            DOWNLOAD_SQL = #{downloadSql,jdbcType=VARCHAR},
+            FILE_NAME = #{fileName,jdbcType=VARCHAR},
+            FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+            FILE_PATH = #{filePath,jdbcType=VARCHAR},
+            FILE_DESC = #{fileDesc,jdbcType=VARCHAR},
+            DOWNLOAD_TIME = #{downloadTime,jdbcType=TIMESTAMP},
+            CRATE_TIME = #{crateTime,jdbcType=TIMESTAMP}
+        where DOWNLOAD_ID = #{downloadId,jdbcType=BIGINT}
+    </update>
+    <select id="select" resultMap="BaseResultMap">
+        select 
+        *
+        from rpt_persional_download
+        <include refid="Base_Where_Column_List" />
+        limit #{startRow},#{pageSize}
+    </select>
+    <sql id="Base_Where_Column_List">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="downloadId != null">
+                and DOWNLOAD_ID = #{downloadId,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null">
+                and USER_ID = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="downloadSql != null">
+                and DOWNLOAD_SQL = #{downloadSql,jdbcType=VARCHAR}
+            </if>
+            <if test="fileName != null and fileName != ''">
+                FILE_NAME LIKE CONCAT('%',#{fileName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="fileType != null">
+                and FILE_TYPE = #{fileType,jdbcType=VARCHAR}
+            </if>
+            <if test="filePath != null">
+                and FILE_PATH = #{filePath,jdbcType=VARCHAR}
+            </if>
+            <if test="fileDesc != null">
+                and FILE_DESC = #{fileDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="downloadTime != null">
+                and DOWNLOAD_TIME = #{downloadTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="crateTime != null">
+                and CRATE_TIME = #{crateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectCount" resultType="java.lang.Integer" parameterType="com.ebase.report.vo.RptPersionalDownloadVO">
+        select
+        count(1)
+        from rpt_persional_download
+        <include refid="Base_Where_Column_List" />
+    </select>
+</mapper>

@@ -1,0 +1,141 @@
+@import "../../report-base/sass/tradebaseVar";
+$bd_dee: #dee3e6;//主体边框线
+.search_btn_class{
+  display: inline-block;
+  height: 28px;
+  width: 80px;
+  margin-left: 10px;
+  background: $as_00a;
+  line-height: 28px;
+  text-align: center;
+  color: $fc_ff;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.downloadcet{
+  width: 100%;
+  height: 100%;
+}
+.downloadcet-nav{
+  width: 14%;
+  float: left;
+  height: 100%;
+  background: $fc_ff;
+  overflow: auto;
+  overflow-x: scroll;
+  &__text{
+    height: 40px;
+    color: $_mc;
+    font-size: 14px;
+    line-height: 40px;
+    text-indent: 15px;
+  }
+}
+.downloadcet-nav-list{
+  width: 100%;
+  margin: 0;
+  &__item{
+    width: 100%;
+    line-height: 40px;
+  }
+  &__cet{
+    text-indent: 10px;
+  }
+  &__icon{
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../images/photo.png) 0 no-repeat;
+    background-position: -270px -148px;
+  }
+}
+.downloadcet-main{
+  width: 100%;
+  height: 100%;
+  background: $fc_ff;
+  margin-left:0.5%;
+  float: left;
+  overflow: auto;
+  overflow-y: scroll;
+
+}
+.main-title{
+  line-height: 45px;
+  border-bottom: 1px solid #eee;
+  margin: 0 1%;
+  box-sizing: border-box;
+  &__sign{
+    float: left;
+    display: inline-block;
+    width: 5px;
+    height: 16px;
+    line-height: 16px;
+    background: $_mc;
+    margin: 14px 8px 0 0;
+  }
+  &__name{
+    font-weight: 600;
+  }
+}
+.main-box{
+  line-height: 50px;
+  border-bottom: 1px solid $bd_dee;
+  box-sizing: border-box;
+  margin: 0 1%;
+  &__name{
+    float:left ;
+  }
+  &__input{
+    float: left;
+    height: 26px;
+    margin-top: 10px;
+    margin-left: 1%;
+    min-width: 20%;
+    padding:0 1%;
+    border-color: $bd_dee;
+  }
+  &__search{
+    float: left;
+    margin-top: 10px;
+    margin-right: 1%;
+    margin-left: 10px;
+    border-color: $bd_dee;
+  }
+}
+.main-table{
+  width: 100%;
+  height:auto;
+  box-sizing: border-box;
+  padding: 1%;
+}
+.table-list{
+  &__thead{
+    background: $bg_f8;
+    color:#515A6D;
+    border: 1px solid #E2DEDE;
+    font-weight: 900;
+  }
+  &__Tr{
+    height: 35px;
+  }
+  &__str{
+    height: 35px;
+    text-align: center;
+  }
+  &__td{
+    border: 1px solid #E2DEDE;
+    color:#515A6D;
+  }
+}
+.analyseSql{
+  border: none;
+  background: #fff;
+  resize: none;
+  width: 190px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  height: 25px;
+  line-height: 30px;
+}

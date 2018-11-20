@@ -1,0 +1,71 @@
+@@include('../../report-home/html-gulp-www/commonHeader.html')
+<link rel="stylesheet" href="../css/logAnalyze.css">
+<div class="downloadcet">
+	<div class="downloadcet-main">
+		<div class="main-title ">
+			<strong class="main-title__sign"></strong>
+			<h1 class="main-title__tie" style="font-weight: 800;">分析日志</h1>
+		</div>
+		<div class="main-box clearfix" id="condQuery">
+			<span class="main-box__name">用户名:</span>
+			<input type="text" class="inputBase main-box__input" id="condopUserName">
+			<div class="search_btn_class" comtype="searchBtnCtrl" rule="cond" cond="condopUserName" parentId="condQuery" uniontableid="tableList" type="button" id="searchDataBtn">
+                <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
+            </div>
+		</div>
+		<div class="main-table">
+			<table class="table-list" id="tableList" comtype="standardTableCtrl"
+				   templateid="templateRow"  chkid="chkCoding"
+				   page="tcdPageCode" nodata="noDataCon"
+				   reqpath="/report/rptAnalyseLog/findpageresult" reqparam="{}" method="post" style="table-layout: fixed">
+				<thead>
+				<tr class="table-list__Tr" >
+					<!-- <th class="table-list__thead" style="width: 5%">
+						<input type="checkbox" id="allChk" comtype="checkAll" cond="" uniontableid="tableList"  >
+					</th> -->
+					<th class="table-list__thead" style="width: 20%">用户</th>
+					<th class="table-list__thead" style="width: 20%">操作时间</th>
+					<th class="table-list__thead" style="width: 10%">操作IP</th>
+					<!-- <th class="table-list__thead" style="width: 10%">操作类型</th> -->
+					<th class="table-list__thead" style="width: 20%">主题SCHEMA</th>
+					<th class="table-list__thead" style="width: 20%">主题表</th>
+					<th class="table-list__thead" style="width: 20%">执行SQL</th>
+					<th class="table-list__thead" style="width: 10%">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr class="table-list__str" id="templateRow" style="display: none;">
+					<!-- <td class="table-list__td" >
+						<input type="checkbox"  id="chkCoding">
+					</td> -->
+					<td class="table-list__td" id="opUserName"></td>
+					<td class="table-list__td" id="logTime"></td>
+					<td class="table-list__td" id="opIp"></td>
+					<!-- <td class="table-list__td" ></td> -->
+					<td class="table-list__td" id="subjectName"></td>
+					<td class="table-list__td" id="tableName"></td>
+					<td class="table-list__td"><textarea readonly="readonly" id="analyseSql" class="analyseSql"></textarea></td>
+					<td class="table-list__td"><a href="javascript:;" class="copyTxt" style="color: #0375d7;">复制SQL</a></td>
+				</tr>
+				</tbody>
+			</table>
+			<div id="noDataCon" class="noDataCon" style="display:none">
+				<i></i><p>暂无数据.....</p>
+			</div>
+			<div class="tcdPageCode"></div>
+		</div>
+	</div>
+<script>
+    function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
+        $(cloneRow).find("#analyseSql").attr("title",jsonItem.analyseSql);
+        $(cloneRow).find(".copyTxt").on("click",function(){//复制
+        	var copyValue = $(cloneRow).find("#analyseSql")[0];
+		    copyValue.select(); // 选择对象
+		    document.execCommand("Copy"); // 执行浏览器复制命令
+		    alert("内容复制成功！");
+        })
+    }
+
+</script>
+</div>
+@@include('../../report-home/html-gulp-www/commonFooter.html')
