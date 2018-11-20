@@ -201,3 +201,5 @@
 .ui-sortable-handle .content { line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 90px; }
 
 .parentChildTable-childList-thirdList-measure { cursor: pointer; width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.selDimensionContent .content { width: 95% !important; }
