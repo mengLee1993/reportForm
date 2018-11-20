@@ -300,7 +300,25 @@
 				}
             })
 		})
-
+        $(cloneRow).find("#notBearDele").on("click",function(){
+            var alertBox=new clsAlertBoxCtrl();
+            alertBox.Alert("确认删除吗？","提示",1,"","deleteBox");
+            datasourceId = jsonItem.datasourceId;
+        })
+    }
+    var datasourceId = null;//删除id
+    function clsAlertBoxCtrl$sure() {//成功弹框确定
+        if (this.id == "deleteBox") {
+            getAjaxResult("/report/datasource/remove","post",{"datasourceId":datasourceId},function(data){
+                data = JSON.parse(data);
+                if(data.retCode == "0000000"){
+                    document.body.jsCtrl.ctrl = $("#tableList")[0];
+                    document.body.jsCtrl.init();
+                }else{
+                    aletr(data.retDesc);
+                }
+            });
+        }
     }
 </script>
 <div class="downloadcet">
@@ -385,6 +403,7 @@
 					<td class="table-list__td" id="">
 						<a href="javascript:;" class="" style="color: #0375d7" id="notBearEdit">编辑</a>
 						<a href="javascript:;" class="" style="color: #0375d7" id="bearOr" style="margin-top: 2px;">禁用</a>
+                        <a href="javascript:;" class="" style="color: #0375d7" id="notBearDele">删除</a>
 						<!--<a href="javascript:;" class="list testUrl" id="" >测试链接</a>-->
 					</td>
 					<!--<td class="table-list__td" id="maxActive"></td>-->

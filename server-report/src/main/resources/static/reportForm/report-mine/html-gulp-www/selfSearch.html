@@ -190,11 +190,11 @@
                        reqpath="/report/rptPersonalAnalysis/findpageresult" reqparam="{}" method="post">
                     <thead>
                     <tr class="table-list__Tr" >
-                        <th class="table-list__thead" style="width: 20%">报表名称</th>
-                        <th class="table-list__thead" style="width: 20%">主题名称</th>
-                        <th class="table-list__thead" style="width: 20%">主题表</th>
+                        <th class="table-list__thead" style="width: 15%">报表名称</th>
+                        <th class="table-list__thead" style="width: 15%">主题名称</th>
+                        <th class="table-list__thead" style="width: 15%">主题表</th>
                         <th class="table-list__thead" style="width: 10%">分享者</th>
-                        <th class="table-list__thead" style="width: 20%">操作</th>
+                        <th class="table-list__thead" style="width: 35%">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -206,6 +206,8 @@
                         <td class="table-list__td">
                             <a class="js-jumpBtn" href="javascript:;" style="color: #0375d7">数据分析</a>
                             <a class="js-share ml10 mr10" href="javascript:;" style="color: #0375d7">分享</a>
+                            <a class="js-lookshare mr10" href="javascript:;" style="color: #0375d7">查看分享</a>
+                            <a class="js-cannelshare mr10" href="javascript:;" style="color: #0375d7">取消分享</a>
                             <a class="js-delete" href="javascript:;" style="color: #0375d7">删除</a>
                         </td>
                     </tr>
@@ -304,6 +306,46 @@
         </div>
     </div>
 </div>
+<div id="lookpersonSharePop" class="popup" style="display: none">
+    <div class="title">
+        <h2></h2>
+        <div>
+            <a class="min" href="javascript:;" title="最小化" style="display:none;"></a>
+            <a class="max" href="javascript:;" title="最大化" style="display:none;"></a>
+            <a class="revert" href="javascript:;" title="还原" style="display:none;"></a>
+            <a class="close" href="javascript:;" title="关闭" style=" "></a>
+        </div>
+    </div>
+    <div class="content supplier-list-con">
+        <div style="padding: 5%;width: 90%">
+            <div class="userRole">
+                <table cellspacing="0" cellpadding="0" id="userShareLook" templateId="templateRow" comType="" reqPath="" reqParam='{}' page="tcdPageCodeH" noData="nonDataH" idx="idxH" class="table-list" style="table-layout: fixed;margin-top: 10px;">
+                    <tr class="table-list-header">
+                        <!-- <th style="width:20%;" class="table-list-header__th">
+                            <input type="checkbox" id="checkAll1" comType="checkAll" cond="" class="clsAllChk1" uniontableId="userShare" chkId="chkCoding">
+                        </th> -->
+                        <th style="width:30%;" class="table-list-header__th">序号</th>
+                        <th style="width:30%;" class="table-list-header__th">人员信息</th>
+                        <th style="width:30%;" class="table-list-header__th">类型</th>
+                    </tr>
+                    <tr id="templateRow" style="display:none;" class="table-list-tr">
+                        <!-- <td class="table-list-tr__item">
+                            <input type="checkbox"  id="chkCoding" class="clsChk1">
+                        </td> -->
+                        <td class="table-list-tr__item" id="idxH"></td>
+                        <td class="table-list-tr__item" id="name"></td>
+                        <td class="table-list-tr__item" id="type"></td>
+                    </tr>
+                </table>
+                <div class="tcdPageCode tcdPageCodeH"></div>
+                <div id="nonDataH" class="noDataCon" style="display: none">
+                    <i></i>
+                    <p>暂无数据......</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(function(){
         $("#shareType").chosen({
@@ -354,6 +396,17 @@
                 initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{},"POST");
 
             })
+            .on("click",".js-lookshare",function(){//查看分享
+                openWin("800", "600", "lookpersonSharePop", true);
+                initplugPath($("#userShareLook")[0],"standardTableCtrl","/report/listAnalysisShareBody",{"id":jsonItem.personalAnalysisId},"POST");
+            })
+        }
+        if(this.ctrl.id == "userShareLook"){
+            if(jsonItem.type == 0){
+                jsonItem.type = "角色"
+            }else if(jsonItem.type == 1){
+                jsonItem.type = "账号"
+            }
         }
     }
     function clsAlertBoxCtrl$sure() {//成功弹框确定
