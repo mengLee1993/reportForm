@@ -151,28 +151,14 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
             rs = dbMetaData.getTables(null, schemaPattern, tableNamePattern, types);
 
-            /*while (rs.next()) {
+            while (rs.next()) {
                 //只要表名这一列
                 System.out.println(rs.getObject("TABLE_NAME"));
 
                 RptDataTable rptDataTable = new RptDataTable();
                 rptDataTable.setTableCode(rs.getObject("TABLE_NAME").toString());
                 tables.add(rptDataTable);
-            }*/
-
-            String sql = "show table status";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-             rs = preparedStatement.executeQuery();
-              while (rs.next()) {
-                //只要表名这一列
-               // System.out.println(rs.getObject("TABLE_NAME"));
-                System.out.println(rs.getObject("Name")+"-------->"+rs.getObject("Comment"));
-                RptDataTable rptDataTable = new RptDataTable();
-                rptDataTable.setTableCode(rs.getObject("Name").toString());
-                rptDataTable.setComment(rs.getObject("Comment").toString());
-                tables.add(rptDataTable);
             }
-
         } catch (SQLException e) {
             throw new DbException(e);
         } finally {
@@ -238,7 +224,7 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
                     Object columnValue = rs.getString(columnName);
 
-                    columnName = columnName +
+                    //columnName = columnName + "@" + materialCode@4000
                     if(tmpMap.get(columnName) == null){
                         ArrayList<Object> objects = new ArrayList<>();
                         objects.add(columnValue);
