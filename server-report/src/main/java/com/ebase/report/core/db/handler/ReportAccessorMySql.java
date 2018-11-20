@@ -499,10 +499,10 @@ public class ReportAccessorMySql extends AbstractAccessor {
 //            } else if (DATABASETYPE.INFORMIX.equals(dbtype)) {
 //                // SqlServer
 //                tableNamePattern = "%";
-            } else if (DataBaseType.DB_TYPE_HIVE.equals(dataBaseType)) {
+            } /*else if (DataBaseType.DB_TYPE_HIVE.equals(dataBaseType)) {
                 // hive
                 tableNamePattern = "%";
-            } else {
+            }*/ else {
                 throw new RuntimeException("不认识的数据库类型!");
             }
 
