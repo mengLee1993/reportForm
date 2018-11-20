@@ -9,7 +9,9 @@
         <div class="main-box clearfix" id="condQuery">
             <span class="main-box__name">数据表（名称或编码）:</span>
             <input type="text" class="inputBase main-box__input" id="condtableName">
-            <div class="search_btn_class"  comtype="searchBtnCtrl" rule="cond" cond="condtableName" parentId="condQuery" uniontableid="tableList" type="button" id="searchDataBtn">
+            <span class="main-box__name ml10">所在数据库:</span>
+            <input type="text" class="inputBase main-box__input" id="conddatasourceName">
+            <div class="search_btn_class"  comtype="searchBtnCtrl" rule="cond" cond="condtableName,conddatasourceName" parentId="condQuery" uniontableid="tableList" type="button" id="searchDataBtn">
                 <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
             </div>
         </div>

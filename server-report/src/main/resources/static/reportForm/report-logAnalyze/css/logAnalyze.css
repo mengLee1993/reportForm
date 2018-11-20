@@ -76,4 +76,4 @@
 
 .table-list__td { border: 1px solid #E2DEDE; color: #515A6D; }
 
-.analyseSql { border: none; background: #fff; resize: none; width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; height: 25px; line-height: 30px; }
+.analyseSql { border: none; background: #fff; resize: none; width: 435px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; height: 25px; line-height: 30px; }

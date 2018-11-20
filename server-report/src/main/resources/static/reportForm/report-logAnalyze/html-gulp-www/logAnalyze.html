@@ -193,13 +193,14 @@
 					<!-- <th class="table-list__thead" style="width: 5%">
 						<input type="checkbox" id="allChk" comtype="checkAll" cond="" uniontableid="tableList"  >
 					</th> -->
-					<th class="table-list__thead" style="width: 20%">用户</th>
-					<th class="table-list__thead" style="width: 20%">操作时间</th>
+					<th class="table-list__thead" style="width: 8%">用户</th>
+					<th class="table-list__thead" style="width: 15%">操作时间</th>
 					<th class="table-list__thead" style="width: 10%">操作IP</th>
 					<!-- <th class="table-list__thead" style="width: 10%">操作类型</th> -->
-					<th class="table-list__thead" style="width: 20%">主题SCHEMA</th>
-					<th class="table-list__thead" style="width: 20%">主题表</th>
-					<th class="table-list__thead" style="width: 20%">执行SQL</th>
+					<th class="table-list__thead" style="width: 15%">主题SCHEMA</th>
+					<th class="table-list__thead" style="width: 15%">主题表</th>
+					<th class="table-list__thead" style="width: 40%">执行SQL</th>
+					<th class="table-list__thead" style="width: 5%">执行效率</th>
 					<th class="table-list__thead" style="width: 10%">操作</th>
 				</tr>
 				</thead>
@@ -215,6 +216,7 @@
 					<td class="table-list__td" id="subjectName"></td>
 					<td class="table-list__td" id="tableName"></td>
 					<td class="table-list__td"><textarea readonly="readonly" id="analyseSql" class="analyseSql"></textarea></td>
+					<td class="table-list__td" id="sqlExecutionTime"></td>
 					<td class="table-list__td"><a href="javascript:;" class="copyTxt" style="color: #0375d7;">复制SQL</a></td>
 				</tr>
 				</tbody>
@@ -234,6 +236,11 @@
 		    document.execCommand("Copy"); // 执行浏览器复制命令
 		    alert("内容复制成功！");
         })
+        if(jsonItem.sqlExecutionTime){
+        	jsonItem.sqlExecutionTime += "ms"
+        }else{
+        	jsonItem.sqlExecutionTime = "--";
+        }
     }
 
 </script>
