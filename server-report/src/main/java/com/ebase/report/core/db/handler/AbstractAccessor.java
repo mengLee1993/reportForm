@@ -152,9 +152,9 @@ public abstract class AbstractAccessor implements ReportAccessor {
 //            } else if (DATABASETYPE.INFORMIX.equals(dbtype)) {
 //                // SqlServer
 //                tableNamePattern = "%";
-            } else if (DataBaseType.DB_TYPE_HIVE.equals(dataBaseType)) {
-                // hive
-                tableNamePattern = "%";
+//            } else if (DataBaseType.DB_TYPE_HIVE.equals(dataBaseType)) {
+//                // hive
+//                tableNamePattern = "%";
             } else {
                 throw new RuntimeException("不认识的数据库类型!");
             }
@@ -234,7 +234,7 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
                     Object columnValue = rs.getString(columnName);
 
-//                    columnName = columnName + "@" + materialCode@4000
+                    //columnName = columnName + "@" + materialCode@4000
                     if(tmpMap.get(columnName) == null){
                         ArrayList<Object> objects = new ArrayList<>();
                         objects.add(columnValue);

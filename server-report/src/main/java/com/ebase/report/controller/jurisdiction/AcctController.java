@@ -129,7 +129,6 @@ public class AcctController {
                 String key = CookieUtil.getSessionId();
 
                 session.setAttribute(Md5Util.encrpt(key),retContent);
-
                 //并初始化 threadlocal
                 AssertContext.init(retContent);
 
