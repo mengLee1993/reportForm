@@ -496,6 +496,19 @@ function clsRptCtrl$initLayout()
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
                 $(".selDimensionContent *[id=cloneRow]")[i].jsonData.searchTrue = false;
                 $(".selDimensionContent *[id=cloneRow]")[i].jsonData.subTotal = false;
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#searchSet").removeClass("activeOpe");
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#subtotal").removeClass("activeOpe");
+                for(var nI = 0; nI < document.body.jsLee.jsonAll.reportDynamicParam.filter.length; nI++ ){
+                    if(document.body.jsLee.jsonAll.reportDynamicParam.filter[nI].code == $(".selDimensionContent *[id=cloneRow]")[i].jsonData.fieldCode){
+                        document.body.jsLee.jsonAll.reportDynamicParam.filter.splice(nI,1);
+                    }
+                }
+            }
+            //刷新过滤区
+            if(document.body.jsLee.jsonAll.reportDynamicParam){
+                initplugData($("#searchTable")[0],"standardTableCtrl",document.body.jsLee.jsonAll.reportDynamicParam.filter);
+            }else{
+                initplugData($("#searchTable")[0],"standardTableCtrl",[]);
             }
 
             //缓存的数据放进保存接口入参json中
