@@ -186,9 +186,9 @@
             <table class="parentChildTable" id="parentChildTableList" comType="" reqParam="{}" reqPath="" reqMethod="POST" templateParentId="templateParentRow" templateChildId="templateChildRow" jsonChildName="rptDataFields" chkC="chkC">
                 <tr id="templateParentRow" style="display: none;">
                     <td>
-                        <div class="parentChildTable-parent" id="parentClick" clickMark="0">
-                            <i class="firstParent__icon ego-Solid_arrow_16px" ></i>
-                            <span id="subjectName"></span>
+                        <div class="parentChildTable-parent clearfix" id="parentClick" clickMark="0">
+                            <i class="firstParent__icon ego-Solid_arrow_16px fl" ></i>
+                            <span id="subjectName" class="parentChildTable-parent-name fl"></span>
                         </div>
                         <ul class="parentChildTable-child" id="childShow" style="display: none;">
                             <li class="parentChildTable-child-list" id="templateChildRow" style="display: none;">
@@ -200,9 +200,8 @@
                                 <div class="parentChildTable-child-list-con fl" id="fieldName">Measures <i class="parentChildTable-child-listCheck-create fr mr20" id="createMeasure"></i></div>
                                 <ul class="fl parentChildTable-child-list-third">
                                     <li class="parentChildTable-childList-thirdList" id="templateSpecialRow" style="display: none;">
-                                        <span class="fl" id="measuresName" style="cursor: pointer"></span>
+                                        <span class="fl parentChildTable-childList-thirdList-measure" id="measuresName"></span>
                                         <i class="fr parentChildTable-child-listThird-delete" id="measureDeleteOpe"></i>
-
                                     </li>
                                 </ul>
                             </li>
