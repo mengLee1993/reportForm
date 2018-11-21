@@ -155,8 +155,8 @@ public class RptDataTableController {
                 keyList.add(vo.getTableCode());
             }
 
-            if (StringUtil.isNotEmpty(vo.getDemo())) {
-                keyList.add(vo.getDemo());
+            if (StringUtil.isNotEmpty(vo.getComment())) {
+                keyList.add(vo.getComment());
             }
 
             List<RptDataTableVO> returnList = new ArrayList<RptDataTableVO>();
@@ -172,7 +172,7 @@ public class RptDataTableController {
                     StringBuilder content = new StringBuilder();
                     content.append(tableVO.getTableCode());
                     content.append("|");
-                    content.append(tableVO.getDemo());
+                    content.append(tableVO.getComment());
 
                     boolean b = false;
                     for(String key : keyList){
@@ -198,6 +198,7 @@ public class RptDataTableController {
                 endRow = returnList.size();
             }
             pageDTO.setResultData(returnList.subList(startRow, endRow));
+            pageDTO.setTotal(returnList.size());
 
             jsonResponse.setRspBody(pageDTO);
         } catch (Exception e) {

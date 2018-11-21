@@ -11,6 +11,12 @@ import java.util.Map;
 public enum DBFieldTypeEnum {
 
     /**
+     * 找不到类型的时候使用这个
+     */
+    NONE("none","none","none"),
+
+
+    /**
      * mysql
      */
     //数值类型
@@ -62,7 +68,7 @@ public enum DBFieldTypeEnum {
     NROWID("nrowid","Long","measures"),    //二进制数据表中记录的唯一行号    最大长度4000    bytes
     DECIMAL("decimal","BigDecimal","measures"),   //  数字类型    P为整数位，S为小数位
     REAL("real","BigDecimal","measures"),     //  实数类型    NUMBER(63)，精度更高
-
+    UROWID("urowid","String","dimension"),
     /**
      * sqlServer
      */
@@ -97,6 +103,7 @@ public enum DBFieldTypeEnum {
     SET("set","String","dimension"),
     BOOL("bool","Byte","none");
 
+
     private static Map<String,DBFieldTypeEnum> tmpName = new HashMap<>(DBFieldTypeEnum.values().length);
 
     private static Map<String,DBFieldTypeEnum> tmpCode = new HashMap<>(DBFieldTypeEnum.values().length);
@@ -122,6 +129,9 @@ public enum DBFieldTypeEnum {
         //如果有(
         if(code.contains("(")){
             code = code.substring(0,code.lastIndexOf("("));
+        }
+        if(tmpCode.get(code) == null){
+            return NONE;
         }
         return tmpCode.get(code);
     }

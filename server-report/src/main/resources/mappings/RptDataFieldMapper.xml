@@ -44,7 +44,7 @@
             UPDATED_DT)
         values (#{fieldId,jdbcType=BIGINT}, #{tableId,jdbcType=BIGINT}, #{fieldCode,jdbcType=VARCHAR}, 
             #{fieldName,jdbcType=VARCHAR}, #{fieldType,jdbcType=VARCHAR}, #{dimensionIndex,jdbcType=VARCHAR}, 
-            #{accuracy,jdbcType=INTEGER}, #{rowLevelAuth,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{metadataCount,jdbcType=VARCHAR},
+            #{accuracy,jdbcType=INTEGER}, #{rowLevelAuth,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{metadataCount,jdbcType=INTEGER},
             #{createdBy,jdbcType=VARCHAR}, #{createdDt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
             #{updatedDt,jdbcType=TIMESTAMP})
     </insert>
@@ -149,11 +149,12 @@
         <foreach collection ="fields" item="field" separator =",">
             (#{field.fieldId,jdbcType=BIGINT}, #{field.tableId,jdbcType=BIGINT}, #{field.fieldCode,jdbcType=VARCHAR},
             #{field.fieldName,jdbcType=VARCHAR}, #{field.fieldType,jdbcType=VARCHAR}, #{field.dimensionIndex,jdbcType=VARCHAR},
-            #{field.accuracy,jdbcType=INTEGER}, #{field.rowLevelAuth,jdbcType=TINYINT}, #{field.remark,jdbcType=VARCHAR},#{field.metadataCount,jdbcType=VARCHAR},
+            #{field.accuracy,jdbcType=INTEGER}, #{field.rowLevelAuth,jdbcType=TINYINT}, #{field.remark,jdbcType=VARCHAR},#{field.metadataCount,jdbcType=INTEGER},
             #{field.createdBy,jdbcType=VARCHAR}, #{field.createdDt,jdbcType=TIMESTAMP}, #{field.updatedBy,jdbcType=VARCHAR},
             #{field.updatedDt,jdbcType=TIMESTAMP})
         </foreach>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.RptDataField">
         update rpt_data_field
         <set>
