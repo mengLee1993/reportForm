@@ -64,7 +64,7 @@ body, html {
 
 /*头部*/
 .scp-product {
-  width: 85%;
+  width: 100%;
   height: 100%;
   padding: .3% .8%;
   box-sizing: border-box;
@@ -148,8 +148,7 @@ $bd_dee: #dee3e6;//主体边框线
   }
 }
 .main-box{
-  line-height: 70px;
-  border-bottom: 1px solid $bd_dee;
+  line-height: 24px;
   box-sizing: border-box;
   margin: 1%;
   &__name{
@@ -158,7 +157,6 @@ $bd_dee: #dee3e6;//主体边框线
   &__input{
     float: left;
     height: 26px;
-    margin-top: 18px;
     margin-left: 1%;
     min-width: 20%;
     padding:0 1%;
@@ -173,10 +171,7 @@ $bd_dee: #dee3e6;//主体边框线
 }
 .main-table{
   width: 100%;
-
-  margin-top: 30px;
   box-sizing: border-box;
-  padding: 1%;
   overflow: auto;
 }
 .table-list{
@@ -230,3 +225,6 @@ $bd_dee: #dee3e6;//主体边框线
   border: 1px solid #dee3e6;
 }
 .fieldinput{width: 70px;min-width: 70px}
+.tabCon{
+  padding-top: 5px;
+}
