@@ -81,7 +81,7 @@ body, html { width: 100%; height: 100%; }
 
 .main-box__name { float: left; }
 
-.main-box__input { float: left; height: 26px; margin-left: 1%; min-width: 20%; padding: 0 1%; border-color: #dee3e6; }
+.main-box__input { float: left; height: 26px; margin-left: 1%; min-width: 20%; padding: 0 1%; border-color: #dee3e6; min-width: 160px; height: 28px; }
 
 .main-box__search { float: right; margin-top: 18px; margin-right: 1%; border-color: #dee3e6; }
 
