@@ -406,10 +406,37 @@
         //数据源操作
         getAjaxResult("/report/datasource/all","POST",{},"datasourceInitCallBack(data)");
         $("#dataSourceSelect").on("change",function(){
-            document.body.jsdom.tobaseJson = {"datasourceId":$(this).find("option:selected")[0].domNode.datasourceId,"datasourceName":$(this).find("option:selected")[0].domNode.datasourceName,"datasourceChineseName":$(this).find("option:selected")[0].domNode.datasourceChineseName};
+            if($(this).find("option:selected").val()){
+                if($(this).find("option:selected")[0].domNode.connStatus == "0"){
+                    alert("请连接该数据源");
+                    $("#tableList").attr({"comtype":"standardTableCtrl"});
+                    $("#tableList")[0].data = {"rspBody":{"resultData":[]}};
+                    document.body.jsCtrl.ctrl =  $("#tableList")[0];
+                    document.body.jsCtrl.init();
 
-            document.body.jsdom.initmainBase($("#tableList"),document.body.jsdom.tobaseJson);
-            document.body.jsdom.initmainBase($("#themeList"),document.body.jsdom.tobaseJson);
+                    $("#themeList").attr({"comtype":"standardTableCtrl"});
+                    $("#themeList")[0].data = {"rspBody":{"resultData":[]}};
+                    document.body.jsCtrl.ctrl =  $("#themeList")[0];
+                    document.body.jsCtrl.init();
+                }else{
+                    document.body.jsdom.tobaseJson = {"datasourceId":$(this).find("option:selected")[0].domNode.datasourceId,"datasourceName":$(this).find("option:selected")[0].domNode.datasourceName,"datasourceChineseName":$(this).find("option:selected")[0].domNode.datasourceChineseName};
+                    $("#tableList")[0].data = null;
+                    $("#themeList")[0].data = null;
+                    document.body.jsdom.initmainBase($("#tableList"),document.body.jsdom.tobaseJson);
+                    document.body.jsdom.initmainBase($("#themeList"),document.body.jsdom.tobaseJson);
+                }
+            }else{
+                $("#tableList").attr({"comtype":"standardTableCtrl"});
+                $("#tableList")[0].data = {"rspBody":{"resultData":[]}};
+                document.body.jsCtrl.ctrl =  $("#tableList")[0];
+                document.body.jsCtrl.init();
+
+                $("#themeList").attr({"comtype":"standardTableCtrl"});
+                $("#themeList")[0].data = {"rspBody":{"resultData":[]}};
+                document.body.jsCtrl.ctrl =  $("#themeList")[0];
+                document.body.jsCtrl.init();
+            }
+
         });
     })
     function datasourceInitCallBack(data){
@@ -424,8 +451,8 @@
                         "datasourceId":data.rspBody.resultData[nI].datasourceId, "datasourceName":data.rspBody.resultData[nI].datasourceName, "datasourceChineseName":data.rspBody.resultData[nI].datasourceChineseName};
                 }
             }
-            document.body.jsdom.initmainBase($("#tableList"),document.body.jsdom.tobaseJson);
-            document.body.jsdom.initmainBase($("#themeList"),document.body.jsdom.tobaseJson);
+            /*document.body.jsdom.initmainBase($("#tableList"),document.body.jsdom.tobaseJson);
+            document.body.jsdom.initmainBase($("#themeList"),document.body.jsdom.tobaseJson);*/
             $("#dataSourceSelect").attr("comType","singleSelectCtrl");
             $("#dataSourceSelect")[0].data = {"rspBody":data.rspBody.resultData};
             document.body.jsCtrl.ctrl =  $("#dataSourceSelect")[0];
