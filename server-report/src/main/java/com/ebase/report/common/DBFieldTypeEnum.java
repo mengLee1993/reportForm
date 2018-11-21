@@ -83,9 +83,14 @@ public enum DBFieldTypeEnum {
      * db2
      */
     LONGVARCHAR("longvarchar","String","dimension"),    //用于保存变长的字符串数据。
-    GRAPHICS("graphics","String","dimension"),       //双字节字符串。
-    VARGRAPHICS("vargraphics","String","dimension"),        //可变长，双字节字符串。
+    GRAPHIC("graphic","String","dimension"),       //双字节字符串。
+    VARGRAPHIC("vargraphic","String","dimension"),        //可变长，双字节字符串。
     LONGVARGRAPHIC("longvargraphic","String","dimension"),     //双字节字符串
+    DEC("dec","BigDecimal","measures"),
+    NUM("num","BigDecimal","measures"),
+    CHARACTER("character","String","dimension"),
+    VARYING("varying","String","dimension"),
+    DBCLOB("dbclob","String","dimension"),
 
     BOOLEAN("boolean","String","dimension"),
     ENUM("enum","String","dimension"),
@@ -105,11 +110,19 @@ public enum DBFieldTypeEnum {
     }
 
     public static DBFieldTypeEnum getByName(String name){
+        //如果有(
+        if(name.contains("(")){
+            name = name.substring(0,name.lastIndexOf("("));
+        }
         return tmpName.get(name);
     }
 
 
     public static DBFieldTypeEnum getByCode(String code){
+        //如果有(
+        if(code.contains("(")){
+            code = code.substring(0,code.lastIndexOf("("));
+        }
         return tmpCode.get(code);
     }
 
