@@ -1,5 +1,6 @@
 package com.ebase.report.service;
 
+import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
 import com.ebase.report.vo.RptDataTableVO;
 
@@ -64,4 +65,14 @@ public interface RptDataTableService {
      * @Date: 2018/11/3
      */
     ServiceResponse<Integer> deleteByPrimaryKey(RptDataTableVO vo);
+
+    /**
+     * 数据字典--->主题表分页
+     * @param vo
+     * @return
+     *  @author: lujiawei
+     * @Date: 2018/11/21
+     */
+    public PageDTO<RptDataTableVO> queryForPage(RptDataTableVO vo);
+
 }

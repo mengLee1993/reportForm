@@ -35,4 +35,10 @@ public interface RptDataTableMapper {
     List<RptDataTable> selectByTableIds(@Param("tableIds") List<Long> tableIds);
 
     List<RptDataTable> selectByDatasourceId(Long datasourceId);
+
+    //计数
+    Integer selectCount(RptDataTable model);
+    //使用limit分页
+    List<RptDataTable> selectByPage(RptDataTable model);
+
 }

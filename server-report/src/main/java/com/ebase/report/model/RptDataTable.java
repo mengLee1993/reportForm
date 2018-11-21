@@ -11,6 +11,13 @@ public class RptDataTable implements Serializable {
 
     private  String datasourceChineseName; //数据库中文名称
 
+    /*private Integer startRow ;
+    private Integer pageSize = 10;
+    private Integer pageNum = 1;*/
+    private int startRow ;
+
+    private int pageSize = 10;
+
     /**
      * Database Column Remarks:
      *   数据表ID
@@ -107,6 +114,24 @@ public class RptDataTable implements Serializable {
 
 
     //--------------------------------------------------------------------------------
+
+
+    public int getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(int startRow) {
+        this.startRow = startRow;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
     public String getComment() {
         return comment;
     }
