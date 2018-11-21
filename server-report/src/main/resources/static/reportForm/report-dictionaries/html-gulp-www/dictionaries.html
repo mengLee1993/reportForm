@@ -45,7 +45,7 @@
 </head>
 <body id="outerBody" class="tradebase">
 	<div class="tradebasebox">
-		<div class="tradebase-top clearfix effectBox" effectType="1">
+		<div class="tradebase-top clearfix effectBox" effectType="1" style="position: fixed;z-index: 99999999999;">
 			<div class="tradebase-toplogo leftW">
 				<div class="tradebase-toplogo__logo">
 					<img src="../../../reportForm/report-home/images/logo.png" alt="">
@@ -83,7 +83,7 @@
 			</span>
 		</div>
 		<div class="tradebase-btm effectBox" effectType="2">
-			<div class="tradebase-side leftW"  id="bodyLeft">
+			<div class="tradebase-side leftW"  id="bodyLeft"  style="padding-top: 64px;">
 				<!--<div class="tradebase-side-all">
 					<i class="tradebase-side-all__btn"></i>
 				</div>-->
@@ -170,6 +170,11 @@
 					<div class="tradebase-main">
 
 <link rel="stylesheet" href="../css/dictionaries.css">
+<style>
+    .chosen-container{
+        width: 300px!important;
+    }
+</style>
 <script>
 
     function depotProcess() {
@@ -397,12 +402,68 @@
         var golobJs = new depotProcess();
         document.body.jsdom= golobJs;
         golobJs.init();
+
+        //数据源操作
+        getAjaxResult("/report/datasource/all","POST",{},"datasourceInitCallBack(data)");
+        $("#dataSourceSelect").on("change",function(){
+            if($(this).find("option:selected").val()){
+                if($(this).find("option:selected")[0].domNode.connStatus == "0"){
+                    alert("请连接该数据源");
+                    $("#tableList").attr({"comtype":"standardTableCtrl"});
+                    $("#tableList")[0].data = {"rspBody":{"resultData":[]}};
+                    document.body.jsCtrl.ctrl =  $("#tableList")[0];
+                    document.body.jsCtrl.init();
+
+                    $("#themeList").attr({"comtype":"standardTableCtrl"});
+                    $("#themeList")[0].data = {"rspBody":{"resultData":[]}};
+                    document.body.jsCtrl.ctrl =  $("#themeList")[0];
+                    document.body.jsCtrl.init();
+                }else{
+                    document.body.jsdom.tobaseJson = {"datasourceId":$(this).find("option:selected")[0].domNode.datasourceId,"datasourceName":$(this).find("option:selected")[0].domNode.datasourceName,"datasourceChineseName":$(this).find("option:selected")[0].domNode.datasourceChineseName};
+                    $("#tableList")[0].data = null;
+                    $("#themeList")[0].data = null;
+                    document.body.jsdom.initmainBase($("#tableList"),document.body.jsdom.tobaseJson);
+                    document.body.jsdom.initmainBase($("#themeList"),document.body.jsdom.tobaseJson);
+                }
+            }else{
+                $("#tableList").attr({"comtype":"standardTableCtrl"});
+                $("#tableList")[0].data = {"rspBody":{"resultData":[]}};
+                document.body.jsCtrl.ctrl =  $("#tableList")[0];
+                document.body.jsCtrl.init();
+
+                $("#themeList").attr({"comtype":"standardTableCtrl"});
+                $("#themeList")[0].data = {"rspBody":{"resultData":[]}};
+                document.body.jsCtrl.ctrl =  $("#themeList")[0];
+                document.body.jsCtrl.init();
+            }
+
+        });
     })
+    function datasourceInitCallBack(data){
+        data = JSON.parse(data);
+        if(data.retCode == "0000000"){
+            for(var nI = 0 ; nI < data.rspBody.resultData.length ; nI++){
+                if(data.rspBody.resultData[nI].connStatus == "0"){
+                    data.rspBody.resultData[nI].datasourceChineseNameA = data.rspBody.resultData[nI].datasourceChineseName+"(未连接)";
+                }else{
+                    data.rspBody.resultData[nI].datasourceChineseNameA = data.rspBody.resultData[nI].datasourceChineseName+"(已连接)";
+                    document.body.jsdom.tobaseJson = {
+                        "datasourceId":data.rspBody.resultData[nI].datasourceId, "datasourceName":data.rspBody.resultData[nI].datasourceName, "datasourceChineseName":data.rspBody.resultData[nI].datasourceChineseName};
+                }
+            }
+            /*document.body.jsdom.initmainBase($("#tableList"),document.body.jsdom.tobaseJson);
+            document.body.jsdom.initmainBase($("#themeList"),document.body.jsdom.tobaseJson);*/
+            $("#dataSourceSelect").attr("comType","singleSelectCtrl");
+            $("#dataSourceSelect")[0].data = {"rspBody":data.rspBody.resultData};
+            document.body.jsCtrl.ctrl =  $("#dataSourceSelect")[0];
+            document.body.jsCtrl.init();
+        }
+    }
 </script>
 <div class="scp-body clearfix" style="background: #fff;">
-    <div class="formcontainer-nav">
-        <!--id="navigation"-->
-        <!-- <p class="formcontainer-nav__text">待选列</p>-->
+    <!--<div class="formcontainer-nav">
+        &lt;!&ndash;id="navigation"&ndash;&gt;
+        &lt;!&ndash; <p class="formcontainer-nav__text">待选列</p>&ndash;&gt;
         <ul class="formcontainer-nav-ul"  comtype="" templateid="templateRowlist"
             reqpath="/report/datasource/all" reqparam="{}" method="post" id="navDatalist">
             <li class="formcontainer-nav-list formcontainer-nav-title mtop" style="line-height: 45px;height: 45px;font-size: 16px;font-weight: 900;background: #6390f3">
@@ -411,23 +472,23 @@
             <li class="formcontainer-nav-list" id="templateRowlist" style="display: none"><span id="datasourceChineseName"></span><span id="datasourceStatus" style="color: #e5e5e5"></span></li>
 
         </ul>
-        <!--<p><i>逐渐</i><input type="text" id="id"></p><p><i>逐渐</i><input type="text" id="time"></p>-->
-        <!--<p><i>人</i><input type="text" id="person"></p>-->
-        <!--<p><i>哪里</i><input type="text" id="makeId"></p>-->
-        <!--<button id="byl">按钮</button>-->
-    </div>
+        &lt;!&ndash;<p><i>逐渐</i><input type="text" id="id"></p><p><i>逐渐</i><input type="text" id="time"></p>&ndash;&gt;
+        &lt;!&ndash;<p><i>人</i><input type="text" id="person"></p>&ndash;&gt;
+        &lt;!&ndash;<p><i>哪里</i><input type="text" id="makeId"></p>&ndash;&gt;
+        &lt;!&ndash;<button id="byl">按钮</button>&ndash;&gt;
+    </div>-->
     <div class="scp-product clearfix">
+        <div class="clearfix" style="line-height: 24px;margin-bottom: 5px;padding-top: 10px;padding-left: 10px;">
+            <span class="fl mr10">数据源</span>
+            <select name="" id="dataSourceSelect" selCode="datasourceId" selValue="datasourceChineseNameA" emptyValue="请选择"></select>
+        </div>
         <ul class="tabMenu-three" comtype="tabCtrl"  contentcls="tabCon">
             <li class="tabTitLi"><span>业务表</span></li>
             <li><span>主题表</span></li>
         </ul>
         <div class="tabCon clearfix">
             <div class="downloadcet-main fl">
-                <div class="main-title clearfix" >
-                    <strong class="main-title__sign"></strong>
-                    <h1 class="main-title__tie fl">业务数据表</h1>
-                    <div class="btn_kind_1  supplier-top-submit fr mr10 mb10" id="moreArradd">批量添加</div>
-                </div>
+                <div class="btn_kind_1  supplier-top-submit fr mr5 mb5" id="moreArradd">批量添加</div>
                 <!--<div class="main-box clearfix">-->
                     <!--<span class="main-box__name">搜索条件:</span>-->
                     <!--<input type="text" class="inputBase main-box__input">-->
@@ -539,10 +600,6 @@
         </div>
         <div class="tabCon clearfix" style="display: none;">
             <div class="downloadcet-main fl">
-                <div class="main-title ">
-                    <strong class="main-title__sign"></strong>
-                    <h1 class="main-title__tie">主题数据表</h1>
-                </div>
                 <div class="main-box clearfix" id="themeSearch">
 
                     <span>
@@ -558,7 +615,7 @@
                         <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
                     </div>
                 </div>
-                <div class="main-table">
+                    <div class="main-table" style="overflow-y: scroll;height: 260px;">
                     <table class="table-list" id="themeList" comtype=""
                            templateid="templateRowtheme"  chkid="chkCoding"
                            page="tcdPageCode3" nodata="noDataCon"
@@ -607,12 +664,11 @@
             </div>
             <div style="height: 5px;background: #e5e5e5;width: 100%" class="fl"></div>
             <div class="downloadcet-main fl">
-                <div class="main-title ">
+               <!-- <div class="main-title ">
                     <strong class="main-title__sign"></strong>
                     <h1 class="main-title__tie">数据字段</h1>
-                </div>
+                </div>-->
                 <div class="main-box clearfix" id="fieldSearch">
-
                     <span>
                          <i class="fl ml10">字段名称</i>
                           <input type="text" class="inputBase main-box__input" id="fieldName">
@@ -624,12 +680,11 @@
                     <div class="search_btn_class" comtype="searchBtnCtrl" cond="fieldName,fieldCode" rule="cond" uniontableid="fieldList" parentId="fieldSearch">
                         <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
                     </div>
-                </div>
-                <div class="main-table" style="margin-top:0px">
                     <div class="btn_kind_1  supplier-top-submit fr" id="savefieldList">保存</div>
+                </div>
+                <div class="main-table"  style="overflow-y: scroll;height: 260px;">
                     <table class="table-list" id="fieldList" comtype=""
-                           templateid="templateRowfield"  chkid="chkCoding"
-                           page="tcdPageCode2" nodata="noDataCon1"
+                           templateid="templateRowfield"  chkid="chkCoding" nodata="noDataCon1"
                            reqpath="/report/dataField/list" reqparam="{}" method="post" style="table-layout: fixed">
                         <thead>
                         <tr class="table-list__Tr" >
@@ -681,7 +736,7 @@
                     <div id="noDataCon1" class="noDataCon" style="display:none">
                         <i></i><p>暂无数据.....</p>
                     </div>
-                    <div class="tcdPageCode tcdPageCode2"></div>
+                    <!-- <div class="tcdPageCode tcdPageCode2"></div> -->
                 </div>
             </div>
         </div>
