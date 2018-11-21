@@ -165,7 +165,7 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
             while (rs.next()) {
                 //只要表名这一列
-                System.out.println(rs.getObject("TABLE_NAME"));
+//                System.out.println(rs.getObject("TABLE_NAME"));
 
                 RptDataTable rptDataTable = new RptDataTable();
                 rptDataTable.setTableCode(rs.getObject("TABLE_NAME").toString());
