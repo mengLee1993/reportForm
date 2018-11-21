@@ -402,7 +402,7 @@ function clsRptCtrl$initLayout()
                     subTotalIsTrue(this);
                 });
                 //设置搜索条件
-                if($(".selDimensionCols *[id=cloneRow]")[i].jsonData.combinationName != "Measures"){ != "Measures"){
+                if($(".selDimensionCols *[id=cloneRow]")[i].jsonData.combinationName != "Measures"){
                     $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSetBox").show();
                 }else{
                     $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
