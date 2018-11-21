@@ -381,7 +381,7 @@ function clsParentChildTableCtrl$childProgress(jsonCItem, childCloneRow, jsonIte
     if(jsonCItem.isChecked == 1){
         $(childCloneRow).find(".chkC").attr("checked",true);
     }
-    $(childCloneRow).find("#combinationName").attr("title",jsonItem.combinationName);
+    $(childCloneRow).find("#combinationName").attr("title",jsonCItem.combinationName);
 }
 
 function clsStandardTableCtrl$progress(jsonItem, cloneRow) {

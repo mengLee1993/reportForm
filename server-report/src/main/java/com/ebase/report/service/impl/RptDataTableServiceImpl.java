@@ -1,5 +1,6 @@
 package com.ebase.report.service.impl;
 
+import com.ebase.report.common.DBFieldTypeEnum;
 import com.ebase.report.common.RemoveStatusEnum;
 import com.ebase.report.core.db.handler.ReportHandler;
 import com.ebase.report.core.pageUtil.PageDTO;
@@ -64,6 +65,11 @@ public class RptDataTableServiceImpl implements RptDataTableService {
                 field.setCreatedDt(new Date());
                 field.setAccuracy(0);
                 field.setRowLevelAuth(Byte.parseByte("0"));
+
+                //设置初始化指标或者是维度
+                String fieldType = field.getFieldType();
+                DBFieldTypeEnum dbFieldTypeEnum = DBFieldTypeEnum.getByName(fieldType);
+                field.setDimensionIndex(dbFieldTypeEnum.getDemandType());
             }
 
             i = rptDataFieldMapper.insertBatch(fields);
