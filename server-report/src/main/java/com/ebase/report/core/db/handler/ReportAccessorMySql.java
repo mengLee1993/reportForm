@@ -517,7 +517,11 @@ public class ReportAccessorMySql extends AbstractAccessor {
                 System.out.println(rs.getObject("Name")+"-------->"+rs.getObject("Comment"));
                 RptDataTable rptDataTable = new RptDataTable();
                 rptDataTable.setTableCode(rs.getObject("Name").toString());
-                rptDataTable.setComment(rs.getObject("Comment").toString());
+                if(rs.getObject("Comment") == null || "".equals(rs.getObject("Comment"))){
+                    rptDataTable.setComment("此表描述为空,若需要,请去对应的表写入。");
+                }else {
+                    rptDataTable.setComment(rs.getObject("Comment").toString());
+                }
                 tables.add(rptDataTable);
             }
         } catch (SQLException e) {
