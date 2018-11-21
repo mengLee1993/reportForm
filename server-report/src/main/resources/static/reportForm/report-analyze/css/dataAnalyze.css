@@ -172,9 +172,13 @@
 
 .fieldNameEdit { display: inline; color: #0375d7; line-height: 24px; background: url("../images/images.png") no-repeat -558px -36px; width: 15px; height: 15px; margin-top: 4px; margin-right: 5px; cursor: pointer; }
 
-.subtotal, .searchSet { margin-right: 5px; border: 1px solid #e5e5e5; padding: 0 2px; cursor: pointer; color: #666; }
+.subtotal, .searchSet { margin-right: 5px; padding: 0 2px; cursor: pointer; color: #666; width: 10px; height: 15px; margin-top: 4px; display: block; }
 
-.activeOpe { margin-right: 5px; border: 1px solid #00AFFF; padding: 0 2px; cursor: pointer; color: #00AFFF; }
+.subtotal { background: url(../images/xiaoji.png); }
+
+.searchSet { background: url(../images/guolv.png); }
+
+.activeOpe { border: 1px solid #00AFFF; width: 8px; height: 13px; }
 
 .searchContent { padding: 2px; margin-bottom: 5px; }
 
@@ -205,3 +209,5 @@
 .selDimensionContent .content { width: 95% !important; }
 
 tr[rowtype=title] .formcontainer-table__thead { text-align: center; }
+
+.btnSearch { margin-right: 5px; padding: 0 2px; cursor: pointer; color: #666; width: 8px; height: 12px; margin-top: 10px; display: block; background: url(../images/sousuo.png); margin-left: 5px; }
