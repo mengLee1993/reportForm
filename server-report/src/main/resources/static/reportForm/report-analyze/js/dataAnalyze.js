@@ -352,6 +352,8 @@ function clsRptCtrl$initLayout()
                 //设置搜索条件
                 if($(".selDimensionRows *[id=cloneRow]")[i].jsonData.combinationName != "Measures"){
                     $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSetBox").show();
+                }else{
+                    $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
                 }
                 if($(".selDimensionRows *[id=cloneRow]")[i].jsonData.searchTrue){
                     $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSet").addClass("activeOpe");
@@ -400,7 +402,7 @@ function clsRptCtrl$initLayout()
                     subTotalIsTrue(this);
                 });
                 //设置搜索条件
-                if($(".selDimensionCols *[id=cloneRow]").eq(i).find("#fieldNameEdit") != "Measures"){
+                if($(".selDimensionCols *[id=cloneRow]")[i].jsonData.combinationName != "Measures"){
                     $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSetBox").show();
                 }else{
                     $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
