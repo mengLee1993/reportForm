@@ -155,7 +155,7 @@
             // },function(){
             //     $(this).css("background","");
             // });
-            $(cloneRow).on("click",function () {
+            $(cloneRow).click(function () {
                 $(this).css("background","#f8f8f9").siblings().css("background","");
                 document.body.jsdom.initmainBase($("#fieldList"),{"tableId":jsonItem.tableId});
             });
@@ -391,7 +391,7 @@
                 <div class="main-table">
                     <table class="table-list" id="themeList" comtype=""
                            templateid="templateRowtheme"  chkid="chkCoding"
-                           page="tcdPageCode1" nodata="noDataCon"
+                           page="tcdPageCode3" nodata="noDataCon"
                            reqpath="/report/dataTable/themeTable" reqparam="{}" method="post" style="table-layout: fixed">
                         <thead>
                         <tr class="table-list__Tr" >
@@ -432,7 +432,7 @@
                     <div id="noDataCon" class="noDataCon" style="display:none">
                         <i></i><p>暂无数据.....</p>
                     </div>
-                    <div class="tcdPageCode tcdPageCode1"></div>
+                    <div class="tcdPageCode tcdPageCode3"></div>
                 </div>
             </div>
             <div style="height: 5px;background: #e5e5e5;width: 100%" class="fl"></div>
@@ -451,7 +451,9 @@
                          <i class="fl ml10">字段编码</i>
                           <input type="text" class="inputBase main-box__input" id="fieldCode">
                     </span>
-                    <div class="main-box__search btn_kind_3" comtype="searchBtnCtrl" cond="fieldName,fieldCode" rule="cond" uniontableid="fieldList" parentId="fieldSearch">查询</div>
+                    <div class="search_btn_class" comtype="searchBtnCtrl" cond="fieldName,fieldCode" rule="cond" uniontableid="fieldList" parentId="fieldSearch">
+                        <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
+                    </div>
                 </div>
                 <div class="main-table" style="margin-top:0px">
                     <div class="btn_kind_1  supplier-top-submit fr" id="savefieldList">保存</div>
