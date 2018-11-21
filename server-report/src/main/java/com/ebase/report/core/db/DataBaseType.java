@@ -48,6 +48,10 @@ public class DataBaseType {
         return dataBaseType;
     }
 
+    public static Map<String, DataBaseType> getTypeMap(){
+        return typeMap;
+    }
+
     public String getName() {
         return name;
     }

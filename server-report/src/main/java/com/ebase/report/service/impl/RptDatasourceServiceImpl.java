@@ -59,8 +59,8 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
                         vo.setConnStatus("0");
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
                     vo.setConnStatus("0");
+                    e.printStackTrace();
                 }
             }
 
