@@ -177,28 +177,7 @@ public class ReportAccessorDb2 extends AbstractAccessor {
         return fieldList;
     }
 
-    @Override
-    public String typesConvert(String type) {
-        if (type.startsWith("varchar") || type.startsWith("longtext")) {
-            return "String";
-        } else if (type.startsWith("int") || type.startsWith("bigint")) {
-            // return "Integer";Byte
-            return "Long";
-        } else if (type.startsWith("tinyint")) {
-            return "Byte";
-        } else if (type.startsWith("double")) {
-            return "Double";
-        } else if (type.startsWith("timestamp")) {
-            return "Date";
-        } else if (type.startsWith("tinyint")) {
-            return "Boolean";
-        } else if (type.startsWith("date")) {
-            return "Date";
-        } else if (type.startsWith("decimal")) {
-            return "BigDecimal";
-        }
-        return type;
-    }
+
 
     /**
      * 生成sql 没有group by 和 函数的
