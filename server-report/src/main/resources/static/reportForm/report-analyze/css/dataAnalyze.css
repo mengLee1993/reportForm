@@ -76,7 +76,7 @@
 
 .formcontainer .formcontainer-main .formcontainer-table .formcontainer-table__td { border: 1px solid #dee3e6; height: 40px; text-align: center; word-break: break-all; }
 
-.formcontainer .formcontainer-main .formcontainer-table__thead { height: 40px; background: #f0f0f0; border: 1px solid #dee3e6; word-break: break-all; }
+.formcontainer .formcontainer-main .formcontainer-table__thead { height: 40px; background: #f0f0f0; border: 1px solid #dee3e6; word-break: break-all; font-weight: 900; }
 
 .formcontainer .formcontainer-main .tcdPageCode { position: absolute; bottom: 0; }
 
@@ -203,3 +203,5 @@
 .parentChildTable-childList-thirdList-measure { cursor: pointer; width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .selDimensionContent .content { width: 95% !important; }
+
+tr[rowtype=title] .formcontainer-table__thead { text-align: center; }

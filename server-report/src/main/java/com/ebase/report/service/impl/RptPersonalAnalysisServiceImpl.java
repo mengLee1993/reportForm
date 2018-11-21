@@ -149,9 +149,14 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
     }
 
     @Override
-    public Integer deleteByPrimaryKey(Long key){
-        rptPersonalAnalysisMapper.deleteByPrimaryKey(key);
-        return rptPersonalAnalysisMapper.deleteByAnalysisSourceId(key);
+    public Integer deleteByPrimaryKey(RptPersonalAnalysisVO vo){
+        Long personalAnalysisId = vo.getPersonalAnalysisId();
+        Byte deleteType = vo.getDeleteType();
+        if(deleteType != null && deleteType == 0){
+            rptPersonalAnalysisMapper.deleteByPrimaryKey(personalAnalysisId);
+        }
+        rptPersonalAnalysisMapper.deleteByAnalysisSourceId(personalAnalysisId);
+        return 1;
     }
 
     @Override
@@ -179,7 +184,7 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
         tmp.put("acctId",acctId);
         tmp.put("roleId",roleId);
         tmp.put("term",reqBody.getTableName());
-
+        tmp.put("datasourceName",reqBody.getDatasourceName());
         Integer count = rptPersonalAnalysisMapper.listReportFormCount(tmp);
 
         PageDTO<ReportTable> pageDTO = new PageDTO<>(reqBody.getPageNum(),reqBody.getPageSize());

@@ -16,13 +16,14 @@
         <result column="PERSONAL_SUBJECT_ID" jdbcType="BIGINT" property="personalSubjectId" />
         <result column="SUBJECT_NAME" jdbcType="VARCHAR" property="subjectName" />
         <result column="OP_USER_NAME" jdbcType="VARCHAR" property="opUserName" />
+        <result column="SQL_EXECUTION_TIME" jdbcType="BIGINT" property="sqlExecutionTime" />
     </resultMap>
     <resultMap extends="BaseResultMap1" id="ResultMapWithBLOBs" type="com.ebase.report.model.RptAnalyseLog">
         <result column="ANALYSE_SQL" jdbcType="VARCHAR" property="analyseSql" />
     </resultMap>
     <sql id="Base_Column_List">
         LOG_ID, OP_USERID, OP_IP, LOG_TIME, DATASOURCE_ID, DATASOURCE_NAME, TABLE_ID, TABLE_NAME,MAKE_TIME,PERSONAL_SUBJECT_ID,SUBJECT_NAME,
-        OP_USER_NAME
+        OP_USER_NAME,SQL_EXECUTION_TIME
     </sql>
     <sql id="Blob_Column_List">
         ANALYSE_SQL
@@ -42,10 +43,10 @@
     <insert id="insert" parameterType="com.ebase.report.model.RptAnalyseLog">
         insert into rpt_analyse_log
         (LOG_ID, OP_USERID, OP_IP,  LOG_TIME, ANALYSE_SQL,
-         DATASOURCE_ID, DATASOURCE_NAME, TABLE_ID, TABLE_NAME,PERSONAL_SUBJECT_ID,SUBJECT_NAME,OP_USER_NAME)
+         DATASOURCE_ID, DATASOURCE_NAME, TABLE_ID, TABLE_NAME,PERSONAL_SUBJECT_ID,SUBJECT_NAME,OP_USER_NAME,SQL_EXECUTION_TIME)
         values (#{logId,jdbcType=BIGINT}, #{opUserid,jdbcType=VARCHAR}, #{opIp,jdbcType=VARCHAR}, #{logTime,jdbcType=TIMESTAMP}, #{analyseSql,jdbcType=LONGVARCHAR},
         #{datasourceId},#{datasourceName},#{tableId},#{tableName},#{personalSubjectId,jdbcType=BIGINT},#{subjectName,jdbcType=VARCHAR},
-        #{opUserName,jdbcType=VARCHAR})
+        #{opUserName,jdbcType=VARCHAR},#{sqlExecutionTime,jdbcType=BIGINT})
     </insert>
     <insert id="insertSelective" parameterType="com.ebase.report.model.RptAnalyseLog">
         insert into rpt_analyse_log
@@ -81,6 +82,9 @@
                 SUBJECT_NAME,
             </if>
             <if test="opUserName != null">
+                OP_USER_NAME,
+            </if>
+            <if test="sqlExecutionTime != null">
                 OP_USER_NAME,
             </if>
         </trim>
@@ -121,6 +125,9 @@
             <if test="opUserName != null">
                 #{OP_USER_NAME,jdbcType=VARCHAR},
             </if>
+            <if test="sqlExecutionTime != null">
+                #{sqlExecutionTime,jdbcType=BIGINT},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.RptAnalyseLog">
@@ -159,6 +166,9 @@
             <if test="opUserName != null">
                 #{opUserName,jdbcType=VARCHAR},
             </if>
+            <if test="sqlExecutionTime != null">
+                #{sqlExecutionTime,jdbcType=BIGINT},
+            </if>
         </set>
         where LOG_ID = #{logId,jdbcType=BIGINT}
     </update>
@@ -174,7 +184,8 @@
             TABLE_NAME = #{tableName},
             PERSONAL_SUBJECT_ID = #{personalSubjectId,jdbcType=BIGINT},
             SUBJECT_NAME =#{subjectName,jdbcType=VARCHAR},
-             OP_USER_NAME =#{opUserName,jdbcType=VARCHAR}
+             OP_USER_NAME =#{opUserName,jdbcType=VARCHAR},
+               SQL_EXECUTION_TIME =#{sqlExecutionTime,jdbcType=BIGINT}
         where LOG_ID = #{logId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.RptAnalyseLog">
@@ -189,7 +200,8 @@
             TABLE_NAME = #{tableName},
              PERSONAL_SUBJECT_ID = #{personalSubjectId,jdbcType=BIGINT},
             SUBJECT_NAME =#{subjectName,jdbcType=VARCHAR},
-               OP_USER_NAME =#{opUserName,jdbcType=VARCHAR}
+               OP_USER_NAME =#{opUserName,jdbcType=VARCHAR},
+              SQL_EXECUTION_TIME =#{sqlExecutionTime,jdbcType=BIGINT}
         where LOG_ID = #{logId,jdbcType=BIGINT}
     </update>
     <select id="select" resultMap="ResultMapWithBLOBs">
@@ -239,6 +251,9 @@
             </if>
             <if test="opUserName != null and opUserName != ''">
                 and OP_USER_NAME LIKE CONCAT('%',#{opUserName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="sqlExecutionTime != null">
+                and SQL_EXECUTION_TIME = #{sqlExecutionTime}
             </if>
         </trim>
     </sql>

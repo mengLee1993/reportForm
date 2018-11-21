@@ -31,8 +31,8 @@ import java.util.*;
  * description:
  */
 public abstract class AbstractAccessor implements ReportAccessor {
-    private static Logger logger = LoggerFactory.getLogger(AbstractAccessor.class);
-    //固定长度
+    private static Logger LOG = LoggerFactory.getLogger(AbstractAccessor.class);
+    //固定长度  10000 分页一个
     public final Integer LENGTH = 10000;
 
     protected final String EXCEL_NAME = "数据报表明细";
@@ -43,22 +43,27 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
     public ResultSet query(String sql, Connection conn, CubeTree cubeTree) throws DbException {
 
+        LOG.info("开始执行sql = {}",sql);
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try {
-
-            System.out.println(sql);
+             //执行sql 查询
+            long startTime=System.currentTimeMillis();   //获取开始时间
             //
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
 
+            long endTime=System.currentTimeMillis();   //获取开始时间
+
+            LOG.info("程序运行时间： = {}",(endTime-startTime)+"ms");
+
             // 遍历结果集
             rsToCubeTree(rs, cubeTree);
 
         } catch (SQLException e) {
-            logger.error("Occurred DbException.", e);
+            LOG.error("Occurred DbException.", e);
             throw new DbException(e);
         } finally {
             DataBaseUtil.closeResultSet(rs);
@@ -301,7 +306,7 @@ public abstract class AbstractAccessor implements ReportAccessor {
             }
 
         } catch (SQLException e) {
-            logger.error("", e);
+            LOG.error("", e);
             throw new DbException(e);
         } finally {
             DataBaseUtil.closeResultSet(rs);

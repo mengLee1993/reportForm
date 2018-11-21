@@ -44,7 +44,7 @@ public class DbConnFactory {
         try {
             Connection conn =  factory(dsName);
             DataBaseUtil.closeConnection(conn);
-        } catch (DbException e) {
+        } catch (Exception e) {
             b = false;
         }
 

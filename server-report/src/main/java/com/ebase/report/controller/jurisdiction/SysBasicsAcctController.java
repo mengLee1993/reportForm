@@ -38,12 +38,12 @@ public class SysBasicsAcctController {
      * @return
      */
     @RequestMapping("/getAcctInfo")
-    public JsonResponse<AcctInfoVO> getAcctInfo(@RequestBody AcctInfoVO jsonRequest){
+    public JsonResponse<AcctInfoVO> getAcctInfo(@RequestBody JsonRequest<AcctInfoVO> jsonRequest){
         JsonResponse<AcctInfoVO> jsonResponse = new JsonResponse();
         try {
             logger.info("list 参数 = {}", JsonUtil.toJson(jsonRequest));
 
-            AcctInfoVO ver= sysBasicsAcctService.getAcctInfo(jsonRequest);
+            AcctInfoVO ver= sysBasicsAcctService.getAcctInfo(jsonRequest.getReqBody());
             jsonResponse.setRspBody(ver);
         } catch (Exception e) {
             logger.error(e.getMessage());

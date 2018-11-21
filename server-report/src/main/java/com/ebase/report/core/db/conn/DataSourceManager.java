@@ -53,10 +53,14 @@ public class DataSourceManager {
         }
 
         try {
+
             dataSourceConfigMap.put(dataSourceConfig.getDataSourceName(), dataSourceConfig);
-            createDataSource(dataSourceConfig);
+            DataSource returnDs = createDataSource(dataSourceConfig);
+            if(null != returnDs){
+                dataSourceMap.put(dataSourceConfig.getDataSourceName(), returnDs);
+            }
         } catch (DbException e) {
-            logger.error("", e);
+            logger.error("创建数据库连接池异常，数据源："+dataSourceConfig.getDataSourceName(), e);
         }
 
         //start the timer to validate the sql.
@@ -73,8 +77,6 @@ public class DataSourceManager {
         } else {
             logger.error("未知的数据库类型");
         }
-
-        dataSourceMap.put(dataSourceConfig.getDataSourceName(), returnDs);
 
         return returnDs;
     }
@@ -132,9 +134,7 @@ public class DataSourceManager {
     }
 
     public DataSource getDataSource(String dsName) {
-        DataSource ds = null;
-
-        ds = dataSourceMap.get(dsName.toLowerCase());
+        DataSource ds = dataSourceMap.get(dsName.toLowerCase());
         if (ds == null) {
             logger.error("Creating the datasource, " + dsName + ", failed.");
         }
@@ -214,4 +214,11 @@ public class DataSourceManager {
             return returnValue;
         }
     }
+
+    //清空数据连接
+    public static void destroy(String dataSourceName){
+        dataSourceMap.remove(dataSourceName);
+        dataSourceConfigMap.remove(dataSourceName);
+    }
+
 }

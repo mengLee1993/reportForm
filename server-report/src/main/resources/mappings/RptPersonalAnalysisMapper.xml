@@ -291,6 +291,9 @@
              t.TABLE_CODE LIKE CONCAT('%',#{term},'%')
              )
          </if>
+        <if test="datasourceName != null and datasourceName != ''">
+            and d.DATASOURCE_NAME LIKE CONCAT('%',#{datasourceName},'%')
+        </if>
     </select>
 
     <select id="listReportForm" parameterType="java.util.Map" resultType="com.ebase.report.model.dynamic.ReportTable">
@@ -304,6 +307,9 @@
             or
             t.TABLE_CODE LIKE CONCAT('%',#{term},'%')
             )
+        </if>
+        <if test="datasourceName != null and datasourceName != ''">
+            and d.DATASOURCE_NAME LIKE CONCAT('%',#{datasourceName},'%')
         </if>
         limit #{startRow},#{pageSize}
     </select>
