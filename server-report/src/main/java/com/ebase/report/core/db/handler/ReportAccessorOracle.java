@@ -1,22 +1,21 @@
 package com.ebase.report.core.db.handler;
 
 import com.ebase.report.common.*;
+import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataBaseUtil;
 import com.ebase.report.core.db.DataDetailSQL;
 import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.model.RptDataField;
+import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -466,5 +465,53 @@ public class ReportAccessorOracle extends AbstractAccessor {
         }
         return selectSql;
 
+    }
+
+    /**
+     * 查询oracle数据库中表的名称+表的注释
+     * @param conn
+     * @param dataBaseType
+     * @return
+     * @throws DbException
+     */
+    @Override
+    public List<RptDataTable> queryAllTables(Connection conn, DataBaseType dataBaseType) throws DbException {
+        List<RptDataTable> tables = new ArrayList<RptDataTable>();
+        ResultSet rs = null;
+
+        try {
+
+            DatabaseMetaData dbMetaData = conn.getMetaData();
+            String schemaPattern = null;// meta.getUserName();
+
+            if (DataBaseType.DB_TYPE_ORACLE.equals(dataBaseType)) {
+                schemaPattern = dbMetaData.getUserName().toUpperCase();
+            } else if (DataBaseType.DB_TYPE_MYSQL.equals(dataBaseType)) {
+
+            }else {
+                throw new RuntimeException("不认识的数据库类型!");
+            }
+            String sql = "select * from user_tab_comments ";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                //只要表名这一列
+                // System.out.println(rs.getObject("TABLE_NAME"));
+                System.out.println(rs.getObject("TABLE_NAME")+"-------->"+rs.getObject("COMMENTS"));
+                RptDataTable rptDataTable = new RptDataTable();
+                rptDataTable.setTableCode(rs.getObject("TABLE_NAME").toString());
+                if(rs.getObject("COMMENTS") == null || "".equals(rs.getObject("COMMENTS"))){
+                    rptDataTable.setComment("此表描述为空,若需要,请去对应的表写入。");
+                }else {
+                    rptDataTable.setComment(rs.getObject("COMMENTS").toString());
+                }
+                tables.add(rptDataTable);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e);
+        } finally {
+            DataBaseUtil.closeResultSet(rs);
+        }
+        return tables;
     }
 }

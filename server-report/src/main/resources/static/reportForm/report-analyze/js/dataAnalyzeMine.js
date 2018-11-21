@@ -90,6 +90,9 @@ function clsMethodLee$parse(){
     }else{
         initplugPath($("#parentChildTableList")[0],"parentChildTableCtrl",this.requestUrl.path1,{"personalSubjectId":this.personalSubjectId},"POST");
     }
+    if(this.personalSubjectId){
+        $("#childShow").show();
+    }
     //初始化fieldId的下拉
     $("#measureType").chosen({
         no_results_text: "暂无结果",

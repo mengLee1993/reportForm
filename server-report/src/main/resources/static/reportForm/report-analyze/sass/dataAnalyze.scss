@@ -132,6 +132,7 @@ $bd_dee: #dee3e6;//主体边框线
       background: #f0f0f0;
       border: 1px solid $bd_dee;
       word-break: break-all;
+      font-weight: 900;
     }
     .tcdPageCode{
       position: absolute;
@@ -450,3 +451,4 @@ $bd_dee: #dee3e6;//主体边框线
 .selDimensionContent .content{
   width: 95%!important;
 }
+tr[rowtype=title] .formcontainer-table__thead { text-align: center; }
