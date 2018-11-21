@@ -67,19 +67,19 @@ public class ReportAccessorOracle extends AbstractAccessor {
         return fieldList;
     }
 
-    @Override
-    public String typesConvert(String type) {
-        if (type.startsWith("varchar") || type.startsWith("char")) {
-            return "String";
-        } else if (type.startsWith("long")) {
-            return "Integer";
-        } else if (type.startsWith("number")) {
-            return "Double";
-        } else if (type.startsWith("date")) {
-            return "Date";
-        }
-        return type;
-    }
+//    @Override
+//    public String typesConvert(String type) {
+//        if (type.startsWith("varchar") || type.startsWith("char")) {
+//            return "String";
+//        } else if (type.startsWith("long")) {
+//            return "Integer";
+//        } else if (type.startsWith("number")) {
+//            return "Double";
+//        } else if (type.startsWith("date")) {
+//            return "Date";
+//        }
+//        return type;
+//    }
 
 
 

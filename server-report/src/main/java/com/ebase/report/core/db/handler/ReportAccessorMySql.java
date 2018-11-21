@@ -13,6 +13,7 @@ import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,28 +170,9 @@ public class ReportAccessorMySql extends AbstractAccessor {
         return fieldList;
     }
 
-    @Override
-    public String typesConvert(String type) {
-        if (type.startsWith("varchar") || type.startsWith("longtext")) {
-            return "String";
-        } else if (type.startsWith("int") || type.startsWith("bigint")) {
-            // return "Integer";Byte
-            return "Long";
-        } else if (type.startsWith("tinyint")) {
-            return "Byte";
-        } else if (type.startsWith("double")) {
-            return "Double";
-        } else if (type.startsWith("timestamp")) {
-            return "Date";
-        } else if (type.startsWith("tinyint")) {
-            return "Boolean";
-        } else if (type.startsWith("date")) {
-            return "Date";
-        } else if (type.startsWith("decimal")) {
-            return "BigDecimal";
-        }
-        return type;
-    }
+    // bigint，binary，bit，blob，bool，boolean，char，date，datetime，decimal，double，enum，float，int，longblob，longtext，mediumblob，mediumint
+        //  mediumtext，numeric，real，set，smallint，text，time，timestamp，tinyblob，tinyint，tinytext，varbinary，varchar，year
+
 
     /**
      * 生成sql 没有group by 和 函数的

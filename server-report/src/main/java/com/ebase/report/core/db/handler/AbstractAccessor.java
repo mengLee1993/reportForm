@@ -1,5 +1,6 @@
 package com.ebase.report.core.db.handler;
 
+import com.ebase.report.common.DBFieldTypeEnum;
 import com.ebase.report.common.DemandType;
 import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataBaseUtil;
@@ -11,6 +12,7 @@ import com.ebase.report.cube.DimensionKey;
 import com.ebase.report.model.RptDataDict;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.ReportDatasource;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -351,6 +353,18 @@ public abstract class AbstractAccessor implements ReportAccessor {
             }
             workbook.close();
         }
+    }
+
+
+    @Override
+    public String typesConvert(String type) {
+        if(StringUtils.isNotEmpty(type)){
+            DBFieldTypeEnum dbFieldTypeEnum = DBFieldTypeEnum.getByCode(type);
+            if(dbFieldTypeEnum != null){
+                return dbFieldTypeEnum.getName();
+            }
+        }
+        return type;
     }
 
 }
