@@ -4,6 +4,7 @@ import com.ebase.report.common.StateUtil;
 import com.ebase.report.controller.IndexController;
 import com.ebase.report.core.json.JsonRequest;
 import com.ebase.report.core.json.JsonResponse;
+import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
@@ -33,13 +34,13 @@ public class RptDataTableController {
     @Autowired
     private RptDataTableService dataTableService;
 
-    /**
+ /*   *//**
      * @param:
      * @return:
      * @description:  查看主题表
      * @author: lirunze
      * @Date: 2018/11/2
-     */
+     *//*
     @RequestMapping(value = "/dataTable/themeTable" , method = RequestMethod.POST)
     public JsonResponse<PageInfo<RptDataTableVO>> queryThemeTable(@RequestBody JsonRequest<RptDataTableVO> jsonRequest){
         JsonResponse<PageInfo<RptDataTableVO>> jsonResponse = new JsonResponse<>();
@@ -49,6 +50,31 @@ public class RptDataTableController {
             PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
             List<RptDataTableVO> acctOrgSysVOs = dataTableService.queryThemeTable(vo);
             PageInfo<RptDataTableVO> pages = new PageInfo(acctOrgSysVOs);
+            jsonResponse.setRspBody(pages);
+        } catch (Exception e) {
+            logger.error(e.getMessage() , e);
+            e.printStackTrace();
+            jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+            return jsonResponse;
+        }
+        return jsonResponse;
+    }*/
+
+
+    /**
+     * @param:
+     * @return:
+     * @description:  查看主题表
+     * @author: lirunze
+     * @Date: 2018/11/2
+     */
+    @RequestMapping(value = "/dataTable/themeTable" , method = RequestMethod.POST)
+    public JsonResponse<PageDTO<RptDataTableVO>> queryThemeTable(@RequestBody JsonRequest<RptDataTableVO> jsonRequest){
+        JsonResponse<PageDTO<RptDataTableVO>> jsonResponse = new JsonResponse<>();
+        try {
+            logger.info("查看主题表 参数 = {}", JsonUtil.toJson(jsonRequest));
+            RptDataTableVO vo = jsonRequest.getReqBody();
+            PageDTO<RptDataTableVO> pages = dataTableService.queryForPage(vo);
             jsonResponse.setRspBody(pages);
         } catch (Exception e) {
             logger.error(e.getMessage() , e);

@@ -349,4 +349,22 @@
         from rpt_data_table
         where DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
     </select>
+
+
+    <!--计数-->
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from rpt_data_table
+        <include refid="Base_Where_Column_List" />
+    </select>
+
+    <!--分页-->
+    <select id="selectByPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rpt_data_table
+        <include refid="Base_Where_Column_List" />
+        ORDER BY TABLE_ID ASC
+        limit #{startRow},#{pageSize}
+    </select>
+
 </mapper>

@@ -2,6 +2,7 @@ package com.ebase.report.service.impl;
 
 import com.ebase.report.common.RemoveStatusEnum;
 import com.ebase.report.core.db.handler.ReportHandler;
+import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.utils.BeanCopyUtil;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
 import com.ebase.report.dao.RptDataFieldMapper;
@@ -156,4 +157,28 @@ public class RptDataTableServiceImpl implements RptDataTableService {
 
         return null;
     }
+
+
+    @Override
+    public PageDTO<RptDataTableVO> queryForPage(RptDataTableVO vo) {
+        RptDataTable model = BeanCopyUtil.copy(vo, RptDataTable.class);
+
+        PageDTO<RptDataTableVO> pageDTO = new PageDTO<>(vo.getPageNum(),vo.getPageSize());
+
+        Integer count = rptDataTableMapper.selectCount(model);
+        pageDTO.setTotal(count);
+
+        model.setStartRow(pageDTO.getStartRow());
+        List<RptDataTable> rptDataTables = rptDataTableMapper.selectByPage(model);
+        List<RptDataTableVO> rptDataTableVOs = BeanCopyUtil.copyList(rptDataTables, RptDataTableVO.class);
+        String datasourceChineseName = vo.getDatasourceChineseName();
+        String datasourceName = vo.getDatasourceName();
+        for (RptDataTableVO vo2 : rptDataTableVOs) {
+            vo2.setDatasourceChineseName(datasourceChineseName);
+            vo2.setDatasourceName(datasourceName);
+        }
+        pageDTO.setResultData(rptDataTableVOs);
+        return pageDTO;
+    }
+
 }
