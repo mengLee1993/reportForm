@@ -82,7 +82,7 @@ public class AcctInfo {
 
     private Long sysId;
 
-    private int pageSize =2;
+    private int pageSize =10;
     //
     private int pageNum = 1;
 

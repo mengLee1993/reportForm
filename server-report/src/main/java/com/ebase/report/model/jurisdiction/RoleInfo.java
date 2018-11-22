@@ -10,7 +10,7 @@ public class RoleInfo {
 
     private int pageNum = 1;
 
-    private int pageSize = 2;
+    private int pageSize = 10;
 
     private int startRow;
 
