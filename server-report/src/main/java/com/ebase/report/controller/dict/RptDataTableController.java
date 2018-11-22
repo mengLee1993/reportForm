@@ -162,9 +162,11 @@ public class RptDataTableController {
             List<RptDataTableVO> returnList = new ArrayList<RptDataTableVO>();
             // 条件查询
             for (RptDataTableVO tableVO : dataTableVOList) {
+                boolean b = true;
+
                 if(StringUtil.isNotEmpty(vo.getStatus())){
                     if(!vo.getStatus().equals(tableVO.getStatus())){
-                        continue;
+                        b = false;
                     }
                 }
 
@@ -174,18 +176,16 @@ public class RptDataTableController {
                     content.append("|");
                     content.append(tableVO.getComment());
 
-                    boolean b = false;
                     for(String key : keyList){
                         if(!content.toString().contains(key)){
-                            b = true;
+                            b = false;
                         }
                     }
-
-                    if(b){
-                        continue;
-                    }
                 }
-                returnList.add(tableVO);
+
+                if(b){
+                    returnList.add(tableVO);
+                }
             }
 
             // 分页

@@ -83,7 +83,7 @@ public class RptDataTableVO  implements Serializable {
      * Database Column Remarks:
      *   主题表添加情况
      */
-    private String status = "0";
+    private String status;
 
     /**
      */
