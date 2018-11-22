@@ -634,6 +634,11 @@
 
   </select>
 
+  <select id="queryForCount" resultType="java.lang.Integer">
+    SELECT COUNT(ROLE_ID)
+    FROM ROLE_INFO
+  </select>
+
   <select id="queryForList" resultMap="BaseResultMap">
     SELECT *
     FROM role_info
@@ -648,6 +653,7 @@
         AND ROLE_STATE = #{roleState}
       </if>
     </trim>
+    limit #{startRow} , #{pageSize}
   </select>
 
   <select id="selectByAcctId" parameterType="java.lang.Long" resultMap="BaseResultMap">

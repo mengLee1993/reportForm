@@ -331,7 +331,7 @@ function clsMethodLee$refresh(){
 function clsParentChildTableCtrl$progress(jsonItem, cloneRow) {
     //渲染Measures
     measureInit(cloneRow,jsonItem);
-
+    //如果有报表id，说明只有一个主题。直接显示
     if(document.body.jsLee.personalAnalysisId){
         $(cloneRow).find("#childShow").show();
         document.body.jsLee.jsonAll = jsonItem;
@@ -348,7 +348,7 @@ function clsParentChildTableCtrl$progress(jsonItem, cloneRow) {
 
     //指标Measures勾选刷新右侧待选列
     $(cloneRow).find("#cloneChildRow .chkC").on("click",function(){
-        initWaitSelect(cloneRow);
+        initWaitSelect(cloneRow,this);
     });
 
     //指标添加
@@ -357,18 +357,19 @@ function clsParentChildTableCtrl$progress(jsonItem, cloneRow) {
         document.body.jsLee.measureId = "";
         clearpopup();
     });
-    if(document.body.jsLee.subjectId && document.body.jsLee.subjectId == jsonItem.personalSubjectId && !document.body.jsLee.personalAnalysisId){
-        $(cloneRow).find("#parentClick").click();
-        document.body.jsLee.jsonAll = jsonItem;
-        document.body.jsLee.jsonAll.reportDynamicParam = {
+    /*if(document.body.jsLee.subjectId && document.body.jsLee.subjectId == jsonItem.personalSubjectId && !document.body.jsLee.personalAnalysisId){
+        //$(cloneRow).find("#parentClick").click();
+        $(cloneRow).find("#childShow").show();
+        document.body.jsLee.jsonAll.rptMeasures = jsonItem.rptMeasures;
+        /!*document.body.jsLee.jsonAll.reportDynamicParam = {
             "personalSubjectId":jsonItem.personalSubjectId,
                 "column":[],
                 "line":[],
                 "tbs":[],
                 "filter":[]
-        }
+        }*!/
         initTableOrChart();
-    }
+    }*/
 }
 
 function clsParentChildTableCtrl$childProgress(jsonCItem, childCloneRow, jsonItem, cloneRow) {
@@ -376,7 +377,7 @@ function clsParentChildTableCtrl$childProgress(jsonCItem, childCloneRow, jsonIte
     jsonCItem.dimensionIndex = "DIMENSION";
     //点击左侧主题维度刷新右侧待选列
     $(childCloneRow).find(".chkC").on("click",function(){
-        initWaitSelect(cloneRow);
+        initWaitSelect(cloneRow,this);
     });
     if(jsonCItem.isChecked == 1){
         $(childCloneRow).find(".chkC").attr("checked",true);
@@ -535,6 +536,8 @@ function showErrInfoByCustomDiv(elem,error)
 
 //如果是自定义数据报表回显数据
 function initHtmlData(data){
+    $(".selDimensionRows").html("");
+    $(".selDimensionCols").html("");
     document.body.jsLee.subjectId = data.personalSubjectId;
     //初始化待选列
     initplugData($("#parentChildTableCopy")[0],"standardTableCtrl",data.tbs);
@@ -789,8 +792,8 @@ function measureInit(cloneRow,jsonItem){
 }
 
 //点击左侧主题维度或者指标刷新右侧待选列
-function initWaitSelect(cloneRow){
-    document.body.jsLee.checkedAll = [];//置空缓存checked数组
+function initWaitSelect(cloneRow,that){
+    /*document.body.jsLee.checkedAll = [];//置空缓存checked数组
     document.body.jsLee.jsonAll.reportDynamicParam.filter = [];
     $(cloneRow).find("*[id=cloneChildRow] .chkC").each(function(index,val){
         if(index != $(cloneRow).find("*[id=cloneChildRow] .chkC").length - 1 && $(this).is(":checked")) {//最后一个cloneRow，measures操作
@@ -813,8 +816,78 @@ function initWaitSelect(cloneRow){
         }
     });
     //刷新右侧待选列
-    initRightShow();
+    initRightShow();*/
 
+
+    //修改需求左右勾选同步数据
+    if($(that).is(":checked") && $(that).parents("#cloneChildRow")[0].jsonData.fieldName == "Measures"){//选中指标
+        document.body.jsLee.jsonAll.isChecked = 1;
+        for(var nI = 0; nI < $(that).parents("#cloneChildRow")[0].jsonData.rptMeasures.length; nI++ ){
+            var jsonA = {};
+            jsonA = $(that).parents("#cloneChildRow")[0].jsonData.rptMeasures[nI];
+            jsonA.fieldName = $(that).parents("#cloneChildRow")[0].jsonData.rptMeasures[nI].measuresName;
+            jsonA.combinationName = $(that).parents("#cloneChildRow")[0].jsonData.rptMeasures[nI].measuresName;
+            //jsonA.fieldCode = $(that).parents("#cloneChildRow")[0].jsonData.rptMeasures[nI].fieldCode;
+        }
+        document.body.jsLee.jsonAll.reportDynamicParam.tbs.push($(that).parents("#cloneChildRow")[0].jsonData);
+        document.body.jsLee.jsonAll.isChecked = 1;
+    }else if(!$(that).is(":checked") && $(that).parents("#cloneChildRow")[0].jsonData.fieldName == "Measures"){//取消勾选指标
+        document.body.jsLee.jsonAll.isChecked = 0;
+        soliceRightArr(that,"fieldName");
+    }else if($(that).is(":checked") && $(that).parents("#cloneChildRow")[0].jsonData.fieldName != "Measures"){//选中维度
+        //左侧isChecked标记
+        for(var nI = 0; nI < document.body.jsLee.jsonAll.rptDataFields.length; nI++){
+            if(document.body.jsLee.jsonAll.rptDataFields[nI].fieldId == $(that).parents("#cloneChildRow")[0].jsonData.fieldId){
+                document.body.jsLee.jsonAll.rptDataFields[nI].isChecked = 1;
+            }
+        }
+        document.body.jsLee.jsonAll.reportDynamicParam.tbs.push($(that).parents("#cloneChildRow")[0].jsonData);
+    }else if(!$(that).is(":checked") && $(that).parents("#cloneChildRow")[0].jsonData.fieldName != "Measures"){//取消勾选维度
+        //取消左侧isChecked标记
+        for(var nI = 0; nI < document.body.jsLee.jsonAll.rptDataFields.length; nI++){
+            if(document.body.jsLee.jsonAll.rptDataFields[nI].fieldId == $(that).parents("#cloneChildRow")[0].jsonData.fieldId){
+                document.body.jsLee.jsonAll.rptDataFields[nI].isChecked = 0;
+            }
+        }
+        soliceRightArr(that,"fieldId");
+    }
+    initHtmlData(document.body.jsLee.jsonAll.reportDynamicParam);
+}
+
+//
+function soliceRightArr(that,idMark){
+    //匹配是否在待选列
+    for(var nI = 0; nI < document.body.jsLee.jsonAll.reportDynamicParam.tbs.length; nI++ ){
+        if(document.body.jsLee.jsonAll.reportDynamicParam.tbs[nI][idMark] == $(that).parents("#cloneChildRow")[0].jsonData[idMark]){
+            document.body.jsLee.jsonAll.reportDynamicParam.tbs.splice(nI,1);
+        }
+    }
+    //匹配是否在列
+    for(var nI = 0; nI < document.body.jsLee.jsonAll.reportDynamicParam.column.length; nI++ ){
+        if(document.body.jsLee.jsonAll.reportDynamicParam.column[nI][idMark] == $(that).parents("#cloneChildRow")[0].jsonData[idMark]){
+            if(document.body.jsLee.jsonAll.reportDynamicParam.column[nI].searchTrue){
+                for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.filter.length; mI++ ){
+                    if(document.body.jsLee.jsonAll.reportDynamicParam.filter[mI].code == document.body.jsLee.jsonAll.reportDynamicParam.column[nI].fieldCode){
+                        document.body.jsLee.jsonAll.reportDynamicParam.filter.splice(mI,1);
+                    }
+                }
+            }
+            document.body.jsLee.jsonAll.reportDynamicParam.column.splice(nI,1);
+        }
+    }
+    //匹配是否在行
+    for(var nI = 0; nI < document.body.jsLee.jsonAll.reportDynamicParam.line.length; nI++ ){
+        if(document.body.jsLee.jsonAll.reportDynamicParam.line[nI][idMark] == $(that).parents("#cloneChildRow")[0].jsonData[idMark]){
+            if(document.body.jsLee.jsonAll.reportDynamicParam.line[nI].searchTrue){
+                for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.filter.length; mI++ ){
+                    if(document.body.jsLee.jsonAll.reportDynamicParam.filter[mI].code == document.body.jsLee.jsonAll.reportDynamicParam.line[nI].fieldCode){
+                        document.body.jsLee.jsonAll.reportDynamicParam.filter.splice(mI,1);
+                    }
+                }
+            }
+            document.body.jsLee.jsonAll.reportDynamicParam.line.splice(nI,1);
+        }
+    }
 }
 //刷新右侧展示拖拽区域
 function initRightShow(){
@@ -972,7 +1045,60 @@ function createMeasureCallBack(data){
     data = JSON.parse(data);
     if(data.retCode == "0000000"){
         closePopupWin();
-        document.body.jsLee.init();
+        //document.body.jsLee.init();
+
+        if(this.personalAnalysisId){
+            getAjaxResultLee(document.body.jsLee.requestUrl.path8,"POST",{"personalAnalysisId":document.body.jsLee.personalAnalysisId},"initLeftAginHtml(data)",function(){
+                $("#ajaxWaiting").show();
+            },function () {
+                $("#ajaxWaiting").hide();
+            });
+        }else{
+            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":document.body.jsLee.personalSubjectId},"initLeftAginHtml(data)",function(){
+                $("#ajaxWaiting").show();
+            },function () {
+                $("#ajaxWaiting").hide();
+            });
+        }
+    }
+}
+
+//添加，删除指标操作
+function initLeftAginHtml(data){
+    data = JSON.parse(data);
+    if(data.retCode == "0000000"){
+        if(document.body.jsLee.personalAnalysisId){
+
+        }else{
+            //拼接json
+            for(var nI = 0 ; nI < data.rspBody.resultData.length; nI++ ){
+                if(document.body.jsLee.subjectId == data.rspBody.resultData[nI].personalSubjectId){
+                    document.body.jsLee.jsonAll.rptMeasures = data.rspBody.resultData[nI].rptMeasures;
+                    $("*[id=cloneParentRow]").eq(nI).find("*[id=cloneSpecialRow]").remove();
+                    measureInit($("*[id=cloneParentRow]").eq(nI),data.rspBody.resultData[nI]);
+                    //当前展开主题下的指标勾选
+                    if($("*[id=cloneParentRow]").eq(nI).find("*[id=cloneChildRow]:last .chkC").is(":checked")){
+                        //同步待选列或者行列过滤区的值
+                        for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.tbs.length ; mI++ ){
+                            if(document.body.jsLee.jsonAll.reportDynamicParam.tbs[mI].fieldName == "Measures"){
+                                document.body.jsLee.jsonAll.reportDynamicParam.tbs[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                            }
+                        }
+                        for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.column.length ; mI++ ){
+                            if(document.body.jsLee.jsonAll.reportDynamicParam.column[mI].fieldName == "Measures"){
+                                document.body.jsLee.jsonAll.reportDynamicParam.column[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                            }
+                        }
+                        for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.line.length ; mI++ ){
+                            if(document.body.jsLee.jsonAll.reportDynamicParam.line[mI].fieldName == "Measures"){
+                                document.body.jsLee.jsonAll.reportDynamicParam.line[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                            }
+                        }
+                    }
+                }
+            }
+            initHtmlData(document.body.jsLee.jsonAll.reportDynamicParam);
+        }
     }
 }
 
@@ -980,7 +1106,20 @@ function createMeasureCallBack(data){
 function measureDeleteCallBack(data){
     data = JSON.parse(data);
     if(data.retCode == "0000000"){
-        document.body.jsLee.init();
+        closePopupWin();
+        if(this.personalAnalysisId){
+            getAjaxResultLee(document.body.jsLee.requestUrl.path8,"POST",{"personalAnalysisId":document.body.jsLee.personalAnalysisId},"initLeftAginHtml(data)",function(){
+                $("#ajaxWaiting").show();
+            },function () {
+                $("#ajaxWaiting").hide();
+            });
+        }else{
+            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":document.body.jsLee.personalSubjectId},"initLeftAginHtml(data)",function(){
+                $("#ajaxWaiting").show();
+            },function () {
+                $("#ajaxWaiting").hide();
+            });
+        }
     }
 }
 
@@ -1508,7 +1647,7 @@ function initChartCallBack(data){
                     // head + 每个 point + footer 拼接成完整的 table
                     headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.1f}<!----></b></td></tr>',
                     footerFormat: '</table>',
                     shared: true,
                     useHTML: true

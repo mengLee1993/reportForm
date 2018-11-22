@@ -184,32 +184,25 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
     @Override
     public List<RptDatasourceVO> queryDataBaseType() {
         List<RptDatasourceVO> list = new ArrayList<>();
-        RptDatasourceVO vo = null;
 
-        vo = new RptDatasourceVO();
-        vo.setDatabaseType(DataBaseType.TYPE_NAME_ORACLE);
-        list.add(vo);
-        vo = new RptDatasourceVO();
-        vo.setDatabaseType(DataBaseType.TYPE_NAME_MYSQL);
-        list.add(vo);
-//        vo.setDatabaseType(DataBaseType.TYPE_NAME_HIVE);
-//        list.add(vo);
+        for(DataBaseType dataBaseType : DataBaseType.getTypeMap().values()){
+            RptDatasourceVO vo = new RptDatasourceVO();
+            vo.setDatabaseType(dataBaseType.getName());
+            list.add(vo);
+        }
+
         return list;
     }
 
     @Override
     public List<RptDatasourceVO> queryConnPoolType() {
         List<RptDatasourceVO> list = new ArrayList<>();
-        RptDatasourceVO vo = null;
+        for(ConnPoolType poolType : ConnPoolType.getTypeMap().values()){
+            RptDatasourceVO vo = new RptDatasourceVO();
+            vo.setConnpoolType(poolType.getName());
+            list.add(vo);
+        }
 
-        vo = new RptDatasourceVO();
-        vo.setConnpoolType(ConnPoolType.TYPE_NAME_HIKARI);
-        list.add(vo);
-        vo = new RptDatasourceVO();
-        vo.setConnpoolType(ConnPoolType.TYPE_NAME_BONECP);
-        list.add(vo);
-//        vo.setDatabaseType(DataBaseType.TYPE_NAME_HIVE);
-//        list.add(vo);
         return list;
     }
 
