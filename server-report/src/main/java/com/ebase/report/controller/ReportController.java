@@ -47,10 +47,6 @@ import java.util.concurrent.FutureTask;
 public class ReportController {
     private static Logger LOG = LoggerFactory.getLogger(ReportController.class);
 
-    private final String EXCEL_NAME = "数据报表明细";
-
-//    private final String url = "/report/";
-
     @Resource
     private ReportHandler reportHandler;
 
@@ -76,7 +72,6 @@ public class ReportController {
     @Autowired
     private RptPersonalSubjectService rptPersonalSubjectService;
 
-
     //账号
     @Autowired
     private AcctService acctService;
@@ -94,7 +89,7 @@ public class ReportController {
      * @param jsonRequest
      * @return
      */
-    @RequestMapping("/reportCore")
+    @RequestMapping("/reportCoreDetail")
     private JsonResponse<ReportResp> reportCore(@RequestBody JsonRequest<ReportDatasource> jsonRequest) {
         JsonResponse<ReportResp> jsonResponse = new JsonResponse<ReportResp>();
         ReportResp reportResp = new ReportResp();
@@ -122,6 +117,33 @@ public class ReportController {
 
         return jsonResponse;
     }
+
+    /**
+     * 报表列表
+     * @return
+     */
+    @RequestMapping("/reportCore")
+    public JsonResponse<ReportRespDeteil> reportCoreDetail(@RequestBody JsonRequest<ReportDatasource> jsonRequest){
+        JsonResponse<ReportRespDeteil> jsonResponse = new JsonResponse<ReportRespDeteil>();
+        try{
+
+
+            ReportDatasource reportDatasource = jsonRequest.getReqBody();
+
+            //初始化cubeThree
+            CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());
+
+
+            ReportRespDeteil reportRespDeteil = reportHandler.reportCoreDetail(reportDatasource);
+
+        }catch (Exception e){
+            LOG.error("error = {}",e);
+            jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+        }
+        return jsonResponse;
+    }
+
+
 
     /**
      * 报表核心接口  动态报表 导出类

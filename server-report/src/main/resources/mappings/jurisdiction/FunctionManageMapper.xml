@@ -35,7 +35,7 @@
 
   <select id="maxCode" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select max(function_code) as function_code from function_manage where 1=1
-
+    and function_code > 1
     <if test="parentApplicationId != null and parentApplicationId != '' " >
       and PARENT_APPLICATION_ID=#{parentApplicationId,jdbcType=BIGINT}
     </if>

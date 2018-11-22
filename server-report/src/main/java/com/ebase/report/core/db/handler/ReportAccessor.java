@@ -53,4 +53,6 @@ interface ReportAccessor {
 
     // distinct value
     public List<RptDataDict> queryDistinctFeild(String distinctSqlCount, Connection conn) throws DbException;
+
+    public String reportCoreDetail(ReportDatasource reportDatasource);
 }

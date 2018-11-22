@@ -394,6 +394,11 @@ public class ReportAccessorOracle extends AbstractAccessor {
 
     }
 
+    @Override
+    public String reportCoreDetail(ReportDatasource reportDatasource) {
+        return null;
+    }
+
     /**
      * 查询oracle数据库中表的名称+表的注释
      * @param conn

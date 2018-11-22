@@ -201,7 +201,7 @@ public class MySqlTest {
 //        System.out.println(Class.class.getResource("/").getPath());
 
 
-//        demo();
+        demo();
 
     }
 
@@ -427,31 +427,31 @@ public class MySqlTest {
             // 一个Connection代表一个数据库连接
             conn = DriverManager.getConnection(url);
             // Statement里面带有很多方法，比如executeUpdate可以实现插入，更新和删除等
-//            sql ="SELECT movie_emotion AS 'Field2',SUM(movie_score) AS 'Field4',COUNT(movie_score) AS 'Field5',movie_score AS 'Field6',movie_score AS 'Field7', COUNT(1) FROM movie_data_10w WHERE 1 = 1  AND movie_emotion IN (  '冒险',  '动作',  '喜剧' )  AND movie_type IN ( '体育', '战争')  AND movie_score> '0.01'  AND movie_score< '4.5'  GROUP BY movie_emotion \n";
+            sql ="SELECT movie_emotion AS 'Field2',SUM(movie_score) AS 'Field4',COUNT(movie_score) AS 'Field5',movie_score AS 'Field6',movie_score AS 'Field7', COUNT(1) FROM movie_data_10w WHERE 1 = 1  AND movie_emotion IN (  '冒险',  '动作',  '喜剧' )  AND movie_type IN ( '体育', '战争')  AND movie_score> '0.01'  AND movie_score< '4.5'  GROUP BY movie_emotion \n";
             //            ResultSet rs = stmt.executeQuery(sql);// executeUpdate语句会返回一个受影响的行数，如果返回-1就没有成功
-            sql = "UPDATE rpt_measures\n" +
-                    "SET MEASURE_TYPE = 1, SUBJECT_ID = 1, REMOVE_STATUS = 0, CREATED_BY = '我要打死你',  MEASURE_RULE = '我要打死你', MEASURE_NAME = '我要打死你'\n" +
-                    "WHERE MEASURE_ID = 3";
+//            sql = "UPDATE rpt_measures\n" +
+//                    "SET MEASURE_TYPE = 1, SUBJECT_ID = 1, REMOVE_STATUS = 0, CREATED_BY = '我要打死你',  MEASURE_RULE = '我要打死你', MEASURE_NAME = '我要打死你'\n" +
+//                    "WHERE MEASURE_ID = 3";
             PreparedStatement pstmt = (PreparedStatement)conn.prepareStatement(sql);
-//            ResultSet rs = pstmt.executeQuery();
-            boolean execute = pstmt.execute();
-//            ResultSetMetaData rsmd = rs.getMetaData();
+            ResultSet rs = pstmt.executeQuery();
+//            ResultSet resultSet = pstmt.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
 //            // 获得列的总数
-//            int columnCount = rsmd.getColumnCount();
-//            while (rs.next()) {
-//                for (int i = 0; i < columnCount; i++) {
-////                    String columnName = rsmd.getColumnName(i + 1);
-////                    String tableName = rsmd.getTableName(i + 1);
-////                    String columnClassName = rsmd.getColumnClassName(i + 1);
-////                    String catalogName = rsmd.getCatalogName(i + 1);
-//                    String columnLabel = rsmd.getColumnLabel(i + 1);
-////                    Object columnValue = rs.getObject(columnName);
-//                    String string = rs.getString(columnLabel);
-//                    System.out.println(columnLabel + string);
+            int columnCount = rsmd.getColumnCount();
+            while (rs.next()) {
+                for (int i = 0; i < columnCount; i++) {
+//                    String columnName = rsmd.getColumnName(i + 1);
+//                    String tableName = rsmd.getTableName(i + 1);
+//                    String columnClassName = rsmd.getColumnClassName(i + 1);
+//                    String catalogName = rsmd.getCatalogName(i + 1);
+                    String columnLabel = rsmd.getColumnLabel(i + 1);
+//                    Object columnValue = rs.getObject(columnName);
+                    String string = rs.getString(columnLabel);
+                    System.out.println(columnLabel + string);
 //
-//                }
+                }
 //                // 根据dimensionKey 初始化树结点
-//            }
+            }
         } catch (SQLException e) {
             System.out.println("MySQL操作错误" + e);
             e.printStackTrace();

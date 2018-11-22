@@ -328,6 +328,62 @@ public class ReportAccessorMySql extends AbstractAccessor {
 
     }
 
+    /**
+     * 查询详细sql
+     * @param reportDatasource
+     * @return
+     */
+    @Override
+    public String reportCoreDetail(ReportDatasource reportDatasource) {
+        String sql = "";
+
+        //前台动态参数
+        ReportDynamicParam reportDynamicParam = reportDatasource.getReportDynamicParam();
+        //主题
+        String subjectType = reportDatasource.getSubjectType();
+        //数据库类型
+        String dbTypeEnumByName = reportDatasource.getDatabaseType();
+
+        List<Dimension> line = reportDynamicParam.getLine();  //行维度
+
+        List<Dimension> column = reportDynamicParam.getColumn();  //列维度
+
+        //给仍出来
+        String filterSql = toWhereSqlFtiler(reportDatasource);
+
+        String selectSql = super.toSelectMeasures(reportDatasource);
+        if(SubjectTypeEnum.DATATABLE.getCode().equals(subjectType)){
+            StringBuilder builderSelect = new StringBuilder(" select ");
+
+            StringBuilder builderWhe = new StringBuilder(" where 1 = 1 ");
+
+            ReportTable reportTable = reportDatasource.getReportTables().get(0);
+
+            //详细sql转换
+            conversionDetailFoSql(dbTypeEnumByName, line, builderSelect, builderWhe);
+
+            conversionDetailFoSql(dbTypeEnumByName, column, builderSelect, builderWhe);
+
+            String select = null;
+            if(StringUtil.isEmpty(selectSql)){
+                select = builderSelect.substring(0,builderSelect.lastIndexOf(","));
+            }else{
+                select = builderSelect.append(selectSql).toString();
+            }
+
+            StringBuilder builder = new StringBuilder(select);
+            builder.append("  from " + reportTable.getTableCode() );
+            builder.append(builderWhe).append(filterSql);
+
+            sql = builder.toString();
+        }else if(SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)){
+            //主题 （多张表）
+
+        }
+
+        return sql;
+    }
+
     @Override
     public List<RptDataTable> queryAllTables(Connection conn, DataBaseType dataBaseType) throws DbException {
         List<RptDataTable> tables = new ArrayList<RptDataTable>();

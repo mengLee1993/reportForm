@@ -137,6 +137,9 @@ public class ReportHandler {
         rptAnalyseLog.setTableName(reportDatasource.getReportTables().get(0).getTableName());
         rptAnalyseLog.setPersonalSubjectId(reportDatasource.getPersonalSubjectId());
         rptAnalyseLog.setSqlExecutionTime(time);
+
+        System.out.println("1");
+        //执行sql 查询
         rptAnalyseLogService.addReportLog(rptAnalyseLog);
     }
 
@@ -323,5 +326,40 @@ public class ReportHandler {
         }
 
         return null;
+    }
+
+    /**
+     * 动态
+     * @param reportDatasource
+     * @return
+     */
+    public ReportRespDeteil reportCoreDetail(ReportDatasource reportDatasource) {
+        ReportRespDeteil reportRespDeteil = new ReportRespDeteil();
+
+
+        String dataSourceName = reportDatasource.getDatasourceName();
+
+        Connection conn = null;
+
+        try {
+            DataSourceConfig dataSourceConfig = DataSourceManager.get().getDataSourceConfig(dataSourceName);
+            DataBaseType dataBaseType = dataSourceConfig.getDataBaseType();
+
+            ReportAccessor reportAccessor = AccessorFactory.get().factoryAccessor(ReportAccessor.class, dataBaseType);
+            conn = DbConnFactory.factory(dataSourceName);
+
+            //生成sql
+            String sql = reportAccessor.reportCoreDetail(reportDatasource);
+
+            System.out.println(sql);
+        } catch (DbException e) {
+            logger.error("Occurred DbException.", e);
+            // todo throw exception
+        } finally {
+            DataBaseUtil.closeConnection(conn);
+        }
+
+        return reportRespDeteil;
+
     }
 }

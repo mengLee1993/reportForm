@@ -326,6 +326,11 @@ public class ReportAccessorDb2 extends AbstractAccessor {
     }
 
     @Override
+    public String reportCoreDetail(ReportDatasource reportDatasource) {
+        return null;
+    }
+
+    @Override
     public List<RptDataTable> queryAllTables(Connection conn, DataBaseType dataBaseType) throws DbException {
         List<RptDataTable> tables = new ArrayList<RptDataTable>();
         ResultSet rs = null;

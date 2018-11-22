@@ -51,7 +51,7 @@ public class RptAnalyseLogServiceImpl implements RptAnalyseLogService {
 
         rptAnalyseLog.setSubjectName(rptPersonalSubject.getSubjectName());
         rptAnalyseLog.setDatasourceId(rptPersonalSubject.getDatasourceId());
-//        rptAnalyseLog.setLogTime(new);
+
         return rptAnalyseLogMapper.insert(rptAnalyseLog);
 
     }

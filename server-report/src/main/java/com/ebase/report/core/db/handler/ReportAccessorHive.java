@@ -108,4 +108,9 @@ public class ReportAccessorHive extends AbstractAccessor {
     public DataDetailSQL getReportFromDetailSql(ReportDatasource reportDatasource) {
         return null;
     }
+
+    @Override
+    public String reportCoreDetail(ReportDatasource reportDatasource) {
+        return null;
+    }
 }

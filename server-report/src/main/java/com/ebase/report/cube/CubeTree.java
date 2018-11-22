@@ -277,7 +277,7 @@ public class CubeTree {
 
     /**
      * 计算单元格的数据
-     *
+     * 就这个方法 慢
      */
     private void setCellData() {
         if (CollectionUtils.isEmpty(lineLeafList)) {
