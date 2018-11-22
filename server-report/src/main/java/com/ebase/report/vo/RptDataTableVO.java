@@ -83,31 +83,31 @@ public class RptDataTableVO  implements Serializable {
      * Database Column Remarks:
      *   主题表添加情况
      */
-    private String status = "0";
+    private String status;
 
     /**
      */
     private static final long serialVersionUID = 1L;
 
 
-    private int pageSize = 10 ;
-
     private int pageNum = 1;
 
-    public Integer getPageSize() {
+    private int pageSize = 10;
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public int getPageSize() {
         return pageSize;
     }
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
-    }
-
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(int pagNum) {
-        this.pageNum = pagNum;
     }
 
     //------------使用枚举的方式表示移除状态------------------------------------------

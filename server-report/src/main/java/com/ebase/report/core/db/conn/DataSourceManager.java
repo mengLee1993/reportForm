@@ -1,5 +1,6 @@
 package com.ebase.report.core.db.conn;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.ebase.report.core.db.DataBaseUtil;
 import com.ebase.report.core.db.exception.DbException;
 import com.jolbox.bonecp.BoneCPDataSource;
@@ -74,7 +75,10 @@ public class DataSourceManager {
             returnDs = createDataSourceBoneCP(dataSourceConfig);
         } else if (ConnPoolType.CONN_POOL_TYPE_HIKARI.equals(dataSourceConfig.getConnPoolType())) {
             returnDs = createDataSourceHikari(dataSourceConfig);
-        } else {
+        } else if(ConnPoolType.CONN_POOL_TYPE_DRUID.equals(dataSourceConfig.getConnPoolType())) {
+
+        }else{
+
             logger.error("未知的数据库类型");
         }
 
@@ -90,9 +94,7 @@ public class DataSourceManager {
 
         //set the password and username of the db account
         boneCPDs.setUsername(dataSourceConfig.getDataSourceUserName());
-        if (!StringUtils.isEmpty(dataSourceConfig.getDataSourceValidateSQL())) {
-            boneCPDs.setInitSQL(dataSourceConfig.getDataSourceValidateSQL());
-        }
+        boneCPDs.setInitSQL(dataSourceConfig.getDataBaseType().getValidateSql());
 
         boneCPDs.setPassword(dataSourceConfig.getDataSourcePassword());
 
@@ -133,6 +135,23 @@ public class DataSourceManager {
         return new HikariDataSource(hikariConfig);
     }
 
+    private DataSource createDataSourceDruid(DataSourceConfig dataSourceConfig) {
+        DruidDataSource datasource = new DruidDataSource();
+        datasource.setDriverClassName(dataSourceConfig.getDataBaseType().getDriverClassName());
+        datasource.setUrl(dataSourceConfig.getDataSourceURL());
+        datasource.setUsername(dataSourceConfig.getDataSourceName());
+        datasource.setPassword(dataSourceConfig.getDataSourcePassword());
+        datasource.setInitialSize(Integer.valueOf(dataSourceConfig.getDataSourceInitialSize()));
+        datasource.setMinIdle(Integer.valueOf(dataSourceConfig.getDataSourceMaxIdle()));
+        datasource.setMaxWait(Long.valueOf(dataSourceConfig.getDataSourceMaxWait()));
+        datasource.setMaxActive(Integer.valueOf(dataSourceConfig.getDataSourceMaxActive()));
+        datasource.setMinEvictableIdleTimeMillis(Long.valueOf(dataSourceConfig.getDataSourceIdleMaxMilliseconds()));
+
+        datasource.setValidationQuery(dataSourceConfig.getDataBaseType().getValidateSql());
+
+        return datasource;
+    }
+
     public DataSource getDataSource(String dsName) {
         DataSource ds = dataSourceMap.get(dsName.toLowerCase());
         if (ds == null) {
@@ -146,14 +165,17 @@ public class DataSourceManager {
         return dataSourceConfigMap.get(dsName.toLowerCase());
     }
 
-    public void closeDataSource(DataSourceConfig dataSourceConfig){
+    public void closeDataSource(DataSourceConfig dataSourceConfig) {
         if (ConnPoolType.CONN_POOL_TYPE_BONECP.equals(dataSourceConfig.getConnPoolType())) {
-            BoneCPDataSource dataSource = (BoneCPDataSource)dataSourceMap.get(dataSourceConfig.getDataSourceName());
+            BoneCPDataSource dataSource = (BoneCPDataSource) dataSourceMap.get(dataSourceConfig.getDataSourceName());
             dataSource.close();
         } else if (ConnPoolType.CONN_POOL_TYPE_HIKARI.equals(dataSourceConfig.getConnPoolType())) {
-            HikariDataSource dataSource = (HikariDataSource)dataSourceMap.get(dataSourceConfig.getDataSourceName());
+            HikariDataSource dataSource = (HikariDataSource) dataSourceMap.get(dataSourceConfig.getDataSourceName());
             dataSource.close();
-        } else {
+        } else if(ConnPoolType.CONN_POOL_TYPE_DRUID.equals(dataSourceConfig.getConnPoolType())){
+            DruidDataSource dataSource = (DruidDataSource) dataSourceMap.get(dataSourceConfig.getDataSourceName());
+            dataSource.close();
+        }else {
             logger.error("未知的数据库类型");
         }
         dataSourceMap.remove(dataSourceConfig.getDataSourceName());

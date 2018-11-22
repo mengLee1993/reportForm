@@ -4,9 +4,11 @@ package com.ebase.report.controller.jurisdiction;
 import com.ebase.report.core.ParamType;
 import com.ebase.report.core.json.JsonRequest;
 import com.ebase.report.core.json.JsonResponse;
+import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
+import com.ebase.report.model.jurisdiction.RoleInfo;
 import com.ebase.report.service.jurisdiction.RoleInfoService;
 import com.ebase.report.vo.jurisdiction.AcctInfoVO;
 import com.ebase.report.vo.jurisdiction.RoleInfoVO;
@@ -352,15 +354,13 @@ public class RoleInfoController {
      * 角色表-->分页+条件查询
      */
     @RequestMapping("/findpageresult")
-    public JsonResponse<PageInfo<RoleInfoVO>> findPageResult(@RequestBody JsonRequest<RoleInfoVO> jsonRequest) {
-        JsonResponse<PageInfo<RoleInfoVO>> jsonResponse = new JsonResponse<>();
+    public JsonResponse<PageDTO<RoleInfo>> findPageResult(@RequestBody JsonRequest<RoleInfo> jsonRequest) {
+        JsonResponse<PageDTO<RoleInfo>> jsonResponse = new JsonResponse<>();
         try {
             LOG.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
-            RoleInfoVO vo = jsonRequest.getReqBody();
-            PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
-            List<RoleInfoVO> acctOrgSysVOs = roleInfoService.queryForList(vo);
-            PageInfo<RoleInfoVO> pages = new PageInfo(acctOrgSysVOs);
-            jsonResponse.setRspBody(pages);
+            RoleInfo roleInfo = jsonRequest.getReqBody();
+            PageDTO<RoleInfo> acctOrgSysVOs = roleInfoService.queryForList(roleInfo);
+            jsonResponse.setRspBody(acctOrgSysVOs);
         } catch (Exception e) {
             LOG.error(e.getMessage() ,e);
             e.printStackTrace();

@@ -4,12 +4,15 @@ import com.ebase.report.common.StateUtil;
 import com.ebase.report.controller.IndexController;
 import com.ebase.report.core.json.JsonRequest;
 import com.ebase.report.core.json.JsonResponse;
+import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.utils.JsonUtil;
+import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
 import com.ebase.report.service.RptDataTableService;
 import com.ebase.report.vo.RptDataTableVO;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,13 +37,13 @@ public class RptDataTableController {
     @Autowired
     private RptDataTableService dataTableService;
 
-    /**
+ /*   *//**
      * @param:
      * @return:
      * @description:  查看主题表
      * @author: lirunze
      * @Date: 2018/11/2
-     */
+     *//*
     @RequestMapping(value = "/dataTable/themeTable" , method = RequestMethod.POST)
     public JsonResponse<PageInfo<RptDataTableVO>> queryThemeTable(@RequestBody JsonRequest<RptDataTableVO> jsonRequest){
         JsonResponse<PageInfo<RptDataTableVO>> jsonResponse = new JsonResponse<>();
@@ -49,6 +53,31 @@ public class RptDataTableController {
             PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
             List<RptDataTableVO> acctOrgSysVOs = dataTableService.queryThemeTable(vo);
             PageInfo<RptDataTableVO> pages = new PageInfo(acctOrgSysVOs);
+            jsonResponse.setRspBody(pages);
+        } catch (Exception e) {
+            logger.error(e.getMessage() , e);
+            e.printStackTrace();
+            jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+            return jsonResponse;
+        }
+        return jsonResponse;
+    }*/
+
+
+    /**
+     * @param:
+     * @return:
+     * @description:  查看主题表
+     * @author: lirunze
+     * @Date: 2018/11/2
+     */
+    @RequestMapping(value = "/dataTable/themeTable" , method = RequestMethod.POST)
+    public JsonResponse<PageDTO<RptDataTableVO>> queryThemeTable(@RequestBody JsonRequest<RptDataTableVO> jsonRequest){
+        JsonResponse<PageDTO<RptDataTableVO>> jsonResponse = new JsonResponse<>();
+        try {
+            logger.info("查看主题表 参数 = {}", JsonUtil.toJson(jsonRequest));
+            RptDataTableVO vo = jsonRequest.getReqBody();
+            PageDTO<RptDataTableVO> pages = dataTableService.queryForPage(vo);
             jsonResponse.setRspBody(pages);
         } catch (Exception e) {
             logger.error(e.getMessage() , e);
@@ -113,14 +142,65 @@ public class RptDataTableController {
      * @return
      */
     @RequestMapping(value = "/dataTable/queryAllTableForDataSource" , method = RequestMethod.POST)
-    public JsonResponse<PageInfo<RptDataTableVO>> queryAll(@RequestBody JsonRequest<RptDataTableVO> jsonRequest){
-        JsonResponse<PageInfo<RptDataTableVO>> jsonResponse = new JsonResponse<>();
+    public JsonResponse<PageDTO<RptDataTableVO>> queryAll(@RequestBody JsonRequest<RptDataTableVO> jsonRequest){
+        JsonResponse<PageDTO<RptDataTableVO>> jsonResponse = new JsonResponse<>();
         try {
             logger.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
             RptDataTableVO vo = jsonRequest.getReqBody();
-            List<RptDataTableVO> acctOrgSysVOs = dataTableService.queryAllByDataSourceName(vo);
-            PageInfo<RptDataTableVO> pages = new PageInfo(acctOrgSysVOs);
-            jsonResponse.setRspBody(pages);
+            List<RptDataTableVO> dataTableVOList = dataTableService.queryAllByDataSourceName(vo);
+
+            // 过滤条件
+            List<String> keyList = new ArrayList<String>();
+            if (StringUtil.isNotEmpty(vo.getTableCode())) {
+                keyList.add(vo.getTableCode());
+            }
+
+            if (StringUtil.isNotEmpty(vo.getComment())) {
+                keyList.add(vo.getComment());
+            }
+
+            List<RptDataTableVO> returnList = new ArrayList<RptDataTableVO>();
+            // 条件查询
+            for (RptDataTableVO tableVO : dataTableVOList) {
+                boolean b = true;
+
+                if(StringUtil.isNotEmpty(vo.getStatus())){
+                    if(!vo.getStatus().equals(tableVO.getStatus())){
+                        b = false;
+                    }
+                }
+
+                if (CollectionUtils.isNotEmpty(keyList)) {
+                    StringBuilder content = new StringBuilder();
+                    content.append(tableVO.getTableCode());
+                    content.append("|");
+                    content.append(tableVO.getComment());
+
+                    for(String key : keyList){
+                        if(!content.toString().contains(key)){
+                            b = false;
+                        }
+                    }
+                }
+
+                if(b){
+                    returnList.add(tableVO);
+                }
+            }
+
+            // 分页
+            PageDTO<RptDataTableVO> pageDTO = new PageDTO<RptDataTableVO>(vo.getPageNum(), vo.getPageSize());
+
+            int startRow = pageDTO.getStartRow();
+            int endRow = pageDTO.getStartRow()+pageDTO.getPageSize();
+
+            if(endRow > returnList.size()){
+                endRow = returnList.size();
+            }
+            pageDTO.setResultData(returnList.subList(startRow, endRow));
+            pageDTO.setTotal(returnList.size());
+
+            jsonResponse.setRspBody(pageDTO);
         } catch (Exception e) {
             logger.error(e.getMessage() , e);
             e.printStackTrace();

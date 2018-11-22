@@ -14,9 +14,11 @@ public class ConnPoolType {
 
     public static String TYPE_NAME_HIKARI = "hikari";
     public static String TYPE_NAME_BONECP = "BoneCP";
+    public static String TYPE_NAME_DRUID = "druid";
 
     public static ConnPoolType CONN_POOL_TYPE_HIKARI = new ConnPoolType(TYPE_NAME_HIKARI);
     public static ConnPoolType CONN_POOL_TYPE_BONECP = new ConnPoolType(TYPE_NAME_BONECP);
+    public static ConnPoolType CONN_POOL_TYPE_DRUID = new ConnPoolType(TYPE_NAME_DRUID);
 
     private String name;
 
@@ -24,6 +26,10 @@ public class ConnPoolType {
         name = n.toLowerCase();
 
         typeMap.put(name.toLowerCase(), this);
+    }
+
+    public static Map<String, ConnPoolType> getTypeMap(){
+        return typeMap;
     }
 
     public static ConnPoolType getConnPoolType(String name) {

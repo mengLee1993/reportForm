@@ -45,7 +45,7 @@
 </head>
 <body id="outerBody" class="tradebase">
 	<div class="tradebasebox">
-		<div class="tradebase-top clearfix effectBox" effectType="1">
+		<div class="tradebase-top clearfix effectBox" effectType="1" style="position: fixed;z-index: 99999999;">
 			<div class="tradebase-toplogo leftW">
 				<div class="tradebase-toplogo__logo">
 					<img src="../../../reportForm/report-home/images/logo.png" alt="">
@@ -83,7 +83,7 @@
 			</span>
 		</div>
 		<div class="tradebase-btm effectBox" effectType="2">
-			<div class="tradebase-side leftW"  id="bodyLeft">
+			<div class="tradebase-side leftW"  id="bodyLeft"  style="padding-top: 64px;">
 				<!--<div class="tradebase-side-all">
 					<i class="tradebase-side-all__btn"></i>
 				</div>-->
@@ -267,7 +267,7 @@
             <div class="datareport-coltit">
                 <h1 class="datareport-coltit__tit">数据表资源</h1><div class="btn_kind_1 fr" id="js-save">保存</div>
             </div>
-            <div class="datareport-colmain">
+            <div class="datareport-colmain" style="height: 600px;">
                 <table class="datareport-treeListTable" t="datasourceName" c="rptDataTables" jsonId="tableId"  id="treeList1" treeType="treeList2" templateId="templateTreeRow" treeCell="treeCell" comtype="">
                     <tr class="datareport-treeListTable-tr" id="templateTreeRow" style="display:none;cursor:pointer;">
                         <td class="datareport-treeListTable-tr__item">
@@ -278,7 +278,7 @@
                                     <input type="checkbox" class="datareport-treeListTable-tr__input">
                                 </span>
                                 <i class="colmain_icon03"></i>
-                                <span class="datareport-treeListTable-tr__text" id="datasourceName"></span>--<span id="datasourceChineseName"></span>
+                                <span class="datareport-treeListTable-tr__text" id="datasourceName"></span>[<span id="datasourceChineseName"></span>]
                             </div>
                         </td>
                     </tr>
