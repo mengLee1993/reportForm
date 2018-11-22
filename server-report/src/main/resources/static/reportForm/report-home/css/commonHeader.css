@@ -721,7 +721,7 @@ body { font-size: 12px; font-family: "Microsoft Yahei"; color: #666; }
 边框
 ************************************************************************************/
 /*按钮*/
-body, html { width: 100%; height: 100%; overflow-x:hidden; }
+body, html { width: 100%; height: 100%; overflow-x: hidden; }
 
 .tradebasebox { width: 100%; height: 100%; }
 

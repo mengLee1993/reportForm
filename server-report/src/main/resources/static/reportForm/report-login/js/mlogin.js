@@ -210,7 +210,7 @@ function submitCallBack(data){
             setCookie("limitCode",escape(JSON.stringify(jsData.rspBody.permissions)));
         }
         //登陆人姓名
-        setCookie("name",escape(jsData.rspBody.name));
+        setCookie("reportName",escape(jsData.rspBody.name));
         /**************权限新增代码结束******************/
 
 
