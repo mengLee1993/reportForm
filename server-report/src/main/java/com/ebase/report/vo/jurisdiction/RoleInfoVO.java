@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class RoleInfoVO {
 
+    private int startRow;
+
+
     private Long roleId;            //角色ID
 
     private Long appId;             //应用标识
@@ -72,6 +75,14 @@ public class RoleInfoVO {
     private Long sysId;
 
     private Long copyId;
+
+    public int getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(int startRow) {
+        this.startRow = startRow;
+    }
 
     private Long[] roleIds;
 

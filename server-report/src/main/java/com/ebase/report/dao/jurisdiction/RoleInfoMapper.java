@@ -59,7 +59,10 @@ public interface RoleInfoMapper {
     RoleInfo selectInitializationRole(RoleInfo roleInfo);
 
     //分页+查询
-    List<RoleInfo> queryForList(RoleInfoVO vo);
+    List<RoleInfo> queryForList(RoleInfo vo);
 
     RoleInfo selectByAcctId(Long acctId);
+
+    //数据总条数查询
+    Integer queryForCount(RoleInfo roleInfo);
 }

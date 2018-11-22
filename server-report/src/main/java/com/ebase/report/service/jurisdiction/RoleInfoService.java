@@ -1,5 +1,6 @@
 package com.ebase.report.service.jurisdiction;
 
+import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.model.jurisdiction.RoleInfo;
 import com.ebase.report.vo.jurisdiction.RoleInfoVO;
@@ -35,7 +36,7 @@ public interface RoleInfoService {
 
     String verQuoteRoleIds(RoleInfoVO jsonRequest);
 
-    List<RoleInfoVO> queryForList(RoleInfoVO vo);
+    PageDTO<RoleInfo> queryForList(RoleInfo roleInfo);
 
     RoleInfo getRoleById(Long x);
 }

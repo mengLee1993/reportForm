@@ -7,6 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 public class RoleInfo {
+
+    private int pageNum = 1;
+
+    private int pageSize = 2;
+
+    private int startRow;
+
     private Long roleId;            //角色ID。
 
     private Long appId;             //应用标识
@@ -67,7 +74,7 @@ public class RoleInfo {
 
     private String parentApplicationName;
 
-    private String  permissions;//zhaotairan
+    private String permissions;//zhaotairan
 
     private String orAcct;      //角色与账户关联状态
 
@@ -80,6 +87,31 @@ public class RoleInfo {
     private Byte relaStatus;
 
     private Long copyId;
+
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(int startRow) {
+        this.startRow = startRow;
+    }
 
     private Long[] roleIds;
 
