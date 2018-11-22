@@ -496,6 +496,7 @@ function clsRptCtrl$initLayout()
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#fieldNameEdit").hide();
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#subtotalBox").hide();
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
+                //初始化过滤区 和  小计  和check
                 $(".selDimensionContent *[id=cloneRow]")[i].jsonData.searchTrue = false;
                 $(".selDimensionContent *[id=cloneRow]")[i].jsonData.subTotal = false;
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#searchSet").removeClass("activeOpe");
@@ -503,6 +504,16 @@ function clsRptCtrl$initLayout()
                 for(var nI = 0; nI < document.body.jsLee.jsonAll.reportDynamicParam.filter.length; nI++ ){
                     if(document.body.jsLee.jsonAll.reportDynamicParam.filter[nI].code == $(".selDimensionContent *[id=cloneRow]")[i].jsonData.fieldCode){
                         document.body.jsLee.jsonAll.reportDynamicParam.filter.splice(nI,1);
+                    }
+                }
+                if($(".selDimensionContent *[id=cloneRow]")[i].jsonData.fieldName == "Measures"){//指标
+                    for(var mI = 0; mI < $(".selDimensionContent *[id=cloneRow]")[i].jsonData.rptMeasures.length; mI++ ){
+                        $(".selDimensionContent *[id=cloneRow]")[i].jsonData.rptMeasures[mI].isChecked = 1;
+                        //$(".selDimensionContent *[id=cloneRow]")[i].jsonData.rptDataDicts[mI].isChecked = 1;
+                    }
+                }else{//维度
+                    for(var mI = 0; mI < $(".selDimensionContent *[id=cloneRow]")[i].jsonData.rptDataDicts.length; mI++ ){
+                        $(".selDimensionContent *[id=cloneRow]")[i].jsonData.rptDataDicts[mI].isChecked = 1;
                     }
                 }
             }
