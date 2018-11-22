@@ -70,7 +70,9 @@ public class RptDataTableServiceImpl implements RptDataTableService {
                 //设置初始化指标或者是维度
                 String fieldType = field.getFieldType();
                 DBFieldTypeEnum dbFieldTypeEnum = DBFieldTypeEnum.getByName(fieldType);
-                field.setDimensionIndex(dbFieldTypeEnum.getDemandType());
+                if(dbFieldTypeEnum != null){
+                    field.setDimensionIndex(dbFieldTypeEnum.getDemandType());
+                }
             }
             i = rptDataFieldMapper.insertBatch(fields);
             sR.setRetContent(i);
@@ -124,12 +126,16 @@ public class RptDataTableServiceImpl implements RptDataTableService {
     @Override
     public List<RptDataTableVO> queryAllByDataSourceName(RptDataTableVO vo) {
         List<RptDataTable> list = reportHandler.queryAllTables(vo.getDatasourceName());
-        List<RptDataTableVO> themsList = this.selectAll(vo);
+
+        RptDataTableVO queryVo = new RptDataTableVO();
+        queryVo.setDatasourceId(vo.getDatasourceId());
+        List<RptDataTableVO> themsList = this.selectAll(queryVo);
 //        RptDatasource rptDatasource = rptDatasourceMapper.selectByPrimaryKey(vo.getDatasourceId());
         List<RptDataTableVO> returnList = BeanCopyUtil.copyList(list, RptDataTableVO.class);
         for (RptDataTableVO table : returnList) {
             table.setDatasourceChineseName(vo.getDatasourceChineseName());
             table.setDatasourceName(vo.getDatasourceName());
+            table.setStatus("0");
             for (RptDataTableVO tableVO : themsList) {
                 if (table.getTableCode().equals(tableVO.getTableCode())) {
                     table.setStatus("1");//已添加

@@ -8,6 +8,7 @@ import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.core.utils.ReportExportUtil;
 import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.core.utils.excel.ExportExcelUtils;
+import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
@@ -101,6 +102,8 @@ public class ReportAccessorMySql extends AbstractAccessor {
     }
 
 
+
+
     /**
      * 转换sql
      * @param dbTypeEnumByName
@@ -126,13 +129,6 @@ public class ReportAccessorMySql extends AbstractAccessor {
 
             }
         }
-
-//        if(boo){
-//            builderGroup = new StringBuilder("");
-//        }else{
-//            String substring = builderGroup.substring(0, builderGroup.lastIndexOf(","));
-//            builderGroup = new StringBuilder(substring);
-//        }
     }
 
     @Override
@@ -169,9 +165,6 @@ public class ReportAccessorMySql extends AbstractAccessor {
 
         return fieldList;
     }
-
-    // bigint，binary，bit，blob，bool，boolean，char，date，datetime，decimal，double，enum，float，int，longblob，longtext，mediumblob，mediumint
-        //  mediumtext，numeric，real，set，smallint，text，time，timestamp，tinyblob，tinyint，tinytext，varbinary，varchar，year
 
 
     /**
@@ -272,26 +265,6 @@ public class ReportAccessorMySql extends AbstractAccessor {
                 builderWhe.append(s);
             }else{
                 //度量值
-
-//                List<Dimension> dimensions = x.getMeasures();
-//                for (Dimension y : dimensions) {//函数的类型
-//                    MeasureTypeEnum measureEnum = y.getMeasureEnum();
-//
-//                    if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
-//
-//                        builderSelect.append( y.getCode() + " as '" + y.getName() + "',");
-//
-//                        //度量值不需要分组的
-//                    } else {
-//                        //自定义的表达式  变量都用Field 分割
-//
-//                        List<CustomIndex> customIndexTmp = y.getCustomIndexTmp();
-//                        customIndexTmp.forEach(z -> {
-//                            builderSelect.append(z.getCode() + " as '" + z.getName() + "',");
-//                        });
-//
-//                    }
-//                }
             }
 
         });
@@ -299,23 +272,7 @@ public class ReportAccessorMySql extends AbstractAccessor {
 
     @Override
     public List<File> queryFromDetail(Integer count, String sql, Connection conn)  {
-        List<File> files = new ArrayList<>();
-
-        //看数据量是否过大
-        if(count < LENGTH){
-            generateTmpMap(conn, files, sql);
-        }else{
-            int size = count / LENGTH;
-            size = count % LENGTH == 0 ? size - 1 : size;
-            for(int i = 0; i <= size ; i ++){
-                String s = LIMIT + (i * LENGTH) + "," + LENGTH;
-
-                String sqlDetail = sql + s;
-                generateTmpMap(conn, files, sqlDetail);
-            }
-        }
-
-        return files;
+        return super.queryFromDetail(count,sql,conn);
     }
 
 
@@ -327,54 +284,7 @@ public class ReportAccessorMySql extends AbstractAccessor {
      * @return
      */
     public String toWhereSqlFtiler(ReportDatasource reportDatasource){
-        String dbTypeEnum = reportDatasource.getDatabaseType();
-        List<FilterArea> filter = reportDatasource.getReportDynamicParam().getFilter();
-        String sqlFtiler = "";
-
-        StringBuilder builder = new StringBuilder();
-        //如果是时间类型 可能有范围
-        filter.forEach(x -> {
-
-            //是时间
-            List<FilterAreaValue> tmp = x.getTmp();
-            tmp.stream().filter(z -> z.getIsChecked() != null && z.getIsChecked() == 1).forEach(y -> {
-
-                Map<FilterTypeEnum, String> fieldValue = y.getFieldVal();
-                fieldValue.keySet().stream().filter(m -> StringUtil.isNotEmpty(fieldValue.get(m))).forEach(f -> {
-                    String value = fieldValue.get(f);
-                    if(FilterTypeEnum.isScope(f)){
-                        builder.append(" and " + x.getCode() + " " + f.getName() + " '" + value + "' ");
-                    }else if(FilterTypeEnum.RG.equals(f)){
-                        builder.append(" and " + x.getCode() + " " + f.getName() + " '%" + value + "%' ");
-                    }else{
-                        String whw = "";
-                        if(f.equals(FilterTypeEnum.EQ)){
-                            whw = "in";
-                        }else{
-                            whw = "not in";
-                        }
-
-                        StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.append(" and " + x.getCode() + " "+ whw + " (");
-                        for (String s : value.split("##")) {
-                            stringBuilder.append(" '" + s + "',");
-                        }
-                        String s = stringBuilder.substring(0,stringBuilder.lastIndexOf(","));
-                        builder.append(s);
-                        builder.append(") ");
-                    }
-                });
-            });
-//
-
-
-        });
-
-        sqlFtiler = builder.toString();
-
-
-
-        return sqlFtiler;
+        return super.toWhereSqlFtiler(reportDatasource);
     }
 
     /**
@@ -383,27 +293,7 @@ public class ReportAccessorMySql extends AbstractAccessor {
      * @return
      */
     public String toSelectMeasures(ReportDatasource reportDatasource){
-        String dbTypeEnum = reportDatasource.getDatabaseType();
-        Set<ReportMeasure> measures = reportDatasource.getReportDynamicParam().getMeasures();
-
-        String selectSql = "";
-
-        if(CollectionUtils.isNotEmpty(measures)){
-            StringBuilder builder = new StringBuilder();
-
-            measures.forEach(x -> {
-                MeasureTypeEnum measureEnum = x.getMeasureType();
-
-                if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
-                    //系统级 都是系统级的
-                    String measureType = measureEnum.getMeasureType();
-                    builder.append(measureType + "(" + x.getFieldCode() + ") as '" + x.getKey() + "',");
-                }
-
-            });
-            selectSql = builder.substring(0,builder.lastIndexOf(","));
-        }
-        return selectSql;
+        return super.toSelectMeasures(reportDatasource);
     }
 
     /**
@@ -429,14 +319,6 @@ public class ReportAccessorMySql extends AbstractAccessor {
                     String measureType = measureEnum.getMeasureType();
                     builder.append( x.getFieldCode() + " as '" + x.getFieldName() + "',");
                 }
-//                else{
-//                    //自定义
-//                    List<ReportMeasure> customIndexTmp = x.getCustomIndexTmp();
-//                    customIndexTmp.forEach(z -> {
-//                        builder.append(z.getFieldCode() + " as '" + z.getKey() + "',");
-//                    });
-//                }
-
             });
             selectSql = builder.substring(0,builder.lastIndexOf(","));
         }

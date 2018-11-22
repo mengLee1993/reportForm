@@ -1,5 +1,10 @@
 package com.ebase.report.controller.jurisdiction;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.ebase.report.core.HTTPUtil;
+import com.ebase.report.core.TokenUtil;
 import com.ebase.report.core.json.JsonRequest;
 import com.ebase.report.core.json.JsonResponse;
 import com.ebase.report.core.session.AcctLogin;
@@ -11,9 +16,11 @@ import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
 import com.ebase.report.service.jurisdiction.AcctService;
 import com.ebase.report.service.jurisdiction.FunctionManageService;
 import com.ebase.report.vo.jurisdiction.FunctionManageVO;
+import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,12 +44,18 @@ public class AcctController {
     @Autowired
     private AcctService acctService;
 
+    @Value("${juri.type}")
+    private String type;
+
+    @Value("${juri.auth.ip}")
+    private String authIp;
+
     @Autowired
     private FunctionManageService functionManageService;
 
 //    @Autowired
 //    private CacheService cacheService;
-    
+
 //    /**
 //     * 根据当前用户查询出，当前用户的全部功能
 //     * @return
@@ -108,35 +122,80 @@ public class AcctController {
         JsonResponse<AcctSession> jsonResponse = new JsonResponse();
         try{
 
-            //用户注册，查出用户 并 生成key 放到 cache 中
-            ServiceResponse<AcctSession> response = acctService.userLogin(jsonRequest.getReqBody());
+            if(type.equals("core")){
+                //用户注册，查出用户 并 生成key 放到 cache 中
+                ServiceResponse<AcctSession> response = acctService.userLogin(jsonRequest.getReqBody());
 
-            //如果正常查出对象
-            if(ServiceResponse.SUCCESS_CODE.equals(response.getRetCode())){
+                //如果正常查出对象
+                if(ServiceResponse.SUCCESS_CODE.equals(response.getRetCode())){
 
-                //把用户信息放到session中
-                AcctSession retContent = response.getRetContent();
-                retContent.setOrgId(response.getRetContent().getoInfoId());
-                FunctionManageVO functionManageVO=new FunctionManageVO();
-                functionManageVO.setAcctId(retContent.getAcctId());
-                List<FunctionManageVO> list = functionManageService.ListFunctionCode(functionManageVO);
-                List<String> permissions = new ArrayList<>();
-                list.forEach(per -> permissions.add(per.getFunctionCode()));
-                retContent.setPermissions(permissions);
+                    //把用户信息放到session中
+                    AcctSession retContent = response.getRetContent();
+                    retContent.setOrgId(response.getRetContent().getoInfoId());
+                    FunctionManageVO functionManageVO=new FunctionManageVO();
+                    functionManageVO.setAcctId(retContent.getAcctId());
+                    List<FunctionManageVO> list = functionManageService.ListFunctionCode(functionManageVO);
+                    List<String> permissions = new ArrayList<>();
+                    list.forEach(per -> permissions.add(per.getFunctionCode()));
+                    retContent.setPermissions(permissions);
 
-                HttpSession session = request.getSession();
+                    HttpSession session = request.getSession();
 
-                String key = CookieUtil.getSessionId();
+                    String key = CookieUtil.getSessionId();
 
-                session.setAttribute(Md5Util.encrpt(key),retContent);
-                //并初始化 threadlocal
-                AssertContext.init(retContent);
+                    session.setAttribute(Md5Util.encrpt(key),retContent);
 
-                jsonResponse.setRspBody(retContent);
-            }else{
-                jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
-                jsonResponse.setRetDesc(response.getRetMessage());
+                    //并初始化 threadlocal
+                    AssertContext.init(retContent);
+
+                    jsonResponse.setRspBody(retContent);
+                }else{
+                    jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+                    jsonResponse.setRetDesc(response.getRetMessage());
+                }
+            }else if (type.equals("report")){
+
+                String url="http://"+authIp+"/auth/ac/login/dologin.action?username="+jsonRequest.getReqBody().getAcctId()+"&password="+jsonRequest.getReqBody().getPassword();
+                //String url="http://192.168.1.100:7070/auth/ac/login/dologin.action?username=liq0416&password=admin123";
+                HashMap map=new HashMap();
+                JSONObject json=JSON.parseObject(HTTPUtil.postParams(url,null,map));
+                String success=JSON.parseObject(json.getString("meta")).getString("success");
+                if(success.equals("true") || success=="true"){
+                    String token=JSON.parseObject(json.getString("data")).getString("token");
+                    Claims claims2 = TokenUtil.parseTokenClaims(token);
+                    AcctSession acctSession=new AcctSession();
+                    JSONObject json2=JSON.parseObject(claims2.getSubject());
+                    acctSession.setOrgId(json2.getString("orgId"));
+                    acctSession.setAcctTitle(json2.getString("loginId"));
+                    acctSession.setAcctType(Long.parseLong(json2.getString("userType")));
+                    acctSession.setAcctId(Long.parseLong(json2.getString("userSid")));
+
+                    //获取用户资源
+                    String fun="http://"+authIp+"/auth/ac/ac-resource/getUserAssignedResourceTree.action?loginId="+jsonRequest.getReqBody().getAcctId()+"&appCode=ZDYBB";
+                    JSONObject function=JSON.parseObject(HTTPUtil.postParams(fun,token,map));
+                    String funsuccess=JSON.parseObject(function.getString("meta")).getString("success");
+                    List<String> permissions = new ArrayList<>();
+                    if(funsuccess.equals("true") || funsuccess=="true"){
+                        JSONArray jsonObject1= function.getJSONArray("items");
+                        for(int i=0;i<jsonObject1.size();i++){
+                            permissions.add(JSON.parseObject(jsonObject1.getString(i)).getString("resId"));
+                            if(JSON.parseObject(jsonObject1.getString(i)).getString("items")!=null){
+                                permissions=permission(JSON.parseObject(jsonObject1.getString(i)),permissions);
+                            }
+                        }
+                    }
+                    acctSession.setPermissions(permissions);
+                    HttpSession session = request.getSession();
+                    String key = CookieUtil.getSessionId();
+                    session.setAttribute(Md5Util.encrpt(key),json);
+                    AssertContext.init(acctSession);
+                    jsonResponse.setRspBody(acctSession);
+                }else{
+                    jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+                    jsonResponse.setRetDesc("登录失败");
+                }
             }
+
         }catch (Exception e){
             LOG.error(e.getMessage());
             e.printStackTrace();
@@ -145,6 +204,20 @@ public class AcctController {
         }
 
         return jsonResponse;
+    }
+
+
+    private List<String> permission(JSONObject jsonObject,List<String> permissions){
+        JSONArray jsonObject1= jsonObject.getJSONArray("items");
+        if(jsonObject1!=null){
+            for(int i=0;i<jsonObject1.size();i++){
+                permissions.add(JSON.parseObject(jsonObject1.getString(i)).getString("resId"));
+                if(JSON.parseObject(jsonObject1.getString(i)).getString("items")!=null){
+                    permissions=permission(JSON.parseObject(jsonObject1.getString(i)),permissions);
+                }
+            }
+        }
+        return permissions;
     }
 
 //    /**

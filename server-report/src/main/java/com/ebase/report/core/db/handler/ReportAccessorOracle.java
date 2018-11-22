@@ -66,20 +66,6 @@ public class ReportAccessorOracle extends AbstractAccessor {
         return fieldList;
     }
 
-//    @Override
-//    public String typesConvert(String type) {
-//        if (type.startsWith("varchar") || type.startsWith("char")) {
-//            return "String";
-//        } else if (type.startsWith("long")) {
-//            return "Integer";
-//        } else if (type.startsWith("number")) {
-//            return "Double";
-//        } else if (type.startsWith("date")) {
-//            return "Date";
-//        }
-//        return type;
-//    }
-
 
 
     /**
@@ -120,7 +106,6 @@ public class ReportAccessorOracle extends AbstractAccessor {
             //列维度转换
             conversionFoSql(dbTypeEnumByName, column, builderSelect, builderWhe, builderGroup);
 
-//            StringBuilder buil = new StringBuilder(builderSelect.substring(0,builderSelect.toString().lastIndexOf(",")));
             builderSelect.append(selectSql);
             builderSelect.append(" from " + reportTable.getTableCode() );
             builderSelect.append(builderWhe).append(filterSql).append(builderGroup.substring(0,builderGroup.lastIndexOf(",")));
@@ -156,32 +141,6 @@ public class ReportAccessorOracle extends AbstractAccessor {
                 builderWhe.append(sql);
             }else{
                 //度量值
-
-                //随机生成一个fid
-//                    x.setFieldId("Z" + new Date().getTime());
-
-//                List<Dimension> dimensions = x.getMeasures();
-//                for (Dimension y : dimensions) {//函数的类型
-//                    MeasureTypeEnum measureEnum = y.getMeasureEnum();
-//
-//                    if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
-//                        //直接是函数
-//                        String measureType = measureEnum.getMeasureType();
-//
-//                        builderSelect.append(measureType + "(" + y.getCode() + ") as " + x.getKey() + ",");
-//
-//                        //度量值不需要分组的
-//                    } else {
-//                        //自定义的表达式  变量都用Field 分割
-//                        String expressionMetric = y.getExpressionMetric();  //???? 给永明哥
-//
-//                        List<CustomIndex> customIndexTmp = y.getCustomIndexTmp();
-//                        customIndexTmp.forEach(z -> {
-//                            builderSelect.append(z.getCode() + " as " + x.getKey() + ",");
-//                        });
-//
-//                    }
-//                }
             }
 
         });
@@ -279,25 +238,6 @@ public class ReportAccessorOracle extends AbstractAccessor {
             }else{
                 //度量值
 
-//                List<Dimension> dimensions = x.getMeasures();
-//                for (Dimension y : dimensions) {//函数的类型
-//                    MeasureTypeEnum measureEnum = y.getMeasureEnum();
-//
-//                    if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
-//
-//                        builderSelect.append( y.getCode() + " as " + y.getName() + ",");
-//
-//                        //度量值不需要分组的
-//                    } else {
-//                        //自定义的表达式  变量都用Field 分割
-//
-//                        List<CustomIndex> customIndexTmp = y.getCustomIndexTmp();
-//                        customIndexTmp.forEach(z -> {
-//                            builderSelect.append(z.getCode() + " as " + z.getName() + ",");
-//                        });
-//
-//                    }
-//                }
             }
 
         });
@@ -414,13 +354,6 @@ public class ReportAccessorOracle extends AbstractAccessor {
                     String measureType = measureEnum.getMeasureType();
                     builder.append(measureType + "(" + x.getFieldCode() + ") as " + x.getKey() + ",");
                 }
-//                else{
-//                    //自定义
-//                    List<ReportMeasure> customIndexTmp = x.getCustomIndexTmp();
-//                    customIndexTmp.forEach(z -> {
-//                        builder.append(z.getFieldCode() + " as " + z.getKey() + ",");
-//                    });
-//                }
 
             });
             selectSql = builder.substring(0,builder.lastIndexOf(","));
@@ -452,13 +385,7 @@ public class ReportAccessorOracle extends AbstractAccessor {
                     String measureType = measureEnum.getMeasureType();
                     builder.append( x.getFieldCode() + " as " + x.getFieldName() + ",");
                 }
-//                else{
-//                    //自定义
-//                    List<ReportMeasure> customIndexTmp = x.getCustomIndexTmp();
-//                    customIndexTmp.forEach(z -> {
-//                        builder.append(z.getFieldCode() + " as " + z.getKey()+ ",");
-//                    });
-//                }
+//
 
             });
             selectSql = builder.substring(0,builder.lastIndexOf(","));

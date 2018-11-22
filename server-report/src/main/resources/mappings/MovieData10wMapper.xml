@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebase.report.dao.MovieData10wMapper">
+    <resultMap id="BaseResultMap" type="com.ebase.report.model.MovieData10w">
+        <id column="pri_id" jdbcType="BIGINT" property="priId" />
+        <result column="movie_code" jdbcType="VARCHAR" property="movieCode" />
+        <result column="movie_title" jdbcType="VARCHAR" property="movieTitle" />
+        <result column="movie_area_id" jdbcType="INTEGER" property="movieAreaId" />
+        <result column="movie_area" jdbcType="VARCHAR" property="movieArea" />
+        <result column="movie_date" jdbcType="INTEGER" property="movieDate" />
+        <result column="movie_type_id" jdbcType="INTEGER" property="movieTypeId" />
+        <result column="movie_type" jdbcType="VARCHAR" property="movieType" />
+        <result column="movie_emotion_id" jdbcType="INTEGER" property="movieEmotionId" />
+        <result column="movie_emotion" jdbcType="VARCHAR" property="movieEmotion" />
+        <result column="movie_age_id" jdbcType="INTEGER" property="movieAgeId" />
+        <result column="movie_age" jdbcType="VARCHAR" property="movieAge" />
+        <result column="movie_score" jdbcType="DECIMAL" property="movieScore" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        pri_id, movie_code, movie_title, movie_area_id, movie_area, movie_date, movie_type_id, 
+        movie_type, movie_emotion_id, movie_emotion, movie_age_id, movie_age, movie_score
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from movie_data_10w
+        where pri_id = #{priId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from movie_data_10w
+        where pri_id = #{priId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.ebase.report.model.MovieData10w">
+        insert into movie_data_10w (pri_id, movie_code, movie_title, 
+            movie_area_id, movie_area, movie_date, 
+            movie_type_id, movie_type, movie_emotion_id, 
+            movie_emotion, movie_age_id, movie_age, 
+            movie_score)
+        values (#{priId,jdbcType=BIGINT}, #{movieCode,jdbcType=VARCHAR}, #{movieTitle,jdbcType=VARCHAR}, 
+            #{movieAreaId,jdbcType=INTEGER}, #{movieArea,jdbcType=VARCHAR}, #{movieDate,jdbcType=INTEGER}, 
+            #{movieTypeId,jdbcType=INTEGER}, #{movieType,jdbcType=VARCHAR}, #{movieEmotionId,jdbcType=INTEGER}, 
+            #{movieEmotion,jdbcType=VARCHAR}, #{movieAgeId,jdbcType=INTEGER}, #{movieAge,jdbcType=VARCHAR}, 
+            #{movieScore,jdbcType=DECIMAL})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ebase.report.model.MovieData10w">
+        insert into movie_data_10w
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="priId != null">
+                pri_id,
+            </if>
+            <if test="movieCode != null">
+                movie_code,
+            </if>
+            <if test="movieTitle != null">
+                movie_title,
+            </if>
+            <if test="movieAreaId != null">
+                movie_area_id,
+            </if>
+            <if test="movieArea != null">
+                movie_area,
+            </if>
+            <if test="movieDate != null">
+                movie_date,
+            </if>
+            <if test="movieTypeId != null">
+                movie_type_id,
+            </if>
+            <if test="movieType != null">
+                movie_type,
+            </if>
+            <if test="movieEmotionId != null">
+                movie_emotion_id,
+            </if>
+            <if test="movieEmotion != null">
+                movie_emotion,
+            </if>
+            <if test="movieAgeId != null">
+                movie_age_id,
+            </if>
+            <if test="movieAge != null">
+                movie_age,
+            </if>
+            <if test="movieScore != null">
+                movie_score,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="priId != null">
+                #{priId,jdbcType=BIGINT},
+            </if>
+            <if test="movieCode != null">
+                #{movieCode,jdbcType=VARCHAR},
+            </if>
+            <if test="movieTitle != null">
+                #{movieTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="movieAreaId != null">
+                #{movieAreaId,jdbcType=INTEGER},
+            </if>
+            <if test="movieArea != null">
+                #{movieArea,jdbcType=VARCHAR},
+            </if>
+            <if test="movieDate != null">
+                #{movieDate,jdbcType=INTEGER},
+            </if>
+            <if test="movieTypeId != null">
+                #{movieTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="movieType != null">
+                #{movieType,jdbcType=VARCHAR},
+            </if>
+            <if test="movieEmotionId != null">
+                #{movieEmotionId,jdbcType=INTEGER},
+            </if>
+            <if test="movieEmotion != null">
+                #{movieEmotion,jdbcType=VARCHAR},
+            </if>
+            <if test="movieAgeId != null">
+                #{movieAgeId,jdbcType=INTEGER},
+            </if>
+            <if test="movieAge != null">
+                #{movieAge,jdbcType=VARCHAR},
+            </if>
+            <if test="movieScore != null">
+                #{movieScore,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ebase.report.model.MovieData10w">
+        update movie_data_10w
+        <set>
+            <if test="movieCode != null">
+                movie_code = #{movieCode,jdbcType=VARCHAR},
+            </if>
+            <if test="movieTitle != null">
+                movie_title = #{movieTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="movieAreaId != null">
+                movie_area_id = #{movieAreaId,jdbcType=INTEGER},
+            </if>
+            <if test="movieArea != null">
+                movie_area = #{movieArea,jdbcType=VARCHAR},
+            </if>
+            <if test="movieDate != null">
+                movie_date = #{movieDate,jdbcType=INTEGER},
+            </if>
+            <if test="movieTypeId != null">
+                movie_type_id = #{movieTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="movieType != null">
+                movie_type = #{movieType,jdbcType=VARCHAR},
+            </if>
+            <if test="movieEmotionId != null">
+                movie_emotion_id = #{movieEmotionId,jdbcType=INTEGER},
+            </if>
+            <if test="movieEmotion != null">
+                movie_emotion = #{movieEmotion,jdbcType=VARCHAR},
+            </if>
+            <if test="movieAgeId != null">
+                movie_age_id = #{movieAgeId,jdbcType=INTEGER},
+            </if>
+            <if test="movieAge != null">
+                movie_age = #{movieAge,jdbcType=VARCHAR},
+            </if>
+            <if test="movieScore != null">
+                movie_score = #{movieScore,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where pri_id = #{priId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ebase.report.model.MovieData10w">
+        update movie_data_10w
+        set movie_code = #{movieCode,jdbcType=VARCHAR},
+            movie_title = #{movieTitle,jdbcType=VARCHAR},
+            movie_area_id = #{movieAreaId,jdbcType=INTEGER},
+            movie_area = #{movieArea,jdbcType=VARCHAR},
+            movie_date = #{movieDate,jdbcType=INTEGER},
+            movie_type_id = #{movieTypeId,jdbcType=INTEGER},
+            movie_type = #{movieType,jdbcType=VARCHAR},
+            movie_emotion_id = #{movieEmotionId,jdbcType=INTEGER},
+            movie_emotion = #{movieEmotion,jdbcType=VARCHAR},
+            movie_age_id = #{movieAgeId,jdbcType=INTEGER},
+            movie_age = #{movieAge,jdbcType=VARCHAR},
+            movie_score = #{movieScore,jdbcType=DECIMAL}
+        where pri_id = #{priId,jdbcType=BIGINT}
+    </update>
+    <select id="select" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from movie_data_10w
+        <include refid="Base_Where_Column_List" />
+    </select>
+    <sql id="Base_Where_Column_List">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="priId != null">
+                and pri_id = #{priId,jdbcType=BIGINT}
+            </if>
+            <if test="movieCode != null">
+                and movie_code = #{movieCode,jdbcType=VARCHAR}
+            </if>
+            <if test="movieTitle != null">
+                and movie_title = #{movieTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="movieAreaId != null">
+                and movie_area_id = #{movieAreaId,jdbcType=INTEGER}
+            </if>
+            <if test="movieArea != null">
+                and movie_area = #{movieArea,jdbcType=VARCHAR}
+            </if>
+            <if test="movieDate != null">
+                and movie_date = #{movieDate,jdbcType=INTEGER}
+            </if>
+            <if test="movieTypeId != null">
+                and movie_type_id = #{movieTypeId,jdbcType=INTEGER}
+            </if>
+            <if test="movieType != null">
+                and movie_type = #{movieType,jdbcType=VARCHAR}
+            </if>
+            <if test="movieEmotionId != null">
+                and movie_emotion_id = #{movieEmotionId,jdbcType=INTEGER}
+            </if>
+            <if test="movieEmotion != null">
+                and movie_emotion = #{movieEmotion,jdbcType=VARCHAR}
+            </if>
+            <if test="movieAgeId != null">
+                and movie_age_id = #{movieAgeId,jdbcType=INTEGER}
+            </if>
+            <if test="movieAge != null">
+                and movie_age = #{movieAge,jdbcType=VARCHAR}
+            </if>
+            <if test="movieScore != null">
+                and movie_score = #{movieScore,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </sql>
+    <select id="selectALl" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from movie_data_10w
+        limit 2000
+    </select>
+</mapper>

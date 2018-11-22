@@ -24,7 +24,7 @@ interface ReportAccessor {
 
     public String getReportSql(ReportDatasource reportDatasource);
 
-    public ResultSet query(String sql, Connection conn, CubeTree cubeTree) throws DbException;
+    public Long query(String sql, Connection conn, CubeTree cubeTree) throws DbException;
 
     public CubeTree rsToCubeTree(ResultSet rs, CubeTree cubeTree) throws DbException;
 

@@ -2,6 +2,7 @@ package com.ebase.report;
 
 import com.ebase.report.common.*;
 import com.ebase.report.core.db.DataDetailSQL;
+import com.ebase.report.core.db.handler.ReportAccessorDb2;
 import com.ebase.report.core.db.handler.ReportAccessorMySql;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.cube.Dimension;
@@ -188,7 +189,7 @@ public class MySqlTest {
 
         filter.add(filterArea);
 //        reportDynamicParam.setFilter(filter);
-        ReportAccessorMySql reportAccessorMySql = new ReportAccessorMySql();
+        ReportAccessorDb2 reportAccessorMySql = new ReportAccessorDb2();
         String reportSql = reportAccessorMySql.getReportSql(reportDatasource);
 
         DataDetailSQL reportFromDetailSql = reportAccessorMySql.getReportFromDetailSql(reportDatasource);
@@ -197,7 +198,7 @@ public class MySqlTest {
         String reportSql1 = reportAccessorMySql.getReportSql(reportDatasource);
         System.out.println(reportSql1);
 
-        System.out.println(Class.class.getResource("/").getPath());
+//        System.out.println(Class.class.getResource("/").getPath());
 
 
 //        demo();

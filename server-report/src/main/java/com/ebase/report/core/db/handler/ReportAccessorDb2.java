@@ -1,34 +1,29 @@
 package com.ebase.report.core.db.handler;
 
-import com.ebase.report.common.DemandType;
-import com.ebase.report.common.FilterTypeEnum;
-import com.ebase.report.common.MeasureTypeEnum;
-import com.ebase.report.common.SubjectTypeEnum;
+import com.ebase.report.common.*;
+import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataBaseUtil;
 import com.ebase.report.core.db.DataDetailSQL;
 import com.ebase.report.core.db.exception.DbException;
+import com.ebase.report.core.utils.ReportExportUtil;
 import com.ebase.report.core.utils.StringUtil;
+import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.model.RptDataField;
-import com.ebase.report.model.dynamic.FilterArea;
-import com.ebase.report.model.dynamic.FilterAreaValue;
-import com.ebase.report.model.dynamic.ReportDatasource;
-import com.ebase.report.model.dynamic.ReportDynamicParam;
-import com.ebase.report.model.dynamic.ReportMeasure;
-import com.ebase.report.model.dynamic.ReportTable;
+import com.ebase.report.model.RptDataTable;
+import com.ebase.report.model.dynamic.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.*;
+import java.util.*;
 
 /**
  * @Auther: <a mailto:xuyongming@ennew.cn>xuyongming</a>
@@ -41,7 +36,6 @@ public class ReportAccessorDb2 extends AbstractAccessor {
 
     /**
      * 生成my sql 实现
-     *
      * @param reportDatasource
      * @return
      */
@@ -67,16 +61,16 @@ public class ReportAccessorDb2 extends AbstractAccessor {
         //这个拼指标的sql 如果没有指标 就是
         String selectSql = toSelectMeasures(reportDatasource);
 
-        if (SubjectTypeEnum.DATATABLE.getCode().equals(subjectType)) {
+        if(SubjectTypeEnum.DATATABLE.getCode().equals(subjectType)){
             StringBuilder builderSelect = new StringBuilder(" select ");
 
             StringBuilder builderWhe = new StringBuilder(" where 1 = 1 ");
 
             //可能没有维度
             StringBuilder builderGroup = null;
-            if (dimension) { //有维度的
+            if(dimension){ //有维度的
                 builderGroup = new StringBuilder(" group by ");
-            } else {  //没有维度
+            }else{  //没有维度
                 builderGroup = new StringBuilder("");
             }
 
@@ -92,14 +86,14 @@ public class ReportAccessorDb2 extends AbstractAccessor {
             builderSelect.append(" from " + reportTable.getTableCode());
             //可能没有
             String group = "";
-            if (dimension) {
-                group = builderGroup.substring(0, builderGroup.lastIndexOf(","));
+            if(dimension){
+                group = builderGroup.substring(0,builderGroup.lastIndexOf(","));
             }
             builderSelect.append(builderWhe).append(filterSql).append(group);
 
             sql = builderSelect.toString();
 
-        } else if (SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)) {
+        }else if(SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)){
             //主题 （多张表）
 
         }
@@ -109,7 +103,7 @@ public class ReportAccessorDb2 extends AbstractAccessor {
 
     /**
      * 转换sql
-     *
+     * db2 的  select "movie_emotion" as "F2" from "movie_data_10w"
      * @param dbTypeEnumByName
      * @param line
      * @param builderSelect
@@ -118,28 +112,21 @@ public class ReportAccessorDb2 extends AbstractAccessor {
      */
     private void conversionFoSql(String dbTypeEnumByName, List<Dimension> line, StringBuilder builderSelect, StringBuilder builderWhe, StringBuilder builderGroup) {
 //        Boolean boo = true;
-        for (Dimension x : line) {
+        for(Dimension x:line){
             DemandType demandType = x.getDemandType();
 
-            if (DemandType.DIMENSION.equals(demandType)) {
+            if(DemandType.DIMENSION.equals(demandType)){
                 //维  度
                 String code = x.getFieldCode(); //name age as f124
-                builderSelect.append(code + " as '" + x.getKey() + "',");
-                builderGroup.append(code + " ,");
+                builderSelect.append( code + " as \"" + x.getKey() + "\",");
+                builderGroup.append( code + " ,");
                 String sql = x.toWHereSql(dbTypeEnumByName);
                 builderWhe.append(sql);
 //                boo = false;
-            } else {
+            }else{
 
             }
         }
-
-//        if(boo){
-//            builderGroup = new StringBuilder("");
-//        }else{
-//            String substring = builderGroup.substring(0, builderGroup.lastIndexOf(","));
-//            builderGroup = new StringBuilder(substring);
-//        }
     }
 
     @Override
@@ -150,7 +137,7 @@ public class ReportAccessorDb2 extends AbstractAccessor {
         ResultSet rs = null;
 
         try {
-            String sql = "show full fields from " + tableName;
+            String sql = "show full fields from "+tableName;
             //
             pstmt = conn.prepareStatement(sql);
 //            pstmt.setString(1, tableName);
@@ -178,10 +165,8 @@ public class ReportAccessorDb2 extends AbstractAccessor {
     }
 
 
-
     /**
      * 生成sql 没有group by 和 函数的
-     *
      * @param reportDatasource
      * @return
      */
@@ -205,7 +190,7 @@ public class ReportAccessorDb2 extends AbstractAccessor {
         String filterSql = toWhereSqlFtiler(reportDatasource);
 
         String selectSql = toSelectDetailMeasures(reportDatasource);
-        if (SubjectTypeEnum.DATATABLE.getCode().equals(subjectType)) {
+        if(SubjectTypeEnum.DATATABLE.getCode().equals(subjectType)){
             StringBuilder builderSelect = new StringBuilder(" select ");
 
             StringBuilder builderWhe = new StringBuilder(" where 1 = 1 ");
@@ -218,9 +203,9 @@ public class ReportAccessorDb2 extends AbstractAccessor {
             conversionDetailFoSql(dbTypeEnumByName, column, builderSelect, builderWhe);
 
             String select = null;
-            if (StringUtil.isEmpty(selectSql)) {
-                select = builderSelect.substring(0, builderSelect.lastIndexOf(","));
-            } else {
+            if(StringUtil.isEmpty(selectSql)){
+                select = builderSelect.substring(0,builderSelect.lastIndexOf(","));
+            }else{
                 select = builderSelect.append(selectSql).toString();
             }
 
@@ -228,6 +213,7 @@ public class ReportAccessorDb2 extends AbstractAccessor {
 
             StringBuilder builder = new StringBuilder(select);
             builder.append("  from " + reportTable.getTableCode());
+
             builder.append(builderWhe).append(filterSql);
 
             StringBuilder builderCount = new StringBuilder(" select COUNT(1) ");
@@ -237,7 +223,7 @@ public class ReportAccessorDb2 extends AbstractAccessor {
             dataDetailSQL.setSql(builder.toString());
             dataDetailSQL.setSqlCount(builderCount.toString());
 
-        } else if (SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)) {
+        }else if(SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)){
             //主题 （多张表）
 
         }
@@ -249,18 +235,16 @@ public class ReportAccessorDb2 extends AbstractAccessor {
     @Override
     public Integer queryCount(String sqlCount, Connection conn) {
 
-
-        return super.queryCount(sqlCount, conn);
+        return super.queryCount(sqlCount,conn);
     }
 
     @Override
     public Map<String, List<Object>> queryDateil(String sql, Connection conn, Map<String, List<Object>> tmpMap) {
-        return super.queryDateil(sql, conn, tmpMap);
+        return super.queryDateil(sql,conn,tmpMap);
     }
 
     /**
      * 详细sql 转换
-     *
      * @param dbTypeEnumByName
      * @param line
      * @param builderSelect
@@ -270,150 +254,47 @@ public class ReportAccessorDb2 extends AbstractAccessor {
         line.forEach(x -> {
             DemandType demandType = x.getDemandType();
 
-            if (DemandType.DIMENSION.equals(demandType)) {
+            if(DemandType.DIMENSION.equals(demandType)){
                 //维  度
                 String code = x.getFieldCode(); //name age as f124
-                builderSelect.append(code + " as '" + x.getFieldName() + "',");
+                builderSelect.append(code + " as \"" + x.getFieldName() + "\",");
                 String s = x.toWHereSql(dbTypeEnumByName);
                 builderWhe.append(s);
-            } else {
+            }else{
                 //度量值
-
-//                List<Dimension> dimensions = x.getMeasures();
-//                for (Dimension y : dimensions) {//函数的类型
-//                    MeasureTypeEnum measureEnum = y.getMeasureEnum();
-//
-//                    if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
-//
-//                        builderSelect.append( y.getCode() + " as '" + y.getName() + "',");
-//
-//                        //度量值不需要分组的
-//                    } else {
-//                        //自定义的表达式  变量都用Field 分割
-//
-//                        List<CustomIndex> customIndexTmp = y.getCustomIndexTmp();
-//                        customIndexTmp.forEach(z -> {
-//                            builderSelect.append(z.getCode() + " as '" + z.getName() + "',");
-//                        });
-//
-//                    }
-//                }
             }
 
         });
     }
 
     @Override
-    public List<File> queryFromDetail(Integer count, String sql, Connection conn) {
-        List<File> files = new ArrayList<>();
-
-        //看数据量是否过大
-        if (count < LENGTH) {
-            generateTmpMap(conn, files, sql);
-        } else {
-            int size = count / LENGTH;
-            size = count % LENGTH == 0 ? size - 1 : size;
-            for (int i = 0; i <= size; i++) {
-                String s = LIMIT + (i * LENGTH) + "," + LENGTH;
-
-                String sqlDetail = sql + s;
-                generateTmpMap(conn, files, sqlDetail);
-            }
-        }
-
-        return files;
+    public List<File> queryFromDetail(Integer count, String sql, Connection conn)  {
+       return super.queryFromDetail(count,sql,conn);
     }
+
+
 
 
     /**
      * 根据数据库类型 得sqlwhere条件过滤sql
-     *
      * @param reportDatasource
      * @return
      */
-    public String toWhereSqlFtiler(ReportDatasource reportDatasource) {
-        String dbTypeEnum = reportDatasource.getDatabaseType();
-        List<FilterArea> filter = reportDatasource.getReportDynamicParam().getFilter();
-        String sqlFtiler = "";
-
-        StringBuilder builder = new StringBuilder();
-        //如果是时间类型 可能有范围
-        filter.forEach(x -> {
-
-            //是时间
-            List<FilterAreaValue> tmp = x.getTmp();
-            tmp.stream().filter(z -> z.getIsChecked() != null && z.getIsChecked() == 1).forEach(y -> {
-
-                Map<FilterTypeEnum, String> fieldValue = y.getFieldVal();
-                fieldValue.keySet().stream().filter(m -> StringUtil.isNotEmpty(fieldValue.get(m))).forEach(f -> {
-                    String value = fieldValue.get(f);
-                    if (FilterTypeEnum.isScope(f)) {
-                        builder.append(" and " + x.getCode() + " " + f.getName() + " '" + value + "' ");
-                    } else if (FilterTypeEnum.RG.equals(f)) {
-                        builder.append(" and " + x.getCode() + " " + f.getName() + " '%" + value + "%' ");
-                    } else {
-                        String whw = "";
-                        if (f.equals(FilterTypeEnum.EQ)) {
-                            whw = "in";
-                        } else {
-                            whw = "not in";
-                        }
-
-                        StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.append(" and " + x.getCode() + " " + whw + " (");
-                        for (String s : value.split("##")) {
-                            stringBuilder.append(" '" + s + "',");
-                        }
-                        String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(","));
-                        builder.append(s);
-                        builder.append(") ");
-                    }
-                });
-            });
-//
-
-
-        });
-
-        sqlFtiler = builder.toString();
-
-
-        return sqlFtiler;
+    public String toWhereSqlFtiler(ReportDatasource reportDatasource){
+        return super.toWhereSqlFtiler(reportDatasource);
     }
 
     /**
      * 返回 select sql
-     *
      * @param reportDatasource
      * @return
      */
-    public String toSelectMeasures(ReportDatasource reportDatasource) {
-        String dbTypeEnum = reportDatasource.getDatabaseType();
-        Set<ReportMeasure> measures = reportDatasource.getReportDynamicParam().getMeasures();
-
-        String selectSql = "";
-
-        if (CollectionUtils.isNotEmpty(measures)) {
-            StringBuilder builder = new StringBuilder();
-
-            measures.forEach(x -> {
-                MeasureTypeEnum measureEnum = x.getMeasureType();
-
-                if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
-                    //系统级 都是系统级的
-                    String measureType = measureEnum.getMeasureType();
-                    builder.append(measureType + "(" + x.getFieldCode() + ") as '" + x.getKey() + "',");
-                }
-
-            });
-            selectSql = builder.substring(0, builder.lastIndexOf(","));
-        }
-        return selectSql;
+    public String toSelectMeasures(ReportDatasource reportDatasource){
+       return super.toSelectMeasures(reportDatasource);
     }
 
     /**
      * 返回详细select 数据
-     *
      * @param reportDatasource
      * @return
      */
@@ -424,7 +305,7 @@ public class ReportAccessorDb2 extends AbstractAccessor {
 
         String selectSql = "";
 
-        if (CollectionUtils.isNotEmpty(measures)) {
+        if(CollectionUtils.isNotEmpty(measures)){
             StringBuilder builder = new StringBuilder();
 
             measures.forEach(x -> {
@@ -433,22 +314,83 @@ public class ReportAccessorDb2 extends AbstractAccessor {
                 if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
                     //系统级
                     String measureType = measureEnum.getMeasureType();
-                    builder.append(x.getFieldCode() + " as '" + x.getFieldName() + "',");
+                    builder.append( x.getFieldCode() + " as \"" + x.getFieldName() + "\",");
                 }
-//                else{
-//                    //自定义
-//                    List<ReportMeasure> customIndexTmp = x.getCustomIndexTmp();
-//                    customIndexTmp.forEach(z -> {
-//                        builder.append(z.getFieldCode() + " as '" + z.getKey() + "',");
-//                    });
-//                }
-
             });
-            selectSql = builder.substring(0, builder.lastIndexOf(","));
+            selectSql = builder.substring(0,builder.lastIndexOf(","));
         }
 
 
         return selectSql;
 
+    }
+
+    @Override
+    public List<RptDataTable> queryAllTables(Connection conn, DataBaseType dataBaseType) throws DbException {
+        List<RptDataTable> tables = new ArrayList<RptDataTable>();
+        ResultSet rs = null;
+
+        try {
+
+            DatabaseMetaData dbMetaData = conn.getMetaData();
+
+            // 数据库
+            String catalog = null;
+            // 数据库的用户
+            String schemaPattern = null;// meta.getUserName();
+            // 表名
+            String tableNamePattern = null;
+
+            //可为:"TABLE",   "VIEW",   "SYSTEM   TABLE",
+            //"GLOBAL   TEMPORARY",   "LOCAL   TEMPORARY",   "ALIAS",   "SYNONYM"
+            String[] types = {"TABLE"};/*只要表*/
+
+            if (DataBaseType.DB_TYPE_ORACLE.equals(dataBaseType)) {
+                schemaPattern = dbMetaData.getUserName().toUpperCase();
+            } else if (DataBaseType.DB_TYPE_MYSQL.equals(dataBaseType)) {
+                // MySQL 的 table 这一级别查询不到备注信息
+
+//            }  else if (DATABASETYPE.SQLSERVER.equals(dbtype) || DATABASETYPE.SQLSERVER2005.equals(dbtype)) {
+//                // SqlServer
+//                tableNamePattern = "%";
+//            }  else if (DATABASETYPE.DB2.equals(dbtype)) {
+//                // DB2查询
+//                schemaPattern = "jence_user";
+//                tableNamePattern = "%";
+//            } else if (DATABASETYPE.INFORMIX.equals(dbtype)) {
+//                // SqlServer
+//                tableNamePattern = "%";
+            } /*else if (DataBaseType.DB_TYPE_HIVE.equals(dataBaseType)) {
+                // hive
+                tableNamePattern = "%";
+            }*/ else {
+                throw new RuntimeException("不认识的数据库类型!");
+            }
+
+            rs = dbMetaData.getTables(null, schemaPattern, tableNamePattern, types);
+
+            String sql = "show table status";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                //只要表名这一列
+                // System.out.println(rs.getObject("TABLE_NAME"));
+                System.out.println(rs.getObject("Name")+"-------->"+rs.getObject("Comment"));
+                RptDataTable rptDataTable = new RptDataTable();
+                rptDataTable.setTableCode(rs.getObject("Name").toString());
+                if(rs.getObject("Comment") == null || "".equals(rs.getObject("Comment"))){
+                    rptDataTable.setComment("此表描述为空,若需要,请去对应的表写入。");
+                }else {
+                    rptDataTable.setComment(rs.getObject("Comment").toString());
+                }
+                tables.add(rptDataTable);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e);
+        } finally {
+            DataBaseUtil.closeResultSet(rs);
+        }
+
+        return tables;
     }
 }
