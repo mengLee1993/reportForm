@@ -293,9 +293,9 @@
             $(cloneRow).find("#datasourceStatus").text("(已连接)");
 		$(cloneRow).find("#bearOr").on("click",function () {
 			if($(this).attr("status"))
-			    var bearRequest = {"datasourceId":jsonItem.datasourceId,"removeStatus":1}
+			    var bearRequest = {"datasourceName":jsonItem.datasourceName,"datasourceId":jsonItem.datasourceId,"removeStatus":1}
 			else
-                var bearRequest = {"datasourceId":jsonItem.datasourceId,"removeStatus":0}
+                var bearRequest = {"datasourceName":jsonItem.datasourceName,"datasourceId":jsonItem.datasourceId,"removeStatus":0}
             getAjaxResult("/report/datasource/remove","post",bearRequest,function (data) {
 				if(JSON.parse(data).retCode == "0000000")
 				{
