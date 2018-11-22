@@ -2,7 +2,10 @@
 	var height = $(window).height();
 	$(function() {
         limitCodeDeal($("*[limitCode]"), "limitCode");
-        $("#loginName").html(unescape(getCookie("name")));
+        $("#loginName").html(unescape(getCookie("reportName")));
+        $("#logoHomePage").on("click",function(){
+            jumpUrl("../../report-home/html-gulp-www/homePage.html","0000000",0);
+        });
         //isMine
         //模块名字截取
         var modelString = window.location.href.substring(window.location.href.indexOf("reportForm") + 11, window.location.href.indexOf("html-gulp-www") - 1);
