@@ -1,6 +1,7 @@
 package com.ebase.report.model.dynamic;
 
 import com.ebase.report.common.SubjectSourceEnum;
+import com.ebase.report.cube.charts.ChartOption;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptMeasures;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -49,6 +50,8 @@ public class ReportEchoBody {
     private Byte isChecked;
 
     private ReportDynamicParam reportDynamicParam;  //前台传递参数
+
+    private ChartOption chartOptions; //什么echat图的东西
 
     public String getDatasourceName() {
         return datasourceName;
@@ -152,5 +155,13 @@ public class ReportEchoBody {
 
     public void setDatasourceChineseName(String datasourceChineseName) {
         this.datasourceChineseName = datasourceChineseName;
+    }
+
+    public ChartOption getChartOptions() {
+        return chartOptions;
+    }
+
+    public void setChartOptions(ChartOption chartOptions) {
+        this.chartOptions = chartOptions;
     }
 }

@@ -68,7 +68,9 @@ public class RptDataTableServiceImpl implements RptDataTableService {
                 //设置初始化指标或者是维度
                 String fieldType = field.getFieldType();
                 DBFieldTypeEnum dbFieldTypeEnum = DBFieldTypeEnum.getByName(fieldType);
-                field.setDimensionIndex(dbFieldTypeEnum.getDemandType());
+                if(dbFieldTypeEnum != null){
+                    field.setDimensionIndex(dbFieldTypeEnum.getDemandType());
+                }
             }
 
             i = rptDataFieldMapper.insertBatch(fields);

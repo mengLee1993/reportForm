@@ -2,16 +2,23 @@ package com.ebase.report.core.db.handler;
 
 import com.ebase.report.common.DBFieldTypeEnum;
 import com.ebase.report.common.DemandType;
+import com.ebase.report.common.FilterTypeEnum;
+import com.ebase.report.common.MeasureTypeEnum;
 import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataBaseUtil;
 import com.ebase.report.core.db.exception.DbException;
+import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.cube.DimensionKey;
 import com.ebase.report.model.RptDataDict;
 import com.ebase.report.model.RptDataTable;
+import com.ebase.report.model.dynamic.FilterArea;
+import com.ebase.report.model.dynamic.FilterAreaValue;
 import com.ebase.report.model.dynamic.ReportDatasource;
+import com.ebase.report.model.dynamic.ReportMeasure;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -39,16 +46,20 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
     protected final String EXCEL_NAME = "数据报表明细";
 
+    private final String LIMIT = " limit ";
+
+
     public String getReportSql(ReportDatasource reportDatasource) {
         return null;
     }
 
-    public ResultSet query(String sql, Connection conn, CubeTree cubeTree) throws DbException {
+    public Long query(String sql, Connection conn, CubeTree cubeTree) throws DbException {
 
         LOG.info("开始执行sql = {}",sql);
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
+        Long time = 0L;
         try {
              //执行sql 查询
             long startTime=System.currentTimeMillis();   //获取开始时间
@@ -59,7 +70,8 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
             long endTime=System.currentTimeMillis();   //获取开始时间
 
-            LOG.info("程序运行时间： = {}",(endTime-startTime)+"ms");
+            time = endTime - startTime;
+            LOG.info("程序运行时间： = {}",time+"ms");
 
             // 遍历结果集
             rsToCubeTree(rs, cubeTree);
@@ -72,7 +84,7 @@ public abstract class AbstractAccessor implements ReportAccessor {
             DataBaseUtil.closeStatment(pstmt);
         }
 
-        return rs;
+        return time;
     }
 
     public CubeTree rsToCubeTree(ResultSet rs, CubeTree cubeTree) throws DbException {
@@ -264,17 +276,101 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
     @Override
     public List<File> queryFromDetail(Integer count,String sql, Connection conn) {
-        return null;
+        List<File> files = new ArrayList<>();
+
+        //看数据量是否过大
+        if(count < LENGTH){
+            generateTmpMap(conn, files, sql);
+        }else{
+            int size = count / LENGTH;
+            size = count % LENGTH == 0 ? size - 1 : size;
+            for(int i = 0; i <= size ; i ++){
+                String s = LIMIT + (i * LENGTH) + "," + LENGTH;
+
+                String sqlDetail = sql + s;
+                generateTmpMap(conn, files, sqlDetail);
+            }
+        }
+
+        return files;
     }
 
     @Override
     public String toWhereSqlFtiler(ReportDatasource reportDatasource){
-        return null;
+        String dbTypeEnum = reportDatasource.getDatabaseType();
+        List<FilterArea> filter = reportDatasource.getReportDynamicParam().getFilter();
+        String sqlFtiler = "";
+
+        StringBuilder builder = new StringBuilder();
+        //如果是时间类型 可能有范围
+        filter.forEach(x -> {
+
+            //是时间
+            List<FilterAreaValue> tmp = x.getTmp();
+            tmp.stream().filter(z -> z.getIsChecked() != null && z.getIsChecked() == 1).forEach(y -> {
+
+                Map<FilterTypeEnum, String> fieldValue = y.getFieldVal();
+                fieldValue.keySet().stream().filter(m -> StringUtil.isNotEmpty(fieldValue.get(m))).forEach(f -> {
+                    String value = fieldValue.get(f);
+                    if(FilterTypeEnum.isScope(f)){
+                        builder.append(" and " + x.getCode() + " " + f.getName() + " '" + value + "' ");
+                    }else if(FilterTypeEnum.RG.equals(f)){
+                        builder.append(" and " + x.getCode() + " " + f.getName() + " '%" + value + "%' ");
+                    }else{
+                        String whw = "";
+                        if(f.equals(FilterTypeEnum.EQ)){
+                            whw = "in";
+                        }else{
+                            whw = "not in";
+                        }
+
+                        StringBuilder stringBuilder = new StringBuilder();
+                        stringBuilder.append(" and " + x.getCode() + " "+ whw + " (");
+                        for (String s : value.split("##")) {
+                            stringBuilder.append(" '" + s + "',");
+                        }
+                        String s = stringBuilder.substring(0,stringBuilder.lastIndexOf(","));
+                        builder.append(s);
+                        builder.append(") ");
+                    }
+                });
+            });
+//
+
+
+        });
+
+        sqlFtiler = builder.toString();
+
+
+
+        return sqlFtiler;
     }
 
     @Override
     public String toSelectMeasures(ReportDatasource reportDatasource) {
-        return null;
+        String dbTypeEnum = reportDatasource.getDatabaseType();
+        Set<ReportMeasure> measures = reportDatasource.getReportDynamicParam().getMeasures();
+
+        String selectSql = "";
+
+        if(CollectionUtils.isNotEmpty(measures)){
+            StringBuilder builder = new StringBuilder();
+
+            measures.forEach(x -> {
+                MeasureTypeEnum measureEnum = x.getMeasureType();
+
+                String measureType = measureEnum.getMeasureType();
+                if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
+                    //系统级 都是系统级的
+                    //db2 count(1)
+                    builder.append(measureType + "( " + x.getFieldCode() + " ) as " + x.getKey() + ",");
+                }
+
+            });
+            selectSql = builder.substring(0,builder.lastIndexOf(","));
+        }
+        return selectSql;
     }
 
     @Override

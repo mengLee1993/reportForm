@@ -12,12 +12,6 @@ import java.util.List;
  */
 @JsonIgnoreProperties(value = {"key"},ignoreUnknown = true)
 public class ReportMeasure extends Dimension {
-     //用父类的
-//    private String name; //业务表的 指标的汉意
-
-//    private String code; //指标的code
-
-//    private String expression; //表达式
 
     private String expressionChinese;
 
@@ -38,16 +32,6 @@ public class ReportMeasure extends Dimension {
         String  suffix = "_" + measureType.getCode();
         return demandType.getPrefix() + getFieldId() + suffix;
     }
-
-
-
-//    public String getExpression() {
-//        return expression;
-//    }
-//
-//    public void setExpression(String expression) {
-//        this.expression = expression;
-//    }
 
 
     public MeasureTypeEnum getMeasureType() {

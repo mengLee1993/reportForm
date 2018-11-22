@@ -9,6 +9,7 @@ import com.ebase.report.core.db.conn.DataSourceManager;
 import com.ebase.report.core.db.conn.DbConnFactory;
 import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.core.session.AssertContext;
+import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.model.*;
 import com.ebase.report.model.dynamic.ReportDatasource;
@@ -103,14 +104,15 @@ public class ReportHandler {
 
             ReportAccessor reportAccessor = AccessorFactory.get().factoryAccessor(ReportAccessor.class, dataBaseType);
             conn = DbConnFactory.factory(dataSourceName);
+
             //生成sql
             String sql = reportAccessor.getReportSql(reportDatasource);
 
-            //插入sql
-            addRptLog(reportDatasource, sql);
-
             //查询
-            reportAccessor.query(sql, conn , cubeTree);
+            Long time = reportAccessor.query(sql, conn , cubeTree);
+
+            //插入sql
+            addRptLog(reportDatasource, sql,time);
         } catch (DbException e) {
             logger.error("Occurred DbException.", e);
             // todo throw exception
@@ -121,13 +123,20 @@ public class ReportHandler {
         return cubeTree;
     }
 
-    private void addRptLog(ReportDatasource reportDatasource, String sql) {
+    /**
+     *插入动态sql 日志
+     * @param reportDatasource 参数对象
+     * @param sql  执行sql
+     * @param time sql执行时间
+     */
+    private void addRptLog(ReportDatasource reportDatasource, String sql,Long time) {
         RptAnalyseLog rptAnalyseLog = new RptAnalyseLog();
         rptAnalyseLog.setAnalyseSql(sql);
         rptAnalyseLog.setDatasourceName(reportDatasource.getDatasourceName());
         rptAnalyseLog.setTableId(reportDatasource.getReportTables().get(0).getTableId());
         rptAnalyseLog.setTableName(reportDatasource.getReportTables().get(0).getTableName());
         rptAnalyseLog.setPersonalSubjectId(reportDatasource.getPersonalSubjectId());
+        rptAnalyseLog.setSqlExecutionTime(time);
         rptAnalyseLogService.addReportLog(rptAnalyseLog);
     }
 
@@ -153,12 +162,10 @@ public class ReportHandler {
             //生成sql对象
             DataDetailSQL dataDetailSQL = reportAccessor.getReportFromDetailSql(reportDatasource);
 
-            //先看一下总count
+//            //先看一下总count
             Integer count = reportAccessor.queryCount(dataDetailSQL.getSqlCount(),conn);
-
-            //查询详细
+//            //查询详细
             files = reportAccessor.queryFromDetail(count,dataDetailSQL.getSql(),conn);
-
             rptPersionalDownloadVO.setDownloadSql(dataDetailSQL.getSql());
         } catch (DbException e) {
             logger.error("Occurred DbException.", e);

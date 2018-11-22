@@ -216,9 +216,9 @@ public class DataSourceManager {
     }
 
     //清空数据连接
-    public static void destroy(String dataSourceName){
-        dataSourceMap.remove(dataSourceName);
-        dataSourceConfigMap.remove(dataSourceName);
+    public void destroy(String dataSourceName){
+        DataSourceConfig dataSourceConfig = dataSourceConfigMap.get(dataSourceName);
+        closeDataSource(dataSourceConfig);
     }
 
 }

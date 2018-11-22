@@ -42,8 +42,7 @@ public class Dimension {
     private int lev;
 
     //新增的
-//    private List<Dimension> measures; //度量值  多个 人家可能勾选几个   如果这里面的  那么name 就是 多个库里 的  value
-    private List<ReportMeasure> rptMeasures; //多个度量值 在里面
+    private List<ReportMeasure> rptMeasures; //多个度量值 在里面 多个 人家可能勾选几个   如果这里面的  那么name 就是 多个库里 的  value
 
     //这下都是维度才有的值
     private DBFieldTypeEnum dbFieldTypeEnum = DBFieldTypeEnum.VARCHAR;  // 当前字段的类型 给我一个类型
@@ -63,19 +62,8 @@ public class Dimension {
     private String combinationName;
 
 
-    // !度量值
-//    private MeasureTypeEnum measureEnum = MeasureTypeEnum.COUNT;   //如果是指标 是什么指标
-
-//    private String expressionMetric; //表达式   度量值时
-
-    //  key: 字段id， 字段code码
-//    private List<CustomIndex> customIndexTmp = new ArrayList<>();  //自定义度量值时的变量
-
     public String getKey() {
         String suffix = "";
-//        if (DemandType.MEASURES.equals(demandType)) {
-//            suffix = "_" + measureEnum.getCode();
-//        }
         return demandType.getPrefix() + getFieldId() + suffix;
     }
 
@@ -139,14 +127,6 @@ public class Dimension {
         this.fieldId = fieldId;
     }
 
-//    public List<Dimension> getMeasures() {
-//        return measures;
-//    }
-
-//    public void setMeasures(List<Dimension> measures) {
-//        this.measures = measures;
-//    }
-
     public DBFieldTypeEnum getDbFieldTypeEnum() {
         return dbFieldTypeEnum;
     }
@@ -179,30 +159,6 @@ public class Dimension {
         this.rptDataDicts = rptDataDicts;
     }
 
-    //    public MeasureTypeEnum getMeasureEnum() {
-//        return measureEnum;
-//    }
-//
-//    public void setMeasureEnum(MeasureTypeEnum measureEnum) {
-//        this.measureEnum = measureEnum;
-//    }
-
-//    public String getExpressionMetric() {
-//        return expressionMetric;
-//    }
-
-//    public void setExpressionMetric(String expressionMetric) {
-//        this.expressionMetric = expressionMetric;
-//    }
-
-//    public List<CustomIndex> getCustomIndexTmp() {
-//        return customIndexTmp;
-//    }
-
-//    public void setCustomIndexTmp(List<CustomIndex> customIndexTmp) {
-//        this.customIndexTmp = customIndexTmp;
-//    }
-
 
     public Boolean getSearchTrue() {
         return searchTrue;
@@ -227,61 +183,65 @@ public class Dimension {
 
         String wSql = "";
         if (demandType.equals(DemandType.DIMENSION)) {
-//            if (DataBaseType.TYPE_NAME_MYSQL.equals(dbTypeEnum)) {
-//
-//            } else if (DataBaseType.TYPE_NAME_ORACLE.equals(dbTypeEnum)) {
-//                //oracle
-//            }
+            //mysql orcale db2 一样的
+            wSql = getString();
 
-            //mysql
-            StringBuilder builder = new StringBuilder("");
-            //是行级别授权
-            if ((rowLevelAuth == (byte) 1)) {
-                if (CollectionUtils.isNotEmpty(rptDataDicts)) {
-                    StringBuilder stringBuilder = new StringBuilder(" and " + fieldCode + " in ( ");
 
-                    if (DBFieldTypeEnum.isNumber(dbFieldTypeEnum)) {
-                        rptDataDicts.stream().filter(x -> x.getIsChecked() == 1).forEach(z -> {
-                            stringBuilder.append(z.getFieldValue() + ",");
-                        });
-                    } else {
-                        rptDataDicts.stream().filter(x -> x.getIsChecked() == 1).forEach(z -> {
-                            stringBuilder.append(" '" + z.getFieldValue() + "', ");
-                        });
-                    }
-                    String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(",")).toString();
-                    builder.append(s);
-                    builder.append(" ) ");
-                }
-            }
-
-            for (FilterTypeEnum cond : expressionTmp.keySet()) {
-                //是否是范围
-                if (FilterTypeEnum.isScope(cond)) {
-                    //是范围
-                    builder.append(" and " + fieldCode + cond.getName() + " '" + expressionTmp.get(cond).get(0) + "' ");
-                } else {
-                    String whw = "";
-                    if (cond.equals(FilterTypeEnum.EQ)) {
-                        whw = "in";
-                    } else {
-                        whw = "not in";
-                    }
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append(" and " + fieldCode + " " + whw + " (");
-                    expressionTmp.get(cond).forEach(y -> {
-                        stringBuilder.append(" '" + y + "',");
-                    });
-                    String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(","));
-                    builder.append(s);
-                    builder.append(") ");
-                }
-            }
-            wSql = builder.toString();
         } else if (demandType.equals(DemandType.MEASURES)) {
             //度量值  不算where 条件的
         }
 
+        return wSql;
+    }
+
+
+
+    private String getString() {
+        String wSql;
+        StringBuilder builder = new StringBuilder("");
+        //是行级别授权
+        if ((rowLevelAuth == (byte) 1)) {
+            if (CollectionUtils.isNotEmpty(rptDataDicts)) {
+                StringBuilder stringBuilder = new StringBuilder(" and " + fieldCode + " in ( ");
+
+                if (DBFieldTypeEnum.isNumber(dbFieldTypeEnum)) {
+                    rptDataDicts.stream().filter(x -> x.getIsChecked() == 1).forEach(z -> {
+                        stringBuilder.append(z.getFieldValue() + ",");
+                    });
+                } else {
+                    rptDataDicts.stream().filter(x -> x.getIsChecked() == 1).forEach(z -> {
+                        stringBuilder.append(" '" + z.getFieldValue() + "', ");
+                    });
+                }
+                String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(",")).toString();
+                builder.append(s);
+                builder.append(" ) ");
+            }
+        }
+
+        for (FilterTypeEnum cond : expressionTmp.keySet()) {
+            //是否是范围
+            if (FilterTypeEnum.isScope(cond)) {
+                //是范围
+                builder.append(" and " + fieldCode + cond.getName() + " '" + expressionTmp.get(cond).get(0) + "' ");
+            } else {
+                String whw = "";
+                if (cond.equals(FilterTypeEnum.EQ)) {
+                    whw = "in";
+                } else {
+                    whw = "not in";
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(" and " + fieldCode + " " + whw + " (");
+                expressionTmp.get(cond).forEach(y -> {
+                    stringBuilder.append(" '" + y + "',");
+                });
+                String s = stringBuilder.substring(0, stringBuilder.lastIndexOf(","));
+                builder.append(s);
+                builder.append(") ");
+            }
+        }
+        wSql = builder.toString();
         return wSql;
     }
 
