@@ -366,4 +366,15 @@
         and c.REMOVE_STATUS = 0
     </select>
 
+    <select id="selectByPrimaryKeys" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rpt_data_field
+        where
+        FIELD_ID in (
+        <foreach collection="fields" item="field" separator=",">
+            #{field}
+        </foreach>
+        )
+    </select>
 </mapper>

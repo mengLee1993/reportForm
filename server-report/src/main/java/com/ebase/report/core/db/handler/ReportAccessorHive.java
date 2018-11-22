@@ -110,7 +110,9 @@ public class ReportAccessorHive extends AbstractAccessor {
     }
 
     @Override
-    public String reportCoreDetail(ReportDatasource reportDatasource) {
+    public Map<String, Object> reportCoreDetail(ReportDatasource reportDatasource) {
         return null;
     }
+
+
 }

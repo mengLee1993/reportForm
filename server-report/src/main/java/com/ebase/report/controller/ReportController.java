@@ -9,7 +9,6 @@ import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.core.utils.ReportExportUtil;
-import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.charts.HighCharts;
 import com.ebase.report.model.*;
@@ -89,7 +88,7 @@ public class ReportController {
      * @param jsonRequest
      * @return
      */
-    @RequestMapping("/reportCoreDetail")
+    @RequestMapping("/reportCore")
     private JsonResponse<ReportResp> reportCore(@RequestBody JsonRequest<ReportDatasource> jsonRequest) {
         JsonResponse<ReportResp> jsonResponse = new JsonResponse<ReportResp>();
         ReportResp reportResp = new ReportResp();
@@ -122,9 +121,9 @@ public class ReportController {
      * 报表列表
      * @return
      */
-    @RequestMapping("/reportCore")
-    public JsonResponse<ReportRespDeteil> reportCoreDetail(@RequestBody JsonRequest<ReportDatasource> jsonRequest){
-        JsonResponse<ReportRespDeteil> jsonResponse = new JsonResponse<ReportRespDeteil>();
+    @RequestMapping("/reportCoreDetail")
+    public JsonResponse<ReportRespDetail> reportCoreDetail(@RequestBody JsonRequest<ReportDatasource> jsonRequest){
+        JsonResponse<ReportRespDetail> jsonResponse = new JsonResponse<ReportRespDetail>();
         try{
 
 
@@ -134,7 +133,7 @@ public class ReportController {
             CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());
 
 
-            ReportRespDeteil reportRespDeteil = reportHandler.reportCoreDetail(reportDatasource);
+            ReportRespDetail reportRespDetail = reportHandler.reportCoreDetail(reportDatasource);
 
         }catch (Exception e){
             LOG.error("error = {}",e);

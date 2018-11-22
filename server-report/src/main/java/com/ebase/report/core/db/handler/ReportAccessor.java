@@ -4,6 +4,7 @@ import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataDetailSQL;
 import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.cube.CubeTree;
+import com.ebase.report.model.ReportDetail;
 import com.ebase.report.model.RptDataDict;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
@@ -54,5 +55,5 @@ interface ReportAccessor {
     // distinct value
     public List<RptDataDict> queryDistinctFeild(String distinctSqlCount, Connection conn) throws DbException;
 
-    public String reportCoreDetail(ReportDatasource reportDatasource);
+    public Map<String,Object> reportCoreDetail(ReportDatasource reportDatasource);
 }

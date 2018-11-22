@@ -2,10 +2,12 @@ package com.ebase.report.service;
 
 import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
+import com.ebase.report.model.ReportDetail;
 import com.ebase.report.vo.RptDataDictVO;
 import com.ebase.report.vo.RptDataFieldVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RptDataFieldService {
 
@@ -52,4 +54,7 @@ public interface RptDataFieldService {
 
 
     Integer extractMetaDataCount(RptDataFieldVO vo) throws DbException;
+
+    //获得fields
+    ReportDetail getFieldsByMap(Map<String, Object> tmpMap);
 }

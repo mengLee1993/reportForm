@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @Auther: wangyu
  */
-public class ReportRespDeteil {
+public class ReportRespDetail {
 
     private List<String> headers; //列名
 

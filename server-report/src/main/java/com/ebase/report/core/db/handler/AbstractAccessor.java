@@ -12,7 +12,9 @@ import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.cube.DimensionKey;
+import com.ebase.report.dao.RptDataFieldMapper;
 import com.ebase.report.model.RptDataDict;
+import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.FilterArea;
 import com.ebase.report.model.dynamic.FilterAreaValue;
@@ -42,11 +44,15 @@ import java.util.*;
 public abstract class AbstractAccessor implements ReportAccessor {
     private static Logger LOG = LoggerFactory.getLogger(AbstractAccessor.class);
     //固定长度  10000 分页一个
-    public final Integer LENGTH = 10000;
+    public static final Integer LENGTH = 10000;
 
-    protected final String EXCEL_NAME = "数据报表明细";
+    protected static final String EXCEL_NAME = "数据报表明细";
 
     private final String LIMIT = " limit ";
+
+    public static final String KEY_SQL = "key_sql";
+
+    public static final String KEY_FIELD_IDS = "key_field_ids";
 
 
     public String getReportSql(ReportDatasource reportDatasource) {
@@ -461,6 +467,37 @@ public abstract class AbstractAccessor implements ReportAccessor {
             }
         }
         return type;
+    }
+
+    /**
+     * 拼装sql
+     * @param measures
+     * @param fieldIds
+     * @return
+     */
+    protected String getMeauresDetail(Set<ReportMeasure> measures, List<Long> fieldIds) {
+        String selectSql = "";
+
+        if(CollectionUtils.isNotEmpty(measures)){
+            StringBuilder builder = new StringBuilder();
+
+            measures.forEach(x -> {
+                MeasureTypeEnum measureEnum = x.getMeasureType();
+
+                String measureType = measureEnum.getMeasureType();
+                if (!MeasureTypeEnum.CUSTOM.equals(measureEnum) && !"1".equals(x.getFieldCode())) {
+                    //系统级 都是系统级的
+                    builder.append(x.getFieldCode() + " as " + x.getKey() + ",");
+                    if(x.getFieldId() != null){
+                        fieldIds.add(Long.valueOf(x.getFieldId()));
+                    }
+
+                }
+
+            });
+            selectSql = builder.substring(0,builder.lastIndexOf(","));
+        }
+        return selectSql;
     }
 
 }

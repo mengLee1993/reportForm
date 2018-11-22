@@ -3,6 +3,7 @@ package com.ebase.report.service.impl;
 import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.conn.DbConnFactory;
 import com.ebase.report.core.db.exception.DbException;
+import com.ebase.report.core.db.handler.AbstractAccessor;
 import com.ebase.report.core.db.handler.AccessorFactory;
 import com.ebase.report.core.db.handler.ReportHandler;
 import com.ebase.report.core.pageUtil.PageInfo;
@@ -12,10 +13,7 @@ import com.ebase.report.dao.RptDataDictMapper;
 import com.ebase.report.dao.RptDataFieldMapper;
 import com.ebase.report.dao.RptDataTableMapper;
 import com.ebase.report.dao.RptDatasourceMapper;
-import com.ebase.report.model.RptDataDict;
-import com.ebase.report.model.RptDataField;
-import com.ebase.report.model.RptDataTable;
-import com.ebase.report.model.RptDatasource;
+import com.ebase.report.model.*;
 import com.ebase.report.service.RptDataFieldService;
 import com.ebase.report.vo.RptDataDictVO;
 import com.ebase.report.vo.RptDataFieldVO;
@@ -188,6 +186,24 @@ public class RptDataFieldServiceImpl implements RptDataFieldService {
         Integer i = reportHandler.queryDistinctCount(datasource.getDatasourceName(), sql.toString());
 
         return i;
+    }
+
+    @Override
+    public ReportDetail getFieldsByMap(Map<String, Object> tmpMap) {
+        ReportDetail reportDetail = new ReportDetail();
+
+        String sql = tmpMap.get(AbstractAccessor.KEY_SQL).toString();
+
+        List<Long> lds = (ArrayList)tmpMap.get(AbstractAccessor.KEY_FIELD_IDS);
+
+        if(!CollectionUtils.isEmpty(lds)){
+            List<RptDataField> rptDataFields = rdfMapper.selectByPrimaryKeys(lds);
+            reportDetail.setFieldList(rptDataFields);
+        }
+
+
+        reportDetail.setSql(sql);
+        return reportDetail;
     }
 
     /**

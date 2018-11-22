@@ -8,13 +8,13 @@ import com.ebase.report.core.db.conn.DataSourceConfig;
 import com.ebase.report.core.db.conn.DataSourceManager;
 import com.ebase.report.core.db.conn.DbConnFactory;
 import com.ebase.report.core.db.exception.DbException;
-import com.ebase.report.core.session.AssertContext;
-import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.cube.CubeTree;
+import com.ebase.report.dao.RptDataFieldMapper;
 import com.ebase.report.model.*;
 import com.ebase.report.model.dynamic.ReportDatasource;
 import com.ebase.report.service.RptAnalyseLogService;
 
+import com.ebase.report.service.RptDataFieldService;
 import com.ebase.report.vo.RptPersionalDownloadVO;
 
 import com.ebase.report.vo.RptDataFieldVO;
@@ -23,11 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +41,9 @@ public class ReportHandler {
 
     @Autowired
     private RptAnalyseLogService rptAnalyseLogService;
+
+    @Autowired
+    private RptDataFieldMapper rptDataFieldMapper;
 
 
     public List<RptDataTable> queryAllTables(String dataSourceName) {
@@ -333,8 +336,8 @@ public class ReportHandler {
      * @param reportDatasource
      * @return
      */
-    public ReportRespDeteil reportCoreDetail(ReportDatasource reportDatasource) {
-        ReportRespDeteil reportRespDeteil = new ReportRespDeteil();
+    public ReportRespDetail reportCoreDetail(ReportDatasource reportDatasource) {
+        ReportRespDetail reportRespDetail = new ReportRespDetail();
 
 
         String dataSourceName = reportDatasource.getDatasourceName();
@@ -349,9 +352,13 @@ public class ReportHandler {
             conn = DbConnFactory.factory(dataSourceName);
 
             //生成sql
-            String sql = reportAccessor.reportCoreDetail(reportDatasource);
+            Map<String,Object> tmpMap = reportAccessor.reportCoreDetail(reportDatasource);
 
-            System.out.println(sql);
+
+            ReportDetail reportDetail1 = getFieldsByMap(tmpMap);
+
+
+            System.out.println(reportRespDetail);
         } catch (DbException e) {
             logger.error("Occurred DbException.", e);
             // todo throw exception
@@ -359,7 +366,25 @@ public class ReportHandler {
             DataBaseUtil.closeConnection(conn);
         }
 
-        return reportRespDeteil;
+        return reportRespDetail;
 
+    }
+
+    private ReportDetail getFieldsByMap(Map<String, Object> tmpMap) {
+
+        ReportDetail reportDetail = new ReportDetail();
+
+        String sql = tmpMap.get(AbstractAccessor.KEY_SQL).toString();
+
+        List<Long> lds = (ArrayList)tmpMap.get(AbstractAccessor.KEY_FIELD_IDS);
+
+        if(!CollectionUtils.isEmpty(lds)){
+            List<RptDataField> rptDataFields = rptDataFieldMapper.selectByPrimaryKeys(lds);
+            reportDetail.setFieldList(rptDataFields);
+        }
+
+
+        reportDetail.setSql(sql);
+        return reportDetail;
     }
 }
