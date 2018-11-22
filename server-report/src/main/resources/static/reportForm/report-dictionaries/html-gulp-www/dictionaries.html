@@ -174,6 +174,9 @@
     .chosen-container{
         width: 300px!important;
     }
+    #tableListSearch .chosen-container{
+        width: 150px!important;
+    }
 </style>
 <script>
 
@@ -393,16 +396,29 @@
         }
     }
     function clsTabCtrl$after(nIdx) {
-        if(nIdx == 1){//初始化主题表
-            document.body.jsdom.initmainBase($("#themeList"));
+        // if(nIdx == 1){//初始化主题表
+        //     document.body.jsdom.initmainBase($("#themeList"));
+        // }
+    }
+    function clsSearchBtnCtrl$after(jsonCond) {
+        if(this.ctrl.id == "tableListSearchBtn"){
+            jsonCond.datasourceId = document.body.jsdom.tobaseJson.datasourceId;
+            jsonCond.datasourceName = document.body.jsdom.tobaseJson.datasourceName;
+            jsonCond.datasourceChineseName = document.body.jsdom.tobaseJson.datasourceChineseName;
         }
+        return jsonCond;
     }
     $(document).ready(function () {
 
         var golobJs = new depotProcess();
         document.body.jsdom= golobJs;
         golobJs.init();
-
+        $(".selectStatus").chosen({
+            width:"150px",
+            no_results_text: "Oops, nothing found!",
+            enable_split_word_search: false,
+            placeholder_text_single: ''
+        });
         //数据源操作
         getAjaxResult("/report/datasource/all","POST",{},"datasourceInitCallBack(data)");
         $("#dataSourceSelect").on("change",function(){
@@ -461,22 +477,6 @@
     }
 </script>
 <div class="scp-body clearfix" style="background: #fff;">
-    <!--<div class="formcontainer-nav">
-        &lt;!&ndash;id="navigation"&ndash;&gt;
-        &lt;!&ndash; <p class="formcontainer-nav__text">待选列</p>&ndash;&gt;
-        <ul class="formcontainer-nav-ul"  comtype="" templateid="templateRowlist"
-            reqpath="/report/datasource/all" reqparam="{}" method="post" id="navDatalist">
-            <li class="formcontainer-nav-list formcontainer-nav-title mtop" style="line-height: 45px;height: 45px;font-size: 16px;font-weight: 900;background: #6390f3">
-                数据源
-            </li>
-            <li class="formcontainer-nav-list" id="templateRowlist" style="display: none"><span id="datasourceChineseName"></span><span id="datasourceStatus" style="color: #e5e5e5"></span></li>
-
-        </ul>
-        &lt;!&ndash;<p><i>逐渐</i><input type="text" id="id"></p><p><i>逐渐</i><input type="text" id="time"></p>&ndash;&gt;
-        &lt;!&ndash;<p><i>人</i><input type="text" id="person"></p>&ndash;&gt;
-        &lt;!&ndash;<p><i>哪里</i><input type="text" id="makeId"></p>&ndash;&gt;
-        &lt;!&ndash;<button id="byl">按钮</button>&ndash;&gt;
-    </div>-->
     <div class="scp-product clearfix">
         <div class="clearfix" style="line-height: 24px;margin-bottom: 5px;padding-top: 10px;padding-left: 10px;">
             <span class="fl mr10">数据源</span>
@@ -488,16 +488,26 @@
         </ul>
         <div class="tabCon clearfix">
             <div class="downloadcet-main fl">
-                <div class="btn_kind_1  supplier-top-submit fr mr5 mb5" id="moreArradd">批量添加</div>
-                <!--<div class="main-box clearfix">-->
-                    <!--<span class="main-box__name">搜索条件:</span>-->
-                    <!--<input type="text" class="inputBase main-box__input">-->
-                    <!--<div class="main-box__search btn_kind_3">查询</div>-->
-                <!--</div>-->
+                <div class="main-box clearfix" id="tableListSearch" style="line-height: 28px;">
+                    <span class="main-box__name">数据表编码</span>
+                    <input type="text" class="inputBase main-box__input" id="tableCode">
+                    <span class="main-box__name" style="margin-left: 10px;">描述</span>
+                    <input type="text" class="inputBase main-box__input" id="comment">
+                    <span class="main-box__name mr10 ml10">状态</span>
+                    <select name="" id="status" class="selectStatus">
+                        <option value="">请选择</option>
+                        <option value="0">未引用</option>
+                        <option value="1">已引用</option>
+                    </select>
+                    <div id="tableListSearchBtn" class="search_btn_class" comtype="searchBtnCtrl" cond="tableCode,comment,status" rule="cond" uniontableid="tableList" parentId="tableListSearch" style="position: relative;top: 1px;">
+                        <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
+                    </div>
+                    <div class="btn_kind_1  supplier-top-submit fr mr5 mb5" id="moreArradd">批量添加</div>
+                </div>
                 <div class="main-table" style="height: 500px;overflow: auto">
-                    <!-- <div class="btn_kind_1  supplier-top-submit fr mr10 mb10" id="moreArradd">批量添加</div> -->
                     <table class="table-list" id="tableList" comtype=""
                            templateid="templateRow2"  chkid="chkCoding"
+                           page="tcdPageCode2"
                            nodata="noDataAdd"
                            reqpath="/report/dataTable/queryAllTableForDataSource" reqparam="{}" method="post" style="table-layout: fixed">
                         <thead>
@@ -505,13 +515,8 @@
                             <th class="table-list__thead" style="width: 5%">
                                 <input type="checkbox" id="allChk" comtype="checkAll" cond="" uniontableid="tableList"  >
                             </th>
-                            <!--<th class="table-list__thead" style="width: 20%">数据源名称</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">数据源code</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">数据表</th>-->
                             <th class="table-list__thead" style="width: 15%">数据表编码</th>
                             <th class="table-list__thead" style="width: 20%">描述</th>
-                            <!--<th class="table-list__thead" style="width: 20%">数据表名称</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">备注</th>-->
                             <th class="table-list__thead" style="width: 10%">状态</th>
                             <th class="table-list__thead" style="width: 10%">操作</th>
                         </tr>
@@ -521,13 +526,8 @@
                             <td class="table-list__td" >
                                 <input type="checkbox"  id="chkCoding">
                             </td>
-                            <!--<td class="table-list__td" id="datasourceChineseName"></td>-->
-                            <!--<td class="table-list__td" id="datasourceName"></td>-->
-                            <!--<td class="table-list__td" id="tableId"></td>-->
                             <td class="table-list__td" id="tableCode"></td>
                             <td class="table-list__td" id="comment"></td>
-                            <!--<td class="table-list__td" id="tableName"></td>-->
-                            <!--<td class="table-list__td" id="demo"></td>-->
                             <td class="table-list__td" id="statusTxt">未引用</td>
                             <td class="table-list__td">
                                 <a href="javacript:;" id="addTobase" style="color: #0375d7">添加</a>
@@ -536,67 +536,13 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div id="noDataAdd" class="noDataAdd" style="display:none">
+                    <div id="noDataAdd" class="noDataCon" style="display:none">
                         <i></i><p>暂无数据.....</p>
                     </div>
-                    <!--<div class="tcdPageCode"></div>-->
+                    <div class="tcdPageCode tcdPageCode2"></div>
                 </div>
             </div>
             <div style="height: 5px;background: #e5e5e5;width: 100%" class="fl"></div>
-            <!--<div class="downloadcet-main fl">-->
-                <!--<div class="main-title ">-->
-                    <!--<strong class="main-title__sign"></strong>-->
-                    <!--<h1 class="main-title__tie">数据字段</h1>-->
-                <!--</div>-->
-                <!--<div class="main-box clearfix">-->
-                    <!--<span class="main-box__name">搜索条件:</span>-->
-                    <!--<input type="text" class="inputBase main-box__input">-->
-                    <!--<div class="main-box__search btn_kind_3">查询</div>-->
-                <!--</div>-->
-                <!--<div class="main-table">-->
-                    <!--<table class="table-list" id="tableList" comtype=""-->
-                           <!--templateid="templateRow"  chkid="chkCoding"-->
-                           <!--page="tcdPageCode" nodata="noDataCon"-->
-                           <!--reqpath="" reqparam="{}" method="post" style="table-layout: fixed">-->
-                        <!--<thead>-->
-                        <!--<tr class="table-list__Tr" >-->
-                            <!--<th class="table-list__thead" style="width: 5%">-->
-                                <!--<input type="checkbox" id="allChk" comtype="checkAll" cond="" uniontableid="tableList"  >-->
-                            <!--</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">字段编码</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">字段名称</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">字段类型</th>-->
-                            <!--<th class="table-list__thead" style="width: 10%">维度指标</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">精度</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">是否行级数据</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">备注</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">创建人</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">创建时间</th>-->
-                        <!--</tr>-->
-                        <!--</thead>-->
-                        <!--<tbody>-->
-                        <!--<tr class="table-list__str" id="templateRow">-->
-                            <!--<td class="table-list__td" >-->
-                                <!--<input type="checkbox"  id="chkCoding">-->
-                            <!--</td>-->
-                            <!--<td class="table-list__td" ></td>-->
-                            <!--<td class="table-list__td" ></td>-->
-                            <!--<td class="table-list__td" ></td>-->
-                            <!--<td class="table-list__td" ></td>-->
-                            <!--<td class="table-list__td"></td>-->
-                            <!--<td class="table-list__td"></td>-->
-                            <!--<td class="table-list__td"></td>-->
-                            <!--<td class="table-list__td"></td>-->
-                            <!--<td class="table-list__td"></td>-->
-                        <!--</tr>-->
-                        <!--</tbody>-->
-                    <!--</table>-->
-                    <!--<div id="noDataCon" class="noDataCon" style="display:none">-->
-                        <!--<i></i><p>暂无数据.....</p>-->
-                    <!--</div>-->
-                    <!--<div class="tcdPageCode"></div>-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
         <div class="tabCon clearfix" style="display: none;">
             <div class="downloadcet-main fl">
@@ -610,7 +556,6 @@
                         <i class="fl ml10">数据表编码</i>
                           <input type="text" class="inputBase main-box__input w100" id="tableCode">
                     </span>
-                    <!-- <div class="main-box__search btn_kind_3" comtype="searchBtnCtrl" cond="tableName,tableCode" rule="cond" uniontableid="themeList" parentId="themeSearch">查询</div> -->
                     <div class="search_btn_class" comtype="searchBtnCtrl" cond="tableName,tableCode" rule="cond" uniontableid="themeList" parentId="themeSearch">
                         <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
                     </div>
@@ -622,20 +567,11 @@
                            reqpath="/report/dataTable/themeTable" reqparam="{}" method="post" style="table-layout: fixed">
                         <thead>
                         <tr class="table-list__Tr" >
-
-                            <!--<th class="table-list__thead" style="width: 20%">数据源</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">数据表</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">数据字段</th>-->
-                            <!--<th class="table-list__thead" style="width: 10%">数据量</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">数据详情</th>-->
-                            <!--<th class="table-list__thead" style="width: 20%">更新时间</th>-->
                             <th class="table-list__thead" style="width: 20%">数据源名称</th>
                             <th class="table-list__thead" style="width: 20%">数据源code</th>
                             <th class="table-list__thead" style="width: 20%">数据表名称</th>
                             <th class="table-list__thead" style="width: 15%">数据表编码</th>
-                            <!--<th class="table-list__thead" style="width: 20%">数据表名称</th>-->
                             <th class="table-list__thead" style="width: 20%">备注</th>
-                            <!--<th class="table-list__thead" style="width: 10%">状态</th>-->
                             <th class="table-list__thead" style="width: 20%">操作</th>
                         </tr>
                         </thead>
@@ -645,9 +581,7 @@
                             <td class="table-list__td" id="datasourceName" style="color: #6390f3;"></td>
                             <td class="table-list__td" id="tableName"></td>
                             <td class="table-list__td" id="tableCode"></td>
-                            <!--<td class="table-list__td" id="tableName"></td>-->
                             <td class="table-list__td" id="demo"></td>
-                            <!--<td class="table-list__td" id="statusTxt"></td>-->
                             <td class="table-list__td">
                                 <a href="javascript:;" id="editTheme">编辑</a>
                                 <a style="margin-left: 10px" href="javascript:;" id="deleteTheme">删除</a>
@@ -664,10 +598,6 @@
             </div>
             <div style="height: 5px;background: #e5e5e5;width: 100%" class="fl"></div>
             <div class="downloadcet-main fl">
-               <!-- <div class="main-title ">
-                    <strong class="main-title__sign"></strong>
-                    <h1 class="main-title__tie">数据字段</h1>
-                </div>-->
                 <div class="main-box clearfix" id="fieldSearch">
                     <span>
                          <i class="fl ml10">字段名称</i>
@@ -688,9 +618,6 @@
                            reqpath="/report/dataField/list" reqparam="{}" method="post" style="table-layout: fixed">
                         <thead>
                         <tr class="table-list__Tr" >
-                            <!--<th class="table-list__thead" style="width: 5%">-->
-                                <!--<input type="checkbox" id="allChk" comtype="checkAll" cond="" uniontableid="fieldList"  >-->
-                            <!--</th>-->
                             <th class="table-list__thead" style="width: 8%">字段</th>
                             <th class="table-list__thead" style="width: 15%">数据表</th>
                             <th class="table-list__thead" style="width: 13%">字段编码</th>
@@ -705,9 +632,6 @@
                         </thead>
                         <tbody>
                         <tr class="table-list__str" id="templateRowfield" style="display:none">
-                            <!--<td class="table-list__td" >-->
-                                <!--<input type="checkbox"  id="chkCoding">-->
-                            <!--</td>-->
                             <td class="table-list__td" id="fieldId"></td>
                             <td class="table-list__td" id="tableName"></td>
                             <td class="table-list__td" id="fieldCode"></td>
@@ -766,8 +690,7 @@
                 <li><i class="datasource-list__label">数据表编码：</i>
                     <input type="text" class="inputBase allLetter" id="tableCode" disabled="disabled" >
                 </li>
-                <!--<li><i class="datasource-list__label">数据表名称：</i>-->
-                    <!--<input type="text" class="inputBase required" id="tableName"></li>-->
+                
                 <li><i class="datasource-list__label">备注：</i>
                     <input type="text" class="inputBase required" id="demo"><input type="hidden" id="tableId">
                 </li>

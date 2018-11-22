@@ -47,17 +47,18 @@ public class RptDataTableServiceImpl implements RptDataTableService {
         List<RptDataTableVO> listVO = BeanCopyUtil.copyList(allTable, RptDataTableVO.class);
         return listVO;
     }
+
     //业务表表-->数据表<主题>
     public ServiceResponse<Integer> insertBusinessTableToThemo(List<RptDataTableVO> vos) {
         List<RptDataTable> listRdts = BeanCopyUtil.copyList(vos, RptDataTable.class);
         int i;
         ServiceResponse<Integer> sR = new ServiceResponse<>();
         for (RptDataTable rdt : listRdts) {
-            rdt.setTableName(rdt.getTableCode());
+            rdt.setTableName(rdt.getComment());
             rdt.setRemoveStatus(RemoveStatusEnum.NOREMOVE.getRemoveStatus());
             rptDataTableMapper.insertSelective(rdt);
             //通过表名查询到此表的列名,然后存如字段表
-            List<RptDataField> fields = reportHandler.queryFields(rdt.getDatasourceName(),rdt.getTableName());
+            List<RptDataField> fields = reportHandler.queryFields(rdt.getDatasourceName(), rdt.getTableCode());
             for (RptDataField field : fields) {
                 field.setFieldName(field.getFieldName());
                 field.setFieldCode(field.getFieldCode());
@@ -71,7 +72,6 @@ public class RptDataTableServiceImpl implements RptDataTableService {
                 DBFieldTypeEnum dbFieldTypeEnum = DBFieldTypeEnum.getByName(fieldType);
                 field.setDimensionIndex(dbFieldTypeEnum.getDemandType());
             }
-
             i = rptDataFieldMapper.insertBatch(fields);
             sR.setRetContent(i);
         }
@@ -169,7 +169,7 @@ public class RptDataTableServiceImpl implements RptDataTableService {
     public PageDTO<RptDataTableVO> queryForPage(RptDataTableVO vo) {
         RptDataTable model = BeanCopyUtil.copy(vo, RptDataTable.class);
 
-        PageDTO<RptDataTableVO> pageDTO = new PageDTO<>(vo.getPageNum(),vo.getPageSize());
+        PageDTO<RptDataTableVO> pageDTO = new PageDTO<>(vo.getPageNum(), vo.getPageSize());
 
         Integer count = rptDataTableMapper.selectCount(model);
         pageDTO.setTotal(count);

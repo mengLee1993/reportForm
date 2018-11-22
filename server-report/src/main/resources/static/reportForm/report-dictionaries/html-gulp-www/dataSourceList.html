@@ -204,6 +204,20 @@
         if(obj == null)
         {
 			$("#list-add").on("click",function () {
+                setValue4Desc({
+                    "datasourceChineseName":"",
+                    "datasourceName":"",
+                    "databaseType":"",
+                    "connpoolType":"",
+                    "datasourceUrl":"",
+                    "userName":"",
+                    "password":"",
+                    "initialSize":"",
+                    "maxActive":"",
+                    "maxWait":"",
+                    "maxIdle":"",
+                    "removeStatus":""
+                },$(".datasource-list")[0]);
 				openWin(600,580,"material-list",true);
 
 			})

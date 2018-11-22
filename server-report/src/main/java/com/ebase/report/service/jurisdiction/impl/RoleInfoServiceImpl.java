@@ -4,12 +4,14 @@ package com.ebase.report.service.jurisdiction.impl;
 import com.ebase.report.common.IsDelete;
 import com.ebase.report.common.Status;
 import com.ebase.report.core.ParamType;
+import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.utils.BeanCopyUtil;
 import com.ebase.report.dao.jurisdiction.AcctOperPrivRelaMapper;
 import com.ebase.report.dao.jurisdiction.AcctRoleGroupRoleMapper;
 import com.ebase.report.dao.jurisdiction.AcctRoleRealMapper;
 import com.ebase.report.dao.jurisdiction.RoleInfoMapper;
+import com.ebase.report.model.jurisdiction.AcctInfo;
 import com.ebase.report.model.jurisdiction.AcctRoleGroupRole;
 import com.ebase.report.model.jurisdiction.RoleInfo;
 import com.ebase.report.service.jurisdiction.RoleInfoService;
@@ -341,10 +343,23 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
 
     @Override
-    public List<RoleInfoVO> queryForList(RoleInfoVO vo) {
-        List<RoleInfo> roleInfos = roleInfoMapper.queryForList(vo);
+    public PageDTO<RoleInfo> queryForList(RoleInfo roleInfo) {
+
+        /*List<RoleInfo> roleInfos = roleInfoMapper.queryForList(vo);
         List<RoleInfoVO> rptPersonalTableFieldVOs = BeanCopyUtil.copyList(roleInfos, RoleInfoVO.class);
-        return rptPersonalTableFieldVOs;
+        return rptPersonalTableFieldVOs;*/
+
+        PageDTO<RoleInfo> pageDTO = new PageDTO<>(roleInfo.getPageNum(),roleInfo.getPageSize());
+
+        Integer count = roleInfoMapper.queryForCount(roleInfo);;
+
+        pageDTO.setTotal(count);
+
+        roleInfo.setStartRow(pageDTO.getStartRow());
+        List<RoleInfo> list = roleInfoMapper.queryForList(roleInfo);
+
+        pageDTO.setResultData(list);
+        return pageDTO;
     }
 
     @Override

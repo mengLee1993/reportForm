@@ -161,6 +161,8 @@ $bd_dee: #dee3e6;//主体边框线
     min-width: 20%;
     padding:0 1%;
     border-color: $bd_dee;
+    min-width: 160px;
+    height: 28px;
   }
   &__search{
     float: right;
