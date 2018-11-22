@@ -1372,6 +1372,7 @@ function translateTable(that) {
 function initHtmlCallBack(data){
     data = JSON.parse(data);
     if(data.retCode == "0000000"){
+        document.body.jsLee.chartOptions = data.rspBody.reportEchoBody.chartOptions;
         var arrA = [];
         arrA.push(data.rspBody.reportEchoBody);
         $("#parentChildTableList #createMeasure").remove();
