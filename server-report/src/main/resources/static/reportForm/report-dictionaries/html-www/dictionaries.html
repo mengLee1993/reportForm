@@ -226,9 +226,9 @@
         }
     }
     function clsTabCtrl$after(nIdx) {
-        // if(nIdx == 1){//初始化主题表
-        //     document.body.jsdom.initmainBase($("#themeList"));
-        // }
+        if(nIdx == 1 && document.body.jsdom.tobaseJson){//初始化主题表
+            document.body.jsdom.initmainBase($("#themeList"));
+        }
     }
     function clsSearchBtnCtrl$after(jsonCond) {
         if(this.ctrl.id == "tableListSearchBtn"){
@@ -293,8 +293,8 @@
                     data.rspBody.resultData[nI].datasourceChineseNameA = data.rspBody.resultData[nI].datasourceChineseName+"(未连接)";
                 }else{
                     data.rspBody.resultData[nI].datasourceChineseNameA = data.rspBody.resultData[nI].datasourceChineseName+"(已连接)";
-                    document.body.jsdom.tobaseJson = {
-                        "datasourceId":data.rspBody.resultData[nI].datasourceId, "datasourceName":data.rspBody.resultData[nI].datasourceName, "datasourceChineseName":data.rspBody.resultData[nI].datasourceChineseName};
+                    // document.body.jsdom.tobaseJson = {
+                    //     "datasourceId":data.rspBody.resultData[nI].datasourceId, "datasourceName":data.rspBody.resultData[nI].datasourceName, "datasourceChineseName":data.rspBody.resultData[nI].datasourceChineseName};
                 }
             }
             /*document.body.jsdom.initmainBase($("#tableList"),document.body.jsdom.tobaseJson);
