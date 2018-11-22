@@ -176,7 +176,7 @@ function submitCallBack(data){
     if(jsData.retCode == "0000000"){
         /*var alertBox=new clsAlertBoxCtrl();
         alertBox.Alert("登陆成功","成功提示",1,"","loginTip");*/
-        if($("#isSavePassword").is(":checked")){
+        /*if($("#isSavePassword").is(":checked")){
             setCookie("isTrue",1);
             setCookie("acctTitle",escape($("#js-input--username").val()));
             setCookie("acctPassword",escape($("#js-input-password").val()));
@@ -184,7 +184,7 @@ function submitCallBack(data){
             setCookie("isTrue",0);
             setCookie("acctTitle",escape($("#js-input--username").val()));
             setCookie("acctPassword",escape($("#js-input-password").val()));
-        }
+        }*/
 
         /**************自定义报表原有代码注释开始******************/
         // if(window.Storage && window.localStorage && window.localStorage instanceof Storage){
@@ -205,9 +205,9 @@ function submitCallBack(data){
         var limitCodeArr = jsData.rspBody.permissions
         //登陆时，登陆成功后，把后台返回的权限集合存储在localStorage中
         if(window.Storage && window.localStorage && window.localStorage instanceof Storage){
-            window.localStorage.limitCode = JSON.stringify(limitCodeArr);
+            window.localStorage.limitCode = JSON.stringify(jsData.rspBody.permissions);
         }else{
-            setCookie("limitCode",JSON.stringify(limitCodeArr));
+            setCookie("limitCode",escape(JSON.stringify(jsData.rspBody.permissions)));
         }
         /**************权限新增代码结束******************/
 
