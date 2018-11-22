@@ -789,6 +789,7 @@ and arp.role_id is not null )
     <if test="acctTitle != null and acctTitle != ''">
       and ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%')
     </if>
+    ORDER BY ACCT_ID DESC
     limit #{startRow},#{pageSize}
   </select>
 

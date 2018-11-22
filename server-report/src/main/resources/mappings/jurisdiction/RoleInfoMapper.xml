@@ -644,15 +644,16 @@
     FROM role_info
     <trim prefix="WHERE" prefixOverrides="AND |OR">
       <if test="roleTitle != null and roleTitle != '' " >
-        AND ROLE_TITLE = #{roleTitle}
+        AND ROLE_TITLE LIKE CONCAT('%',#{roleTitle},'%')
       </if>
       <if test="roleCode != null and roleCode != '' " >
-        AND ROLE_CODE = #{roleCode}
+        AND ROLE_CODE LIKE CONCAT('%',#{roleCode},'%')
       </if>
       <if test="roleState != null and roleState != '' " >
         AND ROLE_STATE = #{roleState}
       </if>
     </trim>
+    ORDER BY CREATED_TIME DESC
     limit #{startRow} , #{pageSize}
   </select>
 
