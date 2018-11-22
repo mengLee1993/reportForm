@@ -3,6 +3,9 @@ var titleJson = {
         /******************************************************************************
          * 采购端
          ***************************************************************************/
+        "report-home":{//首页
+            "homePage.html":"首页"
+        },
         "report-mine":{//个人主题数据
             "myInfoList.html":"我的数据报表",
             "selfSearch.html":"我的自定义查询",
@@ -49,7 +52,7 @@ function titleEval(titleJson){//赋值每一个页面的title
                     if(titleVarJson[key2] == ""){
                         document.title = "数据报表";
                     }
-                    if(key == "report-analyze" || key == "report-authorization" || key == "report-logAnalyze" || key == "report-login"){//不用加侧边栏
+                    if(key == "report-analyze" || key == "report-authorization" || key == "report-logAnalyze" || key == "report-login" || key == "report-home"){//不用加侧边栏
                         $("#bodyLeft").remove();
                         $("#bodyRight").css("padding-left",0);
                     }

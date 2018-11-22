@@ -1,0 +1,15 @@
+@@include('../../report-home/html-gulp-www/commonHeader.html')
+	<div id="homePageBox" style="width: 100%;background: url('../../report-login/images/login-bg.png')">
+
+	</div>
+<script>
+	$(function(){
+	   var heightPx = document.documentElement.clientHeight;
+	   $("#homePageBox").css("height",heightPx +"px");
+        window.onresize = function () {
+            var heightPx = document.documentElement.clientHeight;
+            $("#homePageBox").css("height",heightPx +"px");
+        }
+	});
+</script>
+@@include('../../report-home/html-gulp-www/commonFooter.html')
