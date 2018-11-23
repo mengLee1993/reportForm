@@ -13,6 +13,7 @@ import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.cube.DimensionKey;
 import com.ebase.report.dao.RptDataFieldMapper;
+import com.ebase.report.model.ReportRespDetail;
 import com.ebase.report.model.RptDataDict;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
@@ -500,4 +501,60 @@ public abstract class AbstractAccessor implements ReportAccessor {
         return selectSql;
     }
 
+    /***
+     * 只拖到行区，查询明细列表
+     * @param sql
+     * @param conn
+     * @param cubeTree
+     * @param fieldList
+     * @return
+     * @throws DbException
+     */
+    @Override
+    public ReportRespDetail reportPageList(String sql, Connection conn, CubeTree cubeTree, List<RptDataField> fieldList) throws DbException {
+        ReportRespDetail reportRespDetail = new ReportRespDetail();
+        reportRespDetail.setHeaders(cubeTree.getHeaders());
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            //执行sql 查询
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            try {
+                ResultSetMetaData rsmd = rs.getMetaData();
+                // 遍历结果集
+                int columnCount = rsmd.getColumnCount();
+
+                List<List<String>> dataList = new ArrayList<>();
+                while (rs.next()) {
+                    Map<String, String> rsMap = new HashMap<>();
+
+                    for (int i = 0; i < columnCount; i++) {
+                        String columnName = rsmd.getColumnLabel(i + 1);
+                        String columnValue = rs.getString(columnName);
+                        Dimension dimension = cubeTree.getDimensionMap().get(columnName);
+                        rsMap.put(dimension.getKey(), columnValue);
+                    }
+
+                    dataList.add(cubeTree.getDataList(rsMap));
+                }
+
+                reportRespDetail.setDataList(dataList);
+            } catch (SQLException e) {
+                LOG.error("Occurred SQLException.", e);
+                throw new DbException(e);
+            }
+
+        } catch (SQLException e) {
+            LOG.error("Occurred DbException.", e);
+            throw new DbException(e);
+        } finally {
+            DataBaseUtil.closeResultSet(rs);
+            DataBaseUtil.closeStatment(pstmt);
+        }
+
+        return reportRespDetail;
+    }
 }

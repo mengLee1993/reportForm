@@ -6,6 +6,7 @@ import com.ebase.report.common.MeasureTypeEnum;
 import com.ebase.report.core.calculate.ExpressionCalculator;
 import com.ebase.report.core.calculate.ExpressionFormatException;
 import com.ebase.report.model.dynamic.ReportMeasure;
+import org.apache.commons.collections.set.ListOrderedSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -15,9 +16,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Auther: <a mailto:xuyongming@ennew.cn>xuyongming</a>
@@ -278,6 +281,7 @@ public class CubeTree {
     /**
      * 计算单元格的数据
      * 就这个方法 慢
+     * // todo... todo...
      */
     private void setCellData() {
         if (CollectionUtils.isEmpty(lineLeafList)) {
@@ -560,6 +564,91 @@ public class CubeTree {
 
     public List<ReportMeasure> getMeasures() {
         return measures;
+    }
+
+    /**
+     * 只拖到行区时，明细页的title名称
+     * @return
+     */
+    public List<String> getHeaders(){
+        List<String> list = new ArrayList<>();
+
+        Map<String, String> map = new HashMap<>();
+        for(Dimension dimension : lineDimension){
+            if(DemandType.DIMENSION.equals(dimension.getDemandType())){
+                // 维度
+                if(map.get(dimension.getFieldName()) == null){
+                    list.add(dimension.getFieldName());
+                }
+                map.put(dimension.getFieldName(), dimension.getFieldName());
+
+            } else if(DemandType.MEASURES.equals(dimension.getDemandType())){
+                // 指标
+                for(ReportMeasure reportMeasure : dimension.getRptMeasures()){
+                    if(reportMeasure.getMeasureType().equals(MeasureTypeEnum.CUSTOM)){
+                        // 自定义指标
+                        list.add(reportMeasure.getCombinationName());
+                    }else{
+                        // 系统指标
+                        if(map.get(reportMeasure.getFieldName()) == null){
+                            list.add(reportMeasure.getFieldName());
+                        }
+                        map.put(reportMeasure.getFieldName(), reportMeasure.getFieldName());
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * 只拖到行区时，明细页的data cell list
+     * @return
+     */
+    public List<String> getDataList(Map<String, String> rsMap){
+        List<String> list = new ArrayList<>();
+
+        Map<String, String> map = new HashMap<>();
+        for(Dimension dimension : lineDimension){
+            if(DemandType.DIMENSION.equals(dimension.getDemandType())){
+                // 维度
+                if(map.get(dimension.getFieldName()) == null){
+                    list.add(rsMap.get(dimension.getKey()));
+                }
+                map.put(dimension.getFieldName(), dimension.getFieldName());
+
+            } else if(DemandType.MEASURES.equals(dimension.getDemandType())){
+                // 指标
+                for(ReportMeasure reportMeasure : dimension.getRptMeasures()){
+                    if(reportMeasure.getMeasureType().equals(MeasureTypeEnum.CUSTOM)){
+                        // 自定义指标
+                        String expression = reportMeasure.getExpressionEnglish();
+
+                        // 替换【指标标识】为对应的指标数值
+                        for(ReportMeasure customMeasure : reportMeasure.getCustomIndexTmp()){
+                            String measureValue = rsMap.get(customMeasure.getKey()) ==null ? "0" : rsMap.get(customMeasure.getKey());
+                            expression = expression.replaceAll("#"+customMeasure.getKey()+"#", null == measureValue ? "0" : measureValue);
+                        }
+                        String customValue = null;
+                        try {
+                            customValue = String.valueOf(ExpressionCalculator.cal(expression));
+                        } catch (ExpressionFormatException e) {
+                            logger.error("计算自定义指标异常", e);
+                        }
+                        list.add(customValue);
+                    }else{
+                        // 系统指标
+                        if(map.get(reportMeasure.getFieldName()) == null){
+                            list.add(rsMap.get(reportMeasure.getKey()));
+                        }
+                        map.put(reportMeasure.getFieldName(), reportMeasure.getFieldName());
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
     // 度量值维度
