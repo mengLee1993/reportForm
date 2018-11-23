@@ -155,7 +155,7 @@
     var datasourceName = null;
     function clsAlertBoxCtrl$sure() {//成功弹框确定
         if (this.id == "deleteBox") {
-            getAjaxResult("/report/datasource/remove","post",{"datasourceId":datasourceId,"datasourceName":datasourceName,"removeStatus":1},function(data){
+            getAjaxResult("/report/datasource/remove","post",{"datasourceId":datasourceId,"datasourceName":datasourceName,"removeStatus":2},function(data){
                 data = JSON.parse(data);
                 if(data.retCode == "0000000"){
                     document.body.jsCtrl.ctrl = $("#tableList")[0];
