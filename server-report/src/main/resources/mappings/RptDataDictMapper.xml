@@ -193,4 +193,12 @@
         from rpt_data_dict
         where FIELD_ID = #{fieldId,jdbcType=BIGINT}
     </select>
+    <delete id="deleteByFieldIds" parameterType="java.lang.Long">
+         delete from rpt_data_dict
+        where FIELD_ID in (
+        <foreach collection="fields" item="field" separator=",">
+            #{field}
+        </foreach>
+        )
+    </delete>
 </mapper>

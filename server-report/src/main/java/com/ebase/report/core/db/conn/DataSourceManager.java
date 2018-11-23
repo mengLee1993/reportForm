@@ -76,7 +76,7 @@ public class DataSourceManager {
         } else if (ConnPoolType.CONN_POOL_TYPE_HIKARI.equals(dataSourceConfig.getConnPoolType())) {
             returnDs = createDataSourceHikari(dataSourceConfig);
         } else if(ConnPoolType.CONN_POOL_TYPE_DRUID.equals(dataSourceConfig.getConnPoolType())) {
-
+            returnDs = createDataSourceDruid(dataSourceConfig);
         }else{
 
             logger.error("未知的数据库类型");

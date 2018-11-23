@@ -402,4 +402,8 @@
         </trim>
         order by DATASOURCE_ID desc
     </select>
+    <delete id="deleteById" parameterType="java.lang.Long">
+       delete from rpt_datasource
+        where DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+    </delete>
 </mapper>

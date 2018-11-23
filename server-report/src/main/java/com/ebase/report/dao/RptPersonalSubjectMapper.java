@@ -41,4 +41,8 @@ public interface RptPersonalSubjectMapper {
     List<Long> selectIdByUserId(Long id);
 
     Integer selectCountByTypeId(Map<String, Object> tmp);
+
+    List<Long> selectIdByTableId(Long tableId);
+
+    int deleteByTableId(Long tableId);
 }
