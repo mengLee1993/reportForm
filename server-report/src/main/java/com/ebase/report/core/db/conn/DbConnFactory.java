@@ -45,6 +45,7 @@ public class DbConnFactory {
             Connection conn =  factory(dsName);
             DataBaseUtil.closeConnection(conn);
         } catch (Exception e) {
+            logger.error("sql 连接 error ={}",e);
             b = false;
         }
 

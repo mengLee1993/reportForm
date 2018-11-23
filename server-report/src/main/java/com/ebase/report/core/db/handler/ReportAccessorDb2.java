@@ -34,6 +34,11 @@ public class ReportAccessorDb2 extends AbstractAccessor {
 
     private final String LIMIT = " limit ";
 
+    private static final String TABNAME = "TABNAME";
+
+    private static final String REMARKS = "REMARKS";
+
+
     /**
      * 生成my sql 实现
      * @param reportDatasource
@@ -396,61 +401,29 @@ public class ReportAccessorDb2 extends AbstractAccessor {
         ResultSet rs = null;
 
         try {
-
-            DatabaseMetaData dbMetaData = conn.getMetaData();
-
             // 数据库
-            String catalog = null;
-            // 数据库的用户
-            String schemaPattern = null;// meta.getUserName();
-            // 表名
-            String tableNamePattern = null;
 
-            //可为:"TABLE",   "VIEW",   "SYSTEM   TABLE",
-            //"GLOBAL   TEMPORARY",   "LOCAL   TEMPORARY",   "ALIAS",   "SYNONYM"
-            String[] types = {"TABLE"};/*只要表*/
+            String sql = "select TABNAME,REMARKS from syscat.tables where tabschema = current schema ";
+            PreparedStatement pstmt = (PreparedStatement)conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
 
-            if (DataBaseType.DB_TYPE_ORACLE.equals(dataBaseType)) {
-                schemaPattern = dbMetaData.getUserName().toUpperCase();
-            } else if (DataBaseType.DB_TYPE_MYSQL.equals(dataBaseType)) {
-                // MySQL 的 table 这一级别查询不到备注信息
 
-//            }  else if (DATABASETYPE.SQLSERVER.equals(dbtype) || DATABASETYPE.SQLSERVER2005.equals(dbtype)) {
-//                // SqlServer
-//                tableNamePattern = "%";
-//            }  else if (DATABASETYPE.DB2.equals(dbtype)) {
-//                // DB2查询
-//                schemaPattern = "jence_user";
-//                tableNamePattern = "%";
-//            } else if (DATABASETYPE.INFORMIX.equals(dbtype)) {
-//                // SqlServer
-//                tableNamePattern = "%";
-            } /*else if (DataBaseType.DB_TYPE_HIVE.equals(dataBaseType)) {
-                // hive
-                tableNamePattern = "%";
-            }*/ else {
-                throw new RuntimeException("不认识的数据库类型!");
-            }
-
-            rs = dbMetaData.getTables(null, schemaPattern, tableNamePattern, types);
-
-            String sql = "show table status";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            rs = preparedStatement.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
-                //只要表名这一列
-                // System.out.println(rs.getObject("TABLE_NAME"));
-                System.out.println(rs.getObject("Name")+"-------->"+rs.getObject("Comment"));
                 RptDataTable rptDataTable = new RptDataTable();
-                rptDataTable.setTableCode(rs.getObject("Name").toString());
-                if(rs.getObject("Comment") == null || "".equals(rs.getObject("Comment"))){
-                    rptDataTable.setComment("此表描述为空,若需要,请去对应的表写入。");
-                }else {
-                    rptDataTable.setComment(rs.getObject("Comment").toString());
-                }
+
                 tables.add(rptDataTable);
+
+                String tabName = rs.getString(TABNAME);
+                String remarks = rs.getString(REMARKS);
+                rptDataTable.setTableName(tabName);
+                if(StringUtil.isEmpty(remarks)){
+                    remarks = "此表描述为空,若需要,请去对应的表写入。";
+                }
+                rptDataTable.setComment(remarks);
             }
         } catch (SQLException e) {
+            logger.error("error = {}",e);
             throw new DbException(e);
         } finally {
             DataBaseUtil.closeResultSet(rs);

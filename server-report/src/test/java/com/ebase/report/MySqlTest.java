@@ -424,8 +424,7 @@ public class MySqlTest {
             // 一个Connection代表一个数据库连接
             conn = DriverManager.getConnection(url,"db2inst1","db2inst1");
 
-            sql = "\n" +
-                    "SELECT * FROM MOVIE_DATA_10W ";
+            sql = "select TABNAME,REMARKS from syscat.tables where tabschema = current schema ";
 
             PreparedStatement pstmt = (PreparedStatement)conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
@@ -434,17 +433,11 @@ public class MySqlTest {
 //            // 获得列的总数
             int columnCount = rsmd.getColumnCount();
             while (rs.next()) {
-                for (int i = 0; i < columnCount; i++) {
-//                    String columnName = rsmd.getColumnName(i + 1);
-//                    String tableName = rsmd.getTableName(i + 1);
-//                    String columnClassName = rsmd.getColumnClassName(i + 1);
-//                    String catalogName = rsmd.getCatalogName(i + 1);
-                    String columnLabel = rsmd.getColumnLabel(i + 1);
 //                    Object columnValue = rs.getObject(columnName);
-                    String string = rs.getString(columnLabel);
-                    System.out.println(columnLabel + string);
+                    String string = rs.getString("TABNAME");
+                String remarks = rs.getString("REMARKS");
+                System.out.println(remarks + string);
 //
-                }
 //                // 根据dimensionKey 初始化树结点
             }
         } catch (SQLException e) {
