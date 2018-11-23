@@ -1,5 +1,6 @@
 package com.ebase.report.controller;
 
+import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.dao.MovieData10wMapper;
 import com.ebase.report.model.MovieData10w;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,14 +67,11 @@ public class Demo {
 
 
     public static void main(String[] args) {
-
-        String sql = "select * from demo";
+        String sql = "select DATASOURCE_ID, DATASOURCE_NAME, DATABASE_TYPE, CONNPOOL_TYPE, DATASOURCE_URL, USER_NAME, PASSWORD, INITIAL_SIZE, MAX_ACTIVE, MAX_WAIT, MAX_IDLE, REMOVE_STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, DATASOURCE_CHINESE_NAME from `rpt_datasource` where REMOVE_STATUS = 0 order by DATASOURCE_ID desc \n";
 
         StringBuilder s = new StringBuilder(sql);
-        String select = s.substring(s.lastIndexOf("select") + 6, s.length() );
-        select = "select count(1) " + select;
-
-        System.out.println(select);
-        System.out.println(sql);
+        String selectCount = s.substring(s.lastIndexOf("from"), s.length() );
+        selectCount = "select count(1) " + selectCount;
+        System.out.println(selectCount);
     }
 }

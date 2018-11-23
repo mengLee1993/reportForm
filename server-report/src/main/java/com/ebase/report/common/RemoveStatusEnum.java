@@ -9,7 +9,8 @@ public enum RemoveStatusEnum {
 
         //每一个类型都是一个枚举类<RemoveStatusEnum>的实例
         REMOVE(1, "已移除"),
-        NOREMOVE(0, "未移除");
+        NOREMOVE(0, "未移除"),
+        DELETE(2, "物理删除");
 
         //用于保存在数据库
         private int removeStatus;

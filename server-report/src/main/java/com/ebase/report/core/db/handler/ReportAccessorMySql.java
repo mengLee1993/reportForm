@@ -262,7 +262,7 @@ public class ReportAccessorMySql extends AbstractAccessor {
             if(DemandType.DIMENSION.equals(demandType)){
                 //维  度
                 String code = x.getFieldCode(); //name age as f124
-                builderSelect.append(code + " as '" + x.getFieldName() + "',");
+                builderSelect.append(code + " as '" + x.getKey() + "',");
                 String s = x.toWHereSql(dbTypeEnumByName);
                 builderWhe.append(s);
 

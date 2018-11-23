@@ -30,4 +30,8 @@ public interface RptDataFieldMapper {
     List<RptDataField> selectList(RptDataField copy);
 
     List<RptDataField> selectByPrimaryKeys(@Param("fields")List<Long> lds);
+
+    List<Long> selectIdByTableid(Long tableId);
+
+    Integer deleteByTableId(Long tableId);
 }

@@ -1,7 +1,9 @@
 	var width = $(window).width();
 	var height = $(window).height();
 	$(function() {
-        limitCodeDeal($("*[limitCode]"), "limitCode");
+	    if(window.location.href.indexOf("login.html") == -1){
+            limitCodeDeal($("*[limitCode]"), "limitCode");
+        };
         $("#loginName").html(unescape(getCookie("reportName")));
         $("#logoHomePage").on("click",function(){
             jumpUrl("../../report-home/html-gulp-www/homePage.html","0000000",0);

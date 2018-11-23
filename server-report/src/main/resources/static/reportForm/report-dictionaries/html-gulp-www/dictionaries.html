@@ -479,6 +479,13 @@
             document.body.jsCtrl.init();
         }
     }
+    function clsSearchBtnCtrl$before() {
+        if(!$("#dataSourceSelect").val()){
+            var alertBox=new clsAlertBoxCtrl();
+            alertBox.Alert("请选择数据源","提示");
+            return false;
+        }
+    }
 </script>
 <div class="scp-body clearfix" style="background: #fff;">
     <div class="scp-product clearfix" style="min-height: 436px;">

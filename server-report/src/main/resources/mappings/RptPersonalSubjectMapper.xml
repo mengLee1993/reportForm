@@ -366,4 +366,14 @@
             and USER_ID = #{id}
         </if>
     </select>
+    <select id="selectIdByTableId" parameterType="java.lang.Long" resultType="java.lang.Long">
+          select
+        PERSONAL_SUBJECT_ID
+        from rpt_personal_subject
+        where TABLE_ID = #{tableId}
+    </select>
+    <delete id="deleteByTableId" parameterType="java.lang.Long">
+        delete from rpt_personal_subject
+        where TABLE_ID = #{tableId,jdbcType=BIGINT}
+    </delete>
 </mapper>

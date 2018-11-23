@@ -10,7 +10,8 @@ import com.ebase.report.core.db.handler.ReportHandler;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.utils.BeanCopyUtil;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
-import com.ebase.report.dao.RptDatasourceMapper;
+import com.ebase.report.dao.*;
+import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.RptDatasource;
 import com.ebase.report.service.RptDatasourceService;
 import com.ebase.report.vo.RptDatasourceVO;
@@ -42,7 +43,23 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
     @Autowired
     private ReportHandler reportHandler;
 
+    @Autowired
+    private RptDataTableMapper rptDataTableMapper;  //数据表
 
+    @Autowired
+    private RptDataFieldMapper rptDataFieldMapper;  //数据表字段
+
+    @Autowired
+    private RptDataDictMapper rptDataDictMapper; //数据字典
+
+    @Autowired
+    private RptPersonalSubjectMapper rptPersonalSubjectMapper; //个人主题表
+
+    @Autowired
+    private RptMeasuresMapper rptMeasuresMapper; //指标
+
+    @Autowired
+    private RptPersonalAnalysisMapper rptPersonalAnalysisMapper; //报表
     //--------------------------------查询全部------------------------------------
     public List<RptDatasourceVO> selectAll() {
         List<RptDatasource> RptDatasources = dsMapper.selectAll();
@@ -223,9 +240,64 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
         ServiceResponse<Integer> sR = new ServiceResponse<Integer>();
         RptDatasource RptDatasource = BeanCopyUtil.copy(vo, RptDatasource.class);
 
-        //需要删除 数据源
-        DataSourceManager.get().destroy(vo.getDatasourceName());
-        sR.setRetContent(dsMapper.updateByPrimaryKeySelective(RptDatasource)); //都是 逻辑删除 不是物理删除
+
+        int removeStatus = vo.getRemoveStatus();
+
+
+        if(removeStatus == 0){ //未
+            com.ebase.report.model.RptDatasource rptDatasource = dsMapper.selectByPrimaryKey(vo.getDatasourceId());
+            reportHandler.createConn(rptDatasource);
+
+            sR.setRetContent(dsMapper.updateByPrimaryKeySelective(RptDatasource)); //都是 逻辑删除 不是物理删除
+        }else if(removeStatus == 1){
+            //禁用
+            DataSourceManager.get().destroy(vo.getDatasourceName());
+
+            sR.setRetContent(dsMapper.updateByPrimaryKeySelective(RptDatasource)); //都是 逻辑删除 不是物理删除
+        }else{
+            //删除数据  数据源，主题，报表下面对数据  清除所有
+            //禁用
+            DataSourceManager.get().destroy(vo.getDatasourceName());
+
+            Long datasourceId = vo.getDatasourceId();
+
+            removeDatasource(datasourceId);
+
+        }
+
+
         return sR;
+    }
+
+    private void removeDatasource(Long datasourceId) {
+        //数据报表
+        List<RptDataTable> dataTables = rptDataTableMapper.selectByDatasourceId(datasourceId);
+        //删除数据表
+        dsMapper.deleteById(datasourceId);
+
+        dataTables.forEach(x -> {
+            //数据表id
+            Long tableId = x.getTableId();
+            //根据表ID查询所有对字段id
+            List<Long> fields = rptDataFieldMapper.selectIdByTableid(tableId);
+
+            rptDataFieldMapper.deleteByTableId(tableId);
+            if(!CollectionUtils.isEmpty(fields)){
+                //根据字段删除元数据
+                rptDataDictMapper.deleteByFieldIds(fields);
+            }
+
+            //根据table ids删除主题id
+            List<Long> subjectIds = rptPersonalSubjectMapper.selectIdByTableId(tableId);
+
+            rptPersonalSubjectMapper.deleteByTableId(tableId);
+            if(!CollectionUtils.isEmpty(subjectIds)){
+                //删除指标
+                rptMeasuresMapper.deleteBySubjectId(subjectIds);
+                //删除报表
+                rptPersonalAnalysisMapper.deleteBySubjectId(subjectIds);
+            }
+
+        });
     }
 }

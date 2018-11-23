@@ -27,4 +27,6 @@ public interface RptDataDictMapper {
     int insertBatch(@Param("dataDicts") List<RptDataDict> dataDicts);
 
     int deleteByFieldId(Long fieldId);
+
+    int deleteByFieldIds(@Param("fields")List<Long> fields);
 }
