@@ -1,5 +1,6 @@
 package com.ebase.report.controller;
 
+import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.dao.MovieData10wMapper;
 import com.ebase.report.model.MovieData10w;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,12 @@ public class Demo {
 
     public static void main(String[] args) {
 
-        String sql = "select * from demo";
+        String s = "12313${demo3}23${demo2}e2dsda${demo}1231";
 
-        StringBuilder s = new StringBuilder(sql);
-        String select = s.substring(s.lastIndexOf("select") + 6, s.length() );
-        select = "select count(1) " + select;
-
-        System.out.println(select);
-        System.out.println(sql);
+//        String aaa = s.replace("${demo}", "AAA");
+        String[] strings1 = new String[]{"${demo3}","${demo2}","${demo}"};
+        String[] strings2 = new String[]{"AAA","BBB","CCC"};
+        String s1 = StringUtil.replaceEach(s, strings1, strings2);
+        System.out.println(s1);
     }
 }
