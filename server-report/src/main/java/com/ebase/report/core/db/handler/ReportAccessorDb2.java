@@ -416,7 +416,7 @@ public class ReportAccessorDb2 extends AbstractAccessor {
 
                 String tabName = rs.getString(TABNAME);
                 String remarks = rs.getString(REMARKS);
-                rptDataTable.setTableName(tabName);
+                rptDataTable.setTableCode(tabName);
                 if(StringUtil.isEmpty(remarks)){
                     remarks = "此表描述为空,若需要,请去对应的表写入。";
                 }
