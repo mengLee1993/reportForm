@@ -81,6 +81,8 @@ function clsMethodLee$init(){
 
 }
 function clsMethodLee$parse(){
+    //初始化页面默认立即刷新页面操作input选中
+    $("#immediatelyRefresh").attr("checked",true);
     //初始化左侧父子table
     if(this.personalAnalysisId){
         getAjaxResultLee(document.body.jsLee.requestUrl.path8,"POST",{"personalAnalysisId":this.personalAnalysisId},"initHtmlCallBack(data)",function(){
@@ -1229,34 +1231,10 @@ function initTable(){
         });
     }else if(jsonParam.reportDynamicParam.column.length == 0 && jsonParam.reportDynamicParam.line.length > 0){//刷新分页表格
         $("#pageTableBox").show();
+        $("#tableList").html("");
         //getAjaxResultLee(document.body.jsLee.requestUrl.path15,"POST",document.body.jsLee.jsonAll,"pageTableInitCallBack(data)");
-        //初始化插件th tr模版行
         var data = {"retCode":"0000000","retDesc":"操作成功!","timestamp":"2018-11-23 09:26:53.116","rspBody":{"pageNum":3,"pageSize":10,"startRow":0,"total":100,"pages":10,"resultData":[{"headers":["标题A","标题B","标题C","标题D","标题E"],"dataList":[["a11111","b11111","c11111","d11111","e11111"],["a22222","b22222","c22222","d22222","e22222"],["a33333","b33333","c33333","d33333","e33333"],["a44444","b44444","c44444","d44444","e44444"],["a55555","b55555","c55555","d55555","e55555"],["a66666","b66666","c66666","d66666","e66666"]],"pageNum":0,"pageSize":0,"total":0,"pages":0}],"requestData":null,"firstPage":false,"lastPage":false}};
-        var titleArr = data.rspBody.resultData[0].headers;
-        var headerTh;
-        var bodyTd;
-        for(var nI = 0 ; nI < titleArr.length ; nI++ ){
-            headerTh += '<th class="formcontainer-table__thead">'+ titleArr[nI] +'</th>';
-            bodyTd += '<td class="formcontainer-table__td" id="name'+ nI +'"></td>';
-        }
-        var templateContent = '<tr>'+ headerTh +'</tr><tr id="templateRow" style="display: none;">'+ bodyTd +'</tr>';
-        $("#tableList").append(templateContent);
-        //拼接数据
-        var contentArr = data.rspBody.resultData[0].dataList;
-        var dataResult = {"pageNum":data.rspBody.pageNum,"pageSize":data.rspBody.pageSize,"startRow":data.rspBody.startRow,"total":data.rspBody.total,"pages":data.rspBody.pages,"resultData":[]};
-        for(var mI = 0; mI < contentArr.length ; mI++ ){
-            var jsonItem = [];
-            for(var oI = 0; oI < contentArr[mI].length ; oI++ ){
-                var keyName = "name" + oI;
-                var jsonA = {};
-                jsonA[keyName] = contentArr[mI][oI];
-                jsonItem.push(jsonA);
-            }
-            dataResult.resultData.push(jsonItem);
-        }
-        $("#tableList")[0].data = dataResult;
-        document.body.jsCtrl.ctrl = $("tableList")[0];
-        document.body.jsCtrl.init();
+        splitResultData(data);
     }
     /*//行列转换判断
     if(!$("#rowColTranslate").attr("clickMark")){
@@ -1282,8 +1260,36 @@ function initTable(){
 function pageTableInitCallBack(data){
     data = JSON.parse(data);
     if(data.retCode == "0000000"){
-
+        splitResultData(data);//初始化插件th tr模版行
     }
+}
+
+//初始化插件th tr模版行
+function splitResultData(data){
+    var titleArr = data.rspBody.resultData[0].headers;
+    var headerTh;
+    var bodyTd;
+    for(var nI = 0 ; nI < titleArr.length ; nI++ ){
+        headerTh += '<th class="formcontainer-table__thead">'+ titleArr[nI] +'</th>';
+        bodyTd += '<td class="formcontainer-table__td" id="name'+ nI +'"></td>';
+    }
+    var templateContent = '<tr>'+ headerTh +'</tr><tr id="templateRow" style="display: none;">'+ bodyTd +'</tr>';
+    $("#tableList").append(templateContent);
+    //拼接数据
+    var contentArr = data.rspBody.resultData[0].dataList;
+    var dataResult = {"rspBody":{"pageNum":data.rspBody.pageNum,"pageSize":data.rspBody.pageSize,"startRow":data.rspBody.startRow,"total":data.rspBody.total,"pages":data.rspBody.pages,"resultData":[]},"retCode":"0000000"};
+    for(var mI = 0; mI < contentArr.length ; mI++ ){
+        var jsonA = {};
+        for(var oI = 0; oI < contentArr[mI].length ; oI++ ){
+            var keyName = "name" + oI;
+            jsonA[keyName] = contentArr[mI][oI];
+        }
+        dataResult.rspBody.resultData.push(jsonA);
+    }
+    $("#tableList")[0].data = dataResult;
+    $("#tableList").attr("comType","standardTableCtrl");
+    document.body.jsCtrl.ctrl = $("#tableList")[0];
+    document.body.jsCtrl.init();
 }
 
 
@@ -1846,6 +1852,24 @@ function getAjaxResultLee(strPath, method, param, callbackMethod, beforeSendFunc
             alert(errorThrown);
         }
     });
+}
+
+//覆盖分页方法
+function clsStandardTableCtrl$page(strClsName) {
+    if (this.jsonData != null) {
+        $("." + strClsName).createPage({
+            pageCount: this.jsonData.pages,
+            current: this.jsonData.pageNum,
+            parentObj: this.ctrl,
+            backFn: function (p) {
+                var jsonParam = deepCopy(document.body.jsLee.jsonAll);
+                jsonParam.pageNum = p;
+                getAjaxResultLee(document.body.jsLee.requestUrl.path15,"POST",jsonParam,"pageTableInitCallBack(data)")
+                //$(this)[0].parentObj.jsCtrl.refresh();
+            }
+        });
+    }
+
 }
 
 $(function(){
