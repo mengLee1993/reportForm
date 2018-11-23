@@ -782,6 +782,9 @@ function measureInit(cloneRow,jsonItem){
             var cloneSpecialRow = $(cloneRow).find("#templateSpecialRow").clone(true);
             cloneSpecialRow.attr("id","cloneSpecialRow").show();
             cloneSpecialRow.find("#measuresName").html(jsonItem.rptMeasures[nI].measuresName);
+            if(jsonItem.rptMeasures[nI].measureType == "SUM"){
+                cloneSpecialRow.find("#measureDeleteOpe").hide();
+            }
             cloneSpecialRow[0].jsonData = jsonItem.rptMeasures[nI];
             if(!document.body.jsLee.personalAnalysisId){
                 cloneSpecialRow.find("#measuresName").on("click",function () {//指标编辑操作
