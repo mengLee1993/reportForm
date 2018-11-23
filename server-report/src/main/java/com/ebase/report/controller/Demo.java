@@ -65,5 +65,15 @@ public class Demo {
     }
 
 
+    public static void main(String[] args) {
 
+        String sql = "select * from demo";
+
+        StringBuilder s = new StringBuilder(sql);
+        String select = s.substring(s.lastIndexOf("select") + 6, s.length() );
+        select = "select count(1) " + select;
+
+        System.out.println(select);
+        System.out.println(sql);
+    }
 }

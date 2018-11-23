@@ -37,6 +37,14 @@ public class ReportDatasource {
     private ChartOption chartOptions;
 
 
+    /**
+     */
+    private Integer pageNum = 1;
+    /**
+     */
+    private Integer pageSize = 10;
+
+
     public String getDatasourceName() {
         return datasourceName;
     }
@@ -91,5 +99,21 @@ public class ReportDatasource {
 
     public void setChartOptions(ChartOption chartOptions) {
         this.chartOptions = chartOptions;
+    }
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

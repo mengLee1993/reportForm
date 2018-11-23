@@ -8,6 +8,8 @@ import com.ebase.report.core.db.conn.DataSourceConfig;
 import com.ebase.report.core.db.conn.DataSourceManager;
 import com.ebase.report.core.db.conn.DbConnFactory;
 import com.ebase.report.core.db.exception.DbException;
+import com.ebase.report.core.pageUtil.PageDTO;
+import com.ebase.report.core.pageUtil.PageReportDetail;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.dao.RptDataFieldMapper;
 import com.ebase.report.model.*;
@@ -354,11 +356,23 @@ public class ReportHandler {
             //生成sql
             Map<String,Object> tmpMap = reportAccessor.reportCoreDetail(reportDatasource);
 
+            ReportDetail reportDetail = getFieldsByMap(tmpMap);
 
-            ReportDetail reportDetail1 = getFieldsByMap(tmpMap);
+            PageDTO<Object> pageDTO = new PageDTO<>(reportDatasource.getPageNum(),reportDatasource.getPageSize());
+            //算total
+            String sql = reportDetail.getSql();
+
+            StringBuilder s = new StringBuilder(sql);
+            String selectCount = s.substring(s.lastIndexOf("select") + 6, s.length() );
+            selectCount = "select count(1) " + selectCount;
+            //先看一下总count
+            Integer count = reportAccessor.queryCount(selectCount,conn);
+
+            //分页sql
+            String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource.getDatabaseType(), pageDTO, count);
 
 
-            System.out.println(reportRespDetail);
+            System.out.println(detailSql);
         } catch (DbException e) {
             logger.error("Occurred DbException.", e);
             // todo throw exception
