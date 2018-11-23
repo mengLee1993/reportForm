@@ -13,9 +13,10 @@ function clsMethodLee(){
         "path11":"/report/listShareReport",//分享角色列表
         "path12":"/report/addShareReport",//分享提交列表
         "path13":"/report/reportFromDetail",//提交列表
-        "path14":"/report/charts/hcharts"//highchart柱图/饼图
+        "path14":"/report/charts/hcharts",//highchart柱图/饼图
+        "path15":"/report/reportCoreDetail"//只拖拽行区，生成带分页的详情列表
     };
-    this.jsonAll = {};//提交如参
+    this.jsonAll = {"reportDynamicParam":{"column":[],"filter":[],"line":[],"tbs":[]}};//提交如参
     this.documentLee = null;
     this.subjectId = "";//主题id
     this.measureId = "";//指标id（编辑操作）
@@ -80,6 +81,8 @@ function clsMethodLee$init(){
 
 }
 function clsMethodLee$parse(){
+    //初始化页面默认立即刷新页面操作input选中
+    $("#immediatelyRefresh").attr("checked",true);
     //初始化左侧父子table
     if(this.personalAnalysisId){
         getAjaxResultLee(document.body.jsLee.requestUrl.path8,"POST",{"personalAnalysisId":this.personalAnalysisId},"initHtmlCallBack(data)",function(){
@@ -285,14 +288,22 @@ function clsMethodLee$operate(){
     //图形和table切换操作
     this.chartShow.on("click",function(){
         if($(".formcontainer-mainover").eq(0).is(":visible")){
-            $(this).css("color","#0375D7");
-            $(this).attr("clickMark",1);
-            $(".formcontainer-mainover").eq(0).hide();
-            $(".formcontainer-mainover").eq(1).show();
-            //图形文字显示
-            $(this).find("i").removeClass("tableCss").addClass("chartCss");
-            $(this).find("span").html("表格");
-            initChart();
+            if(document.body.jsLee.jsonAll.reportDynamicParam.column.length > 0){//拖拽列区，生成表格
+                $(this).css("color","#0375D7");
+                $(this).attr("clickMark",1);
+                $(".formcontainer-mainover").eq(0).hide();
+                $(".formcontainer-mainover").eq(1).show();
+                //图形文字显示
+                $(this).find("i").removeClass("tableCss").addClass("chartCss");
+                $(this).find("span").html("表格");
+                initChart();
+            }else if(document.body.jsLee.jsonAll.reportDynamicParam.column.length == 0 && document.body.jsLee.jsonAll.reportDynamicParam.line.length > 0){//只拖拽行区，出现详情列表（分页）
+                var alertBox=new clsAlertBoxCtrl();
+                alertBox.Alert("请拖拽列区，否则不能生成图形！","失败提示");
+            }else{
+                var alertBox=new clsAlertBoxCtrl();
+                alertBox.Alert("请将待选区拖拽到行列区域！","失败提示");
+            }
         }else{
             $(this).css("color","#666");
             $(this).removeAttr("clickMark");
@@ -1211,12 +1222,19 @@ function initTable(){
     }
     var jsonParam = {"reportDynamicParam":document.body.jsLee.jsonAll.reportDynamicParam,"personalSubjectId":document.body.jsLee.jsonAll.personalSubjectId,"datasourceName":document.body.jsLee.jsonAll.datasourceName,"databaseType":document.body.jsLee.jsonAll.databaseType,"reportTables":document.body.jsLee.jsonAll.reportTables,"subjectType":document.body.jsLee.jsonAll.subjectType};
     if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表表格
+        $("#pageTableBox").hide();
         getAjaxResultLee(document.body.jsLee.requestUrl.path6,"POST",jsonParam,"initMainTableCallBack(data)",function(){
             $("#ajaxWaiting").show();
         },function () {
             $("#ajaxWaiting").hide();
             //
         });
+    }else if(jsonParam.reportDynamicParam.column.length == 0 && jsonParam.reportDynamicParam.line.length > 0){//刷新分页表格
+        $("#pageTableBox").show();
+        $("#tableList").html("");
+        getAjaxResultLee(document.body.jsLee.requestUrl.path15,"POST",document.body.jsLee.jsonAll,"pageTableInitCallBack(data)");
+        /*var data = {"retCode":"0000000","retDesc":"操作成功!","timestamp":"2018-11-23 09:26:53.116","rspBody":{"pageNum":3,"pageSize":10,"startRow":0,"total":100,"pages":10,"resultData":[{"headers":["标题A","标题B","标题C","标题D","标题E"],"dataList":[["a11111","b11111","c11111","d11111","e11111"],["a22222","b22222","c22222","d22222","e22222"],["a33333","b33333","c33333","d33333","e33333"],["a44444","b44444","c44444","d44444","e44444"],["a55555","b55555","c55555","d55555","e55555"],["a66666","b66666","c66666","d66666","e66666"]],"pageNum":0,"pageSize":0,"total":0,"pages":0}],"requestData":null,"firstPage":false,"lastPage":false}};
+        splitResultData(data);*/
     }
     /*//行列转换判断
     if(!$("#rowColTranslate").attr("clickMark")){
@@ -1236,6 +1254,42 @@ function initTable(){
         }
     }*/
 
+}
+
+//只拖拽行区生成详情分页列表
+function pageTableInitCallBack(data){
+    data = JSON.parse(data);
+    if(data.retCode == "0000000"){
+        splitResultData(data);//初始化插件th tr模版行
+    }
+}
+
+//初始化插件th tr模版行
+function splitResultData(data){
+    var titleArr = data.rspBody.resultData[0].headers;
+    var headerTh;
+    var bodyTd;
+    for(var nI = 0 ; nI < titleArr.length ; nI++ ){
+        headerTh += '<th class="formcontainer-table__thead">'+ titleArr[nI] +'</th>';
+        bodyTd += '<td class="formcontainer-table__td" id="name'+ nI +'"></td>';
+    }
+    var templateContent = '<tr>'+ headerTh +'</tr><tr id="templateRow" style="display: none;">'+ bodyTd +'</tr>';
+    $("#tableList").append(templateContent);
+    //拼接数据
+    var contentArr = data.rspBody.resultData[0].dataList;
+    var dataResult = {"rspBody":{"pageNum":data.rspBody.pageNum,"pageSize":data.rspBody.pageSize,"startRow":data.rspBody.startRow,"total":data.rspBody.total,"pages":data.rspBody.pages,"resultData":[]},"retCode":"0000000"};
+    for(var mI = 0; mI < contentArr.length ; mI++ ){
+        var jsonA = {};
+        for(var oI = 0; oI < contentArr[mI].length ; oI++ ){
+            var keyName = "name" + oI;
+            jsonA[keyName] = contentArr[mI][oI];
+        }
+        dataResult.rspBody.resultData.push(jsonA);
+    }
+    $("#tableList")[0].data = dataResult;
+    $("#tableList").attr("comType","standardTableCtrl");
+    document.body.jsCtrl.ctrl = $("#tableList")[0];
+    document.body.jsCtrl.init();
 }
 
 
@@ -1798,6 +1852,24 @@ function getAjaxResultLee(strPath, method, param, callbackMethod, beforeSendFunc
             alert(errorThrown);
         }
     });
+}
+
+//覆盖分页方法
+function clsStandardTableCtrl$page(strClsName) {
+    if (this.jsonData != null) {
+        $("." + strClsName).createPage({
+            pageCount: this.jsonData.pages,
+            current: this.jsonData.pageNum,
+            parentObj: this.ctrl,
+            backFn: function (p) {
+                var jsonParam = deepCopy(document.body.jsLee.jsonAll);
+                jsonParam.pageNum = p;
+                getAjaxResultLee(document.body.jsLee.requestUrl.path15,"POST",jsonParam,"pageTableInitCallBack(data)")
+                //$(this)[0].parentObj.jsCtrl.refresh();
+            }
+        });
+    }
+
 }
 
 $(function(){

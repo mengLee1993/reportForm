@@ -337,9 +337,8 @@ public class ReportHandler {
      * @param reportDatasource
      * @return
      */
-    public ReportRespDetail reportCoreDetail(ReportDatasource reportDatasource) {
-        ReportRespDetail reportRespDetail = new ReportRespDetail();
-
+    public PageDTO<ReportRespDetail> reportCoreDetail(ReportDatasource reportDatasource, CubeTree cubeTree) {
+        PageDTO<ReportRespDetail> pageDTO = new PageDTO<ReportRespDetail>(reportDatasource.getPageNum(),reportDatasource.getPageSize());
 
         String dataSourceName = reportDatasource.getDatasourceName();
 
@@ -357,7 +356,6 @@ public class ReportHandler {
 
             ReportDetail reportDetail = getFieldsByMap(tmpMap);
 
-            PageDTO<Object> pageDTO = new PageDTO<>(reportDatasource.getPageNum(),reportDatasource.getPageSize());
             //算total
             String sql = reportDetail.getSql();
 
@@ -369,12 +367,17 @@ public class ReportHandler {
 
 
             Integer count = reportAccessor.queryCount(selectCount,conn);
+            pageDTO.setTotal(count);
 
             //分页sql
             String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource.getDatabaseType(), pageDTO, count);
 
+            ReportRespDetail reportRespDetail = reportAccessor.reportPageList(detailSql, conn, cubeTree, reportDetail.getFieldList());
 
-            System.out.println(detailSql);
+            List<ReportRespDetail> list = new ArrayList<>();
+            list.add(reportRespDetail);
+            pageDTO.setResultData(list);
+
         } catch (DbException e) {
             logger.error("Occurred DbException.", e);
             // todo throw exception
@@ -382,7 +385,7 @@ public class ReportHandler {
             DataBaseUtil.closeConnection(conn);
         }
 
-        return reportRespDetail;
+        return pageDTO;
 
     }
 

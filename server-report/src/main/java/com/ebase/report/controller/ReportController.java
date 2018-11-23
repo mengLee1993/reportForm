@@ -122,8 +122,8 @@ public class ReportController {
      * @return
      */
     @RequestMapping("/reportCoreDetail")
-    public JsonResponse<ReportRespDetail> reportCoreDetail(@RequestBody JsonRequest<ReportDatasource> jsonRequest){
-        JsonResponse<ReportRespDetail> jsonResponse = new JsonResponse<ReportRespDetail>();
+    public JsonResponse<PageDTO<ReportRespDetail>> reportCoreDetail(@RequestBody JsonRequest<ReportDatasource> jsonRequest){
+        JsonResponse<PageDTO<ReportRespDetail>> jsonResponse = new JsonResponse<PageDTO<ReportRespDetail>>();
         try{
 
 
@@ -133,9 +133,8 @@ public class ReportController {
             CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());
 
 
-            ReportRespDetail reportRespDetail = reportHandler.reportCoreDetail(reportDatasource);
-
-            jsonResponse.setRspBody(reportRespDetail);
+            PageDTO<ReportRespDetail> pageDTO = reportHandler.reportCoreDetail(reportDatasource, cubeTree);
+            jsonResponse.setRspBody(pageDTO);
         }catch (Exception e){
             LOG.error("error = {}",e);
             jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
