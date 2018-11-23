@@ -390,7 +390,7 @@ public class ReportAccessorOracle extends AbstractAccessor {
                 if (!MeasureTypeEnum.CUSTOM.equals(measureEnum)) {
                     //系统级
                     String measureType = measureEnum.getMeasureType();
-                    builder.append( x.getFieldCode() + " as " + x.getFieldName() + ",");
+                    builder.append( x.getFieldCode() + " as " + x.getKey() + ",");
                 }
 //
 
