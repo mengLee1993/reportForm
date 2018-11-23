@@ -1260,7 +1260,9 @@ function initTable(){
 function pageTableInitCallBack(data){
     data = JSON.parse(data);
     if(data.retCode == "0000000"){
-        splitResultData(data);//初始化插件th tr模版行
+        if(data.rspBody){
+            splitResultData(data);//初始化插件th tr模版行
+        }
     }
 }
 
