@@ -9,7 +9,6 @@ import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.core.utils.ReportExportUtil;
-import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.charts.HighCharts;
 import com.ebase.report.model.*;
@@ -47,10 +46,6 @@ import java.util.concurrent.FutureTask;
 public class ReportController {
     private static Logger LOG = LoggerFactory.getLogger(ReportController.class);
 
-    private final String EXCEL_NAME = "数据报表明细";
-
-//    private final String url = "/report/";
-
     @Resource
     private ReportHandler reportHandler;
 
@@ -75,7 +70,6 @@ public class ReportController {
     //主题表
     @Autowired
     private RptPersonalSubjectService rptPersonalSubjectService;
-
 
     //账号
     @Autowired
@@ -122,6 +116,33 @@ public class ReportController {
 
         return jsonResponse;
     }
+
+    /**
+     * 报表列表
+     * @return
+     */
+    @RequestMapping("/reportCoreDetail")
+    public JsonResponse<ReportRespDetail> reportCoreDetail(@RequestBody JsonRequest<ReportDatasource> jsonRequest){
+        JsonResponse<ReportRespDetail> jsonResponse = new JsonResponse<ReportRespDetail>();
+        try{
+
+
+            ReportDatasource reportDatasource = jsonRequest.getReqBody();
+
+            //初始化cubeThree
+            CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());
+
+
+            ReportRespDetail reportRespDetail = reportHandler.reportCoreDetail(reportDatasource);
+
+        }catch (Exception e){
+            LOG.error("error = {}",e);
+            jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+        }
+        return jsonResponse;
+    }
+
+
 
     /**
      * 报表核心接口  动态报表 导出类

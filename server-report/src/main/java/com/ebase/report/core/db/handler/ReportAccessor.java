@@ -4,6 +4,8 @@ import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.db.DataDetailSQL;
 import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.cube.CubeTree;
+import com.ebase.report.model.ReportDetail;
+import com.ebase.report.model.ReportRespDetail;
 import com.ebase.report.model.RptDataDict;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
@@ -53,4 +55,17 @@ interface ReportAccessor {
 
     // distinct value
     public List<RptDataDict> queryDistinctFeild(String distinctSqlCount, Connection conn) throws DbException;
+
+    public Map<String,Object> reportCoreDetail(ReportDatasource reportDatasource);
+
+    /***
+     * 只拖到行区，查询明细列表
+     * @param sql
+     * @param conn
+     * @param cubeTree
+     * @param fieldList
+     * @return
+     * @throws DbException
+     */
+    public ReportRespDetail reportPageList(String sql, Connection conn, CubeTree cubeTree, List<RptDataField> fieldList) throws DbException;
 }

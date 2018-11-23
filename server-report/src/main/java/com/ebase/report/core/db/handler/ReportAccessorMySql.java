@@ -10,6 +10,7 @@ import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.Dimension;
+import com.ebase.report.model.ReportDetail;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.*;
@@ -253,7 +254,8 @@ public class ReportAccessorMySql extends AbstractAccessor {
      * @param builderSelect
      * @param builderWhe
      */
-    private void conversionDetailFoSql(String dbTypeEnumByName, List<Dimension> line, StringBuilder builderSelect, StringBuilder builderWhe) {
+    private List<Long>  conversionDetailFoSql(String dbTypeEnumByName, List<Dimension> line, StringBuilder builderSelect, StringBuilder builderWhe) {
+        List<Long> fieldIds = new ArrayList<>();
         line.forEach(x -> {
             DemandType demandType = x.getDemandType();
 
@@ -263,11 +265,18 @@ public class ReportAccessorMySql extends AbstractAccessor {
                 builderSelect.append(code + " as '" + x.getFieldName() + "',");
                 String s = x.toWHereSql(dbTypeEnumByName);
                 builderWhe.append(s);
+
+                //设置指标id
+                if(x.getFieldId() != null){
+                    fieldIds.add(Long.valueOf(x.getFieldId()));
+                }
             }else{
                 //度量值
             }
 
         });
+
+        return fieldIds;
     }
 
     @Override
@@ -327,6 +336,66 @@ public class ReportAccessorMySql extends AbstractAccessor {
         return selectSql;
 
     }
+
+    /**
+     * 查询详细sql
+     * @param reportDatasource
+     * @return
+     */
+    @Override
+    public Map<String,Object> reportCoreDetail(ReportDatasource reportDatasource) {
+        Map<String,Object> tmp = new HashMap<>();
+
+        //前台动态参数
+        ReportDynamicParam reportDynamicParam = reportDatasource.getReportDynamicParam();
+        //主题
+        String subjectType = reportDatasource.getSubjectType();
+        //数据库类型
+        String dbTypeEnumByName = reportDatasource.getDatabaseType();
+
+        List<Dimension> line = reportDynamicParam.getLine();  //行维度
+
+        //给仍出来
+        String filterSql = toWhereSqlFtiler(reportDatasource);
+
+        Set<ReportMeasure> measures = reportDynamicParam.getMeasures();
+        if(SubjectTypeEnum.DATATABLE.getCode().equals(subjectType)){
+
+            StringBuilder builderSelect = new StringBuilder(" select ");
+
+            StringBuilder builderWhe = new StringBuilder(" where 1 = 1 ");
+
+            ReportTable reportTable = reportDatasource.getReportTables().get(0);
+
+            //fieldIds 指标的fieldId
+            List<Long> fieldIds = conversionDetailFoSql(dbTypeEnumByName, line, builderSelect, builderWhe);
+
+            String selectSql = getMeauresDetail(measures, fieldIds);
+
+            String select = null;
+            if(StringUtil.isEmpty(selectSql)){
+                select = builderSelect.substring(0,builderSelect.lastIndexOf(","));
+            }else{
+                select = builderSelect.append(selectSql).toString();
+            }
+
+            StringBuilder builder = new StringBuilder(select);
+            builder.append("  from " + reportTable.getTableCode() );
+            builder.append(builderWhe).append(filterSql);
+
+            //sql
+            tmp.put(KEY_SQL,builder.toString());
+            //字段集合
+            tmp.put(KEY_FIELD_IDS,fieldIds);
+        }else if(SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)){
+            //主题 （多张表）
+
+        }
+
+        return tmp;
+    }
+
+
 
     @Override
     public List<RptDataTable> queryAllTables(Connection conn, DataBaseType dataBaseType) throws DbException {

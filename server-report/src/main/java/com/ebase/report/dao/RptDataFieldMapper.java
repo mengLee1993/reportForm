@@ -28,4 +28,6 @@ public interface RptDataFieldMapper {
     int insertBatch(@Param("fields") List<RptDataField> fields);
 
     List<RptDataField> selectList(RptDataField copy);
+
+    List<RptDataField> selectByPrimaryKeys(@Param("fields")List<Long> lds);
 }

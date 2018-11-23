@@ -36,6 +36,7 @@ public class ReportDatasource {
     // 图形参数配置
     private ChartOption chartOptions;
 
+
     public String getDatasourceName() {
         return datasourceName;
     }

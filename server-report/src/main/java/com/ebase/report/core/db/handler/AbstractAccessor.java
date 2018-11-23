@@ -12,7 +12,10 @@ import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.cube.DimensionKey;
+import com.ebase.report.dao.RptDataFieldMapper;
+import com.ebase.report.model.ReportRespDetail;
 import com.ebase.report.model.RptDataDict;
+import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.FilterArea;
 import com.ebase.report.model.dynamic.FilterAreaValue;
@@ -42,11 +45,15 @@ import java.util.*;
 public abstract class AbstractAccessor implements ReportAccessor {
     private static Logger LOG = LoggerFactory.getLogger(AbstractAccessor.class);
     //固定长度  10000 分页一个
-    public final Integer LENGTH = 10000;
+    public static final Integer LENGTH = 10000;
 
-    protected final String EXCEL_NAME = "数据报表明细";
+    protected static final String EXCEL_NAME = "数据报表明细";
 
     private final String LIMIT = " limit ";
+
+    public static final String KEY_SQL = "key_sql";
+
+    public static final String KEY_FIELD_IDS = "key_field_ids";
 
 
     public String getReportSql(ReportDatasource reportDatasource) {
@@ -463,4 +470,91 @@ public abstract class AbstractAccessor implements ReportAccessor {
         return type;
     }
 
+    /**
+     * 拼装sql
+     * @param measures
+     * @param fieldIds
+     * @return
+     */
+    protected String getMeauresDetail(Set<ReportMeasure> measures, List<Long> fieldIds) {
+        String selectSql = "";
+
+        if(CollectionUtils.isNotEmpty(measures)){
+            StringBuilder builder = new StringBuilder();
+
+            measures.forEach(x -> {
+                MeasureTypeEnum measureEnum = x.getMeasureType();
+
+                String measureType = measureEnum.getMeasureType();
+                if (!MeasureTypeEnum.CUSTOM.equals(measureEnum) && !"1".equals(x.getFieldCode())) {
+                    //系统级 都是系统级的
+                    builder.append(x.getFieldCode() + " as " + x.getKey() + ",");
+                    if(x.getFieldId() != null){
+                        fieldIds.add(Long.valueOf(x.getFieldId()));
+                    }
+
+                }
+
+            });
+            selectSql = builder.substring(0,builder.lastIndexOf(","));
+        }
+        return selectSql;
+    }
+
+    /***
+     * 只拖到行区，查询明细列表
+     * @param sql
+     * @param conn
+     * @param cubeTree
+     * @param fieldList
+     * @return
+     * @throws DbException
+     */
+    @Override
+    public ReportRespDetail reportPageList(String sql, Connection conn, CubeTree cubeTree, List<RptDataField> fieldList) throws DbException {
+        ReportRespDetail reportRespDetail = new ReportRespDetail();
+        reportRespDetail.setHeaders(cubeTree.getHeaders());
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            //执行sql 查询
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            try {
+                ResultSetMetaData rsmd = rs.getMetaData();
+                // 遍历结果集
+                int columnCount = rsmd.getColumnCount();
+
+                List<List<String>> dataList = new ArrayList<>();
+                while (rs.next()) {
+                    Map<String, String> rsMap = new HashMap<>();
+
+                    for (int i = 0; i < columnCount; i++) {
+                        String columnName = rsmd.getColumnLabel(i + 1);
+                        String columnValue = rs.getString(columnName);
+                        Dimension dimension = cubeTree.getDimensionMap().get(columnName);
+                        rsMap.put(dimension.getKey(), columnValue);
+                    }
+
+                    dataList.add(cubeTree.getDataList(rsMap));
+                }
+
+                reportRespDetail.setDataList(dataList);
+            } catch (SQLException e) {
+                LOG.error("Occurred SQLException.", e);
+                throw new DbException(e);
+            }
+
+        } catch (SQLException e) {
+            LOG.error("Occurred DbException.", e);
+            throw new DbException(e);
+        } finally {
+            DataBaseUtil.closeResultSet(rs);
+            DataBaseUtil.closeStatment(pstmt);
+        }
+
+        return reportRespDetail;
+    }
 }
