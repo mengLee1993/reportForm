@@ -143,7 +143,6 @@ public class ReportHandler {
         rptAnalyseLog.setPersonalSubjectId(reportDatasource.getPersonalSubjectId());
         rptAnalyseLog.setSqlExecutionTime(time);
 
-        System.out.println("1");
         //执行sql 查询
         rptAnalyseLogService.addReportLog(rptAnalyseLog);
     }
@@ -363,9 +362,12 @@ public class ReportHandler {
             String sql = reportDetail.getSql();
 
             StringBuilder s = new StringBuilder(sql);
-            String selectCount = s.substring(s.lastIndexOf("select") + 6, s.length() );
+            String selectCount = s.substring(s.lastIndexOf("from"), s.length() );
             selectCount = "select count(1) " + selectCount;
             //先看一下总count
+            //select DATASOURCE_ID, DATASOURCE_NAME, DATABASE_TYPE, CONNPOOL_TYPE, DATASOURCE_URL, USER_NAME, PASSWORD, INITIAL_SIZE, MAX_ACTIVE, MAX_WAIT, MAX_IDLE, REMOVE_STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, DATASOURCE_CHINESE_NAME from `rpt_datasource` where REMOVE_STATUS = 0 order by DATASOURCE_ID desc
+
+
             Integer count = reportAccessor.queryCount(selectCount,conn);
 
             //分页sql

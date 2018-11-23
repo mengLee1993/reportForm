@@ -67,13 +67,12 @@ public class Demo {
 
 
     public static void main(String[] args) {
+        String sql = "select DATASOURCE_ID, DATASOURCE_NAME, DATABASE_TYPE, CONNPOOL_TYPE, DATASOURCE_URL, USER_NAME, PASSWORD, INITIAL_SIZE, MAX_ACTIVE, MAX_WAIT, MAX_IDLE, REMOVE_STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, DATASOURCE_CHINESE_NAME from `rpt_datasource` where REMOVE_STATUS = 0 order by DATASOURCE_ID desc \n";
 
-        String s = "12313${demo3}23${demo2}e2dsda${demo}1231";
 
-//        String aaa = s.replace("${demo}", "AAA");
-        String[] strings1 = new String[]{"${demo3}","${demo2}","${demo}"};
-        String[] strings2 = new String[]{"AAA","BBB","CCC"};
-        String s1 = StringUtil.replaceEach(s, strings1, strings2);
-        System.out.println(s1);
+        StringBuilder s = new StringBuilder(sql);
+        String selectCount = s.substring(s.lastIndexOf("from"), s.length() );
+        selectCount = "select count(1) " + selectCount;
+        System.out.println(selectCount);
     }
 }
