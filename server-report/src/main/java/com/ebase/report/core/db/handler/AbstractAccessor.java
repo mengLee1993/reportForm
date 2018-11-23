@@ -496,7 +496,9 @@ public abstract class AbstractAccessor implements ReportAccessor {
                 }
 
             });
-            selectSql = builder.substring(0,builder.lastIndexOf(","));
+            if(StringUtil.isNotEmpty(builder)){
+                selectSql = builder.substring(0,builder.lastIndexOf(","));
+            }
         }
         return selectSql;
     }

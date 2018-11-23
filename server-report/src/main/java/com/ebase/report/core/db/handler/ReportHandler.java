@@ -371,7 +371,6 @@ public class ReportHandler {
 
             //分页sql
             String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource.getDatabaseType(), pageDTO, count);
-            System.out.println(detailSql);
 
             ReportRespDetail reportRespDetail = reportAccessor.reportPageList(detailSql, conn, cubeTree, reportDetail.getFieldList());
 
