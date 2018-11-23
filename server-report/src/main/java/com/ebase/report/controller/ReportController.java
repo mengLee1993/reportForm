@@ -135,6 +135,7 @@ public class ReportController {
 
             ReportRespDetail reportRespDetail = reportHandler.reportCoreDetail(reportDatasource);
 
+            jsonResponse.setRspBody(reportRespDetail);
         }catch (Exception e){
             LOG.error("error = {}",e);
             jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);

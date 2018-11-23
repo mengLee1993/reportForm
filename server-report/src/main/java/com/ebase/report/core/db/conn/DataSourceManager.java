@@ -168,13 +168,19 @@ public class DataSourceManager {
     public void closeDataSource(DataSourceConfig dataSourceConfig) {
         if (ConnPoolType.CONN_POOL_TYPE_BONECP.equals(dataSourceConfig.getConnPoolType())) {
             BoneCPDataSource dataSource = (BoneCPDataSource) dataSourceMap.get(dataSourceConfig.getDataSourceName());
-            dataSource.close();
+            if(dataSource != null){
+                dataSource.close();
+            }
         } else if (ConnPoolType.CONN_POOL_TYPE_HIKARI.equals(dataSourceConfig.getConnPoolType())) {
             HikariDataSource dataSource = (HikariDataSource) dataSourceMap.get(dataSourceConfig.getDataSourceName());
-            dataSource.close();
+            if(dataSource != null){
+                dataSource.close();
+            }
         } else if(ConnPoolType.CONN_POOL_TYPE_DRUID.equals(dataSourceConfig.getConnPoolType())){
             DruidDataSource dataSource = (DruidDataSource) dataSourceMap.get(dataSourceConfig.getDataSourceName());
-            dataSource.close();
+            if(dataSource != null){
+                dataSource.close();
+            }
         }else {
             logger.error("未知的数据库类型");
         }
@@ -240,7 +246,9 @@ public class DataSourceManager {
     //清空数据连接
     public void destroy(String dataSourceName){
         DataSourceConfig dataSourceConfig = dataSourceConfigMap.get(dataSourceName);
-        closeDataSource(dataSourceConfig);
+        if(dataSourceConfig != null){
+            closeDataSource(dataSourceConfig);
+        }
     }
 
 }

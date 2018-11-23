@@ -34,11 +34,13 @@ public class DbTest {
     public void testDb() {
         DataSourceConfig sourceConfig = new DataSourceConfig();
         sourceConfig.setConnPoolType(ConnPoolType.CONN_POOL_TYPE_HIKARI);
-        sourceConfig.setDataBaseType(DataBaseType.DB_TYPE_ORACLE);
-        sourceConfig.setDataSourceName("xxxx");
-        sourceConfig.setDataSourceURL("jdbc:oracle:thin:@//10.3.247.175:1521/jgcrmdbt");
-        sourceConfig.setDataSourceUserName("WARRANTY");
-        sourceConfig.setDataSourcePassword("WARRANTY");
+        sourceConfig.setDataBaseType(DataBaseType.DB_TYPE_DB2);
+        sourceConfig.setDataSourceName("sgdw");
+        sourceConfig.setDataSourceURL("jdbc:db2://10.68.28.25:50049/report:user=db2inst1;password=db2inst1");
+        //jdbc:db2://10.68.28.25:50049/sgdw:user=db2inst1;password=db2inst1;
+
+        sourceConfig.setDataSourceUserName("db2inst1");
+        sourceConfig.setDataSourcePassword("db2inst1");
         sourceConfig.setDataSourceMaxActive(15);
 
         try {
@@ -65,9 +67,9 @@ public class DbTest {
         }
 
         try {
-            List<RptDataTable> tables = reportHandler.queryAllTables("report");
+            List<RptDataTable> tables = reportHandler.queryAllTables("sgdw");
 
-            List<RptDataField> fields = reportHandler.queryFields("report", "movie_data_10w");
+            List<RptDataField> fields = reportHandler.queryFields("sgdw", "movie_data_10w");
 
             for (RptDataTable dataTable : tables) {
                 System.out.println(dataTable.getTableCode());
