@@ -10,6 +10,7 @@ import com.ebase.report.cube.Dimension;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.dynamic.*;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,8 @@ import java.util.*;
  */
 public class ReportAccessorOracle extends AbstractAccessor {
     private static Logger logger = LoggerFactory.getLogger(ReportAccessorOracle.class);
-
+    private static String TABLE_NAME = "TABLE_NAME";
+    private static String COMMENTS = "COMMENTS";
     @Override
     public List<RptDataField> queryColumns(Connection conn, String tableName) throws DbException {
         List<RptDataField> fieldList = new ArrayList<>();
@@ -467,8 +469,18 @@ public class ReportAccessorOracle extends AbstractAccessor {
     @Override
     public List<RptDataTable> queryAllTables(Connection conn, DataBaseType dataBaseType) throws DbException {
         List<RptDataTable> tables = new ArrayList<RptDataTable>();
-        ResultSet rs = null;
-
+        //用于表示sql中参数的位置
+        int i = 1;
+        //查询表名的语句执行对象
+        PreparedStatement pTableName = null;
+        //查询注释的语句执行对象
+        PreparedStatement pConment = null;
+        //装有表名的结果集
+        ResultSet rsTN = null;
+        //装有注释的结果集
+        ResultSet rsCT = null;
+        String tableName = null;
+        Object comment = null;
         try {
 
             DatabaseMetaData dbMetaData = conn.getMetaData();
@@ -481,26 +493,38 @@ public class ReportAccessorOracle extends AbstractAccessor {
             }else {
                 throw new RuntimeException("不认识的数据库类型!");
             }
-            String sql = "select * from user_tab_comments ";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                //只要表名这一列
-                // System.out.println(rs.getObject("TABLE_NAME"));
-                System.out.println(rs.getObject("TABLE_NAME")+"-------->"+rs.getObject("COMMENTS"));
-                RptDataTable rptDataTable = new RptDataTable();
-                rptDataTable.setTableCode(rs.getObject("TABLE_NAME").toString());
-                if(rs.getObject("COMMENTS") == null || "".equals(rs.getObject("COMMENTS"))){
-                    rptDataTable.setComment("此表描述为空,若需要,请去对应的表写入。");
-                }else {
-                    rptDataTable.setComment(rs.getObject("COMMENTS").toString());
+            //获取数据库中所有的表<不包括系统表>
+            String sqlTableName = "SELECT TABLE_NAME FROM USER_TABLES";
+            String sqlComment   = "SELECT COMMENTS FROM USER_TAB_COMMENTS WHERE TABLE_NAME=?";
+
+            pTableName = conn.prepareStatement(sqlTableName);
+            rsTN = pTableName.executeQuery();
+            while (rsTN.next()) {
+                tableName = rsTN.getObject(TABLE_NAME).toString();
+
+                pConment = conn.prepareStatement(sqlComment);
+                pConment.setString(i , tableName);
+                rsCT = pConment.executeQuery();
+                while (rsCT.next()){
+                    comment = rsCT.getObject(COMMENTS);
+                    RptDataTable rptDataTable = new RptDataTable();
+                    rptDataTable.setTableCode(tableName);
+                    if(comment == null){
+                        String str = "此表描述为空,若需要,请去对应的表写入";
+                        rptDataTable.setComment(str);
+                        System.out.println(tableName+str);
+                    }else {
+                        rptDataTable.setComment(comment.toString());
+                        System.out.println(tableName+"------->"+comment);
+                    }
+                    tables.add(rptDataTable);
                 }
-                tables.add(rptDataTable);
             }
         } catch (SQLException e) {
             throw new DbException(e);
         } finally {
-            DataBaseUtil.closeResultSet(rs);
+            DataBaseUtil.closeResultSet(rsTN);
+            DataBaseUtil.closeResultSet(rsCT);
         }
         return tables;
     }

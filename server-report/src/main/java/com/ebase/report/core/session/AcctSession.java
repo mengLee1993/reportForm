@@ -13,6 +13,7 @@ public class AcctSession {
 
     private Long roleId;    //角色id
 
+    private String token;
 
     private Long entId;         //企业标识
 
@@ -62,6 +63,14 @@ public class AcctSession {
 
 //    private String companyId;   //公司ID
 
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public List<String> getPermissions() {
         return permissions;

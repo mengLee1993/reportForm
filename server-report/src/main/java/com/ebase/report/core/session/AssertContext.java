@@ -40,6 +40,18 @@ public class AssertContext {
     }
 
     /**
+     * 获得token
+     * @return
+     */
+    public static String getToken(){
+        String token = null;
+        if(allContext.get() != null){
+            token = allContext.get().getToken();
+        }
+        return token;
+    }
+
+    /**
      * 获得角色id
      * @return
      */

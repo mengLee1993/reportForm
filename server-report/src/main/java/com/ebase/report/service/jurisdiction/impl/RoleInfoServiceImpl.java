@@ -357,7 +357,9 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
         roleInfo.setStartRow(pageDTO.getStartRow());
         List<RoleInfo> list = roleInfoMapper.queryForList(roleInfo);
-
+        for(int i=0;i<list.size();i++){
+            list.get(i).setReRoleId(String.valueOf(list.get(i).getRoleId()));
+        }
         pageDTO.setResultData(list);
         return pageDTO;
     }

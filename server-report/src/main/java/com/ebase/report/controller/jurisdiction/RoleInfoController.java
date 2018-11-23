@@ -1,6 +1,8 @@
 package com.ebase.report.controller.jurisdiction;
 
 
+import com.ebase.report.common.Status;
+import com.ebase.report.core.HTTPUtil;
 import com.ebase.report.core.ParamType;
 import com.ebase.report.core.json.JsonRequest;
 import com.ebase.report.core.json.JsonResponse;
@@ -16,17 +18,18 @@ import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统基础模块-  系统角色定义
@@ -37,6 +40,12 @@ import java.util.Map;
 public class RoleInfoController {
 
     private static Logger LOG = LoggerFactory.getLogger(RoleInfoController.class);
+
+    @Value("${juri.type}")
+    private String type;
+
+    @Value("${juri.auth.ip}")
+    private String authIp;
 
     @Autowired
     private RoleInfoService roleInfoService;
@@ -359,8 +368,40 @@ public class RoleInfoController {
         try {
             LOG.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
             RoleInfo roleInfo = jsonRequest.getReqBody();
-            PageDTO<RoleInfo> acctOrgSysVOs = roleInfoService.queryForList(roleInfo);
-            jsonResponse.setRspBody(acctOrgSysVOs);
+            if(type.equals("core")) {
+                PageDTO<RoleInfo> acctOrgSysVOs = roleInfoService.queryForList(roleInfo);
+                jsonResponse.setRspBody(acctOrgSysVOs);
+            }else if (type.equals("report")) {
+                String url = "http://" + authIp + "/auth/ac/ac-role/findUsingProjectRoles.action?_dc=1542681842909&page=" + roleInfo.getPageNum() + "&limit=" + roleInfo.getPageSize() +
+                        "&qm.projectId=CAS&qm.roleName="+roleInfo.getRoleTitle()+"&qm.roleId="+roleInfo.getRoleCode();
+                //String url="http://192.168.1.100:7070/auth/ac/login/dologin.action?username=liq0416&password=admin123";
+                HashMap map = new HashMap();
+                JSONObject json = JSON.parseObject(HTTPUtil.postParams(url, AssertContext.getToken(), map));
+                System.out.println(json);
+                String success = json.getString("success");
+                if (success.equals("true") || success == "true") {
+                    List<RoleInfo> roleInfoVOS = new ArrayList<>();
+                    PageDTO<RoleInfo> pages = new PageDTO();
+                    if (JSON.parseObject(json.getString("items")).get("records") != null) {
+                        JSONArray jsonObject1 = JSON.parseObject(json.getString("items")).getJSONArray("records");
+                        for (int i = 0; i < jsonObject1.size(); i++) {
+                            RoleInfo roleInfo1 = new RoleInfo();
+                            roleInfo1.setRoleDesc(JSON.parseObject(jsonObject1.getString(i)).getString("roleDesc"));
+                            roleInfo1.setReRoleId(JSON.parseObject(jsonObject1.getString(i)).getString("roleId"));
+                            roleInfo1.setRoleCode(JSON.parseObject(jsonObject1.getString(i)).getString("roleId"));
+                            roleInfo1.setRoleTitle(JSON.parseObject(jsonObject1.getString(i)).getString("roleName"));
+                            roleInfo1.setOrgId(JSON.parseObject(jsonObject1.getString(i)).getString("orgId"));
+                            roleInfo1.setStatus(Status.START.getCode());
+                            roleInfoVOS.add(roleInfo1);
+                        }
+                    }
+                    pages.setResultData(roleInfoVOS);
+                    pages.setPages(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("pages")));
+                    pages.setPageNum(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("limit")));
+                    pages.setTotal(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("total")));
+                    jsonResponse.setRspBody(pages);
+                }
+            }
         } catch (Exception e) {
             LOG.error(e.getMessage() ,e);
             e.printStackTrace();

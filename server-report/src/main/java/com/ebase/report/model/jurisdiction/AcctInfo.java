@@ -10,6 +10,8 @@ import java.util.List;
 public class AcctInfo {
     private Long acctId;        //账户标识
 
+    private String reAcctId;
+
     private Long entId;         //企业标识
 
     private String loginSource; //登录来源
@@ -92,6 +94,14 @@ public class AcctInfo {
     private int startRow;
 
     private String sysTitle;
+
+    public String getReAcctId() {
+        return reAcctId;
+    }
+
+    public void setReAcctId(String reAcctId) {
+        this.reAcctId = reAcctId;
+    }
 
     public String getSysTitle() {
         return sysTitle;

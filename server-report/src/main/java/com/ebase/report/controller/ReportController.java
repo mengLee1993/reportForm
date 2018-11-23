@@ -1,6 +1,7 @@
 package com.ebase.report.controller;
 
 import com.ebase.report.common.FileTypeEnum;
+import com.ebase.report.core.HTTPUtil;
 import com.ebase.report.core.ZipUtils;
 import com.ebase.report.core.db.handler.ReportHandler;
 import com.ebase.report.core.json.JsonRequest;
@@ -29,7 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +51,12 @@ public class ReportController {
 
     @Resource
     private ReportHandler reportHandler;
+
+    @Value("${juri.type}")
+    private String type;
+
+    @Value("${juri.auth.ip}")
+    private String authIp;
 
     @Autowired
     private ReportService reportService;
@@ -518,12 +527,39 @@ public class ReportController {
 
         try{
             AcctInfo acctInfo = jsonRequest.getReqBody();
-
-            PageDTO<AcctInfo> pageDTO = acctService.listShareReport(acctInfo);
-
-//            Map<String,List<AcctInfo>> result = new HashMap<>();
-//            result.put("resultData",arr);
-            jsonResponse.setRspBody(pageDTO);
+            if(type.equals("core")){
+                PageDTO<AcctInfo> pageDTO = acctService.listShareReport(acctInfo);
+                jsonResponse.setRspBody(pageDTO);
+            }else if (type.equals("report")) {
+                String url = "http://" + authIp + "/auth/ac/usage-survey/getUsageSurveyUsersByPage.action?_dc=1542681842909&page=" +
+                        acctInfo.getPageNum() + "&limit=" + acctInfo.getPageSize()
+                        + "&qm.projectId=CAS&qm.userNameCn="+acctInfo.getAcctTitle();
+                //String url="http://192.168.1.100:7070/auth/ac/login/dologin.action?username=liq0416&password=admin123";
+                HashMap map = new HashMap();
+                JSONObject json = JSON.parseObject(HTTPUtil.postParams(url, AssertContext.getToken(), map));
+                System.out.println(json);
+                String success = json.getString("success");
+                if (success.equals("true") || success == "true") {
+                    List<AcctInfo> acctInfos = new ArrayList<>();
+                    PageDTO<AcctInfo> pages = new PageDTO();
+                    if (JSON.parseObject(json.getString("items")).get("records") != null) {
+                        JSONArray jsonObject1 = JSON.parseObject(json.getString("items")).getJSONArray("records");
+                        for (int i = 0; i < jsonObject1.size(); i++) {
+                            AcctInfo acctInfo1=new AcctInfo();
+                            acctInfo1.setReAcctId(JSON.parseObject(jsonObject1.getString(i)).getString("loginId"));
+                            acctInfo1.setName(JSON.parseObject(jsonObject1.getString(i)).getString("userNameCn"));
+                            acctInfo1.setAcctTitle(JSON.parseObject(jsonObject1.getString(i)).getString("loginId"));
+                            acctInfo1.setOrgId(JSON.parseObject(jsonObject1.getString(i)).getString("orgId"));
+                            acctInfos.add(acctInfo1);
+                        }
+                    }
+                    pages.setResultData(acctInfos);
+                    pages.setPages(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("pages")));
+                    pages.setPageNum(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("limit")));
+                    pages.setTotal(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("total")));
+                    jsonResponse.setRspBody(pages);
+                }
+            }
         }catch (Exception e){
             LOG.error("error = {}",e);
             jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
