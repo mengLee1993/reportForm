@@ -223,8 +223,16 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
         ServiceResponse<Integer> sR = new ServiceResponse<Integer>();
         RptDatasource RptDatasource = BeanCopyUtil.copy(vo, RptDatasource.class);
 
-        //需要删除 数据源
-        DataSourceManager.get().destroy(vo.getDatasourceName());
+
+        int removeStatus = vo.getRemoveStatus();
+
+        if(removeStatus == 0){ //未
+
+        }else{
+            //需要删除 数据源
+            DataSourceManager.get().destroy(vo.getDatasourceName());
+        }
+
         sR.setRetContent(dsMapper.updateByPrimaryKeySelective(RptDatasource)); //都是 逻辑删除 不是物理删除
         return sR;
     }

@@ -8,6 +8,8 @@ import com.ebase.report.core.db.conn.DataSourceConfig;
 import com.ebase.report.core.db.conn.DataSourceManager;
 import com.ebase.report.core.db.conn.DbConnFactory;
 import com.ebase.report.core.db.exception.DbException;
+import com.ebase.report.core.pageUtil.PageDTO;
+import com.ebase.report.core.pageUtil.PageReportDetail;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.dao.RptDataFieldMapper;
 import com.ebase.report.model.*;
@@ -141,7 +143,6 @@ public class ReportHandler {
         rptAnalyseLog.setPersonalSubjectId(reportDatasource.getPersonalSubjectId());
         rptAnalyseLog.setSqlExecutionTime(time);
 
-        System.out.println("1");
         //执行sql 查询
         rptAnalyseLogService.addReportLog(rptAnalyseLog);
     }
@@ -336,9 +337,8 @@ public class ReportHandler {
      * @param reportDatasource
      * @return
      */
-    public ReportRespDetail reportCoreDetail(ReportDatasource reportDatasource) {
-        ReportRespDetail reportRespDetail = new ReportRespDetail();
-
+    public PageDTO<ReportRespDetail> reportCoreDetail(ReportDatasource reportDatasource, CubeTree cubeTree) {
+        PageDTO<ReportRespDetail> pageDTO = new PageDTO<ReportRespDetail>(reportDatasource.getPageNum(),reportDatasource.getPageSize());
 
         String dataSourceName = reportDatasource.getDatasourceName();
 
@@ -354,11 +354,30 @@ public class ReportHandler {
             //生成sql
             Map<String,Object> tmpMap = reportAccessor.reportCoreDetail(reportDatasource);
 
+            ReportDetail reportDetail = getFieldsByMap(tmpMap);
 
-            ReportDetail reportDetail1 = getFieldsByMap(tmpMap);
+            //算total
+            String sql = reportDetail.getSql();
+
+            StringBuilder s = new StringBuilder(sql);
+            String selectCount = s.substring(s.lastIndexOf("from"), s.length() );
+            selectCount = "select count(1) " + selectCount;
+            //先看一下总count
+            //select DATASOURCE_ID, DATASOURCE_NAME, DATABASE_TYPE, CONNPOOL_TYPE, DATASOURCE_URL, USER_NAME, PASSWORD, INITIAL_SIZE, MAX_ACTIVE, MAX_WAIT, MAX_IDLE, REMOVE_STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, DATASOURCE_CHINESE_NAME from `rpt_datasource` where REMOVE_STATUS = 0 order by DATASOURCE_ID desc
 
 
-            System.out.println(reportRespDetail);
+            Integer count = reportAccessor.queryCount(selectCount,conn);
+            pageDTO.setTotal(count);
+
+            //分页sql
+            String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource.getDatabaseType(), pageDTO, count);
+
+            ReportRespDetail reportRespDetail = reportAccessor.reportPageList(detailSql, conn, cubeTree, reportDetail.getFieldList());
+
+            List<ReportRespDetail> list = new ArrayList<>();
+            list.add(reportRespDetail);
+            pageDTO.setResultData(list);
+
         } catch (DbException e) {
             logger.error("Occurred DbException.", e);
             // todo throw exception
@@ -366,7 +385,7 @@ public class ReportHandler {
             DataBaseUtil.closeConnection(conn);
         }
 
-        return reportRespDetail;
+        return pageDTO;
 
     }
 
