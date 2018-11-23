@@ -1254,7 +1254,7 @@ function initTable(){
             }
             dataResult.resultData.push(jsonItem);
         }
-        var $("#tableList")[0].data = dataResult;
+        $("#tableList")[0].data = dataResult;
         document.body.jsCtrl.ctrl = $("tableList")[0];
         document.body.jsCtrl.init();
     }
