@@ -161,7 +161,8 @@
                     document.body.jsCtrl.ctrl = $("#tableList")[0];
                     document.body.jsCtrl.init();
                 }else{
-                    aletr(data.retDesc);
+                    var alertBox=new clsAlertBoxCtrl();
+                    alertBox.Alert(data.retDesc,"提示");
                 }
             });
         }
