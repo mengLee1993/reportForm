@@ -782,6 +782,9 @@ function measureInit(cloneRow,jsonItem){
             var cloneSpecialRow = $(cloneRow).find("#templateSpecialRow").clone(true);
             cloneSpecialRow.attr("id","cloneSpecialRow").show();
             cloneSpecialRow.find("#measuresName").html(jsonItem.rptMeasures[nI].measuresName);
+            if(jsonItem.rptMeasures[nI].measureType == "SUM"){
+                cloneSpecialRow.find("#measureDeleteOpe").hide();
+            }
             cloneSpecialRow[0].jsonData = jsonItem.rptMeasures[nI];
             if(!document.body.jsLee.personalAnalysisId){
                 cloneSpecialRow.find("#measuresName").on("click",function () {//指标编辑操作
@@ -1231,7 +1234,6 @@ function initTable(){
         });
     }else if(jsonParam.reportDynamicParam.column.length == 0 && jsonParam.reportDynamicParam.line.length > 0){//刷新分页表格
         $("#pageTableBox").show();
-        $("#tableList").html("");
         getAjaxResultLee(document.body.jsLee.requestUrl.path15,"POST",document.body.jsLee.jsonAll,"pageTableInitCallBack(data)");
         /*var data = {"retCode":"0000000","retDesc":"操作成功!","timestamp":"2018-11-23 09:26:53.116","rspBody":{"pageNum":3,"pageSize":10,"startRow":0,"total":100,"pages":10,"resultData":[{"headers":["标题A","标题B","标题C","标题D","标题E"],"dataList":[["a11111","b11111","c11111","d11111","e11111"],["a22222","b22222","c22222","d22222","e22222"],["a33333","b33333","c33333","d33333","e33333"],["a44444","b44444","c44444","d44444","e44444"],["a55555","b55555","c55555","d55555","e55555"],["a66666","b66666","c66666","d66666","e66666"]],"pageNum":0,"pageSize":0,"total":0,"pages":0}],"requestData":null,"firstPage":false,"lastPage":false}};
         splitResultData(data);*/
@@ -1260,12 +1262,15 @@ function initTable(){
 function pageTableInitCallBack(data){
     data = JSON.parse(data);
     if(data.retCode == "0000000"){
-        splitResultData(data);//初始化插件th tr模版行
+        if(data.rspBody){
+            splitResultData(data);//初始化插件th tr模版行
+        }
     }
 }
 
 //初始化插件th tr模版行
 function splitResultData(data){
+    $("#tableList").html("");
     var titleArr = data.rspBody.resultData[0].headers;
     var headerTh;
     var bodyTd;
