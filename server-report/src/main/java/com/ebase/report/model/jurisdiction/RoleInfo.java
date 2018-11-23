@@ -12,6 +12,8 @@ public class RoleInfo {
 
     private int pageSize = 10;
 
+    private String reRoleId;
+
     private int startRow;
 
     private Long roleId;            //角色ID。
@@ -88,6 +90,13 @@ public class RoleInfo {
 
     private Long copyId;
 
+    public String getReRoleId() {
+        return reRoleId;
+    }
+
+    public void setReRoleId(String reRoleId) {
+        this.reRoleId = reRoleId;
+    }
 
     public int getPageNum() {
         return pageNum;

@@ -94,7 +94,9 @@ public class AcctServiceImpl implements AcctService {
 
         acctInfo.setStartRow(pageDTO.getStartRow());
         List<AcctInfo> list = acctInfoMapper.selectShareReport(acctInfo);
-
+        for(int i=0;i<list.size();i++){
+            list.get(i).setReAcctId(String.valueOf(list.get(i).getAcctId()));
+        }
         pageDTO.setResultData(list);
         return pageDTO;
     }

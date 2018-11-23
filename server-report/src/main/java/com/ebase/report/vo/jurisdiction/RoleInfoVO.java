@@ -11,6 +11,7 @@ public class RoleInfoVO {
 
     private int startRow;
 
+    private String reRoleId;
 
     private Long roleId;            //角色ID
 
@@ -75,6 +76,14 @@ public class RoleInfoVO {
     private Long sysId;
 
     private Long copyId;
+
+    public String getReRoleId() {
+        return reRoleId;
+    }
+
+    public void setReRoleId(String reRoleId) {
+        this.reRoleId = reRoleId;
+    }
 
     public int getStartRow() {
         return startRow;
