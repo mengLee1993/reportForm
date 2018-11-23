@@ -367,4 +367,14 @@
         limit #{startRow},#{pageSize}
     </select>
 
+    <delete id="deleteByDatasourceId" parameterType="java.lang.Long" >
+         delete from rpt_data_table
+        where 1 =1
+        and DATASOURCE_ID = #{datasourceId}
+    </delete>
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from rpt_data_table
+        where 1 =1
+        and TABLE_ID = #{tableId}
+    </delete>
 </mapper>

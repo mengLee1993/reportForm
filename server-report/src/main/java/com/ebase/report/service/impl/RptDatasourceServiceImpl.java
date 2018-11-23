@@ -275,6 +275,7 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
         //删除数据表
         dsMapper.deleteById(datasourceId);
 
+        rptDataTableMapper.deleteByDatasourceId(datasourceId);
         dataTables.forEach(x -> {
             //数据表id
             Long tableId = x.getTableId();

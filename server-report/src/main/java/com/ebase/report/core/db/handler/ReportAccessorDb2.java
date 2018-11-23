@@ -38,6 +38,10 @@ public class ReportAccessorDb2 extends AbstractAccessor {
 
     private static final String REMARKS = "REMARKS";
 
+    private static final String COLNAME = "COLNAME";
+
+    private static final String TYPENAME = "TYPENAME";
+
 
     /**
      * 生成my sql 实现
@@ -142,18 +146,19 @@ public class ReportAccessorDb2 extends AbstractAccessor {
         ResultSet rs = null;
 
         try {
-            String sql = "show full fields from "+tableName;
+            String sql = "SELECT COLNAME,TYPENAME,REMARKS from syscat.columns where tabname='"+tableName+"'";
             //
-            pstmt = conn.prepareStatement(sql);
 //            pstmt.setString(1, tableName);
 
+            pstmt = (PreparedStatement)conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 RptDataField field = new RptDataField();
 //                String javaStyle = StringUtil.javaStyle(rs.getString(1));
-                field.setFieldCode(rs.getString(1));
-                field.setFieldType(typesConvert(rs.getString(2)));
-                field.setFieldName(rs.getString(9));
+                field.setFieldCode(rs.getString(COLNAME));
+
+                field.setFieldType(typesConvert(rs.getString(TYPENAME).toLowerCase()));
+                 field.setFieldName(rs.getString(REMARKS));
 
                 fieldList.add(field);
             }

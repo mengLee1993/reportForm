@@ -92,7 +92,9 @@ public class RptDataTableServiceImpl implements RptDataTableService {
     //--------------------------------删除,假删除,改变状态-------------------------
     public ServiceResponse<Integer> removeByPrimaryKey(Long tableId) {
         ServiceResponse<Integer> sR = new ServiceResponse<>();
-        sR.setRetContent(rptDataTableMapper.deleteByPrimaryKey(tableId));
+        sR.setRetContent(rptDataTableMapper.deleteById(tableId));
+
+        rptDataFieldMapper.deleteByTableId(tableId);
         return sR;
     }
 

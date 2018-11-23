@@ -41,4 +41,7 @@ public interface RptDataTableMapper {
     //使用limit分页
     List<RptDataTable> selectByPage(RptDataTable model);
 
+    int deleteByDatasourceId(Long datasourceId);
+
+    Integer deleteById(Long tableId);
 }
