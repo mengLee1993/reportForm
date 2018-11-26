@@ -180,20 +180,7 @@ public class ReportController {
                 List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree,rptPersionalDownloadVO);
 
                 int i = 0;
-                int size = reportCoreDetailExcels.size();
-                List<File> files = new ArrayList<>(size);
-                for(ReportRespDetail x:reportCoreDetailExcels){
-                    //生成workbook
-                    Workbook workbook = ExportExcelUtils.createExcelWorkBook("数据报表","数据报表","数据报表",x.getHeaders(),x.getDataList());
-
-                    String fileName = this.getClass().getResource("/").getPath() + new Date().getTime() + size + ".xls";
-
-                    File file = new File(fileName);
-                    FileOutputStream fout = new FileOutputStream(file);
-                    workbook.write(fout);
-
-                    files.add(file);
-                };
+                List<File> files = getFiles(reportCoreDetailExcels);
 
                 generateZip(rptPersionalDownloadVO, files);
 
@@ -384,20 +371,27 @@ public class ReportController {
 
                        if(StringUtils.isNotEmpty(configJson)){
                            ReportDatasource reportDatasource = JsonUtil.fromJson(configJson, ReportDatasource.class);
+//
+                           //生成cubetree
+                           CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());
 
                            RptPersionalDownloadVO rptPersionalDownloadVO = new RptPersionalDownloadVO();
-                           //用这个json 查出所有详细数据
 
-                           List<File> files = reportHandler.reportFromDetail(reportDatasource,rptPersionalDownloadVO);
+                           //一万条查询一次,拼装在内存里，每10w条一个文件里，
+                           List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree,rptPersionalDownloadVO);
+
+                           int i = 0;
+                           List<File> files = getFiles(reportCoreDetailExcels);
 
                            generateZip(rptPersionalDownloadVO, files);
-
                        }
                    }catch (Exception e){
                        LOG.error("异步生成文件失败 = {}",e);
                    }
                     return 1;
                 }
+
+
             };
             FutureTask<Integer> futureTask = new FutureTask<>(callable);
             new Thread(futureTask).start();
@@ -409,6 +403,26 @@ public class ReportController {
         }
         return jsonResponse;
     }
+
+    private List<File> getFiles(List<ReportRespDetail> reportCoreDetailExcels) throws IOException {
+        int size = reportCoreDetailExcels.size();
+        List<File> files = new ArrayList<>(size);
+        for(ReportRespDetail x:reportCoreDetailExcels){
+            //生成workbook
+            Workbook workbook = ExportExcelUtils.createExcelWorkBook("数据报表","数据报表","数据报表",x.getHeaders(),x.getDataList());
+
+            String fileName = this.getClass().getResource("/").getPath() + new Date().getTime() + size + ".xls";
+
+            File file = new File(fileName);
+            FileOutputStream fout = new FileOutputStream(file);
+            workbook.write(fout);
+
+            files.add(file);
+        }
+        ;
+        return files;
+    }
+
 
     private void generateZip(RptPersionalDownloadVO rptPersionalDownloadVO, List<File> files) throws Exception {
         Long acctId =  AssertContext.getAcctId();
@@ -423,7 +437,7 @@ public class ReportController {
         }
 
         //插入
-        rptPersionalDownloadVO.setUserId(acctId.toString());
+        rptPersionalDownloadVO.setUserId(String.valueOf(acctId));
 //                           rptPersionalDownloadVO.setDownloadSql();
         rptPersionalDownloadVO.setFileName(fileName);
         rptPersionalDownloadVO.setFileType(FileTypeEnum.EXCEL.getName());

@@ -433,6 +433,8 @@ public class ReportAccessorOracle extends AbstractAccessor {
 
             //fieldIds 指标的fieldId
             List<Long> fieldIds = conversionDetailFoSql(dbTypeEnumByName, line, builderSelect, builderWhe);
+            List<Long> fieldIds2 = conversionDetailFoSql(dbTypeEnumByName, reportDynamicParam.getColumn(), builderSelect, builderWhe);
+            fieldIds.addAll(fieldIds2);
 
             String selectSql = getMeauresDetail(measures, fieldIds);
 
