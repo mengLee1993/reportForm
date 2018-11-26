@@ -396,8 +396,8 @@ public class RoleInfoController {
                         }
                     }
                     pages.setResultData(roleInfoVOS);
-                    pages.setPages(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("pages")));
-                    pages.setPageNum(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("limit")));
+                    pages.setPageSize(roleInfo.getPageSize());
+                    pages.setPageNum(roleInfo.getPageNum());
                     pages.setTotal(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("total")));
                     jsonResponse.setRspBody(pages);
                 }
