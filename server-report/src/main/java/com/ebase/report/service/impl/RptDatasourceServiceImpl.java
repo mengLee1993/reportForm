@@ -160,7 +160,9 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
         PageHelper.startPage(datasourceVO.getPageNum(), datasourceVO.getPageSize());
         List<RptDatasource> list = dsMapper.queryForList(rptDs);
 
-        PageInfo<RptDatasourceVO> pageInfo = new PageInfo(list);
+        List<RptDatasourceVO> returnList = BeanCopyUtil.copyList(list, RptDatasourceVO.class);
+
+        PageInfo<RptDatasourceVO> pageInfo = new PageInfo(returnList);
 
         for (RptDatasourceVO vo : pageInfo.getResultData()) {
             try {
