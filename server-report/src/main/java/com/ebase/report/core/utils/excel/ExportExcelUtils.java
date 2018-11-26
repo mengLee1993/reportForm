@@ -36,6 +36,7 @@ public class ExportExcelUtils {
 
 
 
+
 	/**
 	 * 1.创建 workbook
 0-	 */
@@ -847,6 +848,55 @@ public class ExportExcelUtils {
 		return workbook;
 	}
 
+	/**
+	 * 生成excel文件
+	 * @param sheetName
+	 * @param title
+	 * @param fileName
+	 * @param headers
+	 * @param dataList
+	 * @return
+	 */
+	public static Workbook createExcelWorkBook(String sheetName, String title, String fileName, List<String> headers, List<List<String>> dataList) {
+		XSSFWorkbook workbook = new XSSFWorkbook();// 产生工作薄对象
+
+		try {
+			//报表属性
+			XSSFCellStyle createCellStyle = upXssfCellStyle(workbook);
+
+			XSSFSheet sheet = workbook.createSheet(title);
+
+			// 产生表格标题行
+			XSSFRow createRow = sheet.createRow(0);
+
+			// header ---
+			int i = 0;
+			for(String header:headers){
+				XSSFCell cell = createRow.createCell(i);
+				// 列数据
+				cell.setCellValue(header);
+				cell.setCellStyle(createCellStyle);
+				sheet.setColumnWidth(i, 5000);
+				i = i + 1;
+			}
+
+			for(int j = 0; j <= dataList.size(); j ++){
+				List<String> strings = dataList.get(j);
+				XSSFRow row = sheet.createRow(j + 1);
+
+				for(int z = 0; z <= strings.size(); z ++){
+					XSSFCell cell = row.createCell(z);
+					cell.setCellValue(strings.get(z));
+				}
+			}
+
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return workbook;
+
+	}
 
 	/**
 	 * 设置workBook 样式

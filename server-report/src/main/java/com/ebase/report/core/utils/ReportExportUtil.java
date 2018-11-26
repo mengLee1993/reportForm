@@ -5,6 +5,7 @@ import com.ebase.report.cube.AxesxData;
 import com.ebase.report.cube.AxesyData;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.cube.DimensionKey;
+import com.ebase.report.model.ReportRespDetail;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 /**
@@ -446,5 +448,51 @@ public class ReportExportUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 将一个list均分成n个list
+     * @param source
+     * @return
+     */
+    public static <T> List<List<T>> averageAssign(List<T> source,int n){
+        List<List<T>> result=new ArrayList<List<T>>();
+        int remaider=source.size()%n;  //(先计算出余数)
+        int number=source.size()/n;  //然后是商
+        int offset=0;//偏移量
+        for(int i=0;i<n;i++){
+            List<T> value=null;
+            if(remaider>0){
+                value=source.subList(i*number+offset, (i+1)*number+offset+1);
+                remaider--;
+                offset++;
+            }else{
+                value=source.subList(i*number+offset, (i+1)*number+offset);
+            }
+            result.add(value);
+        }
+        return result;
+    }
+
+    /**
+     * list合并
+     * @param source
+     * @return
+     */
+    public static  List<ReportRespDetail> averageMerge(List<List<ReportRespDetail>> source){
+        List<ReportRespDetail> result=new ArrayList<ReportRespDetail>(source.size());
+        int i = 0;
+        for(List<ReportRespDetail> list:source){
+            for(ReportRespDetail t:list){
+                ReportRespDetail t1 = result.get(i);
+                if(t1 == null){
+                    result.add(t1);
+                }else{
+                    t1.getDataList().addAll(t.getDataList());
+                }
+            };
+            i ++;
+        }
+        return result;
     }
 }

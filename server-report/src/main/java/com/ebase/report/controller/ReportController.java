@@ -10,6 +10,7 @@ import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.core.utils.ReportExportUtil;
+import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.charts.HighCharts;
 import com.ebase.report.model.*;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +38,7 @@ import com.alibaba.fastjson.JSONObject;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -164,17 +167,37 @@ public class ReportController {
 
         JsonResponse<ReportResp> jsonResponse = new JsonResponse<ReportResp>();
         try{
+
+            ReportDynamicParam reportDynamicParam = reportDatasource.getReportDynamicParam();
+
             //生成cubetree
-            CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());
+            CubeTree cubeTree = reportService.reportCore(reportDynamicParam);
 
-            cubeTree = reportHandler.report(reportDatasource, cubeTree);
+            if(CollectionUtils.isEmpty(reportDynamicParam.getColumn())){ //列没值
+                //一万条查询一次,拼装在内存里，每10w条一个文件里，
+                List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree);
 
-            // 数据json处理
-            cubeTree.toJson();
+                reportCoreDetailExcels.forEach(x -> {
+                    //生成workbook
+                    Workbook workbook = ExportExcelUtils.createExcelWorkBook("数据报表","数据报表","数据报表",x.getHeaders(),x.getDataList());
 
-            Workbook workbook = ReportExportUtil.createReportWorkbook(cubeTree);
+                    try {
+                        ReportExportUtil.OutPutWorkBookResponse("报表",workbook);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
 
-            ReportExportUtil.OutPutWorkBookResponse("报表",workbook);
+            }else{
+                cubeTree = reportHandler.report(reportDatasource, cubeTree);
+
+                // 数据json处理
+                cubeTree.toJson();
+
+                Workbook workbook = ReportExportUtil.createReportWorkbook(cubeTree);
+
+                ReportExportUtil.OutPutWorkBookResponse("报表",workbook);
+            }
         }catch (Exception e){
             LOG.error("error = {}",e);
             jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
