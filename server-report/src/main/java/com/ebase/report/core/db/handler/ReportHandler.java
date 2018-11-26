@@ -10,6 +10,7 @@ import com.ebase.report.core.db.conn.DbConnFactory;
 import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageReportDetail;
+import com.ebase.report.core.utils.ReportExportUtil;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.dao.RptDataFieldMapper;
 import com.ebase.report.model.*;
@@ -24,12 +25,14 @@ import com.ebase.report.vo.RptDataFieldVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +43,12 @@ import java.util.Map;
 @Repository
 public class ReportHandler {
     private static Logger logger = LoggerFactory.getLogger(ReportHandler.class);
+
+    @Value("${excelDetailCount}")
+    private Integer excelDetailCount; //一个文件多少条数据
+
+    @Value("${excelLimitCount}")
+    private Integer excelLimitCount; //多少数据查询一次
 
     @Autowired
     private RptAnalyseLogService rptAnalyseLogService;
@@ -406,4 +415,92 @@ public class ReportHandler {
         reportDetail.setSql(sql);
         return reportDetail;
     }
+
+    /**
+     * 数据表核心导出，当拖入行当时候导出
+     * @param reportDatasource
+     * @param cubeTree
+     * @return
+     */
+    public List<ReportRespDetail> reportCoreDetailExcel(ReportDatasource reportDatasource, CubeTree cubeTree,RptPersionalDownloadVO rptPersionalDownloadVO) {
+        String dataSourceName = reportDatasource.getDatasourceName();
+
+        Connection conn = null;
+        List<ReportRespDetail> list = new ArrayList<>();
+        try {
+            DataSourceConfig dataSourceConfig = DataSourceManager.get().getDataSourceConfig(dataSourceName);
+            DataBaseType dataBaseType = dataSourceConfig.getDataBaseType();
+
+            ReportAccessor reportAccessor = AccessorFactory.get().factoryAccessor(ReportAccessor.class, dataBaseType);
+            conn = DbConnFactory.factory(dataSourceName);
+
+            //生成sql
+            Map<String,Object> tmpMap = reportAccessor.reportCoreDetail(reportDatasource);
+
+            ReportDetail reportDetail = getFieldsByMap(tmpMap);
+
+            //算total
+            String sql = reportDetail.getSql();
+            //设置sql
+            rptPersionalDownloadVO.setDownloadSql(sql);
+
+            StringBuilder s = new StringBuilder(sql);
+            String selectCount = s.substring(s.lastIndexOf("from"), s.length() );
+            selectCount = "select count(1) " + selectCount;
+
+
+            //先看一下总count
+            Integer count = reportAccessor.queryCount(selectCount,conn);
+            List<PageDTO> pages = PageReportDetail.getPages(excelLimitCount, count);
+
+            //几个未一级文件要合并
+            Integer page = PageReportDetail.getPage(excelDetailCount, count);
+
+            List<ReportRespDetail> reportRespDetails = new ArrayList<>(pages.size());
+            List<List<String>> dataList = new ArrayList<>();
+            for(PageDTO pageDTO:pages){
+                //分页sql
+                String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource.getDatabaseType(), pageDTO, count);
+
+                ReportRespDetail reportRespDetail = reportAccessor.reportPageList(detailSql, conn, cubeTree, reportDetail.getFieldList());
+
+                reportRespDetails.add(reportRespDetail);
+                dataList.addAll(reportRespDetail.getDataList());
+            }
+
+            List<List<List<String>>> lists = null;
+            List<String> headers = null;
+            //转换文件
+            if(reportRespDetails.size() < page ){
+                if(!CollectionUtils.isEmpty(reportRespDetails)){
+                    headers = reportRespDetails.get(0).getHeaders(); //header 都是一样的
+                    lists = ReportExportUtil.averageAssign(dataList, page);
+
+                }
+            }else{
+                if(!CollectionUtils.isEmpty(reportRespDetails)){
+                    headers = reportRespDetails.get(0).getHeaders(); //header 都是一样的
+                    lists = ReportExportUtil.averageDivision(dataList, excelDetailCount);
+
+                }
+            }
+            for(List<List<String>> listList:lists){
+                ReportRespDetail respDetail = new ReportRespDetail();
+                respDetail.setHeaders(headers);
+                respDetail.setDataList(listList);
+                list.add(respDetail);
+            }
+
+        } catch (DbException e) {
+            logger.error("Occurred DbException.", e);
+            // todo throw exception
+        } finally {
+            DataBaseUtil.closeConnection(conn);
+        }
+
+        return list;
+
+    }
+
+
 }

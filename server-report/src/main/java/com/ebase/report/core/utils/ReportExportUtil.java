@@ -5,6 +5,7 @@ import com.ebase.report.cube.AxesxData;
 import com.ebase.report.cube.AxesyData;
 import com.ebase.report.cube.Dimension;
 import com.ebase.report.cube.DimensionKey;
+import com.ebase.report.model.ReportRespDetail;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 /**
@@ -30,6 +32,8 @@ public class ReportExportUtil {
      * 列默认宽度
      */
     private static final int DEFAULT_COLUMN_WIDTH = 4000;
+
+
 
     /**
      * 创建 workbook
@@ -446,5 +450,100 @@ public class ReportExportUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 将一个list均分成n个list
+     * @param source
+     * @return
+     */
+    public static <T> List<List<T>> averageAssign(List<T> source,int n){
+        List<List<T>> result=new ArrayList<List<T>>();
+        if(source.size() < n){
+            List<T> list = new ArrayList<>();
+            for(T t:source){
+                list.add(t);
+            }
+            result.add(list);
+            return result;
+        }
+
+        int remaider=source.size()%n;  //(先计算出余数)
+        int number=source.size()/n;  //然后是商
+        int offset=0;//偏移量
+        for(int i=0;i<n;i++){
+            List<T> value=null;
+            if(remaider>0){
+                value=source.subList(i*number+offset, (i+1)*number+offset+1);
+                remaider--;
+                offset++;
+            }else{
+                value=source.subList(i*number+offset, (i+1)*number+offset);
+            }
+            result.add(value);
+        }
+        return result;
+    }
+
+    /**
+     * list合并
+     * @param source
+     * @return
+     */
+    public static  List<ReportRespDetail> averageMerge(List<List<ReportRespDetail>> source){
+        int size = source.size();
+        List<ReportRespDetail> result=new ArrayList<ReportRespDetail>(size);
+
+        for(List<ReportRespDetail> list:source){
+            ReportRespDetail respDetail = new ReportRespDetail();
+            int i = 0;
+            for(ReportRespDetail t:list){
+                if(i == 0){
+                    BeanCopyUtil.copy(t,respDetail);
+                }else{
+                    respDetail.getDataList().addAll(t.getDataList());
+                }
+                i ++;
+            };
+            result.add(respDetail);
+        }
+        return result;
+    }
+
+    /**
+     * 把list 按 excelDetailCount 数据分割
+     * @param resList
+     * @param count
+     * @return
+     */
+//    public static <T> List<List<List<String>>> averageDivision(List<List<T>> resList, Integer count) {
+    public static  <T> List<List<T>> averageDivision(List<T> resList,int count){
+        if(resList==null ||count<1)
+            return  null ;
+        List<List<T>> ret=new ArrayList<List<T>>();
+        int size=resList.size();
+        if(size<=count){ //数据量不足count指定的大小
+            ret.add(resList);
+        }else{
+            int pre=size/count;
+            int last=size%count;
+            //前面pre个集合，每个大小都是count个元素
+            for(int i=0;i<pre;i++){
+                List<T> itemList=new ArrayList<T>();
+                for(int j=0;j<count;j++){
+                    itemList.add(resList.get(i*count+j));
+                }
+                ret.add(itemList);
+            }
+            //last的进行处理
+            if(last>0){
+                List<T> itemList=new ArrayList<T>();
+                for(int i=0;i<last;i++){
+                    itemList.add(resList.get(pre*count+i));
+                }
+                ret.add(itemList);
+            }
+        }
+        return ret;
     }
 }

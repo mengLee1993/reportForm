@@ -10,6 +10,7 @@ import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.core.utils.ReportExportUtil;
+import com.ebase.report.core.utils.excel.ExportExcelUtils;
 import com.ebase.report.cube.CubeTree;
 import com.ebase.report.cube.charts.HighCharts;
 import com.ebase.report.model.*;
@@ -26,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +38,7 @@ import com.alibaba.fastjson.JSONObject;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -164,17 +167,34 @@ public class ReportController {
 
         JsonResponse<ReportResp> jsonResponse = new JsonResponse<ReportResp>();
         try{
+
+            ReportDynamicParam reportDynamicParam = reportDatasource.getReportDynamicParam();
+
             //生成cubetree
-            CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());
+            CubeTree cubeTree = reportService.reportCore(reportDynamicParam);
 
-            cubeTree = reportHandler.report(reportDatasource, cubeTree);
+            if(CollectionUtils.isEmpty(reportDynamicParam.getColumn())){ //列没值
+                RptPersionalDownloadVO rptPersionalDownloadVO = new RptPersionalDownloadVO();
 
-            // 数据json处理
-            cubeTree.toJson();
+                //一万条查询一次,拼装在内存里，每10w条一个文件里，
+                List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree,rptPersionalDownloadVO);
 
-            Workbook workbook = ReportExportUtil.createReportWorkbook(cubeTree);
+                int i = 0;
+                List<File> files = getFiles(reportCoreDetailExcels);
 
-            ReportExportUtil.OutPutWorkBookResponse("报表",workbook);
+                generateZip(rptPersionalDownloadVO, files);
+
+
+            }else{
+                cubeTree = reportHandler.report(reportDatasource, cubeTree);
+
+                // 数据json处理
+                cubeTree.toJson();
+
+                Workbook workbook = ReportExportUtil.createReportWorkbook(cubeTree);
+
+                ReportExportUtil.OutPutWorkBookResponse("报表",workbook);
+            }
         }catch (Exception e){
             LOG.error("error = {}",e);
             jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
@@ -344,46 +364,34 @@ public class ReportController {
                        //自定义报表id
                        Long personalAnalysisId = jsonRequest.getReqBody().getPersonalAnalysisId();
 
-                       personalAnalysisId = 61l;
+//                       personalAnalysisId = 61l;
                        RptPersonalAnalysis rptPersonalAnalysis = reportService.getCustomReport(personalAnalysisId);
 
                        String configJson = rptPersonalAnalysis.getConfigJson();
 
                        if(StringUtils.isNotEmpty(configJson)){
                            ReportDatasource reportDatasource = JsonUtil.fromJson(configJson, ReportDatasource.class);
+//
+                           //生成cubetree
+                           CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());
 
                            RptPersionalDownloadVO rptPersionalDownloadVO = new RptPersionalDownloadVO();
-                           //用这个json 查出所有详细数据
 
-                           List<File> files = reportHandler.reportFromDetail(reportDatasource,rptPersionalDownloadVO);
+                           //一万条查询一次,拼装在内存里，每10w条一个文件里，
+                           List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree,rptPersionalDownloadVO);
 
+                           int i = 0;
+                           List<File> files = getFiles(reportCoreDetailExcels);
 
-                           String path = file_path ; // 配置
-                           String fileName = new Date().getTime() + files.size() + ".zip";
-                           FileOutputStream fos2 = new FileOutputStream(new File(path + "/" + fileName));
-                           ZipUtils.generateZip(fos2, files);
-
-                           //清空file
-                           for(File file:files){
-                               file.delete();
-                           }
-
-                           //插入
-                           rptPersionalDownloadVO.setUserId(acctId.toString());
-//                           rptPersionalDownloadVO.setDownloadSql();
-                           rptPersionalDownloadVO.setFileName(fileName);
-                           rptPersionalDownloadVO.setFileType(FileTypeEnum.EXCEL.getName());
-                           rptPersionalDownloadVO.setFilePath(fileName);
-                           rptPersionalDownloadVO.setFileDesc("描述 哦");
-                           rptPersionalDownloadVO.setCrateTime(new Date());
-                           rptPersionalDownloadService.insertSelective(rptPersionalDownloadVO);
-
+                           generateZip(rptPersionalDownloadVO, files);
                        }
                    }catch (Exception e){
                        LOG.error("异步生成文件失败 = {}",e);
                    }
                     return 1;
                 }
+
+
             };
             FutureTask<Integer> futureTask = new FutureTask<>(callable);
             new Thread(futureTask).start();
@@ -394,6 +402,49 @@ public class ReportController {
             jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
         }
         return jsonResponse;
+    }
+
+    private List<File> getFiles(List<ReportRespDetail> reportCoreDetailExcels) throws IOException {
+        int size = reportCoreDetailExcels.size();
+        List<File> files = new ArrayList<>(size);
+        for(ReportRespDetail x:reportCoreDetailExcels){
+            //生成workbook
+            Workbook workbook = ExportExcelUtils.createExcelWorkBook("数据报表","数据报表","数据报表",x.getHeaders(),x.getDataList());
+
+            String fileName = this.getClass().getResource("/").getPath() + new Date().getTime() + size + ".xls";
+
+            File file = new File(fileName);
+            FileOutputStream fout = new FileOutputStream(file);
+            workbook.write(fout);
+
+            files.add(file);
+        }
+        ;
+        return files;
+    }
+
+
+    private void generateZip(RptPersionalDownloadVO rptPersionalDownloadVO, List<File> files) throws Exception {
+        Long acctId =  AssertContext.getAcctId();
+        String path = file_path ; // 配置
+        String fileName = new Date().getTime() + files.size() + ".zip";
+        FileOutputStream fos2 = new FileOutputStream(new File(path + "/" + fileName));
+        ZipUtils.generateZip(fos2, files);
+
+        //清空file
+        for(File file:files){
+            file.delete();
+        }
+
+        //插入
+        rptPersionalDownloadVO.setUserId(String.valueOf(acctId));
+//                           rptPersionalDownloadVO.setDownloadSql();
+        rptPersionalDownloadVO.setFileName(fileName);
+        rptPersionalDownloadVO.setFileType(FileTypeEnum.EXCEL.getName());
+        rptPersionalDownloadVO.setFilePath(fileName);
+        rptPersionalDownloadVO.setFileDesc("描述 哦");
+        rptPersionalDownloadVO.setCrateTime(new Date());
+        rptPersionalDownloadService.insertSelective(rptPersionalDownloadVO);
     }
 
     /**
@@ -554,8 +605,8 @@ public class ReportController {
                         }
                     }
                     pages.setResultData(acctInfos);
-                    pages.setPages(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("pages")));
-                    pages.setPageNum(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("limit")));
+                    pages.setPageSize(acctInfo.getPageSize());
+                    pages.setPageNum(acctInfo.getPageNum());
                     pages.setTotal(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("total")));
                     jsonResponse.setRspBody(pages);
                 }

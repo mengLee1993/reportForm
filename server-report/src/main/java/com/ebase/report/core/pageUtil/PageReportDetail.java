@@ -3,11 +3,12 @@ package com.ebase.report.core.pageUtil;
 import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.utils.StringUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PageReportDetail extends PageDTO{
 
     private static final String limit = " limit ";
-
-
 
     //orcale sql拼装
 
@@ -63,7 +64,48 @@ public class PageReportDetail extends PageDTO{
         return detailSql;
     }
 
+    /**
+     * 所有的分页对象
+     * @param limitcount
+     * @param count
+     * @return
+     */
+    public static List<PageDTO> getPages(Integer limitcount, Integer count) {
 
+        Integer page = getPage(limitcount, count);
+
+        List<PageDTO> list = new ArrayList<>(page);
+
+        for(int i = 0; i < page; i ++){
+            // 先判断
+            int x = limitcount;
+            if(i == (page - 1)){
+                x = count % limitcount == 0 ? limitcount : count % limitcount;
+            }
+
+            PageDTO pageDTO = new PageDTO(i,x);
+            pageDTO.setTotal(count);
+            list.add(pageDTO);
+        }
+
+        return list;
+    }
+
+    /**
+     * 分页总数
+     * @param limitcount
+     * @param count
+     * @return
+     */
+    public static Integer getPage(Integer limitcount, Integer count) {
+        Integer page = 0;
+        if(count % limitcount != 0){
+            page = count / limitcount + 1;
+        }else{
+            page = count / limitcount;
+        }
+        return page;
+    }
 
 
 }
