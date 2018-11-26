@@ -10,7 +10,7 @@ function clsMethodLee(){
         "path8":"/report/getCustomReport",//回显接口
         "path9":"/report/reportCoreExcel",//导出接口
         "path10":"/report/listShareReport",//分享人员列表
-        "path11":"/report/listShareReport",//分享角色列表
+        "path11":"/roleInfo/findpageresult",//分享角色列表
         "path12":"/report/addShareReport",//分享提交列表
         "path13":"/report/reportFromDetail",//提交列表
         "path14":"/report/charts/hcharts",//highchart柱图/饼图
@@ -1508,7 +1508,7 @@ function shareSureOperate(){
         }else{//角色
             //jsonParam.list = $("#roleShare")[0].cacheArr;
             for(var nI = 0 ; nI < $("#roleShare")[0].cacheArr.length ; nI++ ){
-                jsonParam.list.push($("#roleShare")[0].cacheArr[nI].acctId);
+                jsonParam.list.push($("#roleShare")[0].cacheArr[nI].reRoleId);
             }
         }
         getAjaxResultLee(document.body.jsLee.requestUrl.path12,"POST",jsonParam,"shareCallBack(data)");
