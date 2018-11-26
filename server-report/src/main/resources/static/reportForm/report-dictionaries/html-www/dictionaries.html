@@ -237,6 +237,10 @@
             jsonCond.datasourceName = document.body.jsdom.tobaseJson.datasourceName;
             jsonCond.datasourceChineseName = document.body.jsdom.tobaseJson.datasourceChineseName;
         }
+        if(this.ctrl.id == "themeListBtn"){
+            jsonCond.datasourceName = document.body.jsdom.tobaseJson.datasourceName;
+            jsonCond.datasourceChineseName = document.body.jsdom.tobaseJson.datasourceChineseName;
+        }
         return jsonCond;
     }
     $(document).ready(function () {
@@ -394,7 +398,7 @@
                         <i class="fl ml10">数据表编码</i>
                           <input type="text" class="inputBase main-box__input w100" id="tableCode">
                     </span>
-                    <div class="search_btn_class" comtype="searchBtnCtrl" cond="tableName,tableCode" rule="cond" uniontableid="themeList" parentId="themeSearch">
+                    <div id="themeListBtn" class="search_btn_class" comtype="searchBtnCtrl" cond="tableName,tableCode" rule="cond" uniontableid="themeList" parentId="themeSearch">
                         <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
                     </div>
                 </div>
