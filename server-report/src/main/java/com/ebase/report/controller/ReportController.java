@@ -582,6 +582,9 @@ public class ReportController {
                 PageDTO<AcctInfo> pageDTO = acctService.listShareReport(acctInfo);
                 jsonResponse.setRspBody(pageDTO);
             }else if (type.equals("report")) {
+                if(acctInfo.getAcctTitle()==null){
+                    acctInfo.setAcctTitle("");
+                }
                 String url = "http://" + authIp + "/auth/ac/usage-survey/getUsageSurveyUsersByPage.action?_dc=1542681842909&page=" +
                         acctInfo.getPageNum() + "&limit=" + acctInfo.getPageSize()
                         + "&qm.projectId=CAS&qm.userNameCn="+acctInfo.getAcctTitle();
