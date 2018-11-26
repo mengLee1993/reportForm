@@ -118,7 +118,7 @@ public class DataSourceManager {
 
         hikariConfig.setMinimumIdle(dataSourceConfig.getDataSourceInitialSize());
         hikariConfig.setMaximumPoolSize(dataSourceConfig.getDataSourceMaxActive());
-        hikariConfig.setConnectionTestQuery(dataSourceConfig.getDataSourceValidateSQL());
+        hikariConfig.setConnectionTestQuery(dataSourceConfig.getDataBaseType().getValidateSql());
 
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "256");
