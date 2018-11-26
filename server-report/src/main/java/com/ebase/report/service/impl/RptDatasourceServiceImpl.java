@@ -162,12 +162,20 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
 
         PageInfo<RptDatasourceVO> pageInfo = new PageInfo(list);
 
-//        List<RptDatasourceVO> returnList = BeanCopyUtil.copyList(list, RptDatasourceVO.class);
-//        PageInfo<RptDatasourceVO> pageVo = new PageInfo(returnList);
-//        pageVo.setTotal(pageInfo.getTotal());
-//        pageVo.setPages(pageInfo.getPages());
-//        pageVo.setPageNum(pageInfo.getPageNum());
-//        pageVo.setPageSize(pageInfo.getPageSize());
+        for (RptDatasourceVO vo : pageInfo.getResultData()) {
+            try {
+                boolean flag = DbConnFactory.testConn(vo.getDatasourceName());
+
+                if (flag) {
+                    vo.setConnStatus("1");
+                } else {
+                    vo.setConnStatus("0");
+                }
+            } catch (Exception e) {
+                vo.setConnStatus("0");
+                e.printStackTrace();
+            }
+        }
 
         return pageInfo;
     }
