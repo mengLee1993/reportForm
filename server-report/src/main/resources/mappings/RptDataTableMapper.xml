@@ -362,7 +362,17 @@
         select
         <include refid="Base_Column_List" />
         from rpt_data_table
-        <include refid="Base_Where_Column_List" />
+        <trim prefix="where" prefixOverrides="and | or">
+        <if test="tableName != null">
+            AND TABLE_NAME like CONCAT('%',#{tableName},'%')
+        </if>
+         <if test="tableCode != null">
+            AND TABLE_CODE like CONCAT('%', #{tableCode}, '%')
+         </if>
+         <if test="removeStatus != null">
+            AND REMOVE_STATUS = #{removeStatus}
+         </if>
+        </trim>
         ORDER BY TABLE_ID ASC
         limit #{startRow},#{pageSize}
     </select>
