@@ -2,6 +2,7 @@ package com.ebase.report.service;
 
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
+import com.ebase.report.model.RptDatasource;
 import com.ebase.report.vo.RptDatasourceVO;
 
 import java.util.List;
@@ -95,4 +96,12 @@ public interface RptDatasourceService {
 	 * @Date: 2018/11/5
 	 */
 	ServiceResponse<Integer> changeStatus(RptDatasourceVO vo);
+
+	/**
+	 * 查看当前能看的所有数据库
+	 * @param acctId
+	 * @param orgId
+	 * @return
+	 */
+    List<RptDatasource> listSelect(Long acctId, String orgId);
 }

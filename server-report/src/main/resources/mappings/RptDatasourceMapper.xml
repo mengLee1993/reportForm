@@ -406,4 +406,18 @@
        delete from rpt_datasource
         where DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
     </delete>
+    <select id="selectByAuth" resultMap="BaseResultMap">
+                    SELECT *
+        FROM rpt_datasource
+        WHERE DATASOURCE_ID IN (
+            SELECT DATASOURCE_ID
+            FROM rpt_data_table
+            WHERE TABLE_ID IN (
+                SELECT TABLE_ID
+                FROM rpt_personal_subject
+                WHERE ROLE_ID = #{arg1}
+                    OR USER_ID = #{arg0}
+            )
+        )
+    </select>
 </mapper>
