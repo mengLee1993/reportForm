@@ -4,8 +4,10 @@ import com.ebase.report.controller.IndexController;
 import com.ebase.report.core.json.JsonRequest;
 import com.ebase.report.core.json.JsonResponse;
 import com.ebase.report.core.pageUtil.PageInfo;
+import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
+import com.ebase.report.model.RptDatasource;
 import com.ebase.report.service.RptDatasourceService;
 import com.ebase.report.vo.RptDatasourceVO;
 import com.github.pagehelper.PageHelper;
@@ -292,6 +294,35 @@ public class RptDatasourceController {
             logger.error("更新失败", e);
             jR.setRetCode(JsonResponse.SYS_EXCEPTION);
             jR.setRetDesc("更新失败");
+        }
+        return jR;
+    }
+
+    /**
+     * 查询当前人能看到的所有数据库
+     * @return
+     */
+    @RequestMapping("/listSelect")
+    public JsonResponse<List<RptDatasource>> listSelect(){
+        JsonResponse<List<RptDatasource>> jsonResponse = new JsonResponse<>();
+
+        JsonResponse<List<RptDatasource>> jR = new JsonResponse<>();
+        try{
+            Long acctId = AssertContext.getAcctId();
+            if(acctId == null){
+                acctId = 1L;
+            }
+            String orgId = AssertContext.getOrgId();
+            if(orgId == null){
+                orgId = "1";
+            }
+            List<RptDatasource> rptDatasources =  rptDsService.listSelect(acctId,orgId);
+
+            jR.setRspBody(rptDatasources);
+        }catch (Exception e){
+            logger.error("listSelect error = {}", e);
+            jR.setRetCode(JsonResponse.SYS_EXCEPTION);
+            jR.setRetDesc("列表接口");
         }
         return jR;
     }

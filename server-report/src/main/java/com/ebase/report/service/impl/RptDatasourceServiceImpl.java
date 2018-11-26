@@ -279,6 +279,12 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
         return sR;
     }
 
+    @Override
+    public List<RptDatasource> listSelect(Long acctId, String orgId) {
+        List<RptDatasource> reulst = dsMapper.selectByAuth(acctId,orgId);
+        return reulst;
+    }
+
     private void removeDatasource(Long datasourceId) {
         //数据报表
         List<RptDataTable> dataTables = rptDataTableMapper.selectByDatasourceId(datasourceId);
