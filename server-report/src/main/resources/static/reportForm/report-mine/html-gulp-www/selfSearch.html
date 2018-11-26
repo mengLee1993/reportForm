@@ -287,7 +287,7 @@
                     </li>
                 </ul>
 
-                <table cellspacing="0" cellpadding="0" id="roleShare" templateId="templateRow" comType="" reqPath="" reqParam='{}' page="tcdPageCode2" noData="nonDataB" chkId="chkCoding" isCacheCond="acctId" clsChk="clsChk2" clsallchk="clsAllChk2" class="table-list" style="table-layout: fixed;margin-top: 10px;">
+                <table cellspacing="0" cellpadding="0" id="roleShare" templateId="templateRow" comType="" reqPath="" reqParam='{}' page="tcdPageCode2" noData="nonDataB" chkId="chkCoding" isCacheCond="reRoleId" clsChk="clsChk2" clsallchk="clsAllChk2" class="table-list" style="table-layout: fixed;margin-top: 10px;">
                     <tr class="table-list-header">
                         <th style="width:20%;" class="table-list-header__th">
                             <input type="checkbox" id="checkAll2" comType="checkAll" cond="" class="clsAllChk2" uniontableId="roleShare" chkId="chkCoding">
@@ -298,7 +298,7 @@
                         <td class="table-list-tr__item">
                             <input type="checkbox" id="chkCoding" class="clsChk2">
                         </td>
-                        <td class="table-list-tr__item" id="acctTitle"></td>
+                        <td class="table-list-tr__item" id="roleTitle"></td>
                     </tr>
                 </table>
                 <div class="tcdPageCode tcdPageCode2"></div>
@@ -495,7 +495,7 @@
             $(".userRole:first").hide();
             $(".userRole:last").show();
             $(".userRole:last input[type=checkbox]").attr("checked",false);
-            initplugPath($("#roleShare")[0],"standardTableCtrl","/report/listShareReport",{},"POST");
+            initplugPath($("#roleShare")[0],"standardTableCtrl","/roleInfo/findpageresult",{},"POST");
 
         }
     }
@@ -517,7 +517,7 @@
             }else{//角色
                 //jsonParam.list = $("#roleShare")[0].cacheArr;
                 for(var nI = 0 ; nI < $("#roleShare")[0].cacheArr.length ; nI++ ){
-                    jsonParam.list.push($("#roleShare")[0].cacheArr[nI].acctId);
+                    jsonParam.list.push($("#roleShare")[0].cacheArr[nI].reRoleId);
                 }
             }
             getAjaxResult("/report/addShareReport","POST",jsonParam,"shareCallBack(data)");
