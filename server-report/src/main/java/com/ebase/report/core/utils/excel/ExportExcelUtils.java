@@ -880,11 +880,11 @@ public class ExportExcelUtils {
 				i = i + 1;
 			}
 
-			for(int j = 0; j <= dataList.size(); j ++){
+			for(int j = 0; j < dataList.size(); j ++){
 				List<String> strings = dataList.get(j);
 				XSSFRow row = sheet.createRow(j + 1);
 
-				for(int z = 0; z <= strings.size(); z ++){
+				for(int z = 0; z < strings.size(); z ++){
 					XSSFCell cell = row.createCell(z);
 					cell.setCellValue(strings.get(z));
 				}

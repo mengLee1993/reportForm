@@ -174,19 +174,29 @@ public class ReportController {
             CubeTree cubeTree = reportService.reportCore(reportDynamicParam);
 
             if(CollectionUtils.isEmpty(reportDynamicParam.getColumn())){ //列没值
-                //一万条查询一次,拼装在内存里，每10w条一个文件里，
-                List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree);
+                RptPersionalDownloadVO rptPersionalDownloadVO = new RptPersionalDownloadVO();
 
-                reportCoreDetailExcels.forEach(x -> {
+                //一万条查询一次,拼装在内存里，每10w条一个文件里，
+                List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree,rptPersionalDownloadVO);
+
+                int i = 0;
+                int size = reportCoreDetailExcels.size();
+                List<File> files = new ArrayList<>(size);
+                for(ReportRespDetail x:reportCoreDetailExcels){
                     //生成workbook
                     Workbook workbook = ExportExcelUtils.createExcelWorkBook("数据报表","数据报表","数据报表",x.getHeaders(),x.getDataList());
 
-                    try {
-                        ReportExportUtil.OutPutWorkBookResponse("报表",workbook);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                    String fileName = this.getClass().getResource("/").getPath() + new Date().getTime() + size + ".xls";
+
+                    File file = new File(fileName);
+                    FileOutputStream fout = new FileOutputStream(file);
+                    workbook.write(fout);
+
+                    files.add(file);
+                };
+
+                generateZip(rptPersionalDownloadVO, files);
+
 
             }else{
                 cubeTree = reportHandler.report(reportDatasource, cubeTree);
@@ -367,7 +377,7 @@ public class ReportController {
                        //自定义报表id
                        Long personalAnalysisId = jsonRequest.getReqBody().getPersonalAnalysisId();
 
-                       personalAnalysisId = 61l;
+//                       personalAnalysisId = 61l;
                        RptPersonalAnalysis rptPersonalAnalysis = reportService.getCustomReport(personalAnalysisId);
 
                        String configJson = rptPersonalAnalysis.getConfigJson();
@@ -380,26 +390,7 @@ public class ReportController {
 
                            List<File> files = reportHandler.reportFromDetail(reportDatasource,rptPersionalDownloadVO);
 
-
-                           String path = file_path ; // 配置
-                           String fileName = new Date().getTime() + files.size() + ".zip";
-                           FileOutputStream fos2 = new FileOutputStream(new File(path + "/" + fileName));
-                           ZipUtils.generateZip(fos2, files);
-
-                           //清空file
-                           for(File file:files){
-                               file.delete();
-                           }
-
-                           //插入
-                           rptPersionalDownloadVO.setUserId(acctId.toString());
-//                           rptPersionalDownloadVO.setDownloadSql();
-                           rptPersionalDownloadVO.setFileName(fileName);
-                           rptPersionalDownloadVO.setFileType(FileTypeEnum.EXCEL.getName());
-                           rptPersionalDownloadVO.setFilePath(fileName);
-                           rptPersionalDownloadVO.setFileDesc("描述 哦");
-                           rptPersionalDownloadVO.setCrateTime(new Date());
-                           rptPersionalDownloadService.insertSelective(rptPersionalDownloadVO);
+                           generateZip(rptPersionalDownloadVO, files);
 
                        }
                    }catch (Exception e){
@@ -417,6 +408,29 @@ public class ReportController {
             jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
         }
         return jsonResponse;
+    }
+
+    private void generateZip(RptPersionalDownloadVO rptPersionalDownloadVO, List<File> files) throws Exception {
+        Long acctId =  AssertContext.getAcctId();
+        String path = file_path ; // 配置
+        String fileName = new Date().getTime() + files.size() + ".zip";
+        FileOutputStream fos2 = new FileOutputStream(new File(path + "/" + fileName));
+        ZipUtils.generateZip(fos2, files);
+
+        //清空file
+        for(File file:files){
+            file.delete();
+        }
+
+        //插入
+        rptPersionalDownloadVO.setUserId(acctId.toString());
+//                           rptPersionalDownloadVO.setDownloadSql();
+        rptPersionalDownloadVO.setFileName(fileName);
+        rptPersionalDownloadVO.setFileType(FileTypeEnum.EXCEL.getName());
+        rptPersionalDownloadVO.setFilePath(fileName);
+        rptPersionalDownloadVO.setFileDesc("描述 哦");
+        rptPersionalDownloadVO.setCrateTime(new Date());
+        rptPersionalDownloadService.insertSelective(rptPersionalDownloadVO);
     }
 
     /**

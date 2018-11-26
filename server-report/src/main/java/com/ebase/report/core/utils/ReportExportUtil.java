@@ -33,6 +33,8 @@ public class ReportExportUtil {
      */
     private static final int DEFAULT_COLUMN_WIDTH = 4000;
 
+
+
     /**
      * 创建 workbook
      */
@@ -457,6 +459,15 @@ public class ReportExportUtil {
      */
     public static <T> List<List<T>> averageAssign(List<T> source,int n){
         List<List<T>> result=new ArrayList<List<T>>();
+        if(source.size() < n){
+            List<T> list = new ArrayList<>();
+            for(T t:source){
+                list.add(t);
+            }
+            result.add(list);
+            return result;
+        }
+
         int remaider=source.size()%n;  //(先计算出余数)
         int number=source.size()/n;  //然后是商
         int offset=0;//偏移量
@@ -480,19 +491,59 @@ public class ReportExportUtil {
      * @return
      */
     public static  List<ReportRespDetail> averageMerge(List<List<ReportRespDetail>> source){
-        List<ReportRespDetail> result=new ArrayList<ReportRespDetail>(source.size());
-        int i = 0;
+        int size = source.size();
+        List<ReportRespDetail> result=new ArrayList<ReportRespDetail>(size);
+
         for(List<ReportRespDetail> list:source){
+            ReportRespDetail respDetail = new ReportRespDetail();
+            int i = 0;
             for(ReportRespDetail t:list){
-                ReportRespDetail t1 = result.get(i);
-                if(t1 == null){
-                    result.add(t1);
+                if(i == 0){
+                    BeanCopyUtil.copy(t,respDetail);
                 }else{
-                    t1.getDataList().addAll(t.getDataList());
+                    respDetail.getDataList().addAll(t.getDataList());
                 }
+                i ++;
             };
-            i ++;
+            result.add(respDetail);
         }
         return result;
+    }
+
+    /**
+     * 把list 按 excelDetailCount 数据分割
+     * @param resList
+     * @param count
+     * @return
+     */
+//    public static <T> List<List<List<String>>> averageDivision(List<List<T>> resList, Integer count) {
+    public static  <T> List<List<T>> averageDivision(List<T> resList,int count){
+        if(resList==null ||count<1)
+            return  null ;
+        List<List<T>> ret=new ArrayList<List<T>>();
+        int size=resList.size();
+        if(size<=count){ //数据量不足count指定的大小
+            ret.add(resList);
+        }else{
+            int pre=size/count;
+            int last=size%count;
+            //前面pre个集合，每个大小都是count个元素
+            for(int i=0;i<pre;i++){
+                List<T> itemList=new ArrayList<T>();
+                for(int j=0;j<count;j++){
+                    itemList.add(resList.get(i*count+j));
+                }
+                ret.add(itemList);
+            }
+            //last的进行处理
+            if(last>0){
+                List<T> itemList=new ArrayList<T>();
+                for(int i=0;i<last;i++){
+                    itemList.add(resList.get(pre*count+i));
+                }
+                ret.add(itemList);
+            }
+        }
+        return ret;
     }
 }

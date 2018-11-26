@@ -422,7 +422,7 @@ public class ReportHandler {
      * @param cubeTree
      * @return
      */
-    public List<ReportRespDetail> reportCoreDetailExcel(ReportDatasource reportDatasource, CubeTree cubeTree) {
+    public List<ReportRespDetail> reportCoreDetailExcel(ReportDatasource reportDatasource, CubeTree cubeTree,RptPersionalDownloadVO rptPersionalDownloadVO) {
         String dataSourceName = reportDatasource.getDatasourceName();
 
         Connection conn = null;
@@ -441,6 +441,8 @@ public class ReportHandler {
 
             //算total
             String sql = reportDetail.getSql();
+            //设置sql
+            rptPersionalDownloadVO.setDownloadSql(sql);
 
             StringBuilder s = new StringBuilder(sql);
             String selectCount = s.substring(s.lastIndexOf("from"), s.length() );
@@ -452,9 +454,10 @@ public class ReportHandler {
             List<PageDTO> pages = PageReportDetail.getPages(excelLimitCount, count);
 
             //几个未一级文件要合并
-            Integer page = PageReportDetail.getPage(excelLimitCount, excelDetailCount);
+            Integer page = PageReportDetail.getPage(excelDetailCount, count);
 
             List<ReportRespDetail> reportRespDetails = new ArrayList<>(pages.size());
+            List<List<String>> dataList = new ArrayList<>();
             for(PageDTO pageDTO:pages){
                 //分页sql
                 String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource.getDatabaseType(), pageDTO, count);
@@ -462,11 +465,32 @@ public class ReportHandler {
                 ReportRespDetail reportRespDetail = reportAccessor.reportPageList(detailSql, conn, cubeTree, reportDetail.getFieldList());
 
                 reportRespDetails.add(reportRespDetail);
+                dataList.addAll(reportRespDetail.getDataList());
             }
 
-            //合并文件
-            List<List<ReportRespDetail>> lists = ReportExportUtil.averageAssign(reportRespDetails, page);
-            list = ReportExportUtil.averageMerge(lists);
+            List<List<List<String>>> lists = null;
+            List<String> headers = null;
+            //转换文件
+            if(reportRespDetails.size() < page ){
+                if(!CollectionUtils.isEmpty(reportRespDetails)){
+                    headers = reportRespDetails.get(0).getHeaders(); //header 都是一样的
+                    lists = ReportExportUtil.averageAssign(dataList, page);
+
+                }
+            }else{
+                if(!CollectionUtils.isEmpty(reportRespDetails)){
+                    headers = reportRespDetails.get(0).getHeaders(); //header 都是一样的
+                    lists = ReportExportUtil.averageDivision(dataList, excelDetailCount);
+
+                }
+            }
+            for(List<List<String>> listList:lists){
+                ReportRespDetail respDetail = new ReportRespDetail();
+                respDetail.setHeaders(headers);
+                respDetail.setDataList(listList);
+                list.add(respDetail);
+            }
+
         } catch (DbException e) {
             logger.error("Occurred DbException.", e);
             // todo throw exception
