@@ -183,10 +183,10 @@
         <div class="main-box clearfix" id="condQuery">
             <span class="main-box__name">数据表（名称或编码）:</span>
             <input type="text" class="inputBase main-box__input" id="condtableName">
-            <span class="main-box__name ml10">所在数据库:</span>
+            <span class="main-box__name ml10 mr10">所在数据库:</span>
             <!-- <input type="text" class="inputBase main-box__input" id="conddatasourceName"> -->
             <select id="conddatasourceName" class="comSelect template-tablebox_select required"  comtype="singleSelectCtrl"
-                        reqpath="/report/listSelect" reqparam="{}" method="post" selcode="datasourceName" selvalue="datasourceChineseName">
+                        reqpath="/report/listSelect" reqparam="{}" method="post" selcode="datasourceName" selvalue="datasourceChineseName" style="width: 150px;">
                 </select>
             <div class="search_btn_class"  comtype="searchBtnCtrl" rule="cond" cond="condtableName,conddatasourceName" parentId="condQuery" uniontableid="tableList" type="button" id="searchDataBtn">
                 <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
