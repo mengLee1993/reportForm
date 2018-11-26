@@ -1,7 +1,7 @@
 	var width = $(window).width();
 	var height = $(window).height();
 	$(function() {
-	    if(window.location.href.indexOf("login.html") == -1){
+	    if(window.location.href.indexOf("login.html") == -1 && window.location.href.indexOf("html-gulp-www") != -1){
             limitCodeDeal($("*[limitCode]"), "limitCode");
         };
         $("#loginName").html(unescape(getCookie("reportName")));

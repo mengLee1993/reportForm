@@ -591,8 +591,8 @@ public class ReportController {
                         }
                     }
                     pages.setResultData(acctInfos);
-                    pages.setPages(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("pages")));
-                    pages.setPageNum(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("limit")));
+                    pages.setPageSize(acctInfo.getPageSize());
+                    pages.setPageNum(acctInfo.getPageNum());
                     pages.setTotal(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("total")));
                     jsonResponse.setRspBody(pages);
                 }
