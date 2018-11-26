@@ -1864,18 +1864,37 @@ function getAjaxResultLee(strPath, method, param, callbackMethod, beforeSendFunc
 //覆盖分页方法
 function clsStandardTableCtrl$page(strClsName) {
     if (this.jsonData != null) {
-        $("." + strClsName).createPage({
-            pageCount: this.jsonData.pages,
-            current: this.jsonData.pageNum,
-            parentObj: this.ctrl,
-            backFn: function (p) {
-                var jsonParam = deepCopy(document.body.jsLee.jsonAll);
-                jsonParam.pageNum = p;
-                getAjaxResultLee(document.body.jsLee.requestUrl.path15,"POST",jsonParam,"pageTableInitCallBack(data)")
-                //$(this)[0].parentObj.jsCtrl.refresh();
-            }
-        });
+        if(this.ctrl.id == "tableList"){
+            $("." + strClsName).createPage({
+                pageCount: this.jsonData.pages,
+                current: this.jsonData.pageNum,
+                parentObj: this.ctrl,
+                backFn: function (p) {
+                    var jsonParam = deepCopy(document.body.jsLee.jsonAll);
+                    jsonParam.pageNum = p;
+                    getAjaxResultLee(document.body.jsLee.requestUrl.path15,"POST",jsonParam,"pageTableInitCallBack(data)")
+                    //$(this)[0].parentObj.jsCtrl.refresh();
+                }
+            });
+        }else{
+
+            $("." + strClsName).createPage({
+                pageCount: this.jsonData.pages,
+                current: this.jsonData.pageNum,
+                parentObj: this.ctrl,
+                backFn: function (p) {
+                    var jsonCondData = JSON.parse($(this)[0].parentObj.getAttribute("reqParam"));
+                    jsonCondData.pageNum = p;
+                    $(this)[0].parentObj.setAttribute("reqParam", JSON.stringify(jsonCondData));
+                    document.body.jsCtrl.ctrl = $(this)[0].parentObj;
+                    document.body.jsCtrl.init();
+                    //$(this)[0].parentObj.jsCtrl.refresh();
+                }
+            });
+        }
     }
+
+
 
 }
 
