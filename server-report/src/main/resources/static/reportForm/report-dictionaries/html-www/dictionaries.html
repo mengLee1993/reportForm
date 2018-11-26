@@ -163,8 +163,8 @@
             // },function(){
             //     $(this).css("background","");
             // });
-            $(cloneRow).click(function () {
-                $(this).css("background","#f8f8f9").siblings().css("background","");
+            $(cloneRow).find("#datasourceChineseName").click(function () {
+                $(cloneRow).css("background","#f8f8f9").siblings().css("background","");
                 document.body.jsdom.initmainBase($("#fieldList"),{"tableId":jsonItem.tableId});
             });
         }
@@ -202,8 +202,9 @@
             getAjaxResult("/report/dataTable/remove","post",{"tableId":tableId},function(data){
                 data = JSON.parse(data);
                 if(data.retCode == "0000000"){
-                    document.body.jsCtrl.ctrl = $("#themeList")[0];
-                    document.body.jsCtrl.init();
+                    // document.body.jsCtrl.ctrl = $("#themeList")[0];
+                    // document.body.jsCtrl.init();
+                    document.body.jsdom.initmainBase($("#tableList"),{});
                 }else{
                     aletr(data.retDesc);
                 }
@@ -413,8 +414,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="table-list__str" id="templateRowtheme" style="display: none;cursor: pointer">
-                            <td class="table-list__td" id="datasourceChineseName"></td>
+                        <tr class="table-list__str" id="templateRowtheme" style="display: none;">
+                            <td class="table-list__td" id="datasourceChineseName" style="cursor: pointer"></td>
                             <td class="table-list__td" id="datasourceName" style="color: #6390f3;"></td>
                             <td class="table-list__td" id="tableName"></td>
                             <td class="table-list__td" id="tableCode"></td>
