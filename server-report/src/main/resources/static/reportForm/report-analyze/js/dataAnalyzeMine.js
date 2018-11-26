@@ -249,10 +249,12 @@ function clsMethodLee$operate(){
             jsonParam.reportDynamicParam.column[nI].position = null;
         }
         var importParam = "name=" + JSON.stringify(jsonParam);
-        if(jsonParam.reportDynamicParam.column.length > 0){//自己刷新报表表格
+        if(jsonParam.reportDynamicParam.column.length > 0 && jsonParam.reportDynamicParam.line.length == 0){//自己刷新报表表格
             $.download(requestUrl + document.body.jsLee.requestUrl.path9, importParam, "POST");
             //getAjaxResultLee(document.body.jsLee.requestUrl.path9,"POST",importParam,"abc(data)")
-        }else{
+        }else if(jsonParam.reportDynamicParam.column.length == 0 && jsonParam.reportDynamicParam.line.length > 0){
+            $.download(requestUrl + document.body.jsLee.requestUrl.path9, importParam, "POST");
+        }else if(jsonParam.reportDynamicParam.column.length == 0 && jsonParam.reportDynamicParam.line.length == 0){
             var alertBox=new clsAlertBoxCtrl();
             alertBox.Alert("请生成table","失败提示");
         };
