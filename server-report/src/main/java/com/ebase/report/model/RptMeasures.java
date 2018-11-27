@@ -136,6 +136,9 @@ public class RptMeasures implements Serializable {
 
     public void setMeasureType(String measureType) {
         this.measureType = measureType == null ? null : measureType.trim();
+        if(org.apache.commons.lang3.StringUtils.isNotEmpty(measureType)){
+            measureType = measureType.toUpperCase();
+        }
     }
 
     public Long getSubjectId() {
