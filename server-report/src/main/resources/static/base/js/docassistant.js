@@ -2084,6 +2084,7 @@ function clsStandardTableCtrl$page(strClsName) {
             pageCount: this.jsonData.pages,
             current: this.jsonData.pageNum,
             parentObj: this.ctrl,
+            total: this.jsonData.total,
             backFn: function (p) {
                 var jsonCondData = JSON.parse($(this)[0].parentObj.getAttribute("reqParam"));
                 jsonCondData.pageNum = p;
