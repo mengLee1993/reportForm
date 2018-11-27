@@ -1222,6 +1222,9 @@ function searchParse(jsonData,doms){//jsonData自生成提交回显json   doms�
 function initTable(){
     $("#rptList").html("");
     $("#searchBox").html("");
+    $("#tableList").html("");
+    $("#nonData").hide();
+    $(".tcdPageCode3").hide();
     if(document.body.jsLee.jsonAll.reportDynamicParam.filter.length > 0){
         searchParse(document.body.jsLee.jsonAll.reportDynamicParam.filter,$(".selDimensionSearch li"));//搜索条件初始化页面
     }
