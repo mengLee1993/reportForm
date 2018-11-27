@@ -18,7 +18,6 @@ function clsMethodLee(){
     };
     this.jsonAll = {"reportDynamicParam":{"column":[],"filter":[],"line":[],"tbs":[]}};//提交如参
     this.documentLee = null;
-    this.subjectId = "";//主题id
     this.measureId = "";//指标id（编辑操作）
     this.measureEditJson = {};//编辑指标复现信息（编辑操作）
     this.checkedAll = [];//勾选待选维度和指标check
@@ -350,10 +349,14 @@ function clsParentChildTableCtrl$progress(jsonItem, cloneRow) {
         document.body.jsLee.jsonAll = jsonItem;
         initHtmlData(jsonItem.reportDynamicParam);
     }
+    if(document.body.jsLee.personalSubjectId) {
+        $(cloneRow).find("#childShow").show();
+        document.body.jsLee.jsonAll = jsonItem;
+    }
 
     //点击父dom展示子dom操作
     $(cloneRow).find("#parentClick").on("click",function () {
-        document.body.jsLee.subjectId = $(this).parents("#cloneParentRow")[0].jsonData.personalSubjectId;
+        document.body.jsLee.personalSubjectId = $(this).parents("#cloneParentRow")[0].jsonData.personalSubjectId;
         childListShow(this,cloneRow,jsonItem);
         initRightShow();//重置勾选，刷新右侧区域
         initTableOrChart();
@@ -370,7 +373,7 @@ function clsParentChildTableCtrl$progress(jsonItem, cloneRow) {
         document.body.jsLee.measureId = "";
         clearpopup();
     });
-    /*if(document.body.jsLee.subjectId && document.body.jsLee.subjectId == jsonItem.personalSubjectId && !document.body.jsLee.personalAnalysisId){
+    /*if(document.body.jsLee.personalSubjectId && document.body.jsLee.personalSubjectId == jsonItem.personalSubjectId && !document.body.jsLee.personalAnalysisId){
         //$(cloneRow).find("#parentClick").click();
         $(cloneRow).find("#childShow").show();
         document.body.jsLee.jsonAll.rptMeasures = jsonItem.rptMeasures;
@@ -551,7 +554,7 @@ function showErrInfoByCustomDiv(elem,error)
 function initHtmlData(data){
     $(".selDimensionRows").html("");
     $(".selDimensionCols").html("");
-    document.body.jsLee.subjectId = data.personalSubjectId;
+    document.body.jsLee.personalSubjectId = data.personalSubjectId;
     //初始化待选列
     initplugData($("#parentChildTableCopy")[0],"standardTableCtrl",data.tbs);
     //初始化过滤区
@@ -966,7 +969,7 @@ function childListShow(that,cloneRow,jsonItem){
 function clearpopup(){
     //初始化下拉框
     $("#createMeasurePop #fieldId").attr("initValue","");
-    initplugPath($("#createMeasurePop #fieldId")[0],"singleSelectCtrl",document.body.jsLee.requestUrl.path2,{"personalSubjectId":document.body.jsLee.subjectId},"POST");
+    initplugPath($("#createMeasurePop #fieldId")[0],"singleSelectCtrl",document.body.jsLee.requestUrl.path2,{"personalSubjectId":document.body.jsLee.personalSubjectId},"POST");
     $("#createMeasurePop #measureType option:first").attr("selected",true);
     $("#createMeasurePop #measureType").trigger("chosen:updated");
     //初始化input
@@ -974,14 +977,14 @@ function clearpopup(){
     //初始化tab页
     $("#measureTab li:first").click();
     //初始化待选指标path3
-    getAjaxResultLee(document.body.jsLee.requestUrl.path3,"POST",{"personalSubjectId":document.body.jsLee.subjectId},"waitMeasureInit(data)");
+    getAjaxResultLee(document.body.jsLee.requestUrl.path3,"POST",{"personalSubjectId":document.body.jsLee.personalSubjectId},"waitMeasureInit(data)");
     $("#formulaContent").html("");
 }
 
 //弹框中待选指标赋值
 function waitMeasureInit(data){
     data = JSON.parse(data);
-    //data = {"retCode":"0000000","retDesc":"操作成功!","timestamp":"2018-10-31 20:31:41.451","rspBody":{"resultData":[{"measureId":1,"measuresName":"测试指标name","fieldId":16,"fieldCode":"LOGIN_SOURCE","measureType":"sum","subjectId":1,"removeStatus":0,"createdBy":"?????","createdDt":1540382592000,"updatedBy":null,"updatedDt":null,"measureRule":null,"rptMeasuresBody":null},{"measureId":2,"measuresName":"测试name","fieldId":22,"fieldCode":"MOBILE_PHONE","measureType":"sum","subjectId":1,"removeStatus":0,"createdBy":"?????","createdDt":1540791202000,"updatedBy":null,"updatedDt":null,"measureRule":null,"rptMeasuresBody":null}]}};
+    //data = {"retCode":"0000000","retDesc":"操作成功!","timestamp":"2018-10-31 20:31:41.451","rspBody":{"resultData":[{"measureId":1,"measuresName":"测试指标name","fieldId":16,"fieldCode":"LOGIN_SOURCE","measureType":"sum","personalSubjectId":1,"removeStatus":0,"createdBy":"?????","createdDt":1540382592000,"updatedBy":null,"updatedDt":null,"measureRule":null,"rptMeasuresBody":null},{"measureId":2,"measuresName":"测试name","fieldId":22,"fieldCode":"MOBILE_PHONE","measureType":"sum","personalSubjectId":1,"removeStatus":0,"createdBy":"?????","createdDt":1540791202000,"updatedBy":null,"updatedDt":null,"measureRule":null,"rptMeasuresBody":null}]}};
     if(data.retCode == "0000000"){
         var jsonDataParse = null;
         if(document.body.jsLee.measureEditJson.measureType == "custom"){
@@ -1039,13 +1042,13 @@ function checkTrue(){
 function jsonParamJoin(){
     if($("#measureTab li:first").hasClass("tabTitLi")) {//系统指标
         var jsonParam = {/*"measuresName":"",*/"fieldId":"","measureType":""};
-        jsonParam.subjectId = document.body.jsLee.subjectId;
+        jsonParam.subjectId = document.body.jsLee.personalSubjectId;
         jsonParam.measureId = document.body.jsLee.measureId;
         jsonParam.personalAnalysisId = document.body.jsLee.personalAnalysisId;
         getValue4Desc(jsonParam,$("#systemMeasure")[0]);
     }else{//自定义指标
         var jsonParam = {"measuresName":""};
-        jsonParam.subjectId = document.body.jsLee.subjectId;
+        jsonParam.subjectId = document.body.jsLee.personalSubjectId;
         jsonParam.measureId = document.body.jsLee.measureId;
         jsonParam.measureType = "custom";
         jsonParam.reportMeasure = document.body.jsFCtrl.save();
@@ -1088,7 +1091,7 @@ function initLeftAginHtml(data){
         }else{
             //拼接json
             for(var nI = 0 ; nI < data.rspBody.resultData.length; nI++ ){
-                if(document.body.jsLee.subjectId == data.rspBody.resultData[nI].personalSubjectId){
+                if(document.body.jsLee.personalSubjectId == data.rspBody.resultData[nI].personalSubjectId){
                     document.body.jsLee.jsonAll.rptMeasures = data.rspBody.resultData[nI].rptMeasures;
                     $("*[id=cloneParentRow]").eq(nI).find("*[id=cloneSpecialRow]").remove();
                     measureInit($("*[id=cloneParentRow]").eq(nI),data.rspBody.resultData[nI]);
