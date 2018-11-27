@@ -131,7 +131,7 @@ public class RptMeasures implements Serializable {
     }
 
     public String getMeasureType() {
-        return measureType;
+        return measureType == null ? measureType : measureType.toUpperCase();
     }
 
     public void setMeasureType(String measureType) {
