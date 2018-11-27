@@ -287,7 +287,8 @@
                 document.body.jsCtrl.ctrl =  $("#themeList")[0];
                 document.body.jsCtrl.init();
             }
-
+            //刷新数据字段
+            document.body.jsdom.initmainBase($("#fieldList"),{"tableId":null});
         });
     })
     function datasourceInitCallBack(data){
