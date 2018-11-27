@@ -1882,6 +1882,7 @@ function clsStandardTableCtrl$page(strClsName) {
             $("." + strClsName).createPage({
                 pageCount: this.jsonData.pages,
                 current: this.jsonData.pageNum,
+                total: this.jsonData.total,
                 parentObj: this.ctrl,
                 backFn: function (p) {
                     var jsonParam = deepCopy(document.body.jsLee.jsonAll);
@@ -1895,6 +1896,7 @@ function clsStandardTableCtrl$page(strClsName) {
             $("." + strClsName).createPage({
                 pageCount: this.jsonData.pages,
                 current: this.jsonData.pageNum,
+                total: this.jsonData.total,
                 parentObj: this.ctrl,
                 backFn: function (p) {
                     var jsonCondData = JSON.parse($(this)[0].parentObj.getAttribute("reqParam"));
