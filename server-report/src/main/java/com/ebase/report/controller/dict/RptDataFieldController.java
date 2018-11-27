@@ -10,6 +10,7 @@ import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
 import com.ebase.report.service.RptDataFieldService;
 import com.ebase.report.vo.RptDataFieldVO;
 import com.github.pagehelper.PageHelper;
+import jdk.nashorn.internal.ir.ReturnNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -88,9 +90,14 @@ public class RptDataFieldController {
         try {
             logger.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
             RptDataFieldVO vo = jsonRequest.getReqBody();
-//            PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
-            List<RptDataFieldVO> acctOrgSysVOs = rdfService.queryList(vo);
-            PageInfo<RptDataFieldVO> pages = new PageInfo(acctOrgSysVOs);
+            List<RptDataFieldVO> list = new ArrayList();
+            if(vo.getTableId() == null){
+                PageInfo<RptDataFieldVO> pages = new PageInfo(list);
+                jsonResponse.setRspBody(pages);
+                return jsonResponse;
+            }
+            list = rdfService.queryList(vo);
+            PageInfo<RptDataFieldVO> pages = new PageInfo(list);
             jsonResponse.setRspBody(pages);
         } catch (Exception e) {
             logger.error(e.getMessage() , e);
