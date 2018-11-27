@@ -34,6 +34,8 @@ public class ReportTable {
     //添加组合名称
     private String combinationName;
 
+    private String datasourceChineseName;
+
 
     private int pageSize = 10 ;
 
@@ -118,5 +120,13 @@ public class ReportTable {
 
     public void setCombinationName(String combinationName) {
         this.combinationName = combinationName;
+    }
+
+    public String getDatasourceChineseName() {
+        return datasourceChineseName;
+    }
+
+    public void setDatasourceChineseName(String datasourceChineseName) {
+        this.datasourceChineseName = datasourceChineseName;
     }
 }

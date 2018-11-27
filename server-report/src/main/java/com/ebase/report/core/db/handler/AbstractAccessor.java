@@ -536,6 +536,9 @@ public abstract class AbstractAccessor implements ReportAccessor {
                     for (int i = 0; i < columnCount; i++) {
                         String columnName = rsmd.getColumnLabel(i + 1);
                         String columnValue = rs.getString(columnName);
+                        if("RN".equals(columnName)){ //orcale 排除
+                            continue;
+                        }
                         Dimension dimension = cubeTree.getDimensionMap().get(columnName);
                         rsMap.put(dimension.getKey(), columnValue);
                     }

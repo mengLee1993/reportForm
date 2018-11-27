@@ -298,7 +298,7 @@
 
     <select id="listReportForm" parameterType="java.util.Map" resultType="com.ebase.report.model.dynamic.ReportTable">
         SELECT  DISTINCT s.PERSONAL_SUBJECT_ID AS 'personalSubjectId', t.TABLE_NAME AS 'tableName',
-        t.TABLE_CODE AS 'tableCode',d.DATASOURCE_NAME AS 'datasourceName',t.DEMO AS 'demo',d.DATABASE_TYPE AS 'tableType' FROM RPT_PERSONAL_SUBJECT s
+        t.TABLE_CODE AS 'tableCode',d.DATASOURCE_NAME AS 'datasourceName',t.DEMO AS 'demo',d.DATABASE_TYPE AS 'tableType',d.DATASOURCE_CHINESE_NAME as 'datasourceChineseName' FROM RPT_PERSONAL_SUBJECT s
 		LEFT JOIN RPT_DATA_TABLE t ON s.TABLE_ID = t.TABLE_ID
 		LEFT JOIN RPT_DATASOURCE  d ON d.DATASOURCE_ID = t.DATASOURCE_ID
         WHERE (s.ROLE_ID = #{roleId} OR s.USER_ID = #{acctId})

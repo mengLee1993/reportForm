@@ -68,7 +68,7 @@ function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
         
         var reqObj = {}
         if(ctrlID == "tableUser"){
-            reqObj.reAcctId = jsonItem.reAcctId;
+            reqObj.acctId = jsonItem.reAcctId;
             reqId = jsonItem.reAcctId;
             reqType = 1;
         }else{
@@ -77,7 +77,7 @@ function clsStandardTableCtrl$progress(jsonItem, cloneRow) {
              * @type {[type]}
              */
             reqType = 0;
-            reqObj.reRoleId = jsonItem.reRoleId;
+            reqObj.roleId = jsonItem.reRoleId;
             reqId = jsonItem.reRoleId;
         }
         getAjaxResult("/dataAuth/dataAuthTree", "post",reqObj,"treeListFun(data)");

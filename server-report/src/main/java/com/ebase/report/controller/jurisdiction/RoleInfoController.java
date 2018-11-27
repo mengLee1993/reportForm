@@ -372,8 +372,16 @@ public class RoleInfoController {
                 PageDTO<RoleInfo> acctOrgSysVOs = roleInfoService.queryForList(roleInfo);
                 jsonResponse.setRspBody(acctOrgSysVOs);
             }else if (type.equals("report")) {
+                if(roleInfo.getRoleTitle()==null){
+                    roleInfo.setRoleTitle("");
+                }
+                if(roleInfo.getRoleCode()==null){
+                    roleInfo.setRoleCode("");
+                }
                 String url = "http://" + authIp + "/auth/ac/ac-role/findUsingProjectRoles.action?_dc=1542681842909&page=" + roleInfo.getPageNum() + "&limit=" + roleInfo.getPageSize() +
-                        "&qm.projectId=CAS&qm.roleName="+roleInfo.getRoleTitle()+"&qm.roleId="+roleInfo.getRoleCode();
+                        "&qm.projectId=CAS" +
+                        "&qm.roleName="+roleInfo.getRoleTitle()+
+                        "&qm.roleId="+roleInfo.getRoleCode();
                 //String url="http://192.168.1.100:7070/auth/ac/login/dologin.action?username=liq0416&password=admin123";
                 HashMap map = new HashMap();
                 JSONObject json = JSON.parseObject(HTTPUtil.postParams(url, AssertContext.getToken(), map));

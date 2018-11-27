@@ -202,9 +202,9 @@
             getAjaxResult("/report/dataTable/remove","post",{"tableId":tableId},function(data){
                 data = JSON.parse(data);
                 if(data.retCode == "0000000"){
-                    // document.body.jsCtrl.ctrl = $("#themeList")[0];
-                    // document.body.jsCtrl.init();
-                    document.body.jsdom.initmainBase($("#tableList"),{});
+                    document.body.jsdom.initmainBase($("#tableList"),document.body.jsdom.tobaseJson);
+                    document.body.jsdom.initmainBase($("#themeList"),document.body.jsdom.tobaseJson);
+                    document.body.jsdom.initmainBase($("#fieldList"),{"tableId":null});
                 }else{
                     aletr(data.retDesc);
                 }

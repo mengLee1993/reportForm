@@ -27,4 +27,6 @@ public interface RptDatasourceMapper {
     List<RptDatasource> selectByTableIds(@Param("tableIds") List<Long> tableIds);
 
     int deleteById(Long datasourceId);
+
+    List<RptDatasource> selectByAuth(Long acctId, String orgId);
 }
