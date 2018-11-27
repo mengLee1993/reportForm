@@ -132,31 +132,31 @@
 									</a>
 								</li>
 
-								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="10401">
+								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="104101">
 									<a href="#" class="tradebase-side-nav__link">
 										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/orgFrame.html" firstMark="3">组织管理</p>
 										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
 									</a>
 								</li>
-								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="10402">
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="104102">
 									<a href="#" class="tradebase-side-nav__link">
 										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/roleManage.html" firstMark="3">角色管理</p>
 										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
 									</a>
 								</li>
-								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="10403">
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="104103">
 									<a href="#" class="tradebase-side-nav__link">
 										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/resourceManage.html" firstMark="3">资源管理</p>
 										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
 									</a>
 								</li>
-								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="10404">
+								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="104104">
 									<a href="#" class="tradebase-side-nav__link">
 										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/userManage.html" firstMark="3">人员管理</p>
 										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
 									</a>
 								</li>
-								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="10405">
+								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="104105">
 									<a href="#" class="tradebase-side-nav__link">
 										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/systemManage.html" firstMark="3">系统管理</p>
 										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
@@ -231,7 +231,6 @@
         <span id="refreshOperate" class="formcontainer-tool__model"> <i class="formcontainer-tool__icon" style="background-position: -469px -83px;"></i>刷新</span>
         <i class="formcontainer-tool__bar">|</i>
         <span id="saveOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position: -509px -83px;"></i>保存</span>
-        <span id="submitOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position: -32px -23px;"></i>数据明细</span>
         <span id="shareOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-109px -146px;;"></i>分享</span>
         <i class="formcontainer-tool__bar">|</i>
         <span id="chartShow" class="formcontainer-tool__model"><i class="tableCss"></i><span>图形</span></span>
@@ -242,6 +241,7 @@
         <!--<span class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-110px -23px;"></i>设置</span>
         <span class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-229px -83px;"></i>参数</span>
         <i class="formcontainer-tool__bar">|</i>-->
+        <span id="submitOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position: -32px -23px;"></i>数据明细</span>
         <span id="exportOperate" class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-354px -84px;"></i>导出</span>
         <!-- <i class="formcontainer-tool__icon" style="background-position:-434px -84px"></i>
         <span class="formcontainer-tool__model"><i class="formcontainer-tool__icon" style="background-position:-354px -84px"></i>过滤</span>-->
@@ -576,11 +576,11 @@
             <div class="userRole">
                 <ul class="clearfix" style="margin-bottom: 10px;" id="searchBox2">
                     <li class="fl" style="margin-right: 5px;">
-                        <span style="margin-right: 5px;">人员名称：</span>
-                        <input id="condacctTitle" type="text" class="inputBase" />
+                        <span style="margin-right: 5px;">角色名称：</span>
+                        <input id="condroleTitle" type="text" class="inputBase" />
                     </li>
                     <li class="fl">
-                        <div class="btnLowNew" comType="searchBtnCtrl" cond="condacctTitle" rule="cond" unionTableId="roleShare" parentId="searchBox2">查询</div>
+                        <div class="btnLowNew" comType="searchBtnCtrl" cond="condroleTitle" rule="cond" unionTableId="roleShare" parentId="searchBox2">查询</div>
                         <div class="btnLowNew shareSure" style="margin-left: 10px;">分享</div>
                     </li>
                 </ul>

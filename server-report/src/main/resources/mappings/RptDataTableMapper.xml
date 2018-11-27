@@ -347,7 +347,8 @@
         select
         <include refid="Base_Column_List" />
         from rpt_data_table
-        where DATASOURCE_ID = #{datasourceId,jdbcType=BIGINT}
+        WHERE
+        DATASOURCE_ID = #{datasourceId}
     </select>
 
 
@@ -360,7 +361,7 @@
     <!--分页-->
     <select id="selectByPage" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+       *
         from rpt_data_table
         <trim prefix="where" prefixOverrides="and | or">
         <if test="tableName != null">
@@ -371,6 +372,9 @@
          </if>
          <if test="removeStatus != null">
             AND REMOVE_STATUS = #{removeStatus}
+         </if>
+         <if test="datasourceId != null and datasourceId !=''">
+             AND DATASOURCE_ID = #{datasourceId}
          </if>
         </trim>
         ORDER BY TABLE_ID ASC
