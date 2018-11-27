@@ -484,7 +484,7 @@ public abstract class AbstractAccessor implements ReportAccessor {
 
             measures.forEach(x -> {
                 MeasureTypeEnum measureEnum = x.getMeasureType();
-
+                x.setDemandType(DemandType.MEASURES);
                 String measureType = measureEnum.getMeasureType();
                 if (!MeasureTypeEnum.CUSTOM.equals(measureEnum) && !"1".equals(x.getFieldCode())) {
                     //系统级 都是系统级的
