@@ -360,7 +360,7 @@
     <!--分页-->
     <select id="selectByPage" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+       *
         from rpt_data_table
         <trim prefix="where" prefixOverrides="and | or">
         <if test="tableName != null">
