@@ -140,22 +140,7 @@ public class ReportServiceImpl implements ReportService {
                 rptMeasures = rptMeasuresMapper.selectBySubjectIdAcctId(personalSubjectId,acctId);
             }
 
-            List<RptMeasures> list = new ArrayList<>(rptDataIndexs.size());
-            //初始化一些指标
-            int i = 0;
-            for(RptDataField x:rptDataIndexs){
-                RptMeasures rptMeasures1 = new RptMeasures();
-                rptMeasures1.setMeasureId(new Date().getTime() + acctId + i ++);
-                String measuresName = x.getFieldName() + "(" + MeasureTypeEnum.SUM.getName() + ")";
-                rptMeasures1.setMeasuresName(measuresName);
-                rptMeasures1.setFieldId(x.getFieldId());
-                rptMeasures1.setFieldCode(x.getFieldCode());
-                rptMeasures1.setFieldName(x.getFieldName());
-                rptMeasures1.setMeasureType(MeasureTypeEnum.SUM.getCode());
-                rptMeasures1.setSubjectId(personalSubjectId);
-                rptMeasures1.setIsSystem((byte)1);
-                list.add(rptMeasures1);
-            };
+            List<RptMeasures> list = getRptMeasures(personalSubjectId, rptDataIndexs);
 
             rptMeasures.addAll(list);
             themeDataSource.setRptMeasures(rptMeasures);
@@ -164,6 +149,32 @@ public class ReportServiceImpl implements ReportService {
 
         }
         return themeDataSource;
+    }
+
+    private List<RptMeasures> getRptMeasures(Long personalSubjectId, List<RptDataField> rptDataIndexs) {
+        Long acctId = AssertContext.getAcctId();
+        if(acctId == null){
+            acctId = 1l;
+        }
+
+        List<RptMeasures> list = new ArrayList<>(rptDataIndexs.size());
+        //初始化一些指标
+        int i = 0;
+        for(RptDataField x:rptDataIndexs){
+            RptMeasures rptMeasures1 = new RptMeasures();
+            rptMeasures1.setMeasureId(new Date().getTime() + acctId + i ++);
+            String measuresName = x.getFieldName() + "(" + MeasureTypeEnum.SUM.getName() + ")";
+            rptMeasures1.setMeasuresName(measuresName);
+            rptMeasures1.setFieldId(x.getFieldId());
+            rptMeasures1.setFieldCode(x.getFieldCode());
+            rptMeasures1.setFieldName(x.getFieldName());
+            rptMeasures1.setMeasureType(MeasureTypeEnum.SUM.getCode());
+            rptMeasures1.setSubjectId(personalSubjectId);
+            rptMeasures1.setIsSystem((byte)1);
+            list.add(rptMeasures1);
+        }
+        ;
+        return list;
     }
 
     @Override
@@ -342,8 +353,23 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<RptMeasures> getRptMeasuresSystem(Long personalSubjectId) {
+        //先查询数据表
+        RptPersonalSubject rptPersonalSubject = rptPersonalSubjectMapper.selectByPrimaryKey(personalSubjectId);
 
-        return rptMeasuresMapper.selectSystemBySubjectId(personalSubjectId);
+        List<RptMeasures> result = new ArrayList<>();
+        if(rptPersonalSubject != null){
+            Map<String,Object> tmp = new HashMap<>();
+            tmp.put("tableId",rptPersonalSubject.getTableId());
+            tmp.put("dimensionIndex",DemandType.MEASURES.getCode());
+            //根据指标字段生成指标
+            List<RptDataField> rptDataIndexs =rptDataFieldMapper.selectByTableId(tmp);
+            result = getRptMeasures(personalSubjectId, rptDataIndexs);
+            //生成指标
+            List<RptMeasures> rptMeasures = rptMeasuresMapper.selectSystemBySubjectId(personalSubjectId);
+            result.addAll(rptMeasures);
+        }
+
+        return  result;
     }
 
 
