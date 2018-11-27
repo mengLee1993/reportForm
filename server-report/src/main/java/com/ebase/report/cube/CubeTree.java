@@ -626,10 +626,10 @@ public class CubeTree {
                     if(reportMeasure.getIsChecked()==1){
                         if(reportMeasure.getMeasureType().equals(MeasureTypeEnum.CUSTOM)){
                             // 自定义指标
-                            String expression = reportMeasure.getExpressionEnglish();
+                            String expression = reportMeasure.getReportMeasure().getExpressionEnglish();
 
                             // 替换【指标标识】为对应的指标数值
-                            for(ReportMeasure customMeasure : reportMeasure.getCustomIndexTmp()){
+                            for(ReportMeasure customMeasure : reportMeasure.getReportMeasure().getCustomIndexTmp()){
                                 String measureValue = rsMap.get(customMeasure.getKey()) ==null ? "0" : rsMap.get(customMeasure.getKey());
                                 expression = expression.replaceAll("#"+customMeasure.getKey()+"#", null == measureValue ? "0" : measureValue);
                             }
