@@ -6,9 +6,7 @@ import com.ebase.report.core.db.handler.ReportHandler;
 import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.utils.BeanCopyUtil;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
-import com.ebase.report.dao.RptDataFieldMapper;
-import com.ebase.report.dao.RptDataTableMapper;
-import com.ebase.report.dao.RptDatasourceMapper;
+import com.ebase.report.dao.*;
 import com.ebase.report.model.RptDataField;
 import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.RptDatasource;
@@ -39,6 +37,19 @@ public class RptDataTableServiceImpl implements RptDataTableService {
 
     @Autowired
     private ReportHandler reportHandler;
+
+    @Autowired
+    private RptDataDictMapper rptDataDictMapper;
+
+    @Autowired
+    private RptPersonalSubjectMapper rptPersonalSubjectMapper;
+
+    @Autowired
+    private RptMeasuresMapper rptMeasuresMapper;
+
+    @Autowired
+    private RptPersonalAnalysisMapper rptPersonalAnalysisMapper;
+
 
     //---------------------------根据选择数据库查询出数据库下所有的表------------------
     @Transactional(readOnly = true)
@@ -89,12 +100,40 @@ public class RptDataTableServiceImpl implements RptDataTableService {
         return sR;
     }
 
-    //--------------------------------删除,假删除,改变状态-------------------------
+    //--------------------------------删除,真删除-------------------------
     public ServiceResponse<Integer> removeByPrimaryKey(Long tableId) {
-        ServiceResponse<Integer> sR = new ServiceResponse<>();
+        /*ServiceResponse<Integer> sR = new ServiceResponse<>();
         sR.setRetContent(rptDataTableMapper.deleteById(tableId));
 
-        rptDataFieldMapper.deleteByTableId(tableId);
+        rptDataFieldMapper.deleteByTableId(tableId);*/
+
+        ServiceResponse<Integer> sR = new ServiceResponse<>();
+        rptDataTableMapper.deleteById(tableId);
+        List<Long> fields = rptDataFieldMapper.selectIdByTableid(tableId);
+        try {
+            fields.forEach(x -> {
+                //根据表ID查询所有对字段id
+                rptDataFieldMapper.deleteByTableId(tableId);
+                if(!CollectionUtils.isEmpty(fields)){
+                    //根据字段删除元数据
+                    rptDataDictMapper.deleteByFieldIds(fields);
+                }
+                //根据table ids删除主题id
+                List<Long> subjectIds = rptPersonalSubjectMapper.selectIdByTableId(tableId);
+
+                rptPersonalSubjectMapper.deleteByTableId(tableId);
+                if(!CollectionUtils.isEmpty(subjectIds)){
+                    //删除指标
+                    rptMeasuresMapper.deleteBySubjectId(subjectIds);
+                    //删除报表
+                    rptPersonalAnalysisMapper.deleteBySubjectId(subjectIds);
+                }
+            });
+            sR.setRetContent(1);
+        }catch (Exception e){
+            e.printStackTrace();
+            sR.setRetContent(0);
+        }
         return sR;
     }
 
