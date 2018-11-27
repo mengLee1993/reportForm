@@ -637,10 +637,11 @@
   <select id="queryForCount" resultType="java.lang.Integer">
     SELECT COUNT(ROLE_ID)
     FROM ROLE_INFO
-    WHERE
+      <trim prefix="WHERE" prefixOverrides="AND |OR">
     <if test="roleTitle != null and roleTitle != '' " >
       AND ROLE_TITLE LIKE CONCAT('%',#{roleTitle},'%')
     </if>
+    </trim>
   </select>
 
   <select id="queryForList" resultMap="BaseResultMap">
