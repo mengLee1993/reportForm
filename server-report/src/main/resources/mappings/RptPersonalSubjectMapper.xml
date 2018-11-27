@@ -315,13 +315,29 @@
         FROM rpt_personal_subject s LEFT JOIN RPT_DATA_TABLE t ON s.TABLE_ID = t.TABLE_ID
         where PERSONAL_SUBJECT_ID = #{personalSubjectId,jdbcType=BIGINT}
     </select>
-    <delete id="deleteByRoleId" parameterType="java.lang.Long">
+    <delete id="deleteByRoleId" >
          delete from rpt_personal_subject
-        where ROLE_ID = #{id,jdbcType=BIGINT}
+        where ROLE_ID = #{arg0}
+        <if test="arg1 != null and arg1.size >0">
+            and TABLE_ID  not in
+            (
+            <foreach collection="arg1" item="id" separator=",">
+                #{id.tableId}
+            </foreach>
+            )
+        </if>
     </delete>
-    <delete id="deleteByUserId" parameterType="java.lang.Long">
+    <delete id="deleteByUserId" >
          delete from rpt_personal_subject
-        where USER_ID = #{id,jdbcType=BIGINT}
+        where USER_ID = #{arg0}
+        <if test="arg1 != null and arg1.size >0">
+            and TABLE_ID  not in
+            (
+            <foreach collection="arg1" item="id" separator=",">
+                #{id.tableId}
+            </foreach>
+            )
+        </if>
     </delete>
     <insert id="insertSelectiveList" parameterType="com.ebase.report.model.RptPersonalSubject">
 
@@ -341,18 +357,35 @@
         </foreach>
     </insert>
 
-    <select id="selectIdByRoleId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    <select id="selectIdByRoleId"  resultType="java.lang.Long">
         select
         PERSONAL_SUBJECT_ID
         from rpt_personal_subject
-        where ROLE_ID = #{id}
+        where ROLE_ID = #{arg0}
+        <if test="arg1 != null and arg1.size > 0">
+            and TABLE_ID  not in
+            (
+            <foreach collection="arg1" item="id" separator=",">
+                #{id.tableId}
+            </foreach>
+            )
+        </if>
     </select>
 
-    <select id="selectIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    <select id="selectIdByUserId"  resultType="java.lang.Long">
         select
         PERSONAL_SUBJECT_ID
         from rpt_personal_subject
-        where USER_ID = #{id}
+        where USER_ID = #{arg0}
+        <if test="arg1 != null and arg1.size > 0">
+            and TABLE_ID  not in
+            (
+            <foreach collection="arg1" item="id" separator=",">
+                #{id.tableId}
+            </foreach>
+            )
+        </if>
+
     </select>
     <select id="selectCountByTypeId" resultType="java.lang.Integer" parameterType="java.util.Map">
          SELECT
@@ -376,4 +409,20 @@
         delete from rpt_personal_subject
         where TABLE_ID = #{tableId,jdbcType=BIGINT}
     </delete>
+    <select id="selectByRoleIdAndTableId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rpt_personal_subject
+        where ROLE_ID = #{arg1}
+        and TABLE_ID = #{arg0}
+    </select>
+    <select id="selectByUserIDAndTableId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rpt_personal_subject
+        where USER_ID = #{arg1}
+        and TABLE_ID = #{arg0}
+    </select>
+
+
 </mapper>

@@ -100,6 +100,7 @@ public class RptDataAuthServiceImpl implements RptDataAuthService {
         Long id = rptDataAuth.getId();
         String acctName = AssertContext.getAcctName();
         Long acctId1 = AssertContext.getAcctId();
+        AssertContext.getRoleId();
         String acctId = "1";
         if(acctId1 != null){
             acctId = acctId1.toString();
@@ -111,24 +112,33 @@ public class RptDataAuthServiceImpl implements RptDataAuthService {
         // 0  角色   1  账号
         if(type == (byte)0){
 
+            //根据角色ID 和 tableid查询表 如果查到了 就是 有不删除 否则删除
+
+
+
             //先删除 这个角色下的所有数据 查询这个主题下所有数据
 
             //所有的主题数据 清空所有指标 和 报表数据
-            List<Long> longs = rptPersonalSubjectMapper.selectIdByRoleId(id);
+            List<Long> longs = rptPersonalSubjectMapper.selectIdByRoleId(id,rptDataAuth.getTableIds());
             if(CollectionUtils.isNotEmpty(longs)){
                 rptMeasuresMapper.deleteBySubjectId(longs);
                 rptPersonalAnalysisMapper.deleteBySubjectId(longs);
             }
 
-
-            rptPersonalSubjectMapper.deleteByRoleId(id);
+            rptPersonalSubjectMapper.deleteByRoleId(id,rptDataAuth.getTableIds());
             //
 
             for(RptDataTable x:rptDataAuth.getTableIds()) {
+
+                Long tableId = x.getTableId();
+                RptPersonalSubject personalSubject = rptPersonalSubjectMapper.selectByRoleIdAndTableId(tableId,id);
+                if(personalSubject != null){
+                    continue;
+                }
                 RptPersonalSubject rptPersonalSubject = new RptPersonalSubject();
                 rptPersonalSubject.setSubjectType(SubjectTypeEnum.DATATABLE.getCode());
                 rptPersonalSubject.setSubjectSource(SubjectTypeEnum.DATATABLE.getCode());
-                rptPersonalSubject.setTableId(x.getTableId());
+                rptPersonalSubject.setTableId(tableId);
                 rptPersonalSubject.setSubjectName(x.getTableName()); //表的名
                 rptPersonalSubject.setRemoveStatus((byte) 0);
                 rptPersonalSubject.setCreatedBy(acctId);
@@ -137,22 +147,24 @@ public class RptDataAuthServiceImpl implements RptDataAuthService {
                 rptPersonalSubjects.add(rptPersonalSubject);
             }
         }else{
-            //先删除 这个账户下的所有数据
-
-
-
-            //先删除 这个角色下的所有数据 查询这个主题下所有数据
 
             //所有的主题数据 清空所有指标 和 报表数据
-            List<Long> longs = rptPersonalSubjectMapper.selectIdByUserId(id);
+            List<Long> longs = rptPersonalSubjectMapper.selectIdByUserId(id,rptDataAuth.getTableIds());
             if(CollectionUtils.isNotEmpty(longs)){
                 rptMeasuresMapper.deleteBySubjectId(longs);
                 rptPersonalAnalysisMapper.deleteBySubjectId(longs);
             }
 
-            rptPersonalSubjectMapper.deleteByUserId(id);
+            rptPersonalSubjectMapper.deleteByUserId(id,rptDataAuth.getTableIds());
 
             for(RptDataTable x:rptDataAuth.getTableIds()){
+                Long tableId = x.getTableId();
+                RptPersonalSubject personalSubject = rptPersonalSubjectMapper.selectByUserIDAndTableId(tableId,id);
+                if(personalSubject != null){
+                    continue;
+                }
+
+
                 RptPersonalSubject rptPersonalSubject = new RptPersonalSubject();
                 rptPersonalSubject.setSubjectType(SubjectTypeEnum.DATATABLE.getCode());
                 rptPersonalSubject.setSubjectSource(SubjectTypeEnum.DATATABLE.getCode());
