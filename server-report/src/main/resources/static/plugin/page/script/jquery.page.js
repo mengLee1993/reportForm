@@ -88,7 +88,7 @@
 				
 				if(args.isJump == null || args.isJump)
 				{
-					obj.append("<span class='totalPage'>&nbsp;&nbsp;共"+args.pageCount+"页，&nbsp;跳至第&nbsp;</span>");
+					obj.append("<span class='totalPage'>&nbsp;&nbsp;共"+args.total+"条、"+args.pageCount+"页，&nbsp;跳至第&nbsp;</span>");
 					obj.append("<span class='totalPage'><input type='text' class='inputJump'  currentCount='"+args.current+"' pageCount='"+args.pageCount+"' onkeyup='dataCheck(this);' onafterpaste='dataCheck(obj);' id='jumpPage'/> 页</span>");
 					obj.append("<a href='javascript:;' id='jumpSure' class='jumpPage'>确定</a>");
 				}
