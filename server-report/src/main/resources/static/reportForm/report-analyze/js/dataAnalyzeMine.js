@@ -995,7 +995,7 @@ function waitMeasureInit(data){
     //data = {"retCode":"0000000","retDesc":"操作成功!","timestamp":"2018-10-31 20:31:41.451","rspBody":{"resultData":[{"measureId":1,"measuresName":"测试指标name","fieldId":16,"fieldCode":"LOGIN_SOURCE","measureType":"sum","personalSubjectId":1,"removeStatus":0,"createdBy":"?????","createdDt":1540382592000,"updatedBy":null,"updatedDt":null,"measureRule":null,"rptMeasuresBody":null},{"measureId":2,"measuresName":"测试name","fieldId":22,"fieldCode":"MOBILE_PHONE","measureType":"sum","personalSubjectId":1,"removeStatus":0,"createdBy":"?????","createdDt":1540791202000,"updatedBy":null,"updatedDt":null,"measureRule":null,"rptMeasuresBody":null}]}};
     if(data.retCode == "0000000"){
         var jsonDataParse = null;
-        if(document.body.jsLee.measureEditJson.measureType == "custom"){
+        if(document.body.jsLee.measureEditJson.measureType == "CUSTOM"){
             jsonDataParse = document.body.jsLee.measureEditJson.rptMeasuresBody;
         }
         document.body.jsFCtrl.init(data.rspBody.resultData,jsonDataParse);
@@ -1004,7 +1004,7 @@ function waitMeasureInit(data){
 
 //编辑指标赋值
 function measureEditJsonAssign(jsonEdit,jsonArr){
-    if(jsonEdit.measureType == "custom"){//说明是自定义指标
+    if(jsonEdit.measureType == "CUSTOM"){//说明是自定义指标
         $("#measureTab li:last").click();
         $("#mineMeasure #measuresName").val(jsonEdit.measuresName);
         document.body.jsFCtrl.parse(jsonEdit.reportMeasure);//初始化计算器
@@ -1058,7 +1058,7 @@ function jsonParamJoin(){
         var jsonParam = {"measuresName":""};
         jsonParam.subjectId = document.body.jsLee.personalSubjectId;
         jsonParam.measureId = document.body.jsLee.measureId;
-        jsonParam.measureType = "custom";
+        jsonParam.measureType = "CUSTOM";
         jsonParam.reportMeasure = document.body.jsFCtrl.save();
         jsonParam.personalAnalysisId = document.body.jsLee.personalAnalysisId;
         getValue4Desc(jsonParam,$("#mineMeasure")[0]);
