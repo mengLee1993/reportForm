@@ -352,6 +352,14 @@ function clsParentChildTableCtrl$progress(jsonItem, cloneRow) {
     if(document.body.jsLee.personalSubjectId) {
         $(cloneRow).find("#childShow").show();
         document.body.jsLee.jsonAll = jsonItem;
+        document.body.jsLee.jsonAll = jsonItem;
+        document.body.jsLee.jsonAll.reportDynamicParam = {
+            "personalSubjectId":jsonItem.personalSubjectId,
+            "column":[],
+            "line":[],
+            "tbs":[],
+            "filter":[]
+        }
     }
 
     //点击父dom展示子dom操作

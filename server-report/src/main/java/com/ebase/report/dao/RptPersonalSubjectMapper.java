@@ -1,5 +1,6 @@
 package com.ebase.report.dao;
 
+import com.ebase.report.model.RptDataTable;
 import com.ebase.report.model.RptPersonalSubject;
 import com.ebase.report.model.dynamic.ReportEchoBody;
 import org.apache.ibatis.annotations.Param;
@@ -30,19 +31,23 @@ public interface RptPersonalSubjectMapper {
 
     RptPersonalSubject selectDataByPrimaryKey(Long personalSubjectId);
 
-    int deleteByRoleId(Long id);
+    int deleteByRoleId(Long id,List<RptDataTable> list);
 
-    int deleteByUserId(Long id);
+    int deleteByUserId(Long id,List<RptDataTable>  list);
 
     int insertSelectiveList(@Param("rptPersonalSubjects") List<RptPersonalSubject> rptPersonalSubjects);
 
-    List<Long> selectIdByRoleId(Long id);
+    List<Long> selectIdByRoleId(Long id, List<RptDataTable> list);
 
-    List<Long> selectIdByUserId(Long id);
+    List<Long> selectIdByUserId(Long id,List<RptDataTable> list);
 
     Integer selectCountByTypeId(Map<String, Object> tmp);
 
     List<Long> selectIdByTableId(Long tableId);
 
     int deleteByTableId(Long tableId);
+
+    RptPersonalSubject selectByRoleIdAndTableId(Long tableId, Long id);
+
+    RptPersonalSubject selectByUserIDAndTableId(Long tableId, Long id);
 }
