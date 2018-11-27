@@ -182,7 +182,7 @@ public class ReportServiceImpl implements ReportService {
         reqBody.setCreatedDt(new Date());
         reqBody.setRemoveStatus((byte)RemoveStatusEnum.NOREMOVE.getRemoveStatus());
 
-        if(!MeasureTypeEnum.CUSTOM.getCode().equals(reqBody.getMeasureType())){
+        if(!MeasureTypeEnum.CUSTOM.getCode().equals(reqBody.getMeasureType().toUpperCase())){
             //是系统
             Long fieldId = reqBody.getFieldId();
             RptDataField rptDataField = rptDataFieldMapper.selectByPrimaryKey(fieldId);
