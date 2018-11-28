@@ -184,6 +184,7 @@ public class AcctController {
                             }
                         }
                     }
+                    acctSession.setName(JSON.parseObject(json.getString("data")).getString("usernameCn"));
                     acctSession.setPermissions(permissions);
                     HttpSession session = request.getSession();
                     String key = CookieUtil.getSessionId();
