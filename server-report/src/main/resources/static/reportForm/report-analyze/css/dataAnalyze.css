@@ -130,7 +130,7 @@
 
 .padding2 { padding-left: 30px; }
 
-.parentChildTable { width: 100%; background: #00AFFF; }
+.parentChildTable { width: 100%; background: #EDF6FF; }
 
 .parentChildTable-child { width: 95% !important; padding-left: 22px; color: #778CA2; background: #F8F8F9; }
 
@@ -142,7 +142,7 @@
 
 .parentChildTable-child-listCheck-create { cursor: pointer; background: url("../images/images.png") no-repeat -489px -37px; width: 12px; height: 12px; margin-top: 6px; }
 
-.parentChildTable-parent { cursor: pointer; background: #00AFFF; color: #fff; }
+.parentChildTable-parent { cursor: pointer; background: #EDF6FF; color: #333; }
 
 .formcontainer .formcontainer-nav .parentChildTable-child-list-third { width: 90%; padding-left: 10%; background: #F8F8F9; }
 
