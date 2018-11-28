@@ -273,16 +273,8 @@ public class ReportServiceImpl implements ReportService {
                     measure.setDemandType(DemandType.MEASURES);
 //                    ReportMeasure copy = BeanCopyUtil.copy(measure, ReportMeasure.class);
 
-
-
                     //如果是自定义的
-                    if(measure.getMeasureType().equals(MeasureTypeEnum.CUSTOM)){
-                        ReportMeasure reportMeasure = measure.getReportMeasure();
-                        mensions.add(reportMeasure);
-                        custList.addAll(reportMeasure.getCustomIndexTmp());
-                    }else{
-                        mensions.add(measure);
-                    }
+                    isCustom(mensions, custList, measure);
                 }
             }else{
                 isDimension = true;
@@ -301,15 +293,8 @@ public class ReportServiceImpl implements ReportService {
                     measure.setPosition(DemandPositionType.COLUMN.getType());
                     measure.setLev(dimension.getLev());
                     measure.setDemandType(DemandType.MEASURES);
+                    isCustom(mensions, custList, measure);
 
-                    //如果是自定义的
-                    if(measure.getMeasureType().equals(MeasureTypeEnum.CUSTOM)){
-                        ReportMeasure reportMeasure = measure.getReportMeasure();
-                        mensions.add(reportMeasure);
-                        custList.addAll(reportMeasure.getCustomIndexTmp());
-                    }else{
-                        mensions.add(measure);
-                    }
                 }
             }else{
                 isDimension = true;
@@ -320,16 +305,31 @@ public class ReportServiceImpl implements ReportService {
         //生成树
         CubeTree cubeTree = new CubeTree();
 
-        cubeTree.setMeasures(mensions);
-        if(CollectionUtils.isEmpty(custList)){
-            custList.addAll(cubeTree.getMeasures());
-        }
+        cubeTree.setMeasures(mensions,custList);
+//        if(!CollectionUtils.isEmpty(custList)){
+//        custList.addAll(mensions);
+//        }
         reportDynamicParam.setMeasures(custList);
         reportDynamicParam.setDimension(isDimension);
         cubeTree.setLineDimension(reportDynamicParam.getLine());
         cubeTree.setColumnDimension(reportDynamicParam.getColumn());
 
         return cubeTree;
+    }
+
+    private void isCustom(List<ReportMeasure> mensions, Set<ReportMeasure> custList, ReportMeasure measure) {
+        //如果是自定义的
+        if (measure.getMeasureType().equals(MeasureTypeEnum.CUSTOM)) {
+            ReportMeasure reportMeasure = measure.getReportMeasure();
+            reportMeasure.getCustomIndexTmp().forEach(x -> {
+                x.setDemandType(DemandType.MEASURES);
+            });
+            mensions.add(reportMeasure);
+            custList.addAll(reportMeasure.getCustomIndexTmp());
+        } else {
+            mensions.add(measure);
+            custList.add(measure);
+        }
     }
 
     @Override

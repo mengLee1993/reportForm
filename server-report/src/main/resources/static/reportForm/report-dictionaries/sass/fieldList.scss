@@ -83,8 +83,9 @@ $bd_dee: #dee3e6;//主体边框线
   border-bottom: 1px solid $bd_dee;
   box-sizing: border-box;
   margin: 0 1%;
-  height: 50px;
-  padding-top: 9px;
+  //height: 50px;
+  //padding-top: 9px;
+  padding-bottom: 10px;
   &__name{
     float:left ;
   }

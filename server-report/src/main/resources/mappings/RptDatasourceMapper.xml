@@ -382,7 +382,7 @@
                 and REMOVE_STATUS = #{removeStatus,jdbcType=TINYINT}
             </if>
             <if test="datasourceChineseName != null and datasourceChineseName != ''">
-                and DATASOURCE_CHINESE_NAME = #{datasourceChineseName,jdbcType=VARCHAR}
+                and DATASOURCE_CHINESE_NAME like CONCAT('%', #{datasourceChineseName}, '%')
             </if>
         </trim>
         order by DATASOURCE_ID desc
