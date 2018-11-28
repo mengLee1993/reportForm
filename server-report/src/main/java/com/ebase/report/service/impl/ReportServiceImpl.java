@@ -143,6 +143,7 @@ public class ReportServiceImpl implements ReportService {
             List<RptMeasures> list = getRptMeasures(personalSubjectId, rptDataIndexs);
 
             rptMeasures.addAll(list);
+            rptMeasures.forEach(x->{x.setFieldId(x.getMeasureId());});
             themeDataSource.setRptMeasures(rptMeasures);
 
         }else{
