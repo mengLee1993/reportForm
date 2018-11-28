@@ -1101,7 +1101,8 @@ function createMeasureCallBack(data){
                 $("#ajaxWaiting").hide();
             });
         }else{
-            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":document.body.jsLee.personalSubjectId},"initLeftAginHtml(data)",function(){
+            var psId =GetQueryString("personalSubjectId")==null ? "" : GetQueryString("personalSubjectId");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":psId},"initLeftAginHtml(data)",function(){
                 $("#ajaxWaiting").show();
             },function () {
                 $("#ajaxWaiting").hide();
@@ -1190,7 +1191,8 @@ function measureDeleteCallBack(data){
                 $("#ajaxWaiting").hide();
             });
         }else{
-            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":document.body.jsLee.personalSubjectId},"initLeftAginHtml(data)",function(){
+            var psId =GetQueryString("personalSubjectId")==null ? "" : GetQueryString("personalSubjectId");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":psId},"initLeftAginHtml(data)",function(){
                 $("#ajaxWaiting").show();
             },function () {
                 $("#ajaxWaiting").hide();
