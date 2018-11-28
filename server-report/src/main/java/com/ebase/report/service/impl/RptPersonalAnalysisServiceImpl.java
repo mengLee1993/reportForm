@@ -183,7 +183,13 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
         Map<String,Object> tmp = new HashMap<>();
         tmp.put("acctId",acctId);
         tmp.put("roleId",roleId);
-        tmp.put("term",reqBody.getTableName());
+        String tableName = reqBody.getTableName();
+        if(tableName != null){
+            tmp.put("term",reqBody.getTableName().trim());
+        }else {
+            tmp.put("term",reqBody.getTableName());
+        }
+
         tmp.put("datasourceName",reqBody.getDatasourceName());
         Integer count = rptPersonalAnalysisMapper.listReportFormCount(tmp);
 
