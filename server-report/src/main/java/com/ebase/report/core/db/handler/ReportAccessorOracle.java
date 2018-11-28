@@ -307,7 +307,7 @@ public class ReportAccessorOracle extends AbstractAccessor {
                     if(FilterTypeEnum.isScope(f) && !StringUtil.isEmpty(value)){
                         builder.append(" and " + x.getCode() + " " + f.getName() + " '" + value + "' ");
                     }else if(FilterTypeEnum.RG.equals(f) && !StringUtil.isEmpty(value)){
-                        builder.append(" and " + x.getCode() + " " + f.getName() + " %" + value + "% ");
+                        builder.append(" and " + x.getCode() + " " + f.getName() + " '%" + value + "%' ");
                     }else if(!StringUtil.isEmpty(value)){
                         String whw = "";
                         if(f.equals(FilterTypeEnum.EQ)){
