@@ -3,6 +3,7 @@ package com.ebase.report.service;
 import com.ebase.report.core.db.exception.DbException;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
 import com.ebase.report.model.ReportDetail;
+import com.ebase.report.model.RptDataDict;
 import com.ebase.report.vo.RptDataDictVO;
 import com.ebase.report.vo.RptDataFieldVO;
 
@@ -57,4 +58,18 @@ public interface RptDataFieldService {
 
     //获得fields
     ReportDetail getFieldsByMap(Map<String, Object> tmpMap);
+
+    /**
+     * 查询抽取数量
+     * @param fieldId
+     * @return
+     */
+    Integer extractCount(Long fieldId);
+
+    /**
+     * 抽取所有源数据
+     * @param fieldId
+     * @return
+     */
+    List<RptDataDict> extractRealTimeMetadata(Long fieldId);
 }

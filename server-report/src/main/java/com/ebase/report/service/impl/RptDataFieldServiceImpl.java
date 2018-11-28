@@ -206,6 +206,51 @@ public class RptDataFieldServiceImpl implements RptDataFieldService {
         return reportDetail;
     }
 
+    @Override
+    public Integer extractCount(Long fieldId) {
+
+        RptDataField rptDataField = rdfMapper.selectByPrimaryKey(fieldId);
+        if(rptDataField != null){
+            String fieldCode = rptDataField.getFieldCode();
+            RptDataTable rptDataTable = rptDataTableMapper.selectByTableId(rptDataField.getTableId());
+            String tableCode = rptDataTable.getTableCode();
+            String datasourceName = rptDataTable.getDatasourceName();
+
+            StringBuffer sql = new StringBuffer();
+            sql.append("select COUNT(distinct(");
+            sql.append(fieldCode);
+            sql.append(")) from ");
+            sql.append(tableCode);
+            return reportHandler.queryDistinctCount(datasourceName, sql.toString());
+        }
+
+        return 0;
+    }
+
+    @Override
+    public List<RptDataDict> extractRealTimeMetadata(Long fieldId) {
+
+        RptDataField rptDataField = rdfMapper.selectByPrimaryKey(fieldId);
+        if(rptDataField != null) {
+            String fieldCode = rptDataField.getFieldCode();
+            RptDataTable rptDataTable = rptDataTableMapper.selectByTableId(rptDataField.getTableId());
+            String tableCode = rptDataTable.getTableCode();
+            String datasourceName = rptDataTable.getDatasourceName();
+
+            StringBuffer sql = new StringBuffer();
+            sql.append("select distinct(");
+            sql.append(fieldCode);
+            sql.append(") field from ");
+            sql.append(tableCode);
+            List<RptDataDict> list = reportHandler.queryDistinct(sql,datasourceName,rptDataTable.getTableId());
+
+            return list;
+
+        }
+
+        return new ArrayList<>();
+    }
+
     /**
      * 删除
      * @param vo
