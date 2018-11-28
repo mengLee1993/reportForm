@@ -273,8 +273,6 @@ public class ReportServiceImpl implements ReportService {
                     measure.setDemandType(DemandType.MEASURES);
 //                    ReportMeasure copy = BeanCopyUtil.copy(measure, ReportMeasure.class);
 
-
-
                     //如果是自定义的
                     if(measure.getMeasureType().equals(MeasureTypeEnum.CUSTOM)){
                         ReportMeasure reportMeasure = measure.getReportMeasure();
@@ -282,6 +280,7 @@ public class ReportServiceImpl implements ReportService {
                         custList.addAll(reportMeasure.getCustomIndexTmp());
                     }else{
                         mensions.add(measure);
+                        custList.add(measure);
                     }
                 }
             }else{
@@ -309,6 +308,7 @@ public class ReportServiceImpl implements ReportService {
                         custList.addAll(reportMeasure.getCustomIndexTmp());
                     }else{
                         mensions.add(measure);
+                        custList.add(measure);
                     }
                 }
             }else{
@@ -322,7 +322,7 @@ public class ReportServiceImpl implements ReportService {
 
         cubeTree.setMeasures(mensions);
 //        if(!CollectionUtils.isEmpty(custList)){
-        custList.addAll(mensions);
+//        custList.addAll(mensions);
 //        }
         reportDynamicParam.setMeasures(custList);
         reportDynamicParam.setDimension(isDimension);

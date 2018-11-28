@@ -54,7 +54,7 @@ public enum DBFieldTypeEnum {
      * oracle
      */
     VARCHAR2("varchar2","String","dimension"),  //可变长的字符串，具体定义时指明最大长度n，
-    NUMBER("number","String","dimension"),    //可变长的数值列，允许0、正值及负值，m是所有有效数字的位数，n是小数点以后的位数。
+    NUMBER("number","BigDecimal","measures"),    //可变长的数值列，允许0、正值及负值，m是所有有效数字的位数，n是小数点以后的位数。
     LONG("long","String","dimension"),       //可变长字符列，最大长度限制是2GB，用于不需要作字符串搜索的长串数据，如果要进行字符搜索就要用varchar2类型。
     RAW("raw","Byte","none"),      // 固定长度的二进制数据    最大长度2000    bytes      可存放多媒体图象声音等
     LONGRAW("longraw","Byte","none"),  //可变长二进制数据，最大长度是2GB。Oracle 8i用这种格式来保存较大的图形文件或带格式的文本文件，如Miceosoft Word文档，以及音频、视频等非文本文件。
@@ -63,7 +63,7 @@ public enum DBFieldTypeEnum {
     BFILE("bfile","Byte","none"),      //存放在数据库外的二进制数据    最大长度4G
     NCHAR("nchar","Byte","none"),
     NVARCHAR2("nvarchar2","String","dimension"), //根据字符集而定的可变长度字符串    最大长度4000    bytes
-    NUMBERIC("numberic","String","dimension"),
+    NUMBERIC("numberic","BigDecimal","measures"),
     ROWID("rowid","Long","measures"),     //数据表中记录的唯一行号    10    bytes    ********.****.****格式，*为0或1
     NROWID("nrowid","Long","measures"),    //二进制数据表中记录的唯一行号    最大长度4000    bytes
     DECIMAL("decimal","BigDecimal","measures"),   //  数字类型    P为整数位，S为小数位
