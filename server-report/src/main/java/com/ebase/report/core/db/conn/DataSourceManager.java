@@ -153,7 +153,7 @@ public class DataSourceManager {
     }
 
     public DataSource getDataSource(String dsName) {
-        DataSource ds = dataSourceMap.get(dsName.toLowerCase());
+        DataSource ds = dataSourceMap.get(dsName);
         if (ds == null) {
             logger.error("Creating the datasource, " + dsName + ", failed.");
         }
