@@ -355,7 +355,20 @@
     <!--计数-->
     <select id="selectCount" resultType="java.lang.Integer">
         select count(*) from rpt_data_table
-        <include refid="Base_Where_Column_List" />
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="tableName != null and tableName != ''">
+                AND TABLE_NAME like CONCAT('%',#{tableName},'%')
+            </if>
+            <if test="tableCode != null  and tableCode != ''">
+                AND TABLE_CODE like CONCAT('%', #{tableCode}, '%')
+            </if>
+            <if test="removeStatus != null">
+                AND REMOVE_STATUS = #{removeStatus}
+            </if>
+            <if test="datasourceId != null and datasourceId !=''">
+                AND DATASOURCE_ID = #{datasourceId}
+            </if>
+        </trim>
     </select>
 
     <!--分页-->
@@ -364,13 +377,13 @@
        *
         from rpt_data_table
         <trim prefix="where" prefixOverrides="and | or">
-        <if test="tableName != null">
+        <if test="tableName != null  and tableName !=''">
             AND TABLE_NAME like CONCAT('%',#{tableName},'%')
         </if>
-         <if test="tableCode != null">
+         <if test="tableCode != null  and tableCode !=''">
             AND TABLE_CODE like CONCAT('%', #{tableCode}, '%')
          </if>
-         <if test="removeStatus != null">
+         <if test="removeStatus != null" >
             AND REMOVE_STATUS = #{removeStatus}
          </if>
          <if test="datasourceId != null and datasourceId !=''">
