@@ -143,6 +143,7 @@ public class ReportServiceImpl implements ReportService {
             List<RptMeasures> list = getRptMeasures(personalSubjectId, rptDataIndexs);
 
             rptMeasures.addAll(list);
+            rptMeasures.forEach(x->{x.setFieldId(x.getMeasureId());});
             themeDataSource.setRptMeasures(rptMeasures);
 
         }else{
@@ -324,6 +325,12 @@ public class ReportServiceImpl implements ReportService {
             reportMeasure.getCustomIndexTmp().forEach(x -> {
                 x.setDemandType(DemandType.MEASURES);
             });
+
+            reportMeasure.setDemandType(DemandType.MEASURES);
+            reportMeasure.setMeasureType(MeasureTypeEnum.CUSTOM);
+            reportMeasure.setFieldId(String.valueOf(System.currentTimeMillis()));
+            reportMeasure.setFieldName(measure.getFieldName());
+            reportMeasure.setCombinationName(measure.getCombinationName());
             mensions.add(reportMeasure);
             custList.addAll(reportMeasure.getCustomIndexTmp());
         } else {

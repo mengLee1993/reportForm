@@ -410,13 +410,16 @@ public class CubeTree {
      * @return
      */
     private String getTitle(ManyTreeNode treeNode) {
-        String title = "";
+        String title = treeNode.getTreeNode().getCode();
 
         Dimension dimension = dimensionMap.get(treeNode.getTreeNode().getCode());
-        if (DemandType.MEASURES.getCode().equals(dimension.getDemandType().getCode())) {
-            title = DemandType.MEASURES.getCode();
-        } else {
-            title = dimension.getFieldName();
+
+        if(null != dimension){
+            if (DemandType.MEASURES.getCode().equals(dimension.getDemandType().getCode())) {
+                title = DemandType.MEASURES.getCode();
+            } else {
+                title = dimension.getFieldName();
+            }
         }
 
         return title;
@@ -679,6 +682,7 @@ public class CubeTree {
                 for (ReportMeasure reportMeasure : measure.getCustomIndexTmp()) {
                     dimensionMap.put(reportMeasure.getKey(), reportMeasure);
                 }
+                dimensionMap.put(measure.getKey(), measure);
             } else {
                 dimensionMap.put(measure.getKey(), measure);
             }
