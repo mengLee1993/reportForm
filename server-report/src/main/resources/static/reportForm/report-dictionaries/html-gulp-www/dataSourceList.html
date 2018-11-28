@@ -350,13 +350,13 @@
 		</div>
 		<div class="main-box clearfix">
 			<span class="main-box__name"></span>
-			<span class="ml15 fl">
+			<span class="ml15 fl" style="margin-top: 10px;">
 				<i class="fl">数据源名称</i>			<input style="min-width: 90px" type="text" class="inputBase main-box__input" id="datasourceChineseName">
 			</span>
-            <span class="ml15 fl">
+            <span class="ml15 fl" style="margin-top: 10px;">
                 <i class="fl">数据源编码</i>         <input style="min-width: 90px" type="text" class="inputBase main-box__input" id="datasourceName">
             </span>
-			<span class="ml15 fl">
+			<span class="ml15 fl" style="height: 32px;margin-top: 10px;">
 				<i  class="fl">数据库类型</i>
 
 				<select id="databaseType" class="comSelect template-tablebox_select required"  comtype="singleSelectCtrl"
@@ -364,14 +364,14 @@
 
                 </select>
 			</span>
-			<span class="ml15 fl">
+			<span class="ml15 fl" style="height: 32px;margin-top: 10px;">
 				<i class="fl">连接池类型</i>
 					<select id="connpoolType" class="comSelect template-tablebox_select required"  comtype="singleSelectCtrl"
 							reqpath="/report/datasource/connpool/type" reqparam="{}" method="post" selcode="connpoolType" selvalue="connpoolType">
 
                 </select>
 			</span>
-            <div class="search_btn_class"  comType="searchBtnCtrl" cond="datasourceChineseName,datasourceName,databaseType,connpoolType" rule="cond"
+            <div style="margin-top: 10px;" class="search_btn_class"  comType="searchBtnCtrl" cond="datasourceChineseName,datasourceName,databaseType,connpoolType" rule="cond"
                  unionTableId="tableList" >
                 <i class="icon iconfont mr5">&#xe645;</i><span>查询</span>
             </div>
