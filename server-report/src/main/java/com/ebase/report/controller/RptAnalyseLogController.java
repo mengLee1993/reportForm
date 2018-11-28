@@ -120,7 +120,7 @@ public class RptAnalyseLogController {
 		try {
 			logger.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
 			RptAnalyseLogVO vo = jsonRequest.getReqBody();
-			vo.setOpUserName(AssertContext.getAcctName());
+			vo.setOpUserid(AssertContext.getAcctId().toString());
 			PageDTO<RptAnalyseLogVO> pages = rptAnalyseLogService.findSelective(vo);
 
 			jsonResponse.setRspBody(pages);

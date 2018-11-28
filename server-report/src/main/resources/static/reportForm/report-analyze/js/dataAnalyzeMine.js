@@ -14,7 +14,8 @@ function clsMethodLee(){
         "path12":"/report/addShareReport",//分享提交列表
         "path13":"/report/reportFromDetail",//提交列表
         "path14":"/report/charts/hcharts",//highchart柱图/饼图
-        "path15":"/report/reportCoreDetail"//只拖拽行区，生成带分页的详情列表
+        "path15":"/report/reportCoreDetail",//只拖拽行区，生成带分页的详情列表
+        "path16":"/report/dataDict/extract/realTime"//拖拽到行列，点击编辑维度操作
     };
     this.jsonAll = {"reportDynamicParam":{"column":[],"filter":[],"line":[],"tbs":[]}};//提交如参
     this.documentLee = null;
@@ -26,6 +27,7 @@ function clsMethodLee(){
     this.chartTrue = false;//操作图形，table切换，是否刷新图形 false——需要刷新  true——不刷新
     this.personalSubjectId = GetQueryString("personalSubjectId") == null ? "" : GetQueryString("personalSubjectId");//主题id
     this.personalAnalysisId = GetQueryString("personalAnalysisId") == null ? "" : GetQueryString("personalAnalysisId");//自定义报表id
+    this.domEditWeidu = null;//拖拽到行列，点击编辑维度操作，缓存当前行节点
     this.init = clsMethodLee$init;//初始化页面的展示内容,绑定dom节点
     this.parse = clsMethodLee$parse;//初始化页面的数据
     this.operate = clsMethodLee$operate;//初始化页面的数据
@@ -80,8 +82,8 @@ function clsMethodLee$init(){
 
 }
 function clsMethodLee$parse(){
-    //初始化页面默认立即刷新页面操作input选中
-    $("#immediatelyRefresh").attr("checked",true);
+    //初始化页面默认立即刷新页面操作input不选中
+    $("#immediatelyRefresh").attr("checked",false);
     //初始化左侧父子table
     if(this.personalAnalysisId){
         getAjaxResultLee(document.body.jsLee.requestUrl.path8,"POST",{"personalAnalysisId":this.personalAnalysisId},"initHtmlCallBack(data)",function(){
@@ -128,6 +130,11 @@ function clsMethodLee$parse(){
         this.saveOperate.remove();
         this.shareOperate.remove();
         this.rowColTranslate.remove();
+        $("#immediatelyRefresh").parents(".formcontainer-tool__model").remove();
+        $(".formcontainer-tool__bar").eq(2).remove();
+        $(".formcontainer-tool__bar").eq(1).remove();
+        $(".formcontainer-tool__bar").eq(0).remove();
+        $(".formcontainer-tool__bar:last").remove();
     }
 }
 
@@ -1096,7 +1103,8 @@ function createMeasureCallBack(data){
                 $("#ajaxWaiting").hide();
             });
         }else{
-            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":document.body.jsLee.personalSubjectId},"initLeftAginHtml(data)",function(){
+            var psId =GetQueryString("personalSubjectId")==null ? "" : GetQueryString("personalSubjectId");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":psId},"initLeftAginHtml(data)",function(){
                 $("#ajaxWaiting").show();
             },function () {
                 $("#ajaxWaiting").hide();
@@ -1123,17 +1131,46 @@ function initLeftAginHtml(data){
                         //同步待选列或者行列过滤区的值
                         for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.tbs.length ; mI++ ){
                             if(document.body.jsLee.jsonAll.reportDynamicParam.tbs[mI].fieldName == "Measures"){
-                                document.body.jsLee.jsonAll.reportDynamicParam.tbs[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                                var arrA = [];
+                                for(var oI = 0; oI < document.body.jsLee.jsonAll.rptMeasures.length; oI++ ){
+                                    var jsonA = {};
+                                    jsonA = document.body.jsLee.jsonAll.rptMeasures[oI];
+                                    jsonA.fieldName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    jsonA.combinationName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    //jsonA.fieldCode = document.body.jsLee.jsonAll.rptMeasures[oI].fieldCode;
+                                    arrA.push(jsonA);
+                                }
+                                document.body.jsLee.jsonAll.reportDynamicParam.tbs[mI].rptMeasures = arrA;
                             }
                         }
                         for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.column.length ; mI++ ){
                             if(document.body.jsLee.jsonAll.reportDynamicParam.column[mI].fieldName == "Measures"){
-                                document.body.jsLee.jsonAll.reportDynamicParam.column[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                                var arrA = [];
+                                for(var oI = 0; oI < document.body.jsLee.jsonAll.rptMeasures.length; oI++ ){
+                                    var jsonA = {};
+                                    jsonA = document.body.jsLee.jsonAll.rptMeasures[oI];
+                                    jsonA.fieldName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    jsonA.combinationName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    //jsonA.fieldCode = document.body.jsLee.jsonAll.rptMeasures[oI].fieldCode;
+                                    arrA.push(jsonA);
+                                }
+                                document.body.jsLee.jsonAll.reportDynamicParam.column[mI].rptMeasures = arrA;
+                                //document.body.jsLee.jsonAll.reportDynamicParam.column[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
                             }
                         }
                         for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.line.length ; mI++ ){
                             if(document.body.jsLee.jsonAll.reportDynamicParam.line[mI].fieldName == "Measures"){
-                                document.body.jsLee.jsonAll.reportDynamicParam.line[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                                var arrA = [];
+                                for(var oI = 0; oI < document.body.jsLee.jsonAll.rptMeasures.length; oI++ ){
+                                    var jsonA = {};
+                                    jsonA = document.body.jsLee.jsonAll.rptMeasures[oI];
+                                    jsonA.fieldName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    jsonA.combinationName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    //jsonA.fieldCode = document.body.jsLee.jsonAll.rptMeasures[oI].fieldCode;
+                                    arrA.push(jsonA);
+                                }
+                                document.body.jsLee.jsonAll.reportDynamicParam.line[mI].rptMeasures = arrA;
+                                //document.body.jsLee.jsonAll.reportDynamicParam.line[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
                             }
                         }
                     }
@@ -1156,7 +1193,8 @@ function measureDeleteCallBack(data){
                 $("#ajaxWaiting").hide();
             });
         }else{
-            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":document.body.jsLee.personalSubjectId},"initLeftAginHtml(data)",function(){
+            var psId =GetQueryString("personalSubjectId")==null ? "" : GetQueryString("personalSubjectId");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path1,"POST",{"personalSubjectId":psId},"initLeftAginHtml(data)",function(){
                 $("#ajaxWaiting").show();
             },function () {
                 $("#ajaxWaiting").hide();
@@ -1469,7 +1507,7 @@ function initHtmlCallBack(data){
         $("#parentChildTableList #measureDeleteOpe").remove();
         initplugData($("#parentChildTableList")[0],"parentChildTableCtrl",arrA);
         $("#parentChildTableList").find("#parentClick").attr("clickmark",1);
-        initTableOrChart();
+        //initTableOrChart();
     }
 }
 
@@ -1573,19 +1611,64 @@ function editOpeCol(that){
         initplugData($("#tablePopupList")[0],"standardTableCtrl",$(that).parents("#cloneRow")[0].jsonData.rptMeasures);
     }else {//维度
         $("#tablePopupList #templateRow td:last").attr("id","fieldValue");
-        initplugData($("#tablePopupList")[0],"standardTableCtrl",$(that).parents("#cloneRow")[0].jsonData.rptDataDicts);
+        if($(that).parents("#cloneRow")[0].jsonData.rptDataDicts.length == 0){
+            document.body.jsLee.domEditWeidu = $(that).parents("#cloneRow");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path16,"POST",{"fieldId":$(that).parents("#cloneRow")[0].jsonData.fieldId},"weiduListCallBack(data)");
+        }else{
+            initplugData($("#tablePopupList")[0],"standardTableCtrl",$(that).parents("#cloneRow")[0].jsonData.rptDataDicts);
+        }
+        //initplugData($("#tablePopupList")[0],"standardTableCtrl",$(that).parents("#cloneRow")[0].jsonData.rptDataDicts);
     }
 }
 
 function editOpeRow(that){
     document.body.jsLee.dom = $(that).parents("#cloneRow")[0];//缓存当前cloneRow节点，便于check修改后修改数组
-    openWin("508", "388", "tablePopupListPopup", true);
     if($(that).parents("#cloneRow")[0].jsonData.fieldName == "Measures"){//指标
+        openWin("508", "388", "tablePopupListPopup", true);
         $("#tablePopupList #templateRow td:last").attr("id","fieldName");
         initplugData($("#tablePopupList")[0],"standardTableCtrl",$(that).parents("#cloneRow")[0].jsonData.rptMeasures);
     }else {//维度
         $("#tablePopupList #templateRow td:last").attr("id","fieldValue");
-        initplugData($("#tablePopupList")[0],"standardTableCtrl",$(that).parents("#cloneRow")[0].jsonData.rptDataDicts);
+        if($(that).parents("#cloneRow")[0].jsonData.rptDataDicts.length == 0){
+            document.body.jsLee.domEditWeidu = $(that).parents("#cloneRow");
+            getAjaxResultLee(document.body.jsLee.requestUrl.path16,"POST",{"fieldId":$(that).parents("#cloneRow")[0].jsonData.fieldId},"weiduListCallBack(data)");
+        }else{
+            openWin("508", "388", "tablePopupListPopup", true);
+            initplugData($("#tablePopupList")[0],"standardTableCtrl",$(that).parents("#cloneRow")[0].jsonData.rptDataDicts);
+        }
+        //initplugData($("#tablePopupList")[0],"standardTableCtrl",$(that).parents("#cloneRow")[0].jsonData.rptDataDicts);
+    }
+}
+
+//维度list，点击编辑，渲染弹框回调成功
+function weiduListCallBack(data){//编辑
+    data = JSON.parse(data);
+    if(data.retCode == "0000000"){
+        if(typeof data.rspBody == "string"){
+            var alertBox = new clsAlertBoxCtrl();
+            alertBox.Alert(data.rspBody, "成功提示");
+        }else{
+            openWin("508", "388", "tablePopupListPopup", true);
+            document.body.jsLee.domEditWeidu[0].jsonData.rptDataDicts = data.rspBody;
+            initplugData($("#tablePopupList")[0],"standardTableCtrl",data.rspBody);
+        }
+
+    }
+}
+
+function weiduList2CallBack(data){//过滤
+    data = JSON.parse(data);
+    if(data.retCode == "0000000"){
+        if(typeof data.rspBody == "string"){
+            /*var alertBox = new clsAlertBoxCtrl();
+            alertBox.Alert(data.rspBody, "成功提示");*/
+        }else{
+            document.body.jsLee.domEditWeidu[0].jsonData.rptDataDicts = data.rspBody;
+            //initplugData($("#tablePopupList")[0],"standardTableCtrl",data.rspBody);
+        }
+
+    }else{
+        return false;
     }
 }
 
@@ -1604,9 +1687,13 @@ function subTotalIsTrue(that){
 //搜索条件设置
 function searchSetTrue(that){
     if(!$(that).hasClass("activeOpe")){//被选中
+        document.body.jsLee.domEditWeidu = $(that).parents("#cloneRow");
         $(that).addClass("activeOpe");
         $(that).parents("#cloneRow")[0].jsonData.searchTrue = true;
         //设置初始jsonData
+        if($(that).parents("#cloneRow")[0].jsonData.rptDataDicts.length == 0){
+            getAjaxResultLee(document.body.jsLee.requestUrl.path16,"POST",{"fieldId":$(that).parents("#cloneRow")[0].jsonData.fieldId},"weiduList2CallBack(data)");
+        }
         if(!$(that).parents("#cloneRow")[0].jsonDataA){
             document.body.jsLee.jsonAll.reportDynamicParam.filter.push({
                 "code":$(that).parents("#cloneRow")[0].jsonData.fieldCode,

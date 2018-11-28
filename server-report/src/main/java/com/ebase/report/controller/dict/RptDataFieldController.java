@@ -7,6 +7,7 @@ import com.ebase.report.core.json.JsonResponse;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
+import com.ebase.report.model.RptDataDict;
 import com.ebase.report.service.RptDataFieldService;
 import com.ebase.report.vo.RptDataFieldVO;
 import com.github.pagehelper.PageHelper;
@@ -14,6 +15,7 @@ import jdk.nashorn.internal.ir.ReturnNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +35,9 @@ public class RptDataFieldController {
 
     @Autowired
     private RptDataFieldService rdfService;
+
+    @Value("${metadataCount}")
+    private Integer metadataCount;
 
     /**
      * 抽取元数据列表
@@ -70,6 +75,53 @@ public class RptDataFieldController {
             List<RptDataFieldVO> list = jsonRequest.getReqBody();
             Boolean flag = rdfService.extractMetadata(list);
             jsonResponse.setRspBody(flag);
+        } catch (Exception e) {
+            logger.error(e.getMessage() , e);
+            e.printStackTrace();
+            jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+            return jsonResponse;
+        }
+        return jsonResponse;
+    }
+
+
+
+
+    /**
+     * 抽取元数据 实时的 升级版本
+     * @param jsonRequest
+     * @return
+     */
+    @RequestMapping(value = "/dataDict/extract/realTime" , method = RequestMethod.POST)
+    public JsonResponse<List<RptDataDict>> extractRealTimeMetadata(@RequestBody JsonRequest<RptDataFieldVO> jsonRequest){
+        JsonResponse<List<RptDataDict>> jsonResponse = new JsonResponse<>();
+        jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+        try {
+            logger.info("抽取元数据 参数 = {}", JsonUtil.toJson(jsonRequest));
+
+            RptDataFieldVO reqBody = jsonRequest.getReqBody();
+
+            if(reqBody == null || reqBody.getFieldId() == null){
+                jsonResponse.setRetDesc("参数不正确");
+                return jsonResponse;
+            }
+            Long fieldId = reqBody.getFieldId();
+            Integer count = rdfService.extractCount(fieldId);
+
+            if(count > metadataCount){
+                jsonResponse.setRetDesc("源数据量有"+ count +"个，不建议抽取");
+                return jsonResponse;
+            }else if(count == 0){
+                jsonResponse.setRetDesc("该维度没有源数据");
+                return jsonResponse;
+            }
+
+            List<RptDataDict> list = rdfService.extractRealTimeMetadata(fieldId);
+
+            jsonResponse.setRetCode(JsonResponse.SUCCESS);
+            jsonResponse.setRetDesc("成功！");
+            jsonResponse.setRspBody(list);
+
         } catch (Exception e) {
             logger.error(e.getMessage() , e);
             e.printStackTrace();

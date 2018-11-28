@@ -162,7 +162,7 @@ public class DataSourceManager {
     }
 
     public DataSourceConfig getDataSourceConfig(String dsName) {
-        return dataSourceConfigMap.get(dsName.toLowerCase());
+        return dataSourceConfigMap.get(dsName);
     }
 
     public void closeDataSource(DataSourceConfig dataSourceConfig) {

@@ -61,6 +61,9 @@ public class ReportController {
     @Value("${juri.auth.ip}")
     private String authIp;
 
+    @Value("${report.download.file.path}")
+    private String download;
+
     @Autowired
     private ReportService reportService;
 
@@ -412,7 +415,7 @@ public class ReportController {
             //生成workbook
             Workbook workbook = ExportExcelUtils.createExcelWorkBook("数据报表","数据报表","数据报表",x.getHeaders(),x.getDataList());
 
-            String fileName = this.getClass().getResource("/").getPath() + new Date().getTime() + size + ".xls";
+            String fileName = System.getProperty("java.io.tmpdir")+"/" + new Date().getTime() + size + ".xls";
 
             File file = new File(fileName);
             FileOutputStream fout = new FileOutputStream(file);

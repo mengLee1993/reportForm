@@ -448,8 +448,6 @@ public class ReportAccessorMySql extends AbstractAccessor {
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 //只要表名这一列
-                // System.out.println(rs.getObject("TABLE_NAME"));
-                System.out.println(rs.getObject("Name")+"-------->"+rs.getObject("Comment"));
                 RptDataTable rptDataTable = new RptDataTable();
                 rptDataTable.setTableCode(rs.getObject("Name").toString());
                 if(rs.getObject("Comment") == null || "".equals(rs.getObject("Comment"))){

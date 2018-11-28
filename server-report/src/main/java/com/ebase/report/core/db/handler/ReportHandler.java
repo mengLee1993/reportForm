@@ -541,4 +541,32 @@ public class ReportHandler {
         return reportRespDetail;
 
     }
+
+    public List<RptDataDict> queryDistinct(StringBuffer sql, String dataSourceName,Long tableId) {
+        DataSourceConfig dataSourceConfig = DataSourceManager.get().getDataSourceConfig(dataSourceName);
+        DataBaseType dataBaseType = dataSourceConfig.getDataBaseType();
+
+        Connection conn = null;
+
+        try {
+            ReportAccessor reportAccessor = AccessorFactory.get().factoryAccessor(ReportAccessor.class, dataBaseType);
+            conn = DbConnFactory.factory(dataSourceName);
+            List<RptDataDict> list = reportAccessor.queryDistinctFeild(sql.toString(), conn);
+
+            for(int i = 0; i < list.size(); i ++){
+                RptDataDict rptDataDict = list.get(i);
+                rptDataDict.setFieldId(Long.valueOf(i));
+                rptDataDict.setTableId(tableId);
+            }
+            return list;
+
+        } catch (DbException e) {
+            logger.error("Occurred DbException.", e);
+            // todo throw exception
+        } finally {
+            DataBaseUtil.closeConnection(conn);
+        }
+
+        return null;
+    }
 }
