@@ -435,7 +435,7 @@ public abstract class AbstractAccessor implements ReportAccessor {
     //生成file文件
     protected void generateFile(List<File> files, Map<String, List<Object>> tmpMap) throws IOException {
         //生成excel 并生成file
-        String fileName = this.getClass().getResource("/").getPath() + new Date().getTime() + files.size() + ".xls";
+        String fileName = System.getProperty("java.io.tmpdir")+"/" + new Date().getTime() + files.size() + ".xls";
         ;
         FileOutputStream fout = null;
         Workbook workbook = null;
