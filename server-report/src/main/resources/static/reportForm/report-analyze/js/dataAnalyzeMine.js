@@ -43,7 +43,7 @@ function clsMethodLee$init(){
     this.savePopSure = $("#savePopSure");
     //保存弹框取消操作
     this.savePopCancel = $("#savePopCancel");
-    //提交操作
+    //导出数据明细
     this.submitOperate = $("#submitOperate");
     //刷新操作
     this.refreshOperate = $("#refreshOperate");
@@ -147,9 +147,13 @@ function clsMethodLee$operate(){
 
     //保存操作
     this.saveOperate.on("click",function(){
-        openWin('360', '245', 'reportNamePop', true);
-        $("#reportName").val("");
-
+        if(document.body.jsLee.jsonAll.reportDynamicParam.line.length > 0 || document.body.jsLee.jsonAll.reportDynamicParam.column.length > 0){
+            openWin('360', '245', 'reportNamePop', true);
+            $("#reportName").val("");
+        }else{
+            var alertBox = new clsAlertBoxCtrl();
+            alertBox.Alert("请拖拽生成报表!", "失败提示");
+        }
     });
 
     //保存确认
@@ -166,17 +170,18 @@ function clsMethodLee$operate(){
         closePopupWin();
     });
 
-    //提交操作
+    //导出数据明细
     this.submitOperate.on("click",function(){
-        if(!document.body.jsLee.personalAnalysisId) {//是否保存自定义报表
-            var alertBox = new clsAlertBoxCtrl();
-            alertBox.Alert("请保存报表", "失败提示");
-        }else{
-            getAjaxResultLee(document.body.jsLee.requestUrl.path13,"POST",{"personalAnalysisId":document.body.jsLee.personalAnalysisId},"submitCallBack(data)",function(){
+        if(document.body.jsLee.jsonAll.reportDynamicParam.line.length > 0 || document.body.jsLee.jsonAll.reportDynamicParam.column.length > 0) {
+            var jsonParam = {"reportDynamicParam":document.body.jsLee.jsonAll.reportDynamicParam,"personalSubjectId":document.body.jsLee.jsonAll.personalSubjectId,"datasourceName":document.body.jsLee.jsonAll.datasourceName,"databaseType":document.body.jsLee.jsonAll.databaseType,"reportTables":document.body.jsLee.jsonAll.reportTables,"subjectType":document.body.jsLee.jsonAll.subjectType};
+            getAjaxResultLee(document.body.jsLee.requestUrl.path13,"POST",jsonParam,"submitCallBack(data)",function(){
                 $("#ajaxWaiting").show();
             },function () {
                 $("#ajaxWaiting").hide();
             });
+        }else{
+            var alertBox = new clsAlertBoxCtrl();
+            alertBox.Alert("请拖拽生成报表", "失败提示");
         }
 
     });
@@ -248,14 +253,12 @@ function clsMethodLee$operate(){
             jsonParam.reportDynamicParam.column[nI].position = null;
         }
         var importParam = "name=" + JSON.stringify(jsonParam);
-        if(jsonParam.reportDynamicParam.column.length > 0 && jsonParam.reportDynamicParam.line.length == 0){//自己刷新报表表格
+        if(jsonParam.reportDynamicParam.column.length > 0 || jsonParam.reportDynamicParam.line.length > 0){//自己刷新报表表格
             $.download(requestUrl + document.body.jsLee.requestUrl.path9, importParam, "POST");
             //getAjaxResultLee(document.body.jsLee.requestUrl.path9,"POST",importParam,"abc(data)")
-        }else if(jsonParam.reportDynamicParam.column.length == 0 && jsonParam.reportDynamicParam.line.length > 0){
-            $.download(requestUrl + document.body.jsLee.requestUrl.path9, importParam, "POST");
         }else if(jsonParam.reportDynamicParam.column.length == 0 && jsonParam.reportDynamicParam.line.length == 0){
             var alertBox=new clsAlertBoxCtrl();
-            alertBox.Alert("请生成table","失败提示");
+            alertBox.Alert("请拖拽生成报表!","失败提示");
         };
 
     });
@@ -493,8 +496,20 @@ function clsStandardTableCtrl$before() {
 
 function clsParentChildTableCtrl$after() {
     //搜索操作父子树状结构
-    $(".btnSearch").on("click",function(){
+    /*$(".btnSearch").on("click",function(){
         var inputSearchText = $(this).prev().val();
+        var cloneRows = $(this).parents("#childShow").find("*[id=cloneChildRow]");
+        cloneRows.each(function(){
+            if($(this).find("#combinationName").html().indexOf(inputSearchText) == -1){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        });
+
+    });*/
+    $("*[id=inputSearch]").on("keyup",function(){
+        var inputSearchText = $(this).val();
         var cloneRows = $(this).parents("#childShow").find("*[id=cloneChildRow]");
         cloneRows.each(function(){
             if($(this).find("#combinationName").html().indexOf(inputSearchText) == -1){
@@ -1625,7 +1640,7 @@ function submitCallBack(data){
     data = JSON.parse(data);
     if(data.retCode == "0000000"){
         var alertBox = new clsAlertBoxCtrl();
-        alertBox.Alert(data.retDesc, "成功提示");
+        alertBox.Alert("明细数据已导出，稍后请到我的数据下载里下载。", "成功提示");
     }
 }
 
