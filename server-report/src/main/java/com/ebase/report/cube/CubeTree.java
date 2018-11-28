@@ -657,7 +657,7 @@ public class CubeTree {
     }
 
     // 度量值维度
-    public void setMeasures(List<ReportMeasure> measures) {
+    public void setMeasures(List<ReportMeasure> measures,Set<ReportMeasure> custList) {
         if (CollectionUtils.isEmpty(measures)) {
             ReportMeasure reportMeasure = new ReportMeasure();
             reportMeasure.setMeasureType(MeasureTypeEnum.COUNT);
@@ -669,6 +669,7 @@ public class CubeTree {
             measures.add(reportMeasure);
 
             this.defReportMeasure = reportMeasure;
+            custList.add(reportMeasure);
         }
 
         this.measures = measures;

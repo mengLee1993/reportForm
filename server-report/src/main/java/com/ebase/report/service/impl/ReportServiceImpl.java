@@ -305,7 +305,7 @@ public class ReportServiceImpl implements ReportService {
         //生成树
         CubeTree cubeTree = new CubeTree();
 
-        cubeTree.setMeasures(mensions);
+        cubeTree.setMeasures(mensions,custList);
 //        if(!CollectionUtils.isEmpty(custList)){
 //        custList.addAll(mensions);
 //        }
