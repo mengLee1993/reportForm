@@ -128,6 +128,11 @@ function clsMethodLee$parse(){
         this.saveOperate.remove();
         this.shareOperate.remove();
         this.rowColTranslate.remove();
+        $("#immediatelyRefresh").parents(".formcontainer-tool__model").remove();
+        $(".formcontainer-tool__bar").eq(2).remove();
+        $(".formcontainer-tool__bar").eq(1).remove();
+        $(".formcontainer-tool__bar").eq(0).remove();
+        $(".formcontainer-tool__bar:last").remove();
     }
 }
 
@@ -1123,17 +1128,46 @@ function initLeftAginHtml(data){
                         //同步待选列或者行列过滤区的值
                         for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.tbs.length ; mI++ ){
                             if(document.body.jsLee.jsonAll.reportDynamicParam.tbs[mI].fieldName == "Measures"){
-                                document.body.jsLee.jsonAll.reportDynamicParam.tbs[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                                var arrA = [];
+                                for(var oI = 0; oI < document.body.jsLee.jsonAll.rptMeasures.length; oI++ ){
+                                    var jsonA = {};
+                                    jsonA = document.body.jsLee.jsonAll.rptMeasures[oI];
+                                    jsonA.fieldName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    jsonA.combinationName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    //jsonA.fieldCode = document.body.jsLee.jsonAll.rptMeasures[oI].fieldCode;
+                                    arrA.push(jsonA);
+                                }
+                                document.body.jsLee.jsonAll.reportDynamicParam.tbs[mI].rptMeasures = arrA;
                             }
                         }
                         for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.column.length ; mI++ ){
                             if(document.body.jsLee.jsonAll.reportDynamicParam.column[mI].fieldName == "Measures"){
-                                document.body.jsLee.jsonAll.reportDynamicParam.column[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                                var arrA = [];
+                                for(var oI = 0; oI < document.body.jsLee.jsonAll.rptMeasures.length; oI++ ){
+                                    var jsonA = {};
+                                    jsonA = document.body.jsLee.jsonAll.rptMeasures[oI];
+                                    jsonA.fieldName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    jsonA.combinationName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    //jsonA.fieldCode = document.body.jsLee.jsonAll.rptMeasures[oI].fieldCode;
+                                    arrA.push(jsonA);
+                                }
+                                document.body.jsLee.jsonAll.reportDynamicParam.column[mI].rptMeasures = arrA;
+                                //document.body.jsLee.jsonAll.reportDynamicParam.column[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
                             }
                         }
                         for(var mI = 0; mI < document.body.jsLee.jsonAll.reportDynamicParam.line.length ; mI++ ){
                             if(document.body.jsLee.jsonAll.reportDynamicParam.line[mI].fieldName == "Measures"){
-                                document.body.jsLee.jsonAll.reportDynamicParam.line[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
+                                var arrA = [];
+                                for(var oI = 0; oI < document.body.jsLee.jsonAll.rptMeasures.length; oI++ ){
+                                    var jsonA = {};
+                                    jsonA = document.body.jsLee.jsonAll.rptMeasures[oI];
+                                    jsonA.fieldName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    jsonA.combinationName = document.body.jsLee.jsonAll.rptMeasures[oI].measuresName;
+                                    //jsonA.fieldCode = document.body.jsLee.jsonAll.rptMeasures[oI].fieldCode;
+                                    arrA.push(jsonA);
+                                }
+                                document.body.jsLee.jsonAll.reportDynamicParam.line[mI].rptMeasures = arrA;
+                                //document.body.jsLee.jsonAll.reportDynamicParam.line[mI].rptMeasures = document.body.jsLee.jsonAll.rptMeasures;
                             }
                         }
                     }
@@ -1469,7 +1503,7 @@ function initHtmlCallBack(data){
         $("#parentChildTableList #measureDeleteOpe").remove();
         initplugData($("#parentChildTableList")[0],"parentChildTableCtrl",arrA);
         $("#parentChildTableList").find("#parentClick").attr("clickmark",1);
-        initTableOrChart();
+        //initTableOrChart();
     }
 }
 
