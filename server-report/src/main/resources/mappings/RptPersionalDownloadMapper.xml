@@ -142,6 +142,7 @@
         *
         from rpt_persional_download
         <include refid="Base_Where_Column_List" />
+        order by  CRATE_TIME desc
         limit #{startRow},#{pageSize}
     </select>
     <sql id="Base_Where_Column_List">
