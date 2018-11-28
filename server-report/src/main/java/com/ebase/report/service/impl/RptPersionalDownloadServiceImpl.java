@@ -105,6 +105,13 @@ public class RptPersionalDownloadServiceImpl implements RptPersionalDownloadServ
 
             //下载文件
             ZipUtils.downLoadZipFile(paths,filePath);
+
+            //删除数据
+            File originFile = new File(path);
+            originFile.delete();
+
+            //删除库里的数据
+            rptPersionalDownloadMapper.deleteByFilePath(filePath);
         }catch (Exception e){
 	        e.printStackTrace();
         }

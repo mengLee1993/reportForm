@@ -160,6 +160,8 @@ public class ReportController {
      * 报表核心接口  动态报表 导出类
      * @param name
      * @return
+     *
+     *
      */
     @RequestMapping("/reportCoreExcel")
     private JsonResponse<ReportResp> reportCoreExcel(@RequestParam("name")String name) {
@@ -177,13 +179,12 @@ public class ReportController {
                 RptPersionalDownloadVO rptPersionalDownloadVO = new RptPersionalDownloadVO();
 
                 //一万条查询一次,拼装在内存里，每10w条一个文件里，
-                List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree,rptPersionalDownloadVO);
+                ReportRespDetail reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource,cubeTree);
 
-                int i = 0;
-                List<File> files = getFiles(reportCoreDetailExcels);
+                //生成workbook
+                Workbook workbook = ExportExcelUtils.createExcelWorkBook("数据报表","数据报表","数据报表",reportCoreDetailExcels.getHeaders(),reportCoreDetailExcels.getDataList());
 
-                generateZip(rptPersionalDownloadVO, files);
-
+                ReportExportUtil.OutPutWorkBookResponse("数据报表",workbook);
 
             }else{
                 cubeTree = reportHandler.report(reportDatasource, cubeTree);
@@ -350,7 +351,7 @@ public class ReportController {
      * 查询报表详细维度  必须点过保存之后 去掉groupby 所有聚合的函数 都去掉
      */
     @RequestMapping("/reportFromDetail")
-    public JsonResponse<ReportDetailBody> reportFromDetail(@RequestBody JsonRequest<RptPersonalAnalysis> jsonRequest){
+    public JsonResponse<ReportDetailBody> reportFromDetail(@RequestBody JsonRequest<ReportDatasource> jsonRequest){
         JsonResponse<ReportDetailBody> jsonResponse = new JsonResponse<ReportDetailBody>();
 
         try{
@@ -362,15 +363,15 @@ public class ReportController {
                 public Integer call() {
                    try{
                        //自定义报表id
-                       Long personalAnalysisId = jsonRequest.getReqBody().getPersonalAnalysisId();
+//                       Long personalAnalysisId = jsonRequest.getReqBody().getPersonalAnalysisId();
 
 //                       personalAnalysisId = 61l;
-                       RptPersonalAnalysis rptPersonalAnalysis = reportService.getCustomReport(personalAnalysisId);
+//                       RptPersonalAnalysis rptPersonalAnalysis = reportService.getCustomReport(personalAnalysisId);
 
-                       String configJson = rptPersonalAnalysis.getConfigJson();
+//                       String configJson = rptPersonalAnalysis.getConfigJson();
 
-                       if(StringUtils.isNotEmpty(configJson)){
-                           ReportDatasource reportDatasource = JsonUtil.fromJson(configJson, ReportDatasource.class);
+                       if(jsonRequest != null){
+                           ReportDatasource reportDatasource = jsonRequest.getReqBody();
 //
                            //生成cubetree
                            CubeTree cubeTree = reportService.reportCore(reportDatasource.getReportDynamicParam());

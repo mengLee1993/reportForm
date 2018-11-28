@@ -502,5 +502,43 @@ public class ReportHandler {
 
     }
 
+    /**
+     * 导出直接exel
+     * @param reportDatasource
+     * @param cubeTree
+     * @return
+     */
+    public ReportRespDetail reportCoreDetailExcel(ReportDatasource reportDatasource,CubeTree cubeTree) {
 
+        String dataSourceName = reportDatasource.getDatasourceName();
+
+        Connection conn = null;
+        ReportRespDetail reportRespDetail = new ReportRespDetail();
+        try {
+            DataSourceConfig dataSourceConfig = DataSourceManager.get().getDataSourceConfig(dataSourceName);
+            DataBaseType dataBaseType = dataSourceConfig.getDataBaseType();
+
+            ReportAccessor reportAccessor = AccessorFactory.get().factoryAccessor(ReportAccessor.class, dataBaseType);
+            conn = DbConnFactory.factory(dataSourceName);
+
+            //生成sql
+            Map<String,Object> tmpMap = reportAccessor.reportCoreDetail(reportDatasource);
+
+            ReportDetail reportDetail = getFieldsByMap(tmpMap);
+
+            String sql = reportDetail.getSql();
+
+            reportRespDetail = reportAccessor.reportPageList(sql, conn, cubeTree, reportDetail.getFieldList());
+
+
+        } catch (DbException e) {
+            logger.error("Occurred DbException.", e);
+            // todo throw exception
+        } finally {
+            DataBaseUtil.closeConnection(conn);
+        }
+
+        return reportRespDetail;
+
+    }
 }

@@ -321,9 +321,9 @@ public class ReportServiceImpl implements ReportService {
         CubeTree cubeTree = new CubeTree();
 
         cubeTree.setMeasures(mensions);
-        if(CollectionUtils.isEmpty(custList)){
-            custList.addAll(cubeTree.getMeasures());
-        }
+//        if(!CollectionUtils.isEmpty(custList)){
+        custList.addAll(mensions);
+//        }
         reportDynamicParam.setMeasures(custList);
         reportDynamicParam.setDimension(isDimension);
         cubeTree.setLineDimension(reportDynamicParam.getLine());
