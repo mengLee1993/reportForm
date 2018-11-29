@@ -96,6 +96,8 @@ function clsMethodLee$parse(){
     }
     if(this.personalSubjectId){
         $("#childShow").show();
+        $("#childShow").prev().attr("clickMark",1);//改变标示状态 0-收起子内容  1-展开子内容
+        $("#childShow").prev().find("i").addClass("firstParent__icon1");
     }
     //初始化fieldId的下拉
     $("#measureType").chosen({
@@ -358,10 +360,8 @@ function clsParentChildTableCtrl$progress(jsonItem, cloneRow) {
         $(cloneRow).find("#childShow").show();
         document.body.jsLee.jsonAll = jsonItem;
         initHtmlData(jsonItem.reportDynamicParam);
-    }
-    if(document.body.jsLee.personalSubjectId) {
+    }else if(document.body.jsLee.personalSubjectId) {
         $(cloneRow).find("#childShow").show();
-        document.body.jsLee.jsonAll = jsonItem;
         document.body.jsLee.jsonAll = jsonItem;
         document.body.jsLee.jsonAll.reportDynamicParam = {
             "personalSubjectId":jsonItem.personalSubjectId,
@@ -1507,6 +1507,7 @@ function initHtmlCallBack(data){
         $("#parentChildTableList #measureDeleteOpe").remove();
         initplugData($("#parentChildTableList")[0],"parentChildTableCtrl",arrA);
         $("#parentChildTableList").find("#parentClick").attr("clickmark",1);
+        initTable();
         //initTableOrChart();
     }
 }

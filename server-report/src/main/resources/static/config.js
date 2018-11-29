@@ -56,7 +56,7 @@ module.exports={
     "report-home":{//头部
         "sassSrc":"reportForm/report-home/sass/*.scss",
         "cssSrc":"reportForm/report-home/css",
-        "htmlIncAfter":"reportForm/report-home/html-www/!*.html",
+        "htmlIncAfter":"reportForm/report-home/html-www/*.html",
         "htmlIncBefore":"reportForm/report-home/html-gulp-www"
     },
     "report-analyze":{//头部

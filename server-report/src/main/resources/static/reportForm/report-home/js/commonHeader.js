@@ -6,7 +6,11 @@
         };
         $("#loginName").html(unescape(getCookie("reportName")));
         $("#logoHomePage").on("click",function(){
-            jumpUrl("../../report-home/html-gulp-www/homePage.html","0000000",0);
+            if(window.location.href.indexOf("homPage.html") == -1){
+                jumpUrl("../../../homePage.html","0000000",0);
+            }else{
+                jumpUrl("homePage.html","0000000",0);
+            }
         });
         //isMine
         //模块名字截取
