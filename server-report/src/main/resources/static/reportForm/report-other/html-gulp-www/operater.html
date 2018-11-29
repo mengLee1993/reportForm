@@ -176,19 +176,68 @@
 
 					<div class="tradebase-main">
 
-<div id="homePageBox" style="width: 100%;background: url('../../report-login/images/login-bg.png')">
-
-</div>
+<link rel="stylesheet" href="../css/operater.css">
 <script>
-	$(function(){
-	   var heightPx = document.documentElement.clientHeight;
-	   $("#homePageBox").css("height",heightPx +"px");
-        window.onresize = function () {
-            var heightPx = document.documentElement.clientHeight;
-            $("#homePageBox").css("height",heightPx +"px");
+    var jsonData ={"retCode":"0000000","rspBody":{"resultData":[{"treeName":"个人主题数据","rptDataTables":[{"treeName":"我的数据报表"},{"treeName":"我的自定义查询"},{"treeName":"我的数据下载"}]},{"treeName":"自定义分析","rptDataTables":[]},{"treeName":"数据字典","rptDataTables":[{"treeName":"数据源管理列表"},{"treeName":"数据字典管理"},{"treeName":"元数据管理列表"}]},{"treeName":"数据授权","rptDataTables":[]},{"treeName":"分析日志","rptDataTables":[]},{"treeName":"权限管理","rptDataTables":[{"treeName":"组织管理"},{"treeName":"角色管理"},{"treeName":"人员管理"},{"treeName":"资源管理"},{"treeName":"系统管理"}]}]}};
+    $(function(){
+        $("#tableTree")[0].data = jsonData;
+        $("#tableTree").attr("comType","treeListCtrl");
+        document.body.jsCtrl.ctrl = $("#tableTree")[0];
+        document.body.jsCtrl.init();
+    });
+    function clsTreeListCtrl$process(cloneRow, jsonItem,level)
+    {
+        var clsThis = this;
+        //箭头点击展开收起
+        $(cloneRow).find(".colmain_icon1").click(function() {
+            if($(this).hasClass("colmain_icon1")) {
+                $(this).removeClass("colmain_icon1").addClass("colmain_icon01");
+                var childNodes = clsThis.ctrl.jsCtrl.getAllChild(this);
+                for(var nI = 0; nI < childNodes.length; nI++) {
+                    $(childNodes[nI]).hide();
+                }
+            } else {
+                $(this).removeClass("colmain_icon01").addClass("colmain_icon1");
+                var childNodes = clsThis.ctrl.jsCtrl.getNextChild(this);
+                for(var nI = 0; nI < childNodes.length; nI++) {
+                    $(childNodes[nI]).show();
+                }
+            }
+        });
+        //当下面子集为空箭头隐藏
+        if(!jsonItem.rptDataTables || jsonItem.rptDataTables.length == 0){
+            $(cloneRow).find(".colmain_icon1").css({
+                "visibility":"hidden"
+            })
         }
-	});
+        if(level == 1 && jsonItem.isChecked == 1){
+            $(cloneRow).find(".datareport-treeListTable-tr__input").attr("checked", true);
+            //clsTreeListCtrl$getParent(obj)
+            $(this.getParent(cloneRow)).find(".datareport-treeListTable-tr__input").attr("checked", true);
+        }
+    }
+    function clsTreeListCtrl$after(){
+        $(".operater-left").css("height",window.innerHeight+"px");
+        $(".operater-right").css("height",window.innerHeight+"px");
+    }
 </script>
+<div class="operater clearfix">
+    <div class="operater-left fl">
+        <table class="operater-left-treeListTable" id="tableTree" t="datasourceName" c="rptDataTables" jsonId="tableId" treeType="treeList2" templateId="templateTreeRow" treeCell="treeCell" comtype="">
+            <tr class="operater-left-treeListTable-tr" id="templateTreeRow" style="display:none;cursor:pointer;">
+                <td class="operater-left-treeListTable-tr__item">
+                    <div class="operater-left-treeListTable-tr__item-content" id="treeCell">
+                        <i class="colmain_icon1"></i>
+                        <span class="operater-left-treeListTable-tr__text" id="datasourceName"></span>[<span id="treeName"></span>]
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="operater-right fl">
+
+    </div>
+</div>
 </div>
 </div>
 

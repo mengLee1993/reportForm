@@ -1,0 +1,50 @@
+@import "../../report-base/sass/tradebaseVar";
+.operater{
+  width: 100%;background: #fff;
+  position: relative;
+}
+.operater-left{
+  width: 266px;
+  background: #EDF6FF;
+  font-size: 14px;
+  color: #333333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: scroll;
+}
+.operater-right{
+  width: 100%;
+  padding-left: 266px;
+  box-sizing: content-box;
+  overflow-y: scroll;
+}
+.operater-left-treeListTable-tr__item{
+  height: 30px;
+  line-height: 30px;
+}
+.operater-left-treeListTable-tr__item-content{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 266px;
+  box-sizing: border-box;
+}
+.padding0{
+  padding-left: 20px;
+}
+.padding1{
+  padding-left: 40px;
+}
+.padding2{
+  padding-left: 60px;
+}
+.padding3{
+  padding-left: 80px;
+}
+
+
+.colmain_icon1 { margin-left: 5px;margin-top:5px;margin-right: 18px; float: left; width: 20px; height: 20px; background: url(../images/icon2.png);cursor: pointer }
+
+.colmain_icon01 { margin-left:5px;margin-top:5px;margin-right: 18px; float: left; width: 20px; height: 20px; background: url(../images/icon1.png);cursor: pointer}
+

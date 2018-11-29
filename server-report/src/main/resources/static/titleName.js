@@ -34,6 +34,9 @@ var titleJson = {
             "roleManage.html":"角色管理",
             "resourceManage.html":"资源管理",
             "userManage.html":"人员管理"
+        },
+        "report-other":{//操作手册
+            "operater.html":"操作手册"
         }
     }
 }
@@ -52,7 +55,7 @@ function titleEval(titleJson){//赋值每一个页面的title
                     if(titleVarJson[key2] == ""){
                         document.title = "数据报表";
                     }
-                    if(key == "report-analyze" || key == "report-authorization" || key == "report-logAnalyze" || key == "report-login" || key == "report-home"){//不用加侧边栏
+                    if(key == "report-analyze" || key == "report-authorization" || key == "report-logAnalyze" || key == "report-login" || key == "report-home" || key == "report-other"){//不用加侧边栏
                         $("#bodyLeft").remove();
                         $("#bodyRight").css("padding-left",0);
                     }
