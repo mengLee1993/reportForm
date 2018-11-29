@@ -46,5 +46,5 @@ public interface AcctService {
      */
     ServiceResponse<AcctSession> userLogin(AcctLogin reqBody);
 
-    AcctInfo getAcctById(Long x);
+    AcctInfo getAcctById(String x);
 }

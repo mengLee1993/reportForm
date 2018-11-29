@@ -802,6 +802,12 @@ and arp.role_id is not null )
       and ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%')
     </if>
   </select>
+  <select id="selectByAcctId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from acct_info
+    where ACCT_ID = #{x}  and is_delete = 0
+  </select>
 
 
 </mapper>

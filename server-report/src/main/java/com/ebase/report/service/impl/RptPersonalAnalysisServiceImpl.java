@@ -220,9 +220,13 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
         RptPersonalAnalysis rptPersonalAnalysis1 = rptPersonalAnalysisMapper.selectByPrimaryKey(personalAnalysisId);
         Byte type = reportShareBody.getType();
 
+
         if((byte)0 == type){
+
+            //根据分享人和报表id所有角色类型的 数据
                 //角色
             for(String x:reportShareBody.getList()){
+
                 RptPersonalAnalysis copy = BeanCopyUtil.copy(rptPersonalAnalysis1, RptPersonalAnalysis.class);
                 copy.setUserId(null);
                 copy.setRoleId(x);
