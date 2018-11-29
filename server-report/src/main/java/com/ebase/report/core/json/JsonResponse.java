@@ -54,7 +54,7 @@ public final class JsonResponse<T> implements java.io.Serializable {
 		if (SYS_EXCEPTION.equals(retCode))
 			this.retDesc = SYS_ERROR_MSG;
 		else if (!SUCCESS.equals(retCode))
-			this.retDesc = I18nResource.getMessage(retCode);
+			this.retDesc = I18nResource.getException(retCode,null);
 		this.retCode = retCode;
 	}
 
