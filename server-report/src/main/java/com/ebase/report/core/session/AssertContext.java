@@ -1,6 +1,8 @@
 package com.ebase.report.core.session;
 
 
+import java.util.List;
+
 /**
  * @Auther: wangyu
  */
@@ -17,14 +19,51 @@ public class AssertContext {
     }
 
     /**
-     *  获得当前用户等了id
+     *  弃用
+     *
      */
+    @Deprecated
     public static Long getAcctId(){
         Long acctId = null;
         if(allContext.get() != null){
             acctId = allContext.get().getAcctId();
         }
         return acctId;
+    }
+
+    /**
+     *  获得当前用户等了id
+     */
+    public static String getReAcctId(){
+        String reAcctId = null;
+        if(allContext.get() != null){
+            reAcctId = allContext.get().getReAcctId();
+        }
+        return reAcctId;
+    }
+
+    /**
+     *弃用
+     * @return
+     */
+    @Deprecated
+    public static Long getRoleId(){
+        Long roleId = null;
+        if(allContext.get() != null){
+            roleId = allContext.get().getRoleId();
+        }
+        return roleId;
+    }
+
+    /**
+     *  re.id
+     */
+    public static List<String> getReRoleId(){
+        List<String> reAcctId = null;
+        if(allContext.get() != null){
+            reAcctId = allContext.get().getReRoleId();
+        }
+        return reAcctId;
     }
 
     /**
@@ -51,17 +90,7 @@ public class AssertContext {
         return token;
     }
 
-    /**
-     * 获得角色id
-     * @return
-     */
-    public static Long getRoleId(){
-        Long roleId = null;
-        if(allContext.get() != null){
-            roleId = allContext.get().getRoleId();
-        }
-        return roleId;
-    }
+
 
     /**
      * 获得组织ID

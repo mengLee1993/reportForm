@@ -2,6 +2,7 @@ package com.ebase.report.service;
 
 import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.model.AnalysisShareBody;
+import com.ebase.report.model.RptPersonalAnalysis;
 import com.ebase.report.model.dynamic.ReportEchoBody;
 import com.ebase.report.model.dynamic.ReportShareBody;
 import com.ebase.report.model.dynamic.ReportTable;
@@ -98,7 +99,7 @@ public interface RptPersonalAnalysisService {
      * @param reportName
      * @return
      */
-    Integer getReportByName(String reportName, Long acctId);
+    Integer getReportByName(String reportName, String acctId);
 
     /**
      * 查看分享列表
@@ -106,4 +107,8 @@ public interface RptPersonalAnalysisService {
      * @return
      */
     PageDTO<AnalysisShareBody> listAnalysisShareBody(AnalysisShareBody analysisShareBody);
+
+    RptPersonalAnalysis getByUserId(String loginId, Long sysId);
+
+    RptPersonalAnalysis getByRoleId(String roleId, Long sysId);
 }

@@ -58,6 +58,8 @@ public class AcctInfo {
 
     private Long roleId;//角色ID   !!
 
+    private String reRoleId;
+
 
     private String RoleTitle;//角色名称
 
@@ -94,6 +96,9 @@ public class AcctInfo {
     private int startRow;
 
     private String sysTitle;
+
+    private Byte type;
+
 
     public String getReAcctId() {
         return reAcctId;
@@ -421,5 +426,21 @@ public class AcctInfo {
 
     public void setStartRow(int startRow) {
         this.startRow = startRow;
+    }
+
+    public String getReRoleId() {
+        return reRoleId;
+    }
+
+    public void setReRoleId(String reRoleId) {
+        this.reRoleId = reRoleId;
+    }
+
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
     }
 }

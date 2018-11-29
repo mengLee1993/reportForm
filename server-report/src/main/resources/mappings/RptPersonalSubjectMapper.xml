@@ -16,7 +16,7 @@
         <result column="CREATED_DT" jdbcType="TIMESTAMP" property="createdDt" />
         <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
         <result column="UPDATED_DT" jdbcType="TIMESTAMP" property="updatedDt" />
-        <result column="ROLE_ID" jdbcType="BIGINT" property="roleId" />
+        <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
     </resultMap>
     <sql id="Base_Column_List">
         PERSONAL_SUBJECT_ID, SUBJECT_TYPE, SUBJECT_SOURCE, SUBJECT_SOURCE_ID, TABLE_ID, SUBJECT_NAME, 
@@ -42,7 +42,7 @@
             #{subjectSourceId,jdbcType=BIGINT}, #{tableId,jdbcType=BIGINT}, #{subjectName,jdbcType=VARCHAR}, 
             #{userId,jdbcType=VARCHAR}, #{dataModel,jdbcType=VARCHAR}, #{demo,jdbcType=VARCHAR}, 
             #{removeStatus,jdbcType=TINYINT}, #{createdBy,jdbcType=VARCHAR}, #{createdDt,jdbcType=TIMESTAMP}, 
-            #{updatedBy,jdbcType=VARCHAR}, #{updatedDt,jdbcType=TIMESTAMP},#{roleId,jdbcType=BIGINT})
+            #{updatedBy,jdbcType=VARCHAR}, #{updatedDt,jdbcType=TIMESTAMP},#{roleId,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.ebase.report.model.RptPersonalSubject">
         insert into rpt_personal_subject
@@ -184,7 +184,7 @@
                 UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
             </if>
             <if test="roleId != null">
-                ROLE_ID = #{roleId,jdbcType=BIGINT},
+                ROLE_ID = #{roleId,jdbcType=VARCHAR},
             </if>
         </set>
         where PERSONAL_SUBJECT_ID = #{personalSubjectId,jdbcType=BIGINT}
@@ -204,7 +204,7 @@
             CREATED_DT = #{createdDt,jdbcType=TIMESTAMP},
             UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
             UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP},
-            ROLE_ID = #{roleId,jdbcType=BIGINT}
+            ROLE_ID = #{roleId,jdbcType=VARCHAR}
         where PERSONAL_SUBJECT_ID = #{personalSubjectId,jdbcType=BIGINT}
     </update>
     <select id="select" resultMap="BaseResultMap">
@@ -258,7 +258,7 @@
                 and UPDATED_DT = #{updatedDt,jdbcType=TIMESTAMP}
             </if>
             <if test="roleId != null">
-                and ROLE_ID = #{roleId,jdbcType=BIGINT}
+                and ROLE_ID = #{roleId,jdbcType=VARCHAR}
             </if>
         </trim>
     </sql>
@@ -295,7 +295,13 @@
 
             and
            ( USER_ID = #{acctId}
-            or role_id = #{roleId}
+            <if test="roleId != null and roleId.size >0">
+                or role_id in (
+                <foreach collection="roleId" item="id" separator=",">
+                    #{id}
+                </foreach>
+                )
+            </if>
           )
     </select>
 

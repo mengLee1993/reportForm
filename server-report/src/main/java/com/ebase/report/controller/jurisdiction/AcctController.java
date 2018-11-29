@@ -169,6 +169,7 @@ public class AcctController {
                     acctSession.setAcctTitle(json2.getString("loginId"));
                     acctSession.setAcctType(Long.parseLong(json2.getString("userType")));
                     acctSession.setAcctId(Long.parseLong(json2.getString("userSid")));
+                    acctSession.setReAcctId(json2.getString("loginId"));
                     acctSession.setToken(token);
                     //获取用户资源
                     String fun="http://"+authIp+"/auth/ac/ac-resource/getUserAssignedResourceTree.action?loginId="+jsonRequest.getReqBody().getAcctId()+"&appCode=ZDYBB";
@@ -186,6 +187,11 @@ public class AcctController {
                     }
                     acctSession.setName(JSON.parseObject(json.getString("data")).getString("usernameCn"));
                     acctSession.setPermissions(permissions);
+
+                    //先写死角色
+                    List<String> reRoleId = new ArrayList<>();
+                    reRoleId.add("R1543383203888");
+                    acctSession.setReRoleId(reRoleId);
                     HttpSession session = request.getSession();
                     String key = CookieUtil.getSessionId();
                     session.setAttribute(Md5Util.encrpt(key),acctSession);

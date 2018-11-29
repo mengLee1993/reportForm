@@ -308,9 +308,9 @@ public class RptDatasourceController {
 
         JsonResponse<List<RptDatasource>> jR = new JsonResponse<>();
         try{
-            Long acctId = AssertContext.getAcctId();
+            String acctId = AssertContext.getReAcctId();
             if(acctId == null){
-                acctId = 1L;
+                acctId = "1";
             }
             String orgId = AssertContext.getOrgId();
             if(orgId == null){

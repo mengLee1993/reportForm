@@ -55,18 +55,19 @@ public class ReportServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List<ReportEchoBody> getThemeDataSource(Long userId) {
-        Long acctId = AssertContext.getAcctId();
+    public List<ReportEchoBody> getThemeDataSource(String userId) {
+        String acctId = AssertContext.getReAcctId();
+
         if(acctId == null){
-            acctId = 1L;
+            acctId = "1";
         }
 //        Long
 
         //当前角色id
-        Long roleId = AssertContext.getRoleId();
-        if(roleId == null){
-            roleId = 1L;
-        }
+        List<String> roleId = AssertContext.getReRoleId();
+//        if(roleId == null){
+//            roleId = ;
+//        }
         Map<String,Object> tmp = new HashMap<>();
         tmp.put("acctId",acctId);
         tmp.put("roleId",roleId);
@@ -108,9 +109,9 @@ public class ReportServiceImpl implements ReportService {
      */
     public ReportEchoBody getReportEchoBody(Long personalSubjectId) {
 
-        Long acctId = AssertContext.getAcctId();  //当前登陆人
+        String acctId = AssertContext.getReAcctId();  //当前登陆人
         if(acctId == null){
-            acctId = 1L;
+            acctId = "1";
         }
 
         //获得主数据
@@ -153,9 +154,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private List<RptMeasures> getRptMeasures(Long personalSubjectId, List<RptDataField> rptDataIndexs) {
-        Long acctId = AssertContext.getAcctId();
+        String acctId = AssertContext.getReAcctId();
         if(acctId == null){
-            acctId = 1l;
+            acctId = "1";
         }
 
         List<RptMeasures> list = new ArrayList<>(rptDataIndexs.size());
@@ -163,7 +164,7 @@ public class ReportServiceImpl implements ReportService {
         int i = 0;
         for(RptDataField x:rptDataIndexs){
             RptMeasures rptMeasures1 = new RptMeasures();
-            rptMeasures1.setMeasureId(new Date().getTime() + acctId + i ++);
+            rptMeasures1.setMeasureId(new Date().getTime() + acctId.hashCode()+ i ++);
             String measuresName = x.getFieldName() + "(" + MeasureTypeEnum.SUM.getName() + ")";
             rptMeasures1.setMeasuresName(measuresName);
             rptMeasures1.setFieldId(x.getFieldId());

@@ -5,6 +5,7 @@ import com.ebase.report.model.dynamic.ReportDatasource;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  */
@@ -73,12 +74,15 @@ public class RptPersonalAnalysisVO implements Serializable {
     /**
      * 角色ID
      */
-    private Long roleId;
+    private String roleId;
+
+
+    private List<String> roleIds;
 
     /**
      * 分享者ID
      */
-    private Long sharingPersonId;
+    private String sharingPersonId;
 
     /**
      * 分享者名称
@@ -223,19 +227,21 @@ public class RptPersonalAnalysisVO implements Serializable {
         this.tableName = tableName;
     }
 
-    public Long getRoleId() {
+
+    public String getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 
-    public Long getSharingPersonId() {
+
+    public String getSharingPersonId() {
         return sharingPersonId;
     }
 
-    public void setSharingPersonId(Long sharingPersonId) {
+    public void setSharingPersonId(String sharingPersonId) {
         this.sharingPersonId = sharingPersonId;
     }
 
@@ -253,5 +259,13 @@ public class RptPersonalAnalysisVO implements Serializable {
 
     public void setDeleteType(Byte deleteType) {
         this.deleteType = deleteType;
+    }
+
+    public List<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(List<String> roleIds) {
+        this.roleIds = roleIds;
     }
 }

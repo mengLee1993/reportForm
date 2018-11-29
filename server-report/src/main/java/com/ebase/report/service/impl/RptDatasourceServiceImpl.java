@@ -280,7 +280,7 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
     }
 
     @Override
-    public List<RptDatasource> listSelect(Long acctId, String orgId) {
+    public List<RptDatasource> listSelect(String acctId, String orgId) {
         List<RptDatasource> reulst = dsMapper.selectByAuth(acctId,orgId);
         return reulst;
     }

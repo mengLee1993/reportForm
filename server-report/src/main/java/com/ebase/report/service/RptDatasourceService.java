@@ -103,5 +103,5 @@ public interface RptDatasourceService {
 	 * @param orgId
 	 * @return
 	 */
-    List<RptDatasource> listSelect(Long acctId, String orgId);
+    List<RptDatasource> listSelect(String acctId, String orgId);
 }
