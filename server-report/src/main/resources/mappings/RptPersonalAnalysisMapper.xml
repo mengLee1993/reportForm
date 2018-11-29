@@ -425,4 +425,12 @@
          select * from RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{arg1}
          and ROLE_ID = #{arg0}
     </select>
+    <select id="selectUidByPersonId" resultType="java.lang.String">
+        SELECT USER_ID FROM rpt_personal_analysis
+        WHERE ANALYSIS_SOURCE_ID = #{arg0} AND SHARING_PERSON_ID = #{arg1} AND USER_ID IS NOT NULL
+    </select>
+    <select id="selectRidByPersonId" resultType="java.lang.String">
+        SELECT ROLE_ID FROM rpt_personal_analysis
+        WHERE ANALYSIS_SOURCE_ID = #{arg0} AND SHARING_PERSON_ID = #{arg1} AND ROLE_ID IS NOT NULL
+    </select>
 </mapper>

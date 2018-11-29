@@ -99,6 +99,8 @@ public class AcctInfo {
 
     private Byte type;
 
+    private String tips;//分享提示
+
 
     public String getReAcctId() {
         return reAcctId;
@@ -442,5 +444,13 @@ public class AcctInfo {
 
     public void setType(Byte type) {
         this.type = type;
+    }
+
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
     }
 }

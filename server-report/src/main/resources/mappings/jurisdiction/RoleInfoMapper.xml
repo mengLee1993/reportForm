@@ -641,6 +641,19 @@
     <if test="roleTitle != null and roleTitle != '' " >
       AND ROLE_TITLE LIKE CONCAT('%',#{roleTitle},'%')
     </if>
+    <if test="acctShare != null and sysId != null">
+      and ROLE_ID  not in (
+        SELECT ROLE_ID FROM RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{sysId} AND SHARING_PERSON_ID = #{acctShare} AND
+        ROLE_ID IS NOT NULL
+      )
+    </if>
+    <if test="reRoleIds != null and reRoleIds.size > 0">
+      and ROLE_ID not in (
+        <foreach collection="reRoleIds" separator="," item="reRoleId">
+          #{reRoleId}
+        </foreach>
+      )
+    </if>
     </trim>
   </select>
 
@@ -656,6 +669,19 @@
       </if>
       <if test="roleState != null and roleState != '' " >
         AND ROLE_STATE = #{roleState}
+      </if>
+      <if test="acctShare != null and sysId != null">
+        and ROLE_ID  not in (
+        SELECT ROLE_ID FROM RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{sysId} AND SHARING_PERSON_ID = #{acctShare} AND
+        ROLE_ID IS NOT NULL
+        )
+      </if>
+      <if test="reRoleIds != null and reRoleIds.size > 0">
+        and ROLE_ID not in (
+        <foreach collection="reRoleIds" separator="," item="reRoleId">
+          #{reRoleId}
+        </foreach>
+        )
       </if>
     </trim>
     ORDER BY CREATED_TIME DESC
@@ -673,7 +699,7 @@
      SELECT
     *
      FROM role_info
-     where ROLE_CODE = #{roleName}
+     where ROLE_ID = #{roleName}
   </select>
   <select id="selectByAcctName" parameterType="java.lang.String" resultMap="BaseResultMap">
       SELECT * FROM role_info where ROLE_ID = #{x}

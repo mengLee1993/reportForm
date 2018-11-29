@@ -111,4 +111,8 @@ public interface RptPersonalAnalysisService {
     RptPersonalAnalysis getByUserId(String loginId, Long sysId);
 
     RptPersonalAnalysis getByRoleId(String roleId, Long sysId);
+
+    List<String> getUserIdById(Long sysId);
+
+    List<String> getRoleIdById(Long sysId);
 }

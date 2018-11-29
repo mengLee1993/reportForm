@@ -6,6 +6,7 @@ import com.ebase.report.common.Status;
 import com.ebase.report.core.ParamType;
 import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
+import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.BeanCopyUtil;
 import com.ebase.report.dao.jurisdiction.AcctOperPrivRelaMapper;
 import com.ebase.report.dao.jurisdiction.AcctRoleGroupRoleMapper;
@@ -344,12 +345,19 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @Override
     public PageDTO<RoleInfo> queryForList(RoleInfo roleInfo) {
+        String reAcctId = AssertContext.getReAcctId();
 
+        List<String> reRoleId = AssertContext.getReRoleId();
+
+//        roleInfo.setReRoleIds(AssertContext.getReRoleId());  //暂时注调，能给自己的所属角色分享
         /*List<RoleInfo> roleInfos = roleInfoMapper.queryForList(vo);
         List<RoleInfoVO> rptPersonalTableFieldVOs = BeanCopyUtil.copyList(roleInfos, RoleInfoVO.class);
         return rptPersonalTableFieldVOs;*/
-
+        roleInfo.setAcctShare(reAcctId);
         PageDTO<RoleInfo> pageDTO = new PageDTO<>(roleInfo.getPageNum(),roleInfo.getPageSize());
+        if(roleInfo.getType() != null && roleInfo.getType() == (byte)1){ //是否排除自己
+            roleInfo.setReRoleIds(AssertContext.getReRoleId());
+        }
 
         Integer count = roleInfoMapper.queryForCount(roleInfo);;
 

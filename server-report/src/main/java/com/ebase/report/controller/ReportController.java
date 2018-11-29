@@ -583,10 +583,11 @@ public class ReportController {
 
         try{
             AcctInfo acctInfo = jsonRequest.getReqBody();
+            Long sysId = acctInfo.getSysId();
             if(type.equals("core")){
                 PageDTO<AcctInfo> pageDTO = acctService.listShareReport(acctInfo);
                 List<AcctInfo> resultData = pageDTO.getResultData();
-                Long sysId = acctInfo.getSysId();
+
                 resultData.forEach(x -> {
                     x.setType((byte)0);
                     if(sysId != null){
@@ -603,6 +604,14 @@ public class ReportController {
 
                 jsonResponse.setRspBody(pageDTO);
             }else if (type.equals("report")) {
+
+                //根据当前登陆人和报表id查询userid
+                List<String> userIds = rptPersonalAnalysisService.getUserIdById(sysId);
+                Byte type = acctInfo.getType();//状态判断要不要过滤自己
+                if(type != null && type == (byte)1){
+                    userIds.add(AssertContext.getReAcctId());
+                }
+
                 if(acctInfo.getAcctTitle()==null){
                     acctInfo.setAcctTitle("");
                 }
@@ -620,12 +629,18 @@ public class ReportController {
                     if (JSON.parseObject(json.getString("items")).get("records") != null) {
                         JSONArray jsonObject1 = JSON.parseObject(json.getString("items")).getJSONArray("records");
 
-                        //报表id
-                        Long sysId = acctInfo.getSysId();
-
                         for (int i = 0; i < jsonObject1.size(); i++) {
-                            AcctInfo acctInfo1=new AcctInfo();
                             String loginId = JSON.parseObject(jsonObject1.getString(i)).getString("loginId");
+                            AcctInfo acctInfo1=new AcctInfo();
+
+                            //排除 已经添加过的和当前登陆人
+                            if(userIds.contains(loginId)){
+//                                continue; //不排除给他提示
+                                acctInfo1.setTips("此账号不能分享哦！");
+                            }
+
+
+
                             acctInfo1.setReAcctId(loginId);
                             acctInfo1.setName(JSON.parseObject(jsonObject1.getString(i)).getString("userNameCn"));
                             acctInfo1.setAcctTitle(JSON.parseObject(jsonObject1.getString(i)).getString("loginId"));
@@ -642,6 +657,7 @@ public class ReportController {
                             }
 
                             acctInfos.add(acctInfo1);
+
                         }
                     }
                     pages.setResultData(acctInfos);

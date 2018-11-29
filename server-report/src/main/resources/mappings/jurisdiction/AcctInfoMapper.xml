@@ -789,6 +789,15 @@ and arp.role_id is not null )
     <if test="acctTitle != null and acctTitle != ''">
       and ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%')
     </if>
+    <if test="reAcctId != null and sysId != null">
+      and ACCT_ID  not in (
+      SELECT USER_ID FROM RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{sysId} AND SHARING_PERSON_ID = #{reAcctId} AND
+      USER_ID IS NOT NULL
+      )
+    </if>
+    <if test="sysTitle != null">
+      and ACCT_ID != #{sysTitle}
+    </if>
     ORDER BY ACCT_ID DESC
     limit #{startRow},#{pageSize}
   </select>
@@ -800,6 +809,15 @@ and arp.role_id is not null )
     and STATUS = 1
     <if test="acctTitle != null and acctTitle != ''">
       and ACCT_TITLE LIKE CONCAT('%',#{acctTitle},'%')
+    </if>
+    <if test="reAcctId != null and sysId != null">
+      and ACCT_ID  not in (
+      SELECT USER_ID FROM RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{sysId} AND SHARING_PERSON_ID = #{reAcctId} AND
+      USER_ID IS NOT NULL
+      )
+    </if>
+    <if test="sysTitle != null">
+      and ACCT_ID != #{sysTitle}
     </if>
   </select>
   <select id="selectByAcctId" resultMap="BaseResultMap" parameterType="java.lang.String">

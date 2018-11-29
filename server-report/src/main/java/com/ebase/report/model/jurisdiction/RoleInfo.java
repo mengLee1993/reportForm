@@ -82,6 +82,8 @@ public class RoleInfo {
 
     private Long acctId;
 
+    private String acctShare; //报表分享过滤条件
+
     private Long sysId;
 
     private Byte type;
@@ -89,6 +91,10 @@ public class RoleInfo {
     private Byte relaStatus;
 
     private Long copyId;
+
+    private List<String> reRoleIds; //报表分享过滤条件
+
+    private String tips;//分享提示
 
     public String getReRoleId() {
         return reRoleId;
@@ -440,5 +446,29 @@ public class RoleInfo {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getAcctShare() {
+        return acctShare;
+    }
+
+    public void setAcctShare(String acctShare) {
+        this.acctShare = acctShare;
+    }
+
+    public List<String> getReRoleIds() {
+        return reRoleIds;
+    }
+
+    public void setReRoleIds(List<String> reRoleIds) {
+        this.reRoleIds = reRoleIds;
+    }
+
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
     }
 }

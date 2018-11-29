@@ -6,10 +6,7 @@ import com.ebase.report.core.Base64Util;
 import com.ebase.report.core.CacheService;
 import com.ebase.report.core.MD5Util;
 import com.ebase.report.core.pageUtil.PageDTO;
-import com.ebase.report.core.session.Acct;
-import com.ebase.report.core.session.AcctLogin;
-import com.ebase.report.core.session.AcctSession;
-import com.ebase.report.core.session.CacheKeyConstant;
+import com.ebase.report.core.session.*;
 import com.ebase.report.core.utils.BeanCopyUtil;
 import com.ebase.report.core.utils.serviceResponse.ServiceResponse;
 import com.ebase.report.dao.jurisdiction.AcctInfoMapper;
@@ -88,6 +85,14 @@ public class AcctServiceImpl implements AcctService {
     public PageDTO<AcctInfo> listShareReport(AcctInfo acctInfo) {
 
         PageDTO<AcctInfo> pageDTO = new PageDTO<>(acctInfo.getPageNum(),acctInfo.getPageSize());
+        String reAcctId = AssertContext.getReAcctId();
+
+        acctInfo.setReAcctId(reAcctId);
+
+        //状态判断要不要过滤自己
+        if(acctInfo.getType() != null && acctInfo.getType() == (byte)1){
+            acctInfo.setSysTitle(reAcctId);
+        }
 
         Integer count = acctInfoMapper.selectShareReportCount(acctInfo);
 

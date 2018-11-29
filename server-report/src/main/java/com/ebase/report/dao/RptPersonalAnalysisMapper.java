@@ -46,4 +46,8 @@ public interface RptPersonalAnalysisMapper {
     RptPersonalAnalysis selectByUserAndId(String userId, Long sysId);
 
     RptPersonalAnalysis selectByRoleAndId(String roleId, Long sysId);
+
+    List<String> selectUidByPersonId(Long sysId, String reAcctId);
+
+    List<String> selectRidByPersonId(Long sysId, String reAcctId);
 }

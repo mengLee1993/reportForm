@@ -373,8 +373,11 @@ public class RoleInfoController {
         try {
             LOG.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
             RoleInfo roleInfo = jsonRequest.getReqBody();
-            Long sysId = roleInfo.getSysId();
+            Long sysId = roleInfo.getSysId();//报表id
+
+
             if(type.equals("core")) {
+                //添加逻辑根据报表id 和 当前登陆人排除
                 PageDTO<RoleInfo> acctOrgSysVOs = roleInfoService.queryForList(roleInfo);
                 List<RoleInfo> resultData = acctOrgSysVOs.getResultData();
                 for(RoleInfo roleId:resultData){
@@ -390,6 +393,11 @@ public class RoleInfoController {
 
                 jsonResponse.setRspBody(acctOrgSysVOs);
             }else if (type.equals("report")) {
+
+                //根据当前登陆人和报表id查询userid
+                List<String> roleIds = rptPersonalAnalysisService.getRoleIdById(sysId);
+//                roleIds.addAll(AssertContext.getReRoleId())//暂时注调，能给自己的所属角色分享
+
                 if(roleInfo.getRoleTitle()==null){
                     roleInfo.setRoleTitle("");
                 }
@@ -412,7 +420,14 @@ public class RoleInfoController {
                         JSONArray jsonObject1 = JSON.parseObject(json.getString("items")).getJSONArray("records");
                         for (int i = 0; i < jsonObject1.size(); i++) {
                             RoleInfo roleInfo1 = new RoleInfo();
+
                             String roleId = JSON.parseObject(jsonObject1.getString(i)).getString("roleId");
+                            //排除已经添加过的
+                            if(roleIds.contains(roleId)){
+//                                continue;
+                                roleInfo1.setTips("此账号不能分享哦！");
+                            }
+
                             roleInfo1.setRoleDesc(JSON.parseObject(jsonObject1.getString(i)).getString("roleDesc"));
                             roleInfo1.setReRoleId(roleId);
                             roleInfo1.setRoleCode(roleId);

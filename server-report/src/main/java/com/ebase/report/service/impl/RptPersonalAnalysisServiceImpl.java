@@ -113,6 +113,7 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
         List<RptPersonalAnalysis> rptPersonalAnalysiss = rptPersonalAnalysisMapper.select(model);
         List<RptPersonalAnalysisVO> rptPersonalAnalysisVOs = BeanCopyUtil.copyList(rptPersonalAnalysiss, RptPersonalAnalysisVO.class);
 
+
         pageDto.setResultData(rptPersonalAnalysisVOs);
         return pageDto;
     }
@@ -274,7 +275,7 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
             if(userId != null){
                 analysisShareBody1.setType((byte)1);
 //                AcctInfo acctInfo = acctInfoMapper.selectByPrimaryKey(Long.parseLong(userId));
-                AcctInfo acctInfo = acctInfoMapper.selectByLogin(userId);
+                AcctInfo acctInfo = acctInfoMapper.selectByAcctId(userId);
                 if(acctInfo == null){
                     analysisShareBody1.setName(userId);
                 }else{
@@ -303,16 +304,32 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
         return pageDTO;
     }
 
+    //根据账号id和报表id查询对象
     @Override
     public RptPersonalAnalysis getByUserId(String userId, Long sysId) {
         RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisMapper.selectByUserAndId(userId,sysId);
         return rptPersonalAnalysis;
     }
 
+    //根据角色id和报表id查询对象
     @Override
     public RptPersonalAnalysis getByRoleId(String roleId, Long sysId) {
         RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisMapper.selectByRoleAndId(roleId,sysId);
         return rptPersonalAnalysis;
+    }
+
+    //查询当前登陆人已经分享过的用户信息
+    @Override
+    public List<String> getUserIdById(Long sysId) {
+        String reAcctId = AssertContext.getReAcctId();
+        return rptPersonalAnalysisMapper.selectUidByPersonId(sysId,reAcctId);
+    }
+
+    //查询当前登陆人已经分享过的角色信息
+    @Override
+    public List<String> getRoleIdById(Long sysId) {
+        String reAcctId = AssertContext.getReAcctId();
+        return rptPersonalAnalysisMapper.selectRidByPersonId(sysId,reAcctId);
     }
 
 
