@@ -512,11 +512,11 @@ body { font-size: 12px; font-family: "Microsoft Yahei"; color: #666; }
 
 .table-list-currentrowActive .table-list-currentrow-tdetail { background-color: #f8faff; }
 
-/*.noDataCon { width: 100%; height: 220px; border: 1px solid #dee3e6; box-sizing: border-box; text-align: center; }
+.noDataCon { width: 100%; height: 220px; border: 1px solid #dee3e6; box-sizing: border-box; text-align: center; }
 
 .noDataCon i { display: inline-block; width: 130px; height: 132px; margin-top: 20px; margin-bottom: 10px; background: url(../images/public-icons.png) -137px -1178px no-repeat; }
 
-.noDataCon p { width: 100%; text-align: center; }*/
+.noDataCon p { width: 100%; text-align: center; }
 
 /*三、input框*/
 .inputBase { padding: 0 10px; font-size: 12px; background-color: #fff; color: #666; border: 1px solid #dee3e6; height: 26px; border-radius: 2px; }
