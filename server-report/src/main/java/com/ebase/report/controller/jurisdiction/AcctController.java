@@ -198,15 +198,14 @@ public class AcctController {
                     AssertContext.init(acctSession);
                     jsonResponse.setRspBody(acctSession);
                 }else{
-                    jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
-                    jsonResponse.setRetDesc("登录失败");
+                    jsonResponse.setRetCode("010002");
                 }
             }
 
         }catch (Exception e){
             LOG.error(e.getMessage());
             e.printStackTrace();
-            jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+            jsonResponse.setRetCode("010001");
             return jsonResponse;
         }
 
