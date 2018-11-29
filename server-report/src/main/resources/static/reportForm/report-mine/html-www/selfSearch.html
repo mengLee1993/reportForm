@@ -252,10 +252,15 @@
             }
         }
         if(this.ctrl.id == "userShare" || this.ctrl.id == "roleShare"){
-            if(jsonItem.type == 1){
-                $(cloneRow).find("#chkCoding").prop("checked",true);
-                $("#" + this.ctrl.id +"")[0].cacheArr.push(jsonItem);
+            if(jsonItem.tips){
+                $(cloneRow).find("#chkCoding").remove();
+            }else{
+                if(jsonItem.type == 1){
+                    $(cloneRow).find("#chkCoding").prop("checked",true);
+                    $("#" + this.ctrl.id +"")[0].cacheArr.push(jsonItem);
+                }
             }
+            
         }
     }
     function clsAlertBoxCtrl$sure() {//成功弹框确定
