@@ -237,9 +237,9 @@
                 personalAnalysisId = jsonItem.personalAnalysisId
             })
             if(jsonItem.sharingPersonName){
-                $(".js-share").hide();
-                $(".js-lookshare").hide();
-                $(".js-cannelshare").hide();
+                $(cloneRow).find(".js-share").hide();
+                $(cloneRow).find(".js-lookshare").hide();
+                $(cloneRow).find(".js-cannelshare").hide();
             }else{
                 jsonItem.sharingPersonName = "--"
             }
@@ -253,14 +253,13 @@
         }
         if(this.ctrl.id == "userShare" || this.ctrl.id == "roleShare"){
             if(jsonItem.tips){
-                $(cloneRow).find("#chkCoding").remove();
+                $(cloneRow).find("#chkCoding").attr("id","").hide();
             }else{
                 if(jsonItem.type == 1){
                     $(cloneRow).find("#chkCoding").prop("checked",true);
                     $("#" + this.ctrl.id +"")[0].cacheArr.push(jsonItem);
                 }
             }
-            
         }
     }
     function clsAlertBoxCtrl$sure() {//成功弹框确定
