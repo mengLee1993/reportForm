@@ -376,6 +376,18 @@ public class RoleInfoController {
             Long sysId = roleInfo.getSysId();
             if(type.equals("core")) {
                 PageDTO<RoleInfo> acctOrgSysVOs = roleInfoService.queryForList(roleInfo);
+                List<RoleInfo> resultData = acctOrgSysVOs.getResultData();
+                for(RoleInfo roleId:resultData){
+                    if(sysId != null){
+                        roleId.setType((byte)0);
+                        //用loginid和报表id差
+                        RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisService.getByRoleId(roleId.getRoleId().toString(),sysId);
+                        if(rptPersonalAnalysis != null){
+                            roleId.setType((byte)1);
+                        }
+                    }
+                }
+
                 jsonResponse.setRspBody(acctOrgSysVOs);
             }else if (type.equals("report")) {
                 if(roleInfo.getRoleTitle()==null){

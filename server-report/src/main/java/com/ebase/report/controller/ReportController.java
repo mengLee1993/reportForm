@@ -585,6 +585,22 @@ public class ReportController {
             AcctInfo acctInfo = jsonRequest.getReqBody();
             if(type.equals("core")){
                 PageDTO<AcctInfo> pageDTO = acctService.listShareReport(acctInfo);
+                List<AcctInfo> resultData = pageDTO.getResultData();
+                Long sysId = acctInfo.getSysId();
+                resultData.forEach(x -> {
+                    x.setType((byte)0);
+                    if(sysId != null){
+
+                        //用loginid和报表id差
+                        RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisService.getByUserId(x.getAcctId().toString(),sysId);
+                        if(rptPersonalAnalysis != null){
+                            x.setType((byte)1);
+                        }
+                    }
+                });
+
+
+
                 jsonResponse.setRspBody(pageDTO);
             }else if (type.equals("report")) {
                 if(acctInfo.getAcctTitle()==null){
@@ -615,8 +631,9 @@ public class ReportController {
                             acctInfo1.setAcctTitle(JSON.parseObject(jsonObject1.getString(i)).getString("loginId"));
                             acctInfo1.setOrgId(JSON.parseObject(jsonObject1.getString(i)).getString("orgId"));
 
+                            acctInfo1.setType((byte)0);
                             if(sysId != null){
-                                acctInfo1.setType((byte)0);
+
                                 //用loginid和报表id差
                                 RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisService.getByUserId(loginId,sysId);
                                 if(rptPersonalAnalysis != null){
