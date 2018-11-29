@@ -223,7 +223,7 @@
                 //设置人员列表和角色列表缓存数组为空
                 $("#userShare")[0].cacheArr = [];
                 $("#roleShare")[0].cacheArr = [];
-                initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{"sysId":personalAnalysisId},"POST");
+                initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{"sysId":personalAnalysisId,"type":1},"POST");
 
             })
             .on("click",".js-lookshare",function(){//查看分享
@@ -327,14 +327,14 @@
             $(".userRole:first").show();
             $(".userRole:last").hide();
             $(".userRole:first input[type=checkbox]").attr("checked",false);
-            initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{"sysId":personalAnalysisId},"POST");
+            initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{"sysId":personalAnalysisId,"type":1},"POST");
         }else{//角色
             $("#searchBox2 #condacctTitle").val("");
             $("#roleShare")[0].cacheArr = [];
             $(".userRole:first").hide();
             $(".userRole:last").show();
             $(".userRole:last input[type=checkbox]").attr("checked",false);
-            initplugPath($("#roleShare")[0],"standardTableCtrl","/roleInfo/findpageresult",{"sysId":personalAnalysisId},"POST");
+            initplugPath($("#roleShare")[0],"standardTableCtrl","/roleInfo/findpageresult",{"sysId":personalAnalysisId,"type":1},"POST");
 
         }
     }
