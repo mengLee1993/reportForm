@@ -38,5 +38,5 @@ public interface RoleInfoService {
 
     PageDTO<RoleInfo> queryForList(RoleInfo roleInfo);
 
-    RoleInfo getRoleById(Long x);
+    RoleInfo getRoleById(String x);
 }

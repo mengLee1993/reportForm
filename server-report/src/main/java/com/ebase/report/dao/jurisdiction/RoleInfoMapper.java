@@ -67,4 +67,6 @@ public interface RoleInfoMapper {
     Integer queryForCount(RoleInfo roleInfo);
 
     RoleInfo selectByAcctCode(String roleName);
+
+    RoleInfo selectByAcctName(String x);
 }

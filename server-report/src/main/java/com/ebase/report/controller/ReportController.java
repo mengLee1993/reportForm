@@ -687,12 +687,22 @@ public class ReportController {
                     jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
                     if(type == 1){
                         //账号
-//                        AcctInfo acctInfo = acctService.getAcctById(x);
-                        jsonResponse.setRetDesc("账号[" + x + "]没有权限");
+                        AcctInfo acctInfo = acctService.getAcctById(x);
+                        if(acctInfo != null){
+                            jsonResponse.setRetDesc("账号[" + acctInfo.getAcctTitle() + "]没有权限");
+                        }else{
+                            jsonResponse.setRetDesc("账号[" + x + "]没有权限");
+                        }
+
                     }else{
                         //角色
-//                        RoleInfo roleInfo = roleInfoService.getRoleById(x);
-                        jsonResponse.setRetDesc("角色[" + x + "]没有权限");
+                        RoleInfo roleInfo = roleInfoService.getRoleById(x);
+                        if(roleInfo != null){
+                            jsonResponse.setRetDesc("角色[" + roleInfo.getRoleTitle() + "]没有权限");
+                        }else{
+                            jsonResponse.setRetDesc("角色[" + x + "]没有权限");
+                        }
+
                     }
 
                     return jsonResponse;

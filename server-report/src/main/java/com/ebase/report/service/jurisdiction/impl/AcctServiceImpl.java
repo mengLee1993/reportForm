@@ -168,9 +168,9 @@ public class AcctServiceImpl implements AcctService {
     }
 
     @Override
-    public AcctInfo getAcctById(Long x) {
+    public AcctInfo getAcctById(String x) {
 
-        return acctInfoMapper.selectByPrimaryKey(x);
+        return acctInfoMapper.selectByAcctId(x);
     }
 
 

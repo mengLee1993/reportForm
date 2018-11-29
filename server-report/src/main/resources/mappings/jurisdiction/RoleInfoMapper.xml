@@ -675,4 +675,7 @@
      FROM role_info
      where ROLE_CODE = #{roleName}
   </select>
+  <select id="selectByAcctName" parameterType="java.lang.String" resultMap="BaseResultMap">
+      SELECT * FROM role_info where ROLE_ID = #{x}
+  </select>
 </mapper>

@@ -365,8 +365,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
     }
 
     @Override
-    public RoleInfo getRoleById(Long x) {
-        return roleInfoMapper.selectByAcctId(x);
+    public RoleInfo getRoleById(String x) {
+        return roleInfoMapper.selectByAcctName(x);
     }
 
 }

@@ -70,4 +70,6 @@ public interface AcctInfoMapper {
     Integer selectShareReportCount(AcctInfo acctInfo);
 
     List<AcctInfo> selectShareReport(AcctInfo acctInfo);
+
+    AcctInfo selectByAcctId(String x);
 }
