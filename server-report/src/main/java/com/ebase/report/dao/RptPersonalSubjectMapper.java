@@ -31,15 +31,15 @@ public interface RptPersonalSubjectMapper {
 
     RptPersonalSubject selectDataByPrimaryKey(Long personalSubjectId);
 
-    int deleteByRoleId(Long id,List<RptDataTable> list);
+    int deleteByRoleId(String id,List<RptDataTable> list);
 
-    int deleteByUserId(Long id,List<RptDataTable>  list);
+    int deleteByUserId(String id,List<RptDataTable>  list);
 
     int insertSelectiveList(@Param("rptPersonalSubjects") List<RptPersonalSubject> rptPersonalSubjects);
 
-    List<Long> selectIdByRoleId(Long id, List<RptDataTable> list);
+    List<Long> selectIdByRoleId(String id, List<RptDataTable> list);
 
-    List<Long> selectIdByUserId(Long id,List<RptDataTable> list);
+    List<Long> selectIdByUserId(String id,List<RptDataTable> list);
 
     Integer selectCountByTypeId(Map<String, Object> tmp);
 
@@ -47,7 +47,7 @@ public interface RptPersonalSubjectMapper {
 
     int deleteByTableId(Long tableId);
 
-    RptPersonalSubject selectByRoleIdAndTableId(Long tableId, Long id);
+    RptPersonalSubject selectByRoleIdAndTableId(Long tableId, String id);
 
-    RptPersonalSubject selectByUserIDAndTableId(Long tableId, Long id);
+    RptPersonalSubject selectByUserIDAndTableId(Long tableId, String id);
 }

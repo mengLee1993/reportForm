@@ -5,6 +5,7 @@ import com.ebase.report.common.DemandType;
 import com.ebase.report.common.MeasureTypeEnum;
 import com.ebase.report.core.calculate.ExpressionCalculator;
 import com.ebase.report.core.calculate.ExpressionFormatException;
+import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.model.dynamic.ReportMeasure;
 import org.apache.commons.collections.set.ListOrderedSet;
 import org.slf4j.Logger;
@@ -339,7 +340,7 @@ public class CubeTree {
             }
         }
 
-        if (StringUtils.isEmpty(measures)) {
+        if (StringUtils.isEmpty(measures) && !subTotal) {
             // 无指标时，需要设置默认指标
             keyBuffer.append(new DimensionKey().getMeasuresKey(getDefReportMeasure().getKey()));
         }else {
@@ -350,6 +351,10 @@ public class CubeTree {
             returnValue = getSubTotal(dimensionList, measures);
         } else {
             returnValue = cells.get(keyBuffer.toString()) == null ? "0" : cells.get(keyBuffer.toString());
+        }
+
+        if(StringUtil.isEmpty(returnValue) || "null".equals(returnValue) || "NULL".equals(returnValue)){
+            returnValue = "0";
         }
 
         return returnValue;

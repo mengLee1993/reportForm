@@ -4,18 +4,17 @@ import java.util.List;
 
 public class RptDataAuth {
 
-    private Long id;  //角色 或者 账号id
+    private String id;  //角色 或者 账号id
 
     private Byte type;  //0  角色   1  账号
 
     private List<RptDataTable> tableIds; // 多个数据表id
 
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

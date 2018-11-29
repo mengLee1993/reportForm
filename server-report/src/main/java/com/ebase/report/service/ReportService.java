@@ -18,7 +18,7 @@ public interface ReportService {
      * @param
      * @return
      */
-    List<ReportEchoBody> getThemeDataSource(Long createdBy);
+    List<ReportEchoBody> getThemeDataSource(String createdBy);
 
     /**
      * 获得主题数据

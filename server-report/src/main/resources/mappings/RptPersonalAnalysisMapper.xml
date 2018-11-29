@@ -11,8 +11,8 @@
         <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
         <result column="UPDATED_DT" jdbcType="TIMESTAMP" property="updatedDt" />
 
-        <result column="ROLE_ID" jdbcType="BIGINT" property="roleId" />
-        <result column="SHARING_PERSON_ID" jdbcType="BIGINT" property="sharingPersonId" />
+        <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+        <result column="SHARING_PERSON_ID" jdbcType="VARCHAR" property="sharingPersonId" />
         <result column="SHARING_PERSON_NAME" jdbcType="VARCHAR" property="sharingPersonName" />
 
         <result column="ANALYSIS_SOURCE_ID" jdbcType="BIGINT" property="analysisSourceId" />
@@ -49,7 +49,7 @@
         values (#{personalAnalysisId,jdbcType=BIGINT}, #{personalSubjectId,jdbcType=BIGINT}, 
             #{reportName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
             #{createdDt,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updatedDt,jdbcType=TIMESTAMP}, 
-            #{configJson,jdbcType=LONGVARCHAR},#{roleId,jdbcType=BIGINT},#{sharingPersonId,jdbcType=BIGINT},
+            #{configJson,jdbcType=LONGVARCHAR},#{roleId,jdbcType=VARCHAR},#{sharingPersonId,jdbcType=VARCHAR},
             #{sharingPersonName,jdbcType=VARCHAR},#{analysisSourceId,jdbcType=BIGINT})
     </insert>
     <insert id="insertSelective" parameterType="com.ebase.report.model.RptPersonalAnalysis" useGeneratedKeys="true" keyProperty="personalAnalysisId">
@@ -118,10 +118,10 @@
                 #{configJson,jdbcType=LONGVARCHAR},
             </if>
             <if test="roleId != null">
-                #{roleId,jdbcType=BIGINT},
+                #{roleId,jdbcType=VARCHAR},
             </if>
             <if test="sharingPersonId != null">
-                #{sharingPersonId,jdbcType=BIGINT},
+                #{sharingPersonId,jdbcType=VARCHAR},
             </if>
             <if test="sharingPersonName != null">
                 #{sharingPersonName,jdbcType=VARCHAR},
@@ -159,10 +159,10 @@
                 CONFIG_JSON = #{configJson,jdbcType=LONGVARCHAR},
             </if>
             <if test="roleId != null">
-                ROLE_ID = #{roleId,jdbcType=BIGINT},
+                ROLE_ID = #{roleId,jdbcType=VARCHAR},
             </if>
             <if test="sharingPersonId != null">
-                SHARING_PERSON_ID = #{sharingPersonId,jdbcType=BIGINT},
+                SHARING_PERSON_ID = #{sharingPersonId,jdbcType=VARCHAR},
             </if>
             <if test="sharingPersonName != null">
                 SHARING_PERSON_NAME = #{sharingPersonName,jdbcType=VARCHAR},
@@ -204,7 +204,20 @@
         s.UPDATED_BY, s.UPDATED_DT,t.SUBJECT_NAME,e.TABLE_NAME,s.SHARING_PERSON_ID,s.SHARING_PERSON_NAME
         FROM rpt_personal_analysis s LEFT JOIN RPT_PERSONAL_SUBJECT t ON  s.PERSONAL_SUBJECT_ID = t.PERSONAL_SUBJECT_ID
         LEFT JOIN RPT_DATA_TABLE e ON t.TABLE_ID = e.TABLE_ID
-        <trim prefix="where" prefixOverrides="and | or">
+        where
+         (
+            <if test="userId != null">
+                 s.USER_ID = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="roleIds != null and roleIds.size > 0">
+                or s.ROLE_ID in (
+                <foreach collection="roleIds" item="roleId" separator=",">
+                    #{roleId}
+                </foreach>
+                )
+            </if>
+        )
+
             <if test="personalAnalysisId != null">
                 and s.PERSONAL_ANALYSIS_ID = #{personalAnalysisId,jdbcType=BIGINT}
             </if>
@@ -217,9 +230,9 @@
                 t.SUBJECT_NAME LIKE CONCAT('%',#{reportName,jdbcType=VARCHAR},'%')
                 )
             </if>
-            <if test="userId != null">
-                and s.USER_ID = #{userId,jdbcType=VARCHAR}
-            </if>
+
+
+
             <if test="createdBy != null">
                 and s.CREATED_BY = #{createdBy,jdbcType=VARCHAR}
             </if>
@@ -235,7 +248,6 @@
             <if test="configJson != null">
                 and s.CONFIG_JSON = #{configJson,jdbcType=LONGVARCHAR}
             </if>
-        </trim>
         limit #{startRow},#{pageSize}
     </select>
     <sql id="Base_Where_Column_List">
@@ -284,8 +296,17 @@
         FROM RPT_PERSONAL_SUBJECT s
             LEFT JOIN RPT_DATA_TABLE t ON s.TABLE_ID = t.TABLE_ID
             LEFT JOIN RPT_DATASOURCE  d ON d.DATASOURCE_ID = t.DATASOURCE_ID
-         WHERE (s.ROLE_ID = #{roleId} OR s.USER_ID = #{acctId})
-         <if test="term != null and term != ''">
+         WHERE ((s.USER_ID = #{acctId})
+        <if test="roleId != null and roleId.size > 0">
+            or
+            ROLE_ID in (
+              <foreach collection="roleId" separator="," item="id">
+                  #{id}
+              </foreach>
+            )
+        </if>
+        )
+        <if test="term != null and term != ''">
              and (t.TABLE_NAME LIKE CONCAT('%',#{term},'%')
              or
              t.TABLE_CODE LIKE CONCAT('%',#{term},'%')
@@ -301,7 +322,16 @@
         t.TABLE_CODE AS 'tableCode',d.DATASOURCE_NAME AS 'datasourceName',t.DEMO AS 'demo',d.DATABASE_TYPE AS 'tableType',d.DATASOURCE_CHINESE_NAME as 'datasourceChineseName' FROM RPT_PERSONAL_SUBJECT s
 		LEFT JOIN RPT_DATA_TABLE t ON s.TABLE_ID = t.TABLE_ID
 		LEFT JOIN RPT_DATASOURCE  d ON d.DATASOURCE_ID = t.DATASOURCE_ID
-        WHERE (s.ROLE_ID = #{roleId} OR s.USER_ID = #{acctId})
+        WHERE ((s.USER_ID = #{acctId})
+        <if test="roleId != null and roleId.size > 0">
+            or
+            ROLE_ID in (
+            <foreach collection="roleId" separator="," item="id">
+                #{id}
+            </foreach>
+            )
+        </if>
+        )
         <if test="term != null and term != ''">
             and ( t.TABLE_NAME LIKE CONCAT('%',#{term},'%')
             or
@@ -316,9 +346,23 @@
     <select id="selectCount" resultType="java.lang.Integer" parameterType="com.ebase.report.model.RptPersonalAnalysis">
         SELECT
         count(PERSONAL_ANALYSIS_ID)
-        FROM rpt_personal_analysis s LEFT JOIN RPT_PERSONAL_SUBJECT t ON  s.PERSONAL_SUBJECT_ID = t.PERSONAL_SUBJECT_ID
+        FROM rpt_personal_analysis s LEFT JOIN RPT_PERSONAL_SUBJECT t ON s.PERSONAL_SUBJECT_ID = t.PERSONAL_SUBJECT_ID
         LEFT JOIN RPT_DATA_TABLE e ON t.TABLE_ID = e.TABLE_ID
-        <trim prefix="where" prefixOverrides="and | or">
+
+
+        where
+        (
+        <if test="userId != null">
+               s.USER_ID = #{userId,jdbcType=VARCHAR}
+        </if>
+            <if test="roleIds != null and roleIds.size > 0">
+                or s.ROLE_ID in (
+                <foreach collection="roleIds" item="roleId" separator=",">#{roleId}
+                </foreach>
+                )
+            </if>
+        )
+
             <if test="personalAnalysisId != null">
                 and s.PERSONAL_ANALYSIS_ID = #{personalAnalysisId,jdbcType=BIGINT}
             </if>
@@ -331,9 +375,7 @@
                 t.SUBJECT_NAME LIKE CONCAT('%',#{reportName,jdbcType=VARCHAR},'%')
                 )
             </if>
-            <if test="userId != null">
-                and s.USER_ID = #{userId,jdbcType=VARCHAR}
-            </if>
+
             <if test="createdBy != null">
                 and s.CREATED_BY = #{createdBy,jdbcType=VARCHAR}
             </if>
@@ -349,7 +391,6 @@
             <if test="configJson != null">
                 and s.CONFIG_JSON = #{configJson,jdbcType=LONGVARCHAR}
             </if>
-        </trim>
     </select>
 
     <select id="selectByName" resultType="java.lang.Integer" >
@@ -375,5 +416,13 @@
     <select id="listAnalysisShareBody" resultMap="BaseResultMap" parameterType="com.ebase.report.model.AnalysisShareBody">
         select * from RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{id}
         limit #{startRow},#{pageSize}
+    </select>
+    <select id="selectByUserAndId" resultMap="BaseResultMap" >
+         select * from RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{arg1}
+         and USER_ID = #{arg0}
+    </select>
+    <select id="selectByRoleAndId" resultMap="BaseResultMap" >
+         select * from RPT_PERSONAL_ANALYSIS WHERE ANALYSIS_SOURCE_ID = #{arg1}
+         and ROLE_ID = #{arg0}
     </select>
 </mapper>

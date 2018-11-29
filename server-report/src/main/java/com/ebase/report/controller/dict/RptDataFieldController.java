@@ -93,26 +93,26 @@ public class RptDataFieldController {
      * @return
      */
     @RequestMapping(value = "/dataDict/extract/realTime" , method = RequestMethod.POST)
-    public JsonResponse<List<RptDataDict>> extractRealTimeMetadata(@RequestBody JsonRequest<RptDataFieldVO> jsonRequest){
-        JsonResponse<List<RptDataDict>> jsonResponse = new JsonResponse<>();
-        jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
+    public JsonResponse<Object> extractRealTimeMetadata(@RequestBody JsonRequest<RptDataFieldVO> jsonRequest){
+        JsonResponse<Object> jsonResponse = new JsonResponse<>();
+//        jsonResponse.setRetCode("");
         try {
             logger.info("抽取元数据 参数 = {}", JsonUtil.toJson(jsonRequest));
 
             RptDataFieldVO reqBody = jsonRequest.getReqBody();
 
             if(reqBody == null || reqBody.getFieldId() == null){
-                jsonResponse.setRetDesc("参数不正确");
+                jsonResponse.setRspBody("参数不正确");
                 return jsonResponse;
             }
             Long fieldId = reqBody.getFieldId();
             Integer count = rdfService.extractCount(fieldId);
 
             if(count > metadataCount){
-                jsonResponse.setRetDesc("源数据量有"+ count +"个，不建议抽取");
+                jsonResponse.setRspBody("源数据量有"+ count +"个，不建议抽取");
                 return jsonResponse;
             }else if(count == 0){
-                jsonResponse.setRetDesc("该维度没有源数据");
+                jsonResponse.setRspBody("该维度没有源数据");
                 return jsonResponse;
             }
 

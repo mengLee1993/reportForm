@@ -146,11 +146,14 @@ public class RptPersonalAnalysisController {
 			logger.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
 			RptPersonalAnalysisVO vo = jsonRequest.getReqBody();
 
-			Long acctId = AssertContext.getAcctId();
+			String acctId = AssertContext.getReAcctId();
 			if(acctId == null){
-				acctId = 1L;
+				acctId = "1";
 			}
-			vo.setUserId(acctId.toString());
+			vo.setUserId(acctId);
+			//角色id
+			List<String> reRoleId = AssertContext.getReRoleId();
+			vo.setRoleIds(reRoleId);
 
 			PageDTO<RptPersonalAnalysisVO> acctOrgSysVOs = rptPersonalAnalysisService.findSelective(vo);
 //			PageInfo<RptPersonalAnalysisVO> pages = new PageInfo(acctOrgSysVOs);

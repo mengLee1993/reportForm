@@ -33,9 +33,9 @@ public class RptAnalyseLogServiceImpl implements RptAnalyseLogService {
     //插入一条日志
     @Override
     public int addReportLog(RptAnalyseLog  rptAnalyseLog) {
-        Long acctId = AssertContext.getAcctId();
+        String acctId = AssertContext.getReAcctId();
         if(acctId == null){
-            acctId = 1l;
+            acctId = "1";
         }
 
         rptAnalyseLog.setLogTime(new Date());
@@ -58,11 +58,11 @@ public class RptAnalyseLogServiceImpl implements RptAnalyseLogService {
 
     @Override
     public RptAnalyseLog getReportSql() {
-        Long acctId = AssertContext.getAcctId();
+        String acctId = AssertContext.getReAcctId();
         if(acctId == null){
-            acctId = 1L;
+            acctId = "1";
         }
-        return rptAnalyseLogMapper.selectReportSql(acctId.toString());
+        return rptAnalyseLogMapper.selectReportSql(acctId);
     }
 
 

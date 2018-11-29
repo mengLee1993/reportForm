@@ -397,7 +397,7 @@
                 //设置人员列表和角色列表缓存数组为空
                 $("#userShare")[0].cacheArr = [];
                 $("#roleShare")[0].cacheArr = [];
-                initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{},"POST");
+                initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{"sysId":personalAnalysisId},"POST");
 
             })
             .on("click",".js-lookshare",function(){//查看分享
@@ -416,6 +416,11 @@
                 jsonItem.type = "角色"
             }else if(jsonItem.type == 1){
                 jsonItem.type = "账号"
+            }
+        }
+        if(this.ctrl.id == "userShare" || this.ctrl.id == "userShare"){
+            if(jsonItem.type == 1){
+                $(cloneRow).find("#chkCoding").prop("checked",true);
             }
         }
     }
@@ -488,14 +493,14 @@
             $(".userRole:first").show();
             $(".userRole:last").hide();
             $(".userRole:first input[type=checkbox]").attr("checked",false);
-            initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{},"POST");
+            initplugPath($("#userShare")[0],"standardTableCtrl","/report/listShareReport",{"sysId":personalAnalysisId},"POST");
         }else{//角色
             $("#searchBox2 #condacctTitle").val("");
             $("#roleShare")[0].cacheArr = [];
             $(".userRole:first").hide();
             $(".userRole:last").show();
             $(".userRole:last input[type=checkbox]").attr("checked",false);
-            initplugPath($("#roleShare")[0],"standardTableCtrl","/roleInfo/findpageresult",{},"POST");
+            initplugPath($("#roleShare")[0],"standardTableCtrl","/roleInfo/findpageresult",{"sysId":personalAnalysisId},"POST");
 
         }
     }
