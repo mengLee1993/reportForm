@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title></title>
+	<link rel="stylesheet" href="../../../reportForm/report-base/css/trade_base.css">
+	<link rel="stylesheet" href="../../../base/iconfont/iconfont.css">
+	<link rel="stylesheet" href="../../../reportForm/report-home/css/commonHeader.css">
+	<script src="../../../base/js/jquery.js"></script>
+	<script src="../../../base/js/public.js"></script>
+	<script src="../../../base/js/docassistant.js" ></script>
+	<script src="../../../base/js/validate.js"></script>
+	<script src="../../../base/js/jquery.cookie.js"></script>
+	<script src='../../../titleName.js'></script>
+	<script src="../../../reqConfig.js"></script>
+	<script src="../../../reportForm/report-home/js/commonHeader.js"></script>
+	<!--！！！！！！
+		组件js
+	！！！！！！！-->
+	<script type="text/javascript" src="../../../base/js/ajaxupload.js"></script>
+	<!--时间插件-->
+	<link rel="stylesheet" href="../../../plugin/WdatePickerBlue/My97DatePicker/skin/messageWdatePicker.css">
+	<script src="../../../plugin/WdatePickerBlue/My97DatePicker/WdatePicker.js"></script>
+	<!--弹框插件-->
+	<link rel="stylesheet" href="../../../plugin/popup/css/manhuaDialog.1.0_blue.css">
+	<script src="../../../plugin/popup/script/manhuaDialog.1.0.js"></script>
+	<!--提示校验-->
+	<link rel="stylesheet" href="../../../plugin/tip/css/tip-twitter/tip-twitter.css">
+	<script src="../../../plugin/tip/script/jquery.poshytip.js"></script>
+	<!--滑动校验-->
+	<link rel="stylesheet" href="../../../plugin/dragValidate/css/drag.css">
+	<script src="../../../plugin/dragValidate/js/drag.js"></script>
+	<!--分页-->
+	<link rel="stylesheet" href="../../../plugin/page/css/table.css">
+	<script type="text/javascript" src="../../../plugin/page/script/jquery.page.js"></script>
+	<!--下拉选择-->
+	<link rel="stylesheet" href="../../../plugin/select/chosen_blue.css">
+	<script src="../../../plugin/select/chosen.jquery.js"></script>
+	<!--树插件-->
+	<link rel="stylesheet" href="../../../plugin/treeview/jquery.treeview.css" />
+	<script src="../../../plugin/treeview/jquery.treeview.js"></script>
+	<script type="text/javascript" src="../../../plugin/treeview/demo.js"></script>
+</head>
+<body id="outerBody" class="tradebase">
+	<div class="tradebasebox">
+		<div class="tradebase-top clearfix effectBox" effectType="1" style="position: fixed;z-index: 99999999;">
+			<div class="tradebase-toplogo leftW">
+				<div class="tradebase-toplogo__logo" id="logoHomePage" style="cursor: pointer">
+					<img src="../../../reportForm/report-home/images/logo.png" alt="">
+				</div>
+			</div>
+			<div class="tradebase-topnavbox maxVisbleB">
+				<nav>
+					<div class="tradebase-topnav">
+						<div class="tradebase-topnavinner allItemB">
+							<a href="#" class="tradebase-topnavinner__item itemW" limitCode="GRZTSJ" style="display: none">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-mine/html-gulp-www/myInfoList.html" firstMark="1">个人主题数据</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW" limitCode="ZZFX" style="display: none;">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-analyze/html-gulp-www/dataAnalyze.html">自定义分析</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW" limitCode="SJZD" style="display: none">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-dictionaries/html-gulp-www/dataSourceList.html" firstMark="2">数据字典</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW" limitCode="SJSQ" style="display: none">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-authorization/html-gulp-www/authorization.html">数据授权</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW" limitCode="FXRZ" style="display: none;">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-logAnalyze/html-gulp-www/logAnalyze.html">分析日志</p>
+							</a>
+							<a href="#" class="tradebase-topnavinner__item itemW" limitCode="104" style="display: none;">
+								<p class="tradebase-topnavinner__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/orgFrame.html" firstMark="3">权限管理</p>
+							</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<span class="fr" id="quitOperate" style="cursor: pointer;margin-right: 10px;">
+				<div class="fl" style="background-image: url('../../../reportForm/report-home/images/tc.png');width: 30px;height: 30px;margin-right: 6px;margin-top: 18px;background-size: 30px 30px;"></div>
+				<span class="fl" style="color: #fff;line-height: 64px;">退出</span>
+			</span>
+			<span class="fr" style="margin-right: 50px;line-height: 64px;color: #fff;font-size: 14px;">
+				<span>您好,</span>
+				<span id="loginName"></span>
+			</span>
+		</div>
+		<div class="tradebase-btm effectBox" effectType="2">
+			<div class="tradebase-side leftW"  id="bodyLeft"  style="padding-top: 64px;">
+				<!--<div class="tradebase-side-all">
+					<i class="tradebase-side-all__btn"></i>
+				</div>-->
+				<div class="tradebase-innerside">
+					<div class="tradebase-sidebox">
+						<div class="tradebase-sidebox163">
+							<ul class="tradebase-side-nav">
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="WDSJB">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-mine/html-gulp-www/myInfoList.html" firstMark="1">我的数据报表</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="WDZDYCS">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-mine/html-gulp-www/selfSearch.html" firstMark="1">我的自定义查询</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="WDSJXZ">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-mine/html-gulp-www/myInfoDown.html" firstMark="1">我的数据下载</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="SJYGL">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-dictionaries/html-gulp-www/dataSourceList.html" firstMark="2">数据源管理列表</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="SJZDGL">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-dictionaries/html-gulp-www/dictionaries.html" firstMark="2">数据字典管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="YSJGL">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-dictionaries/html-gulp-www/fieldList.html" firstMark="2">元数据管理字段列表</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+
+								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="104101">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/orgFrame.html" firstMark="3">组织管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="104102">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/roleManage.html" firstMark="3">角色管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;" limitCode="104103">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/resourceManage.html" firstMark="3">资源管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="104104">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/userManage.html" firstMark="3">人员管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								<li class="tradebase-side-nav__item asideP" style="display: none;"  limitCode="104105">
+									<a href="#" class="tradebase-side-nav__link">
+										<p class="tradebase-side-nav__text" jumpUrl="../../../reportForm/report-limit/html-gulp-www/systemManage.html" firstMark="3">系统管理</p>
+										<!--<i class="tradebase-side-nav__icon upstatus"></i>-->
+									</a>
+								</li>
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tradebase-right"  id="bodyRight">
+				<div class="tradebase-rightinner">
+
+					<div class="tradebase-main">
+
+<link rel="stylesheet" href="../css/operater.css">
+<script>
+    var jsonData ={"retCode":"0000000","rspBody":{"resultData":[{"treeName":"个人主题数据","rptDataTables":[{"treeName":"我的数据报表"},{"treeName":"我的自定义查询"},{"treeName":"我的数据下载"}]},{"treeName":"自定义分析","rptDataTables":[]},{"treeName":"数据字典","rptDataTables":[{"treeName":"数据源管理列表"},{"treeName":"数据字典管理"},{"treeName":"元数据管理列表"}]},{"treeName":"数据授权","rptDataTables":[]},{"treeName":"分析日志","rptDataTables":[]},{"treeName":"权限管理","rptDataTables":[{"treeName":"组织管理"},{"treeName":"角色管理"},{"treeName":"人员管理"},{"treeName":"资源管理"},{"treeName":"系统管理"}]}]}};
+    $(function(){
+        $("#tableTree")[0].data = jsonData;
+        $("#tableTree").attr("comType","treeListCtrl");
+        document.body.jsCtrl.ctrl = $("#tableTree")[0];
+        document.body.jsCtrl.init();
+    });
+    function clsTreeListCtrl$process(cloneRow, jsonItem,level)
+    {
+        var clsThis = this;
+        //箭头点击展开收起
+        $(cloneRow).find(".colmain_icon1").click(function() {
+            if($(this).hasClass("colmain_icon1")) {
+                $(this).removeClass("colmain_icon1").addClass("colmain_icon01");
+                var childNodes = clsThis.ctrl.jsCtrl.getAllChild(this);
+                for(var nI = 0; nI < childNodes.length; nI++) {
+                    $(childNodes[nI]).hide();
+                }
+            } else {
+                $(this).removeClass("colmain_icon01").addClass("colmain_icon1");
+                var childNodes = clsThis.ctrl.jsCtrl.getNextChild(this);
+                for(var nI = 0; nI < childNodes.length; nI++) {
+                    $(childNodes[nI]).show();
+                }
+            }
+        });
+        //当下面子集为空箭头隐藏
+        if(!jsonItem.rptDataTables || jsonItem.rptDataTables.length == 0){
+            $(cloneRow).find(".colmain_icon1").css({
+                "visibility":"hidden"
+            })
+        }
+        if(level == 1 && jsonItem.isChecked == 1){
+            $(cloneRow).find(".datareport-treeListTable-tr__input").attr("checked", true);
+            //clsTreeListCtrl$getParent(obj)
+            $(this.getParent(cloneRow)).find(".datareport-treeListTable-tr__input").attr("checked", true);
+        }
+    }
+    function clsTreeListCtrl$after(){
+        $(".operater-left").css("height",window.innerHeight+"px");
+        $(".operater-right").css("height",window.innerHeight+"px");
+    }
+</script>
+<div class="operater clearfix">
+    <div class="operater-left fl">
+        <table class="operater-left-treeListTable" id="tableTree" t="datasourceName" c="rptDataTables" jsonId="tableId" treeType="treeList2" templateId="templateTreeRow" treeCell="treeCell" comtype="">
+            <tr class="operater-left-treeListTable-tr" id="templateTreeRow" style="display:none;cursor:pointer;">
+                <td class="operater-left-treeListTable-tr__item">
+                    <div class="operater-left-treeListTable-tr__item-content" id="treeCell">
+                        <i class="colmain_icon1"></i>
+                        <span class="operater-left-treeListTable-tr__text" id="datasourceName"></span>[<span id="treeName"></span>]
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="operater-right fl">
+
+    </div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</body>
+</html>
