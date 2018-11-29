@@ -108,22 +108,23 @@ public abstract class AbstractAccessor implements ReportAccessor {
 //                    String columnName = rsmd.getColumnName(i + 1);
                     String columnName = rsmd.getColumnLabel(i + 1);
 //                    Object columnValue = rs.getObject(columnName);
-                    String columnValue = rs.getString(columnName);
+//                    String columnValue = rs.getString(columnName);
                     Dimension dimension = cubeTree.getDimensionMap().get(columnName);
 
                     if (null == dimension) {
+                        String columnValue = rs.getString(columnName) == null ? "":rs.getString(columnName);
                         cubeTree.getCells().put(dimensionKey.toString(), String.valueOf(columnValue));
                     } else {
-                        String value = String.valueOf(columnValue);
+                        String columnValue = rs.getString(columnName) == null ? "0":rs.getString(columnName);
                         if (DemandType.DIMENSION.getCode().equals(dimension.getDemandType().getCode())) {
-                            dimensionKey.addDimension(columnName, value);
+                            dimensionKey.addDimension(columnName, columnValue);
                         } else {
                             // 初始化当前结果成对应的cell里中
 //                            String measuresKey = dimensionKey.toString() + "#"+DemandType.MEASURES.getCode()+"." + columnName;
                             String measuresKey = dimensionKey.getMeasuresKey(columnName);
-                            cubeTree.getCells().put(measuresKey, String.valueOf(columnValue));
+                            cubeTree.getCells().put(measuresKey, columnValue);
 
-                            dimensionKey.addMeasures(measuresKey, String.valueOf(columnValue));
+                            dimensionKey.addMeasures(measuresKey, columnValue);
                         }
                     }
                 }
