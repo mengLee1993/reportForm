@@ -298,7 +298,7 @@
             if(jsonItem.status == "1"){
                 $(cloneRow).find("#statusTxt").text("已引用");
                 $(cloneRow).find("#addTobase").hide();
-                $(cloneRow).find("#chkCoding").attr("disabled",true);
+                $(cloneRow).find("#chkCoding").remove();
             }else {
                 $(cloneRow).find("#statusTxt").text("未引用");
             }
