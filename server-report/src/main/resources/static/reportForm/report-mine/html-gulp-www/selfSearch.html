@@ -419,7 +419,9 @@
             }
         }
         if(this.ctrl.id == "userShare" || this.ctrl.id == "userShare"){
-            
+            if(jsonItem.type == 1){
+                $(cloneRow).find("#chkCoding").prop("checked",true);
+            }
         }
     }
     function clsAlertBoxCtrl$sure() {//成功弹框确定
