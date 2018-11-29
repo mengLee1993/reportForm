@@ -413,6 +413,13 @@
                 alertBox.Alert("确认删除吗？","提示",1,"","cancelBox");
                 personalAnalysisId = jsonItem.personalAnalysisId
             })
+            if(jsonItem.sharingPersonName){
+                $(".js-share").hide();
+                $(".js-lookshare").hide();
+                $(".js-cannelshare").hide();
+            }else{
+                jsonItem.sharingPersonName = "--"
+            }
         }
         if(this.ctrl.id == "userShareLook"){
             if(jsonItem.type == 0){
