@@ -244,9 +244,10 @@
                 jsonItem.type = "账号"
             }
         }
-        if(this.ctrl.id == "userShare" || this.ctrl.id == "userShare"){
+        if(this.ctrl.id == "userShare" || this.ctrl.id == "roleShare"){
             if(jsonItem.type == 1){
                 $(cloneRow).find("#chkCoding").prop("checked",true);
+                $("#" + this.ctrl.id +"")[0].cacheArr.push(jsonItem);
             }
         }
     }
@@ -331,6 +332,7 @@
         }
     }
     //点击分享确认操作
+    
     function shareSureOperate(){
         if($("#shareType option:selected").val() == 1 && $("#userShare")[0].cacheArr.length == 0){//人员
             var alertBox=new clsAlertBoxCtrl();
