@@ -37,20 +37,8 @@ public class IndexController {
             LOG.info("跳转到登录页!");
             return "login";
         } else {
-            try {
-                request.setCharacterEncoding("UTF-8");
-                response.setContentType("text/html; charset=UTF-8"); // 转码
-                response.getWriter()
-                        .println("<script language=\"javascript\">if(window.opener==null){window.top.location.href=\""
-                                + loginSuccessUrl + "\";}else{window.opener.top.location.href=\"" + loginSuccessUrl
-                                + "\";window.close();}</script>");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            return "/reportForm/report-mine/html-gulp-www/selfSearch";
+            return "homePage";
         }
     }
 }

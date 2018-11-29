@@ -1,5 +1,6 @@
 package com.ebase.report.core;
 
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -41,6 +42,12 @@ public class HTTPUtil {
 			httppost.setEntity(reqEntity);
 			httppost.addHeader("Content-type", "application/json; charset=utf-8");
 			httppost.setHeader("Accept", "application/json");
+
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setConnectTimeout(10000).setConnectionRequestTimeout(1000)
+					.setSocketTimeout(10000).build();
+			httppost.setConfig(requestConfig);
+
 			response = httpclient.execute(httppost);
 			return EntityUtils.toString(response.getEntity());
 		} catch (RuntimeException rex) {
@@ -70,12 +77,19 @@ public class HTTPUtil {
 				String key = itr.next();
 				requestBuilder.addParameter(key, params.get(key));
 			}
+
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setConnectTimeout(10000).setConnectionRequestTimeout(1000)
+					.setSocketTimeout(10000).build();
+			requestBuilder.setConfig(requestConfig);
+
 			HttpUriRequest request = requestBuilder.build();
 			request.addHeader("Content-type", "application/json; charset=utf-8");
 			request.setHeader("Accept", "application/json");
 			if(token!=null){
 				request.addHeader("Authorization", token);
 			}
+
 			response = httpclient.execute(request);
 			return EntityUtils.toString(response.getEntity());
 		} catch (RuntimeException rex) {
@@ -105,6 +119,12 @@ public class HTTPUtil {
 				String key = itr.next();
 				requestBuilder.addParameter(key, params.get(key));
 			}
+
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setConnectTimeout(10000).setConnectionRequestTimeout(1000)
+					.setSocketTimeout(10000).build();
+			requestBuilder.setConfig(requestConfig);
+
 			HttpUriRequest request = requestBuilder.build();
 			request.addHeader("Content-type", "application/json; charset=utf-8");
 			request.setHeader("Accept", "application/json");

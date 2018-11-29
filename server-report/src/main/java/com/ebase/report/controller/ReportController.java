@@ -591,7 +591,7 @@ public class ReportController {
                 }
                 String url = "http://" + authIp + "/auth/ac/usage-survey/getUsageSurveyUsersByPage.action?_dc=1542681842909&page=" +
                         acctInfo.getPageNum() + "&limit=" + acctInfo.getPageSize()
-                        + "&qm.projectId=CAS&qm.userNameCn="+acctInfo.getAcctTitle();
+                        + "&qm.projectId=ZDYBB&qm.userNameCn="+acctInfo.getAcctTitle();
                 //String url="http://192.168.1.100:7070/auth/ac/login/dologin.action?username=liq0416&password=admin123";
                 HashMap map = new HashMap();
                 JSONObject json = JSON.parseObject(HTTPUtil.postParams(url, AssertContext.getToken(), map));

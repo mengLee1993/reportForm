@@ -65,6 +65,11 @@ public class RptDataTableServiceImpl implements RptDataTableService {
         int i;
         ServiceResponse<Integer> sR = new ServiceResponse<>();
         for (RptDataTable rdt : listRdts) {
+            //防止重复添加,如果表中存在此条数据就跳过此次循环
+            Integer count = rptDataTableMapper.selectCount(rdt);
+            if(count > 0){
+                continue;
+            }
             rdt.setTableName(rdt.getComment());
             rdt.setRemoveStatus(RemoveStatusEnum.NOREMOVE.getRemoveStatus());
             rptDataTableMapper.insertSelective(rdt);

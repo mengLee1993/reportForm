@@ -379,7 +379,7 @@ public class RoleInfoController {
                     roleInfo.setRoleCode("");
                 }
                 String url = "http://" + authIp + "/auth/ac/ac-role/findUsingProjectRoles.action?_dc=1542681842909&page=" + roleInfo.getPageNum() + "&limit=" + roleInfo.getPageSize() +
-                        "&qm.projectId=CAS" +
+                        "&qm.projectId=ZDYBB" +
                         "&qm.roleName="+roleInfo.getRoleTitle()+
                         "&qm.roleId="+roleInfo.getRoleCode();
                 //String url="http://192.168.1.100:7070/auth/ac/login/dologin.action?username=liq0416&password=admin123";
