@@ -21,6 +21,7 @@ import com.ebase.report.service.*;
 import com.ebase.report.service.jurisdiction.AcctService;
 import com.ebase.report.service.jurisdiction.RoleInfoService;
 import com.ebase.report.vo.RptPersionalDownloadVO;
+import com.ebase.report.vo.RptPersonalAnalysisVO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -220,9 +221,10 @@ public class ReportController {
         JsonResponse<Map<String,List<ReportEchoBody>>> jsonResponse = new JsonResponse<>();
         try{
             //当前操作人
-            Long createdBy = AssertContext.getAcctId();
+//            Long createdBy = AssertContext.getAcctId();
+            String createdBy = AssertContext.getReAcctId();
             if(createdBy == null){
-                createdBy = 1L;
+                createdBy = "1";
             }
             Map<String,List<ReportEchoBody>> result = new HashMap<>(1);
             List<ReportEchoBody> reportEchoBody = new ArrayList<>();
@@ -263,11 +265,11 @@ public class ReportController {
         try{
             RptMeasures reqBody = jsonRequest.getReqBody();
 
-            Long acctId = AssertContext.getAcctId();
+            String acctId = AssertContext.getReAcctId();
             if(acctId == null){
-                acctId = 1L;
+                acctId = "1";
             }
-            reqBody.setCreatedBy(acctId.toString());
+            reqBody.setCreatedBy(acctId);
 
             //根据类型 和 主题ID 和 filed id查询表
             Integer count = rptMeasuresService.getRptMeasuresByService(reqBody);
@@ -302,12 +304,12 @@ public class ReportController {
         try{
             RptPersonalAnalysis reqBody = jsonRequest.getReqBody();
 
-            Long acctId = AssertContext.getAcctId();
+            String acctId = AssertContext.getReAcctId();
             if(acctId == null){
-                acctId = 1L;
+                acctId = "1";
             }
-            reqBody.setUserId(acctId.toString());
-            reqBody.setCreatedBy(acctId.toString());
+            reqBody.setUserId(acctId);
+            reqBody.setCreatedBy(acctId);
 
             Integer count = rptPersonalAnalysisService.getReportByName(reqBody.getReportName(),acctId);
 
@@ -359,7 +361,6 @@ public class ReportController {
 
         try{
 
-            Long acctId = AssertContext.getAcctId();
             //直接返回
             Callable<Integer> callable = new Callable<Integer>() {
                 @Override
@@ -429,7 +430,7 @@ public class ReportController {
 
 
     private void generateZip(RptPersionalDownloadVO rptPersionalDownloadVO, List<File> files) throws Exception {
-        Long acctId =  AssertContext.getAcctId();
+        String acctId =  AssertContext.getReAcctId();
         String path = file_path ; // 配置
         String fileName = new Date().getTime() + files.size() + ".zip";
         FileOutputStream fos2 = new FileOutputStream(new File(path + "/" + fileName));
@@ -441,7 +442,7 @@ public class ReportController {
         }
 
         //插入
-        rptPersionalDownloadVO.setUserId(String.valueOf(acctId));
+        rptPersionalDownloadVO.setUserId(acctId);
 //                           rptPersionalDownloadVO.setDownloadSql();
         rptPersionalDownloadVO.setFileName(fileName);
         rptPersionalDownloadVO.setFileType(FileTypeEnum.EXCEL.getName());
@@ -584,6 +585,22 @@ public class ReportController {
             AcctInfo acctInfo = jsonRequest.getReqBody();
             if(type.equals("core")){
                 PageDTO<AcctInfo> pageDTO = acctService.listShareReport(acctInfo);
+                List<AcctInfo> resultData = pageDTO.getResultData();
+                Long sysId = acctInfo.getSysId();
+                resultData.forEach(x -> {
+                    x.setType((byte)0);
+                    if(sysId != null){
+
+                        //用loginid和报表id差
+                        RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisService.getByUserId(x.getAcctId().toString(),sysId);
+                        if(rptPersonalAnalysis != null){
+                            x.setType((byte)1);
+                        }
+                    }
+                });
+
+
+
                 jsonResponse.setRspBody(pageDTO);
             }else if (type.equals("report")) {
                 if(acctInfo.getAcctTitle()==null){
@@ -602,12 +619,28 @@ public class ReportController {
                     PageDTO<AcctInfo> pages = new PageDTO();
                     if (JSON.parseObject(json.getString("items")).get("records") != null) {
                         JSONArray jsonObject1 = JSON.parseObject(json.getString("items")).getJSONArray("records");
+
+                        //报表id
+                        Long sysId = acctInfo.getSysId();
+
                         for (int i = 0; i < jsonObject1.size(); i++) {
                             AcctInfo acctInfo1=new AcctInfo();
-                            acctInfo1.setReAcctId(JSON.parseObject(jsonObject1.getString(i)).getString("loginId"));
+                            String loginId = JSON.parseObject(jsonObject1.getString(i)).getString("loginId");
+                            acctInfo1.setReAcctId(loginId);
                             acctInfo1.setName(JSON.parseObject(jsonObject1.getString(i)).getString("userNameCn"));
                             acctInfo1.setAcctTitle(JSON.parseObject(jsonObject1.getString(i)).getString("loginId"));
                             acctInfo1.setOrgId(JSON.parseObject(jsonObject1.getString(i)).getString("orgId"));
+
+                            acctInfo1.setType((byte)0);
+                            if(sysId != null){
+
+                                //用loginid和报表id差
+                                RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisService.getByUserId(loginId,sysId);
+                                if(rptPersonalAnalysis != null){
+                                    acctInfo1.setType((byte)1);
+                                }
+                            }
+
                             acctInfos.add(acctInfo1);
                         }
                     }
@@ -615,6 +648,9 @@ public class ReportController {
                     pages.setPageSize(acctInfo.getPageSize());
                     pages.setPageNum(acctInfo.getPageNum());
                     pages.setTotal(Integer.parseInt(JSON.parseObject(json.getString("items")).getString("total")));
+
+
+
                     jsonResponse.setRspBody(pages);
                 }
             }
@@ -643,7 +679,7 @@ public class ReportController {
             Byte type = reportShareBody.getType();
             Map<String,Object> tmp = new HashMap<>();
             tmp.put("type",type);
-            for(Long x:reportShareBody.getList()){
+            for(String x:reportShareBody.getList()){
                 tmp.put("id",x);
                 Integer count = rptPersonalSubjectService.getSubjectByTypeId(tmp);
                 if(count == 0){
@@ -651,12 +687,12 @@ public class ReportController {
                     jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
                     if(type == 1){
                         //账号
-                        AcctInfo acctInfo = acctService.getAcctById(x);
-                        jsonResponse.setRetDesc("账号[" + acctInfo.getAcctTitle() + "]没有权限");
+//                        AcctInfo acctInfo = acctService.getAcctById(x);
+                        jsonResponse.setRetDesc("账号[" + x + "]没有权限");
                     }else{
                         //角色
-                        RoleInfo roleInfo = roleInfoService.getRoleById(x);
-                        jsonResponse.setRetDesc("角色[" + roleInfo.getRoleTitle() + "]没有权限");
+//                        RoleInfo roleInfo = roleInfoService.getRoleById(x);
+                        jsonResponse.setRetDesc("角色[" + x + "]没有权限");
                     }
 
                     return jsonResponse;

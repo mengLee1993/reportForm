@@ -170,19 +170,19 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
     public PageDTO<ReportTable> listReportForm(ReportTable reqBody) {
 
         //当前登陆人 和组织下所有的 主题
-        Long acctId = AssertContext.getAcctId(); //当前登陆人
+        String acctId = AssertContext.getReAcctId(); //当前登陆人
         if(acctId == null){
-            acctId = 1L;
+            acctId = "1";
         }
 
-        Long roleId = AssertContext.getRoleId(); //角色id
-        if(roleId == null){
-            roleId = 1L;
-        }
+        List<String> roleIds = AssertContext.getReRoleId(); //角色id
+//        if(roleId == null){
+//            roleId = 1L;
+//        }
 
         Map<String,Object> tmp = new HashMap<>();
         tmp.put("acctId",acctId);
-        tmp.put("roleId",roleId);
+        tmp.put("roleId",roleIds);
         String tableName = reqBody.getTableName();
         if(tableName != null){
             tmp.put("term",reqBody.getTableName().trim());
@@ -210,9 +210,9 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
     public Boolean addShareReport(ReportShareBody reportShareBody) {
 
         Long personalAnalysisId = reportShareBody.getPersonalAnalysisId();
-        Long acctId = AssertContext.getAcctId();  //当前登陆人id
+        String acctId = AssertContext.getReAcctId();  //当前登陆人id
         if(acctId == null){
-            acctId = 1L;
+            acctId = "1";
         }
         //要复制的数据
         String acctName = AssertContext.getAcctName();
@@ -222,7 +222,7 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
 
         if((byte)0 == type){
                 //角色
-            for(Long x:reportShareBody.getList()){
+            for(String x:reportShareBody.getList()){
                 RptPersonalAnalysis copy = BeanCopyUtil.copy(rptPersonalAnalysis1, RptPersonalAnalysis.class);
                 copy.setUserId(null);
                 copy.setRoleId(x);
@@ -232,9 +232,9 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
                 rptPersonalAnalysisMapper.insertSelective(copy);
             };
         }else{
-            for(Long x:reportShareBody.getList()){
+            for(String x:reportShareBody.getList()){
                 RptPersonalAnalysis copy = BeanCopyUtil.copy(rptPersonalAnalysis1, RptPersonalAnalysis.class);
-                copy.setUserId(x.toString());
+                copy.setUserId(x);
                 copy.setRoleId(null);
                 copy.setSharingPersonId(acctId);
                 copy.setSharingPersonName(acctName);
@@ -247,7 +247,7 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
     }
 
     @Override
-    public Integer getReportByName(String reportName,Long acctId) {
+    public Integer getReportByName(String reportName,String acctId) {
 
         return rptPersonalAnalysisMapper.selectByName(reportName,acctId);
     }
@@ -269,18 +269,26 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
             AnalysisShareBody analysisShareBody1 = new AnalysisShareBody();
             if(userId != null){
                 analysisShareBody1.setType((byte)1);
-                AcctInfo acctInfo = acctInfoMapper.selectByPrimaryKey(Long.parseLong(userId));
-                analysisShareBody1.setName(acctInfo.getName());
+//                AcctInfo acctInfo = acctInfoMapper.selectByPrimaryKey(Long.parseLong(userId));
+                AcctInfo acctInfo = acctInfoMapper.selectByLogin(userId);
+                if(acctInfo == null){
+                    analysisShareBody1.setName(userId);
+                }else{
+                    analysisShareBody1.setName(acctInfo.getName());
+                }
+
 
             }else{
                 analysisShareBody1.setType((byte)0);
 
-                Long roleId = analysis.getRoleId();
+                String roleName = analysis.getRoleId();
 
-                RoleInfo roleInfo = roleInfoMapper.selectByAcctId(roleId);
-
-                analysisShareBody1.setName(roleInfo.getRoleTitle());
-
+                RoleInfo roleInfo = roleInfoMapper.selectByAcctCode(roleName);
+                if(roleInfo == null){
+                    analysisShareBody1.setName(roleName);
+                }else{
+                    analysisShareBody1.setName(roleInfo.getRoleTitle());
+                }
             }
             analysisShareBody1.setId(analysisShareBody.getId());
             resultList.add(analysisShareBody1);
@@ -289,6 +297,18 @@ public class RptPersonalAnalysisServiceImpl implements RptPersonalAnalysisServic
 
         pageDTO.setResultData(resultList);
         return pageDTO;
+    }
+
+    @Override
+    public RptPersonalAnalysis getByUserId(String userId, Long sysId) {
+        RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisMapper.selectByUserAndId(userId,sysId);
+        return rptPersonalAnalysis;
+    }
+
+    @Override
+    public RptPersonalAnalysis getByRoleId(String roleId, Long sysId) {
+        RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisMapper.selectByRoleAndId(roleId,sysId);
+        return rptPersonalAnalysis;
     }
 
 

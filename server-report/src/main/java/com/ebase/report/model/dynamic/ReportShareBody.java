@@ -8,7 +8,7 @@ public class ReportShareBody {
 
     private Byte type;  //0  角色   1  账号
 
-    private List<Long> list;  //N个多个 ID
+    private List<String> list;  //N个多个 ID
 
     public Byte getType() {
         return type;
@@ -18,11 +18,11 @@ public class ReportShareBody {
         this.type = type;
     }
 
-    public List<Long> getList() {
+    public List<String> getList() {
         return list;
     }
 
-    public void setList(List<Long> list) {
+    public void setList(List<String> list) {
         this.list = list;
     }
 

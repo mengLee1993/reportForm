@@ -93,7 +93,7 @@ public class RptPersonalSubject implements Serializable {
     /**
      * 角色id
      */
-    private Long roleId;
+    private String roleId;
 
     /**
      */
@@ -239,11 +239,11 @@ public class RptPersonalSubject implements Serializable {
         return sb.toString();
     }
 
-    public Long getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 

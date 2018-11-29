@@ -48,14 +48,16 @@ public class RptDataAuthServiceImpl implements RptDataAuthService {
     public List<RptDatasource> dataAuthTree(AcctInfo acctInfo) {
 
         //要查询的用户id
-        Long acctId = acctInfo.getAcctId();
+        String acctId = acctInfo.getReAcctId();
 
         //要分配 的角色ID
-        Long roleId = acctInfo.getRoleId();
+        String roleId = acctInfo.getReRoleId();
 
         Map<String,Object> tmp = new HashMap<>();
         tmp.put("acctId",acctId);
-        tmp.put("roleId",roleId);
+        List<String> roles = new ArrayList<>();
+        roles.add(roleId);
+        tmp.put("roleId",roles);
 
         //获得所勾选的所有的主题表
         List<RptPersonalSubject> rptPersonalSubjects = rptPersonalSubjectMapper.selectByCreatedBy(tmp);
@@ -97,10 +99,9 @@ public class RptDataAuthServiceImpl implements RptDataAuthService {
     public Boolean keepDataAuth(RptDataAuth rptDataAuth) {
         Byte type = rptDataAuth.getType();
 
-        Long id = rptDataAuth.getId();
+        String id = rptDataAuth.getId();
         String acctName = AssertContext.getAcctName();
-        Long acctId1 = AssertContext.getAcctId();
-        AssertContext.getRoleId();
+        String acctId1 = AssertContext.getReAcctId();
         String acctId = "1";
         if(acctId1 != null){
             acctId = acctId1.toString();

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  */
@@ -62,12 +63,12 @@ public class RptPersonalAnalysis implements Serializable {
     /**
      * 角色ID
      */
-    private Long roleId;
+    private String roleId;
 
     /**
      * 分享者ID
      */
-    private Long sharingPersonId;
+    private String sharingPersonId;
 
     /**
      * 分享者名称
@@ -92,7 +93,7 @@ public class RptPersonalAnalysis implements Serializable {
      */
     private String tableName;
 
-
+    private List<String> roleIds;
 
 
     private int pageSize = 10;
@@ -225,19 +226,19 @@ public class RptPersonalAnalysis implements Serializable {
         this.tableName = tableName;
     }
 
-    public Long getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 
-    public Long getSharingPersonId() {
+    public String getSharingPersonId() {
         return sharingPersonId;
     }
 
-    public void setSharingPersonId(Long sharingPersonId) {
+    public void setSharingPersonId(String sharingPersonId) {
         this.sharingPersonId = sharingPersonId;
     }
 
@@ -271,5 +272,13 @@ public class RptPersonalAnalysis implements Serializable {
 
     public void setAnalysisSourceId(Long analysisSourceId) {
         this.analysisSourceId = analysisSourceId;
+    }
+
+    public List<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(List<String> roleIds) {
+        this.roleIds = roleIds;
     }
 }

@@ -65,4 +65,6 @@ public interface RoleInfoMapper {
 
     //数据总条数查询
     Integer queryForCount(RoleInfo roleInfo);
+
+    RoleInfo selectByAcctCode(String roleName);
 }

@@ -11,7 +11,11 @@ public class AcctSession {
 
     private Long acctId;        //账户标识
 
-    private Long roleId;    //角色id
+    private String reAcctId; //
+
+    private Long roleId;    //角色id   // 报表查询弃用
+
+    private List<String> reRoleId; // 一个账号多个角色id   用这个
 
     private String token;
 
@@ -272,5 +276,21 @@ public class AcctSession {
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public String getReAcctId() {
+        return reAcctId;
+    }
+
+    public void setReAcctId(String reAcctId) {
+        this.reAcctId = reAcctId;
+    }
+
+    public List<String> getReRoleId() {
+        return reRoleId;
+    }
+
+    public void setReRoleId(List<String> reRoleId) {
+        this.reRoleId = reRoleId;
     }
 }

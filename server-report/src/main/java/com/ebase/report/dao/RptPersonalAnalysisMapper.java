@@ -33,7 +33,7 @@ public interface RptPersonalAnalysisMapper {
 
     Integer selectCount(RptPersonalAnalysis model);
 
-    Integer selectByName(String reportName,Long acctId);
+    Integer selectByName(String reportName,String acctId);
 
     int deleteBySubjectId(@Param("longs") List<Long> longs);
 
@@ -42,4 +42,8 @@ public interface RptPersonalAnalysisMapper {
     Integer listAnalysisShareBodyCount(AnalysisShareBody analysisShareBody);
 
     List<RptPersonalAnalysis> listAnalysisShareBody(AnalysisShareBody analysisShareBody);
+
+    RptPersonalAnalysis selectByUserAndId(String userId, Long sysId);
+
+    RptPersonalAnalysis selectByRoleAndId(String roleId, Long sysId);
 }

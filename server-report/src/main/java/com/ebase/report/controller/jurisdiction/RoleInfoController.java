@@ -10,7 +10,9 @@ import com.ebase.report.core.pageUtil.PageDTO;
 import com.ebase.report.core.pageUtil.PageInfo;
 import com.ebase.report.core.session.AssertContext;
 import com.ebase.report.core.utils.JsonUtil;
+import com.ebase.report.model.RptPersonalAnalysis;
 import com.ebase.report.model.jurisdiction.RoleInfo;
+import com.ebase.report.service.RptPersonalAnalysisService;
 import com.ebase.report.service.jurisdiction.RoleInfoService;
 import com.ebase.report.vo.jurisdiction.AcctInfoVO;
 import com.ebase.report.vo.jurisdiction.RoleInfoVO;
@@ -49,6 +51,9 @@ public class RoleInfoController {
 
     @Autowired
     private RoleInfoService roleInfoService;
+
+    @Autowired
+    private RptPersonalAnalysisService rptPersonalAnalysisService;
 
 
     /**
@@ -368,8 +373,21 @@ public class RoleInfoController {
         try {
             LOG.info("queryPagedResult 参数 = {}", JsonUtil.toJson(jsonRequest));
             RoleInfo roleInfo = jsonRequest.getReqBody();
+            Long sysId = roleInfo.getSysId();
             if(type.equals("core")) {
                 PageDTO<RoleInfo> acctOrgSysVOs = roleInfoService.queryForList(roleInfo);
+                List<RoleInfo> resultData = acctOrgSysVOs.getResultData();
+                for(RoleInfo roleId:resultData){
+                    if(sysId != null){
+                        roleId.setType((byte)0);
+                        //用loginid和报表id差
+                        RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisService.getByRoleId(roleId.getRoleId().toString(),sysId);
+                        if(rptPersonalAnalysis != null){
+                            roleId.setType((byte)1);
+                        }
+                    }
+                }
+
                 jsonResponse.setRspBody(acctOrgSysVOs);
             }else if (type.equals("report")) {
                 if(roleInfo.getRoleTitle()==null){
@@ -394,12 +412,23 @@ public class RoleInfoController {
                         JSONArray jsonObject1 = JSON.parseObject(json.getString("items")).getJSONArray("records");
                         for (int i = 0; i < jsonObject1.size(); i++) {
                             RoleInfo roleInfo1 = new RoleInfo();
+                            String roleId = JSON.parseObject(jsonObject1.getString(i)).getString("roleId");
                             roleInfo1.setRoleDesc(JSON.parseObject(jsonObject1.getString(i)).getString("roleDesc"));
-                            roleInfo1.setReRoleId(JSON.parseObject(jsonObject1.getString(i)).getString("roleId"));
-                            roleInfo1.setRoleCode(JSON.parseObject(jsonObject1.getString(i)).getString("roleId"));
+                            roleInfo1.setReRoleId(roleId);
+                            roleInfo1.setRoleCode(roleId);
                             roleInfo1.setRoleTitle(JSON.parseObject(jsonObject1.getString(i)).getString("roleName"));
                             roleInfo1.setOrgId(JSON.parseObject(jsonObject1.getString(i)).getString("orgId"));
                             roleInfo1.setStatus(Status.START.getCode());
+
+                            if(sysId != null){
+                                roleInfo1.setType((byte)0);
+                                //用loginid和报表id差
+                                RptPersonalAnalysis rptPersonalAnalysis = rptPersonalAnalysisService.getByRoleId(roleId,sysId);
+                                if(rptPersonalAnalysis != null){
+                                    roleInfo1.setType((byte)1);
+                                }
+                            }
+
                             roleInfoVOS.add(roleInfo1);
                         }
                     }

@@ -26,7 +26,7 @@ public interface RptMeasuresMapper {
 
     List<RptMeasures> selectSystemBySubjectId(Long personalSubjectId);
 
-    List<RptMeasures> selectBySubjectIdAcctId(Long personalSubjectId, Long acctId);
+    List<RptMeasures> selectBySubjectIdAcctId(Long personalSubjectId, String acctId);
 
     int deleteBySubjectId(@Param("longs") List<Long> longs);
 

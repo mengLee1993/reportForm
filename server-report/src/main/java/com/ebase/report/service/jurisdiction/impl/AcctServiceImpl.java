@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -175,14 +176,18 @@ public class AcctServiceImpl implements AcctService {
 
     private AcctSession loginSuccess(Acct acct, AcctLogin acctLogin) {
         AcctSession copy = BeanCopyUtil.copy(acct, AcctSession.class);
-
+        copy.setReAcctId(String.valueOf(copy.getAcctId()));
         //根据用户id 查询角色对象
         RoleInfo roleInfo = roleInfoMapper.selectByAcctId(copy.getAcctId());
 
         //用户不一定都有角色
+        ArrayList<String> objects = new ArrayList<>();
         if(roleInfo != null){
             copy.setRoleId(roleInfo.getRoleId());
+            objects.add(roleInfo.getRoleId().toString());
+            copy.setReRoleId(objects);
         }
+
 
         return copy;
 
