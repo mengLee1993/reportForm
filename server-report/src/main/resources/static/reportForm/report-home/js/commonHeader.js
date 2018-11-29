@@ -3,6 +3,7 @@
 	$(function() {
 	    if(window.location.href.indexOf("login.html") == -1 && window.location.href.indexOf("html-gulp-www") != -1){
             limitCodeDeal($("*[limitCode]"), "limitCode");
+            $("#operaterClick").show();
         };
         $("#loginName").html(unescape(getCookie("reportName")));
         $("#logoHomePage").on("click",function(){
