@@ -82,6 +82,9 @@ function clsMethodLee$init(){
 
 }
 function clsMethodLee$parse(){
+    //初始化页面设置高度
+    /*$(".formcontainer-nav").css("height",document.documentElement.clientHeight-64 + "px");
+    $(".formcontainer").css("min-height",document.documentElement.clientHeight-64 + "px");*/
     //初始化页面默认立即刷新页面操作input不选中
     $("#immediatelyRefresh").attr("checked",false);
     //初始化左侧父子table
