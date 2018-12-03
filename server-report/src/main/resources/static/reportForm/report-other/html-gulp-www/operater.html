@@ -178,7 +178,7 @@
 
 <link rel="stylesheet" href="../css/operater.css">
 <script>
-    var jsonData ={"retCode":"0000000","rspBody":{"resultData":[{"treeName":"个人主题数据","rptDataTables":[{"treeName":"我的数据报表"},{"treeName":"我的自定义查询"},{"treeName":"我的数据下载"}]},{"treeName":"自定义分析","rptDataTables":[]},{"treeName":"数据字典","rptDataTables":[{"treeName":"数据源管理列表"},{"treeName":"数据字典管理"},{"treeName":"元数据管理列表"}]},{"treeName":"数据授权","rptDataTables":[]},{"treeName":"分析日志","rptDataTables":[]},{"treeName":"权限管理","rptDataTables":[{"treeName":"组织管理"},{"treeName":"角色管理"},{"treeName":"人员管理"},{"treeName":"资源管理"},{"treeName":"系统管理"}]}]}};
+    var jsonData ={"retCode":"0000000","rspBody":{"resultData":[{"treeName":"1.概述","imgSrc":"1.jpg","rptDataTables":[{"treeName":"1.1 项目概述","imgSrc":"1.1.jpg"},{"treeName":"1.2 术语与缩略语","imgSrc":"1.2.jpg"}]},{"treeName":"2.系统概述","imgSrc":"2.jpg","rptDataTables":[{"treeName":"2.1 功能概要","imgSrc":"2.1.jpg","rptDataTables":[{"treeName":"2.1.1 数据字典","imgSrc":"2.1.1.jpg"},{"treeName":"2.1.2 数据授权","imgSrc":"2.1.2.jpg"},{"treeName":"2.1.3 分析日志","imgSrc":"2.1.3.jpg"},{"treeName":"2.1.4 自定义分析","imgSrc":"2.1.4.jpg"},{"treeName":"2.1.5 个人主题数据","imgSrc":"2.1.5.jpg"}]}]},{"treeName":"3.系统说明","imgSrc":"3.jpg","rptDataTables":[{"treeName":"3.1 主界面说明","imgSrc":"3.1.jpg","rptDataTables":[{"treeName":"3.1.1 登陆页面","imgSrc":"3.1.1.jpg"},{"treeName":"3.1.2 页面功能区","imgSrc":"3.1.2.jpg"},{"treeName":"3.1.3 主菜单界面-功能操作区","imgSrc":"3.1.3.jpg"}]}]},{"treeName":"4.操作说明","imgSrc":"4.jpg","rptDataTables":[{"treeName":"4.1 系统管理","imgSrc":"4.1.jpg","rptDataTables":[{"treeName":"4.1.1 数据字典","imgSrc":"4.1.1.jpeg"},{"treeName":"4.1.2 数据授权","imgSrc":"4.1.2.jpg"},{"treeName":"4.1.3 分析日志","imgSrc":"4.1.3.jpg"},{"treeName":"4.1.4 权限管理","imgSrc":"4.1.4.jpeg"},{"treeName":"4.1.5 个人主题数据","imgSrc":"4.1.5.jpeg"},{"treeName":"4.1.6 自定义分析","imgSrc":"4.1.6.jpg"},{"treeName":"4.1.7 用户退出","imgSrc":"4.1.7.jpg"}]}]}]}};
     $(function(){
         $("#tableTree")[0].data = jsonData;
         $("#tableTree").attr("comType","treeListCtrl");
@@ -219,6 +219,10 @@
     function clsTreeListCtrl$after(){
         $(".operater-left").css("height",window.innerHeight+"px");
         $(".operater-right").css("height",window.innerHeight+"px");
+        $("*[id=cloneTreeRow]").on("click",function(){
+            var imgSrc = "../images/" + this.jsonData.imgSrc;
+            $(".operater-right img").attr("src",imgSrc);
+        });
     }
 </script>
 <div class="operater clearfix">
@@ -235,7 +239,7 @@
         </table>
     </div>
     <div class="operater-right fl">
-
+        <img src="operater-right-img" alt="">
     </div>
 </div>
 </div>
