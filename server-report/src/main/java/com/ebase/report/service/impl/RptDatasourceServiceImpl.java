@@ -3,6 +3,7 @@ package com.ebase.report.service.impl;
 import com.ebase.report.common.RemoveStatusEnum;
 import com.ebase.report.controller.IndexController;
 import com.ebase.report.core.db.DataBaseType;
+import com.ebase.report.core.db.DataBaseUtil;
 import com.ebase.report.core.db.conn.ConnPoolType;
 import com.ebase.report.core.db.conn.DataSourceManager;
 import com.ebase.report.core.db.conn.DbConnFactory;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -236,11 +238,14 @@ public class RptDatasourceServiceImpl implements RptDatasourceService {
     @Override
     public Boolean testConn(RptDatasourceVO vo) {
         Boolean flag = false;
+        Connection conn = null;
         try {
              flag = reportHandler.createConn(BeanCopyUtil.copy(vo, RptDatasource.class));
-
+             DataSourceManager.get().getDataSource(vo.getDatasourceName()).getConnection();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DataBaseUtil.closeConnection(conn);
         }
         return flag;
     }
