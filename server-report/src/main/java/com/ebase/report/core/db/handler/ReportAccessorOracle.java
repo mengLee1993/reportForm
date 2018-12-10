@@ -475,12 +475,12 @@ public class ReportAccessorOracle extends AbstractAccessor {
         int i = 1;
         //查询表名的语句执行对象
         PreparedStatement pTableName = null;
-        //查询注释的语句执行对象
-        PreparedStatement pConment = null;
+
         //装有表名的结果集
         ResultSet rsTN = null;
         //装有注释的结果集
         ResultSet rsCT = null;
+
         String tableName = null;
         Object comment = null;
         try {
@@ -502,9 +502,14 @@ public class ReportAccessorOracle extends AbstractAccessor {
             pTableName = conn.prepareStatement(sqlTableName);
             rsTN = pTableName.executeQuery();
             while (rsTN.next()) {
-                tableName = rsTN.getObject(TABLE_NAME).toString();
 
-                pConment = conn.prepareStatement(sqlComment);
+                tableName = rsTN.getObject(TABLE_NAME).toString();
+                if("PES_MAT_REPORT_RELATE_H".equals(tableName)){
+                    System.err.println("xxx");
+                }
+
+                //查询注释的语句执行对象
+                PreparedStatement pConment  = conn.prepareStatement(sqlComment);
                 pConment.setString(i , tableName);
                 rsCT = pConment.executeQuery();
                 while (rsCT.next()){
@@ -521,12 +526,16 @@ public class ReportAccessorOracle extends AbstractAccessor {
                     }
                     tables.add(rptDataTable);
                 }
+
+                DataBaseUtil.closeStatment(pConment);
             }
         } catch (SQLException e) {
+            logger.error("获取数据字段描述异常：", e);
             throw new DbException(e);
         } finally {
             DataBaseUtil.closeResultSet(rsTN);
             DataBaseUtil.closeResultSet(rsCT);
+            DataBaseUtil.closeStatment(pTableName);
         }
         return tables;
     }
