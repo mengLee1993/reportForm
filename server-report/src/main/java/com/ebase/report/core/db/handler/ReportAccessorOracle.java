@@ -504,9 +504,6 @@ public class ReportAccessorOracle extends AbstractAccessor {
             while (rsTN.next()) {
 
                 tableName = rsTN.getObject(TABLE_NAME).toString();
-                if("PES_MAT_REPORT_RELATE_H".equals(tableName)){
-                    System.err.println("xxx");
-                }
 
                 //查询注释的语句执行对象
                 PreparedStatement pConment  = conn.prepareStatement(sqlComment);
@@ -519,10 +516,8 @@ public class ReportAccessorOracle extends AbstractAccessor {
                     if(comment == null){
                         String str = "此表描述为空,若需要,请去对应的表写入";
                         rptDataTable.setComment(str);
-                        System.out.println(tableName+str);
                     }else {
                         rptDataTable.setComment(comment.toString());
-                        System.out.println(tableName+"------->"+comment);
                     }
                     tables.add(rptDataTable);
                 }
