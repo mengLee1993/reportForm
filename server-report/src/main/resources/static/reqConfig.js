@@ -30,7 +30,7 @@ function jumpUrl(strUrl,status,jumpType,data)
     }
     if(status != null)
     {
-        var objWin = (window.parent.location.href == window.location.href) ? window.location : window.parent.location;
+        //var objWin = (window.parent.location.href == window.location.href) ? window.location : window.parent.location;
         switch(status)
         {
             case "0000000":

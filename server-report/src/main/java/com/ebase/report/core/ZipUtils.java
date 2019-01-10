@@ -1,22 +1,20 @@
 package com.ebase.report.core;
 
-import com.ebase.report.core.utils.ExportExcelUtils;
-import groovy.io.FileType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUtils {
@@ -58,25 +56,26 @@ public class ZipUtils {
 
     /**
      * 下载文件
-     * @param paths 多个要打包的文件地址
+     *
+     * @param paths   多个要打包的文件地址
      * @param zipName 下载的文件名称
      * @throws IOException
      */
-    public static void downLoadZipFile(List<String> paths,String zipName) throws IOException{
+    public static void downLoadZipFile(List<String> paths, String zipName) throws IOException {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getResponse();
 
         response.setContentType("APPLICATION/OCTET-STREAM");
-        response.setHeader("Content-Disposition","attachment; filename="+zipName);
+        response.setHeader("Content-Disposition", "attachment; filename=" + zipName);
         ZipOutputStream out = new ZipOutputStream(response.getOutputStream());
         try {
-            for(String s:paths){
+            for (String s : paths) {
                 ZipUtils.doCompress(s, out);
                 response.flushBuffer();
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             out.close();
         }
     }
@@ -84,8 +83,8 @@ public class ZipUtils {
     /**
      * 解压zip格式文件
      *
-     * @param path zip文件地址。
-     * @param targetDir  要解压到的目标路径。
+     * @param path      zip文件地址。
+     * @param targetDir 要解压到的目标路径。
      * @return 如果目标文件不是zip文件则返回false。
      * @throws IOException 如果发生I/O错误。
      */
@@ -101,7 +100,7 @@ public class ZipUtils {
 //        Enumeration<ZipEntry> entry = zipFile.e();
         List<String> paths = new ArrayList<>();
         while (entry.hasMoreElements()) {
-            zipEntry = (ZipEntry)entry.nextElement();
+            zipEntry = (ZipEntry) entry.nextElement();
             String fileName = zipEntry.getName();
 
             paths.add(targetDir + fileName);
@@ -122,13 +121,13 @@ public class ZipUtils {
     }
 
 
-
     public static void doCompress(String srcFile, String zipFile) throws IOException {
         doCompress(new File(srcFile), new File(zipFile));
     }
 
     /**
      * 文件压缩
+     *
      * @param srcFile 目录或者单个文件
      * @param zipFile 压缩后的ZIP文件
      */
@@ -144,19 +143,19 @@ public class ZipUtils {
         }
     }
 
-    public static void doCompress(String filelName, ZipOutputStream out) throws IOException{
+    public static void doCompress(String filelName, ZipOutputStream out) throws IOException {
         doCompress(new File(filelName), out);
     }
 
-    public static void doCompress(File file, ZipOutputStream out) throws IOException{
+    public static void doCompress(File file, ZipOutputStream out) throws IOException {
         doCompress(file, out, "");
     }
 
     public static void doCompress(File inFile, ZipOutputStream out, String dir) throws IOException {
-        try{
-            if ( inFile.isDirectory() ) {
+        try {
+            if (inFile.isDirectory()) {
                 File[] files = inFile.listFiles();
-                if (files!=null && files.length>0) {
+                if (files != null && files.length > 0) {
                     for (File file : files) {
                         String name = inFile.getName();
                         if (!"".equals(dir)) {
@@ -168,7 +167,7 @@ public class ZipUtils {
             } else {
                 ZipUtils.doZip(inFile, out, dir);
             }
-        }finally {
+        } finally {
             inFile.delete();
         }
 
@@ -184,7 +183,7 @@ public class ZipUtils {
         ZipEntry entry = new ZipEntry(entryName);
         out.putNextEntry(entry);
 
-        int len = 0 ;
+        int len = 0;
         byte[] buffer = new byte[1024];
         FileInputStream fis = new FileInputStream(inFile);
         while ((len = fis.read(buffer)) > 0) {
