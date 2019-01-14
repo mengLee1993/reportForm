@@ -78,14 +78,15 @@ public class IndexController {
                 session.setAttribute(Md5Util.encrpt(key), acctSession);
                 //并初始化 threadlocal
                 AssertContext.init((AcctSession) attribute);
+                CookieUtil.setCookie(response,"reportName",acctSession.getName());
+                CookieUtil.setCookie(response, "token",token);
+
                 return "homePage";
             }
             //获得缓存失败或登录状态无效 调到登录页面
             LOG.info("跳转到登录页!");
             return "login";
-        } else {
-
-            return "homePage";
         }
+        return "homePage";
     }
 }

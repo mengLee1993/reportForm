@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -263,7 +264,7 @@ public class AcctController {
      * @return
      */
     @RequestMapping("/delCacheUser")
-    public JsonResponse<Boolean> delUser(HttpServletRequest request){
+    public JsonResponse<Boolean> delUser(HttpServletRequest request, HttpServletResponse response){
         JsonResponse<Boolean> jsonResponse = new JsonResponse<>();
 
         try{
@@ -273,9 +274,10 @@ public class AcctController {
                 jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
                 jsonResponse.setRetDesc("当前用户会话不存在");
             }else{
-//                CookieUtil.removeCookie();
-                //清空cookie
+                //清空session
                 request.getSession().removeAttribute(Md5Util.encrpt(sessionId));
+                // 清空cookie
+                CookieUtil.removeAllCookie(request, response);
 
                 jsonResponse.setRspBody(true);
             }
