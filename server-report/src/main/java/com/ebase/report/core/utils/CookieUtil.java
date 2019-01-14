@@ -159,4 +159,22 @@ public class CookieUtil {
 	}
 
 
+	public static String getSessionIdRequest(HttpServletRequest request){
+		StringBuilder sessionId = new StringBuilder(CacheKeyConstant.ACCT_SESSION);
+		Cookie[] cookies = request.getCookies();
+		if (null != cookies) {
+			for (Cookie cookie : cookies) {
+				if("JSESSIONID".equals(cookie.getName())){
+					sessionId.append(cookie.getValue());
+				}
+			}
+		}
+		String clientType = WebUtil.getClientType(request);
+		sessionId.append(clientType);
+
+		String remoteHost = HttpUtils.getRemoteHost();
+		sessionId.append(remoteHost);
+
+		return sessionId.toString();
+	}
 }

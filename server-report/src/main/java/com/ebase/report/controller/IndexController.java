@@ -38,7 +38,7 @@ public class IndexController {
     public String redirection(HttpServletRequest request, HttpServletResponse response) {
 
         //验证用户是否登录..
-        String sessionId = CookieUtil.getSessionId();
+        String sessionId = CookieUtil.getSessionIdRequest(request);
 
         Object attribute = request.getSession().getAttribute(Md5Util.encrpt(sessionId));
 

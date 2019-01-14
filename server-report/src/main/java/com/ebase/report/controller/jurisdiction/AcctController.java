@@ -142,7 +142,7 @@ public class AcctController {
 
                     HttpSession session = request.getSession();
 
-                    String key = CookieUtil.getSessionId();
+                    String key = CookieUtil.getSessionIdRequest(request);
 
                     session.setAttribute(Md5Util.encrpt(key),retContent);
 
@@ -194,7 +194,7 @@ public class AcctController {
                     reRoleId.add("R1543383203888");
                     acctSession.setReRoleId(reRoleId);
                     HttpSession session = request.getSession();
-                    String key = CookieUtil.getSessionId();
+                    String key = CookieUtil.getSessionIdRequest(request);
                     session.setAttribute(Md5Util.encrpt(key),acctSession);
 
                     System.err.println("--- login sessionID ----"+key);
@@ -270,16 +270,17 @@ public class AcctController {
         JsonResponse<Boolean> jsonResponse = new JsonResponse<>();
 
         try{
-            String sessionId = CookieUtil.getSessionId();
+            String sessionId = CookieUtil.getSessionIdRequest(request);
 
             if(sessionId == null){
                 jsonResponse.setRetCode(JsonResponse.SYS_EXCEPTION);
                 jsonResponse.setRetDesc("当前用户会话不存在");
             }else{
-                //清空session
+                // 清空session
                 request.getSession().removeAttribute(Md5Util.encrpt(sessionId));
-                // 清空cookie
-                CookieUtil.removeAllCookie(request, response);
+//                CookieUtil.removeAllCookie(request, response);
+                CookieUtil.removeCookie(response,"token");
+                CookieUtil.removeCookie(response,"reportName");
 
                 jsonResponse.setRspBody(true);
             }
