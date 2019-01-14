@@ -1,4 +1,7 @@
 package com.ebase.report.filter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ebase.report.core.TokenUtil;
 import com.ebase.report.core.json.JsonResponse;
 import com.ebase.report.core.session.AcctSession;
 import com.ebase.report.core.session.AssertContext;
@@ -7,6 +10,7 @@ import com.ebase.report.core.utils.JsonUtil;
 import com.ebase.report.core.utils.StringUtil;
 import com.ebase.report.core.utils.WebUtil;
 import com.ebase.report.core.utils.secret.Md5Util;
+import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,32 +75,61 @@ public class LoginStatusFilter implements Filter {
             chain.doFilter(request, response);
             return ;
         }
-//        //验证用户是否登录
+       //验证用户是否登录
         String sessionId = CookieUtil.getSessionId();
 
         Object attribute = servletRequest.getSession().getAttribute(Md5Util.encrpt(sessionId));
 
         if(attribute == null){
-            //获得缓存失败或登录状态无效 调到登录页面
-            LOG.info("登录状态无效!");
-            if (WebUtil.isJsonRequest(servletRequest)) {
-                servletRequest.setCharacterEncoding("UTF-8");
-                JsonResponse jsonResponse = new JsonResponse();
-                servletResponse.setContentType("application/json; charset=UTF-8"); // 转码
+            // 判断cookie是否存在token
+            String token = CookieUtil.getCookieValueByName(servletRequest, "token");
 
-                jsonResponse.setRetCode("0200000");
-                jsonResponse.setRetDesc("");
-                jsonResponse.setRspBody(loginUrl);
-                servletResponse.getWriter().write(JsonUtil.toJson(jsonResponse));
-                return;
-            }else{
-                servletRequest.setCharacterEncoding("UTF-8");
-                servletResponse.setContentType("text/html; charset=UTF-8"); // 转码
-                servletResponse.getWriter()
-                        .println("<script language=\"javascript\">if(window.opener==null){window.top.location.href=\""
-                                + loginUrl + "\";}else{window.opener.top.location.href=\"" + loginUrl
-                                + "\";window.close();}</script>");
-                return;
+            if(StringUtil.isNotEmpty(token)) {
+                System.err.println("--- filter get token ---"+token);
+
+                // portal已登录，解析token是否正确
+                Claims claims = TokenUtil.parseTokenClaims(token);
+
+                AcctSession acctSession = new AcctSession();
+                JSONObject jsonObj = JSON.parseObject(claims.getSubject());
+                acctSession.setOrgId(jsonObj.getString("orgId"));
+                acctSession.setAcctTitle(jsonObj.getString("loginId"));
+                acctSession.setAcctType(Long.parseLong(jsonObj.getString("userType")));
+                acctSession.setAcctId(Long.parseLong(jsonObj.getString("userSid")));
+                acctSession.setReAcctId(jsonObj.getString("loginId"));
+                acctSession.setToken(token);
+
+                acctSession.setName(jsonObj.getString("userNameCn"));
+
+                //先写死角色
+                List<String> reRoleId = new ArrayList<>();
+                reRoleId.add("R1543383203888");
+                acctSession.setReRoleId(reRoleId);
+
+                attribute = acctSession;
+
+            } else {
+                //获得缓存失败或登录状态无效 调到登录页面
+                LOG.info("登录状态无效!");
+                if (WebUtil.isJsonRequest(servletRequest)) {
+                    servletRequest.setCharacterEncoding("UTF-8");
+                    JsonResponse jsonResponse = new JsonResponse();
+                    servletResponse.setContentType("application/json; charset=UTF-8"); // 转码
+
+                    jsonResponse.setRetCode("0200000");
+                    jsonResponse.setRetDesc("");
+                    jsonResponse.setRspBody(loginUrl);
+                    servletResponse.getWriter().write(JsonUtil.toJson(jsonResponse));
+                    return;
+                }else{
+                    servletRequest.setCharacterEncoding("UTF-8");
+                    servletResponse.setContentType("text/html; charset=UTF-8"); // 转码
+                    servletResponse.getWriter()
+                            .println("<script language=\"javascript\">if(window.opener==null){window.top.location.href=\""
+                                    + loginUrl + "\";}else{window.opener.top.location.href=\"" + loginUrl
+                                    + "\";window.close();}</script>");
+                    return;
+                }
             }
         }
 

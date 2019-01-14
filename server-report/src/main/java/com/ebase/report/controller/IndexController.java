@@ -53,32 +53,14 @@ public class IndexController {
             }
 
             if(StringUtil.isNotEmpty(token)) {
-                System.out.println("token:"+token);
+                System.out.println("--- sso token ---"+token);
+
                 // portal已登录，解析token是否正确
                 Claims claims = TokenUtil.parseTokenClaims(token);
-                System.out.println(claims.getSubject());
-
-                AcctSession acctSession = new AcctSession();
                 JSONObject jsonObj = JSON.parseObject(claims.getSubject());
-                acctSession.setOrgId(jsonObj.getString("orgId"));
-                acctSession.setAcctTitle(jsonObj.getString("loginId"));
-                acctSession.setAcctType(Long.parseLong(jsonObj.getString("userType")));
-                acctSession.setAcctId(Long.parseLong(jsonObj.getString("userSid")));
-                acctSession.setReAcctId(jsonObj.getString("loginId"));
-                acctSession.setToken(token);
 
-                acctSession.setName(jsonObj.getString("userNameCn"));
-
-                //先写死角色
-                List<String> reRoleId = new ArrayList<>();
-                reRoleId.add("R1543383203888");
-                acctSession.setReRoleId(reRoleId);
-                HttpSession session = request.getSession();
-                String key = CookieUtil.getSessionId();
-                session.setAttribute(Md5Util.encrpt(key), acctSession);
-                //并初始化 threadlocal
-                AssertContext.init((AcctSession) attribute);
-                CookieUtil.setCookie(response,"reportName",acctSession.getName());
+                //先写cookie
+                CookieUtil.setCookie(response,"reportName",jsonObj.getString("userNameCn"));
                 CookieUtil.setCookie(response, "token",token);
 
                 return "homePage";

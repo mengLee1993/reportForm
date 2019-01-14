@@ -186,7 +186,7 @@ public class AcctController {
                             }
                         }
                     }
-                    acctSession.setName(JSON.parseObject(json.getString("data")).getString("userNameCn"));
+                    acctSession.setName(JSON.parseObject(json.getString("data")).getString("usernameCn"));
                     acctSession.setPermissions(permissions);
 
                     //先写死角色
@@ -196,6 +196,8 @@ public class AcctController {
                     HttpSession session = request.getSession();
                     String key = CookieUtil.getSessionId();
                     session.setAttribute(Md5Util.encrpt(key),acctSession);
+
+                    System.err.println("--- login sessionID ----"+key);
                     AssertContext.init(acctSession);
                     jsonResponse.setRspBody(acctSession);
                 }else{
