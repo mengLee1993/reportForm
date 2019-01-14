@@ -186,7 +186,7 @@ public class AcctController {
                             }
                         }
                     }
-                    acctSession.setName(JSON.parseObject(json.getString("data")).getString("usernameCn"));
+                    acctSession.setName(JSON.parseObject(json.getString("data")).getString("userNameCn"));
                     acctSession.setPermissions(permissions);
 
                     //先写死角色

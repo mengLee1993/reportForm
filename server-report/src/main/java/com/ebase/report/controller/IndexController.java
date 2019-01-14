@@ -67,7 +67,7 @@ public class IndexController {
                 acctSession.setReAcctId(jsonObj.getString("loginId"));
                 acctSession.setToken(token);
 
-                acctSession.setName(jsonObj.getString("usernameCn"));
+                acctSession.setName(jsonObj.getString("userNameCn"));
 
                 //先写死角色
                 List<String> reRoleId = new ArrayList<>();
