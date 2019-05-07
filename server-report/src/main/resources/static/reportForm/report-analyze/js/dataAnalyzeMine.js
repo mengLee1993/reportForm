@@ -635,17 +635,26 @@ function initHtmlData(data){
         //是否显示设置过滤
         if(data.line[mI].combinationName != "Measures"){
             cloneRowL.find("#searchSetBox").show();
+            cloneRowL.find("#sortSetBox").show();
         }else{
             cloneRowL.find("#searchSetBox").hide();
+            cloneRowL.find("#sortSetBox").hide();
         }
         if(data.line[mI].searchTrue){
             cloneRowL.find("#searchSet").addClass("activeOpe");
+            cloneRowL.find("#sortSet").addClass("activeOpe");
         }else{
             cloneRowL.find("#searchSet").removeClass("activeOpe");
+            cloneRowL.find("#sortSet").removeClass("activeOpe");
         }
         cloneRowL.find("#searchSet").unbind();
         cloneRowL.find("#searchSet").bind("click",function(){
             searchSetTrue(this);
+
+        });
+        cloneRowL.find("#sortSet").unbind();
+        cloneRowL.find("#sortSet").bind("click",function(){
+            sortSetTrue(this);
 
         });
 
@@ -679,17 +688,26 @@ function initHtmlData(data){
         //是否显示设置过滤
         if(data.column[oI].combinationName != "Measures"){
             cloneRowC.find("#searchSetBox").show();
+            cloneRowC.find("#sortSetBox").show();
         }else{
             cloneRowC.find("#searchSetBox").hide();
+            cloneRowC.find("#sortSetBox").hide();
         }
         if(data.column[oI].searchTrue){
             cloneRowC.find("#searchSet").addClass("activeOpe");
+            cloneRowC.find("#sortSet").addClass("activeOpe");
         }else{
             cloneRowC.find("#searchSet").removeClass("activeOpe");
+            cloneRowC.find("#sortSet").removeClass("activeOpe");
         }
         cloneRowC.find("#searchSet").unbind();
         cloneRowC.find("#searchSet").bind("click",function(){
             searchSetTrue(this);
+
+        });
+        cloneRowC.find("#sortSet").unbind();
+        cloneRowC.find("#sortSet").bind("click",function(){
+            sortSetTrue(this);
 
         });
         $(".selDimensionCols").append(cloneRowC);
@@ -739,17 +757,26 @@ function initRowCol(data){
         //是否显示设置过滤
         if(data.line[mI].combinationName != "Measures"){
             cloneRowL.find("#searchSetBox").show();
+            cloneRowL.find("#sortSetBox").show();
         }else{
             cloneRowL.find("#searchSetBox").hide();
+            cloneRowL.find("#sortSetBox").hide();
         }
         if(data.line[mI].searchTrue){
             cloneRowL.find("#searchSet").addClass("activeOpe");
+            cloneRowL.find("#sortSet").addClass("activeOpe");
         }else{
             cloneRowL.find("#searchSet").removeClass("activeOpe");
+            cloneRowL.find("#sortSet").removeClass("activeOpe");
         }
         cloneRowL.find("#searchSet").unbind();
         cloneRowL.find("#searchSet").bind("click",function(){
             searchSetTrue(this);
+
+        });
+        cloneRowL.find("#sortSet").unbind();
+        cloneRowL.find("#sortSet").bind("click",function(){
+            sortSetTrue(this);
 
         });
 
@@ -783,17 +810,26 @@ function initRowCol(data){
         //是否显示设置过滤
         if(data.column[oI].combinationName != "Measures"){
             cloneRowC.find("#searchSetBox").show();
+            cloneRowC.find("#sortSetBox").show();
         }else{
             cloneRowC.find("#searchSetBox").hide();
+            cloneRowC.find("#sortSetBox").hide();
         }
         if(data.column[oI].searchTrue){
             cloneRowC.find("#searchSet").addClass("activeOpe");
+            cloneRowC.find("#sortSet").addClass("activeOpe");
         }else{
             cloneRowC.find("#searchSet").removeClass("activeOpe");
+            cloneRowC.find("#sortSet").removeClass("activeOpe");
         }
         cloneRowC.find("#searchSet").unbind();
         cloneRowC.find("#searchSet").bind("click",function(){
             searchSetTrue(this);
+
+        });
+        cloneRowC.find("#sortSet").unbind();
+        cloneRowC.find("#sortSet").bind("click",function(){
+            sortSetTrue(this);
 
         });
         $(".selDimensionCols").append(cloneRowC);
@@ -1684,6 +1720,18 @@ function subTotalIsTrue(that){
     }else{
         $(that).removeClass("activeOpe");
         $(that).parents("#cloneRow")[0].jsonData.subTotal = false;
+    }
+    rightJsonJoin();
+}
+
+//排序勾选函数
+function sortSetTrue(that){
+    if(!$(that).hasClass("activeOpe")){
+        $(that).addClass("activeOpe");
+        $(that).parents("#cloneRow")[0].jsonData.dbFieldOrderEnum = "REVERSE";//倒
+    }else{
+        $(that).removeClass("activeOpe");
+        $(that).parents("#cloneRow")[0].jsonData.dbFieldOrderEnum = "POSITIVE";//正
     }
     rightJsonJoin();
 }

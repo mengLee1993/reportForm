@@ -352,15 +352,24 @@ function clsRptCtrl$initLayout()
                 //设置搜索条件
                 if($(".selDimensionRows *[id=cloneRow]")[i].jsonData.combinationName != "Measures"){
                     $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSetBox").show();
+                    $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSetBox").show();
                 }else{
                     $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
+                    $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSetBox").hide();
                 }
                 if($(".selDimensionRows *[id=cloneRow]")[i].jsonData.searchTrue){
                     $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSet").addClass("activeOpe");
+                    $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSet").addClass("activeOpe");
                 }
                 $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSet").unbind();
+
                 $(".selDimensionRows *[id=cloneRow]").eq(i).find("#searchSet").bind("click",function(){
                     searchSetTrue(this);
+                });
+
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSet").unbind();
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSet").bind("click",function(){
+                    sortSetTrue(this);
                 });
 
 
@@ -404,16 +413,23 @@ function clsRptCtrl$initLayout()
                 //设置搜索条件
                 if($(".selDimensionCols *[id=cloneRow]")[i].jsonData.combinationName != "Measures"){
                     $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSetBox").show();
+                    $(".selDimensionCols *[id=cloneRow]").eq(i).find("#sortSetBox").show();
                 }else{
                     $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
+                    $(".selDimensionCols *[id=cloneRow]").eq(i).find("#sortSetBox").hide();
                 }
                 if($(".selDimensionCols *[id=cloneRow]")[i].jsonData.searchTrue){
                     $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSet").addClass("activeOpe");
+                    $(".selDimensionCols *[id=cloneRow]").eq(i).find("#sortSet").addClass("activeOpe");
                 }
                 $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSet").unbind();
                 $(".selDimensionCols *[id=cloneRow]").eq(i).find("#searchSet").bind("click",function(){
                     searchSetTrue(this);
 
+                });
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSet").unbind();
+                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSet").bind("click",function(){
+                    sortSetTrue(this);
                 });
 
 
@@ -496,10 +512,12 @@ function clsRptCtrl$initLayout()
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#fieldNameEdit").hide();
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#subtotalBox").hide();
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#searchSetBox").hide();
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#sortSetBox").hide();
                 //初始化过滤区 和  小计  和check
                 $(".selDimensionContent *[id=cloneRow]")[i].jsonData.searchTrue = false;
                 $(".selDimensionContent *[id=cloneRow]")[i].jsonData.subTotal = false;
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#searchSet").removeClass("activeOpe");
+                $(".selDimensionContent *[id=cloneRow]").eq(i).find("#sortSet").removeClass("activeOpe");
                 $(".selDimensionContent *[id=cloneRow]").eq(i).find("#subtotal").removeClass("activeOpe");
                 for(var nI = 0; nI < document.body.jsLee.jsonAll.reportDynamicParam.filter.length; nI++ ){
                     if(document.body.jsLee.jsonAll.reportDynamicParam.filter[nI].code == $(".selDimensionContent *[id=cloneRow]")[i].jsonData.fieldCode){

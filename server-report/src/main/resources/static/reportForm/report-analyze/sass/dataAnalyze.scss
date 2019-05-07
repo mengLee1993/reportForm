@@ -362,7 +362,7 @@ $bd_dee: #dee3e6;//主体边框线
   margin-right: 5px;
   cursor: pointer;
 }
-.subtotal,.searchSet{
+.subtotal,.searchSet,.sortSet{
   margin-right: 5px;
   padding: 0 2px;
   cursor: pointer;
@@ -377,6 +377,9 @@ $bd_dee: #dee3e6;//主体边框线
 }
 .searchSet{
   background: url(../images/guolv.png);
+}
+.sortSet{
+  background: url(../images/paixu.png);
 }
 .activeOpe{
   border: 1px solid #00AFFF;

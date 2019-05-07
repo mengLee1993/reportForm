@@ -172,11 +172,13 @@
 
 .fieldNameEdit { display: inline; color: #0375d7; line-height: 24px; background: url("../images/images.png") no-repeat -558px -36px; width: 15px; height: 15px; margin-top: 4px; margin-right: 5px; cursor: pointer; }
 
-.subtotal, .searchSet { margin-right: 5px; padding: 0 2px; cursor: pointer; color: #666; width: 10px; height: 15px; margin-top: 4px; display: block; }
+.subtotal, .searchSet, .sortSet { margin-right: 5px; padding: 0 2px; cursor: pointer; color: #666; width: 10px; height: 15px; margin-top: 4px; display: block; }
 
 .subtotal { background: url(../images/xiaoji.png); }
 
 .searchSet { background: url(../images/guolv.png); }
+
+.sortSet { background: url(../images/paixu.png); }
 
 .activeOpe { border: 1px solid #00AFFF; width: 8px; height: 13px; }
 
