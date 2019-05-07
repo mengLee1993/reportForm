@@ -427,8 +427,8 @@ function clsRptCtrl$initLayout()
                     searchSetTrue(this);
 
                 });
-                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSet").unbind();
-                $(".selDimensionRows *[id=cloneRow]").eq(i).find("#sortSet").bind("click",function(){
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#sortSet").unbind();
+                $(".selDimensionCols *[id=cloneRow]").eq(i).find("#sortSet").bind("click",function(){
                     sortSetTrue(this);
                 });
 
