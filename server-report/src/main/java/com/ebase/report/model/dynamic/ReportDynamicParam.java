@@ -1,6 +1,7 @@
 package com.ebase.report.model.dynamic;
 
 
+import com.ebase.report.common.DBFieldOrderEnum;
 import com.ebase.report.common.DBFieldTypeEnum;
 import com.ebase.report.common.FilterTypeEnum;
 import com.ebase.report.common.MeasureTypeEnum;
@@ -230,4 +231,68 @@ public class ReportDynamicParam {
 //        return selectSql;
 //
 //    }
+
+     //是否排序
+     private Boolean isOrder(){
+        for(Dimension dimension:line){
+             if(!DBFieldOrderEnum.NONE.equals(dimension.getDbFieldOrderEnum())){
+                 return true;
+             }
+        };
+         for(Dimension dimension:column){
+             if(!DBFieldOrderEnum.NONE.equals(dimension.getDbFieldOrderEnum())){
+                 return true;
+             }
+         };
+        return false;
+     }
+
+    /**
+     *  获得排序sql
+     * @Param builder sql - 之前的sql
+     * @Param databaseType 数据库类型
+     */
+    public String toOrderSql(StringBuilder builder,String databaseType){
+
+        //mysql,db2,oracle,暂时都一样
+        if(DataBaseType.TYPE_NAME_MYSQL.equals(databaseType) || DataBaseType.TYPE_NAME_DB2.equals(databaseType)){
+            //得是mysql实现
+            if(isOrder()){ //是否需要排序
+                builder.append(" order by ");
+                line.forEach(field -> {
+                    builder.append(field.toOrder(databaseType));
+                });
+                column.forEach(field -> {
+                    builder.append(field.toOrder(databaseType));
+                });
+            }
+            String sql = builder.toString();
+            if(sql.endsWith(",")){
+                sql = sql.substring(0,sql.length() - 1);
+            }
+            return sql;
+        }else if(DataBaseType.TYPE_NAME_ORACLE.equals(databaseType)){
+            //得是mysql实现
+            if(isOrder()){ //是否需要排序
+                builder.append(" order by ");
+                line.forEach(field -> {
+                    builder.append(field.toOrder(databaseType));
+                });
+                column.forEach(field -> {
+                    builder.append(field.toOrder(databaseType));
+                });
+            }
+            String sql = builder.toString();
+            if(sql.endsWith(",")){
+                sql = sql.substring(0,sql.length() - 1);
+            }
+            return sql;
+        }else if(DataBaseType.TYPE_NAME_DB2.equals(databaseType)){
+
+        }else if(DataBaseType.TYPE_NAME_HIVE.equals(databaseType)){
+
+        }
+        return builder.toString();
+
+    }
 }

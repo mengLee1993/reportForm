@@ -51,7 +51,7 @@ public class ReportAccessorMySql extends AbstractAccessor {
         //数据库类型
         String dbTypeEnumByName = reportDatasource.getDatabaseType();
 
-        Boolean dimension = reportDynamicParam.getDimension();
+        Boolean dimension = reportDynamicParam.getDimension(); //是否有度量值
 
         List<Dimension> line = reportDynamicParam.getLine();  //行维度
 
@@ -93,7 +93,8 @@ public class ReportAccessorMySql extends AbstractAccessor {
             }
             builderSelect.append(builderWhe).append(filterSql).append(group);
 
-            sql = builderSelect.toString();
+            //是否需要排序
+            sql = reportDynamicParam.toOrderSql(builderSelect,dbTypeEnumByName);
 
         }else if(SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)){
             //主题 （多张表）

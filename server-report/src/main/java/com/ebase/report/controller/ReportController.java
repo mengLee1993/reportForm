@@ -383,7 +383,7 @@ public class ReportController {
                            RptPersionalDownloadVO rptPersionalDownloadVO = new RptPersionalDownloadVO();
 
                            //一万条查询一次,拼装在内存里，每10w条一个文件里，
-                           List<ReportRespDetail> reportCoreDetailExcels = reportHandler.reportCoreDetailExcel(reportDatasource, cubeTree,rptPersionalDownloadVO);
+                           List<ReportRespDetail> reportCoreDetailExcels = reportHandler.   reportCoreDetailExcel(reportDatasource, cubeTree,rptPersionalDownloadVO);
 
                            int i = 0;
                            List<File> files = getFiles(reportCoreDetailExcels);

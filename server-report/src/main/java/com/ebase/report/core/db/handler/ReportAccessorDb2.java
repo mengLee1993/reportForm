@@ -100,7 +100,10 @@ public class ReportAccessorDb2 extends AbstractAccessor {
             }
             builderSelect.append(builderWhe).append(filterSql).append(group);
 
-            sql = builderSelect.toString();
+//            sql = builderSelect.toString();
+
+            //是否需要排序
+            sql = reportDynamicParam.toOrderSql(builderSelect,dbTypeEnumByName);
 
         }else if(SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)){
             //主题 （多张表）

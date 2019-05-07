@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 
@@ -160,18 +161,27 @@ public class CookieUtil {
 
 
 	public static String getSessionIdRequest(HttpServletRequest request){
+
+		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getResponse();
+
 		StringBuilder sessionId = new StringBuilder(CacheKeyConstant.ACCT_SESSION);
 		Cookie[] cookies = request.getCookies();
 		if (null != cookies) {
 			for (Cookie cookie : cookies) {
-				if("JSESSIONID".equals(cookie.getName())){
+				if("JSESSIONID2".equals(cookie.getName())){
 					sessionId.append(cookie.getValue());
 				}
 			}
+		}else{
+			String s = UUID.randomUUID().toString();
+			sessionId.append(s);
+
+			setCookie(response,"JSESSIONID2",s);
+
 		}
 		String clientType = WebUtil.getClientType(request);
 		sessionId.append(clientType);
-
 		String remoteHost = HttpUtils.getRemoteHost();
 		sessionId.append(remoteHost);
 

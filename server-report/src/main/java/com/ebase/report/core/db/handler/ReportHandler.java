@@ -374,12 +374,12 @@ public class ReportHandler {
             //先看一下总count
             //select DATASOURCE_ID, DATASOURCE_NAME, DATABASE_TYPE, CONNPOOL_TYPE, DATASOURCE_URL, USER_NAME, PASSWORD, INITIAL_SIZE, MAX_ACTIVE, MAX_WAIT, MAX_IDLE, REMOVE_STATUS, CREATED_BY, CREATED_DT, UPDATED_BY, UPDATED_DT, DATASOURCE_CHINESE_NAME from `rpt_datasource` where REMOVE_STATUS = 0 order by DATASOURCE_ID desc
 
-
             Integer count = reportAccessor.queryCount(selectCount,conn);
             pageDTO.setTotal(count);
 
             //分页sql
-            String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource.getDatabaseType(), pageDTO, count);
+            String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource, pageDTO);
+
 
             ReportRespDetail reportRespDetail = reportAccessor.reportPageList(detailSql, conn, cubeTree, reportDetail.getFieldList());
 
@@ -460,7 +460,7 @@ public class ReportHandler {
             List<List<String>> dataList = new ArrayList<>();
             for(PageDTO pageDTO:pages){
                 //分页sql
-                String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource.getDatabaseType(), pageDTO, count);
+                String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource, pageDTO);
 
                 ReportRespDetail reportRespDetail = reportAccessor.reportPageList(detailSql, conn, cubeTree, reportDetail.getFieldList());
 

@@ -109,8 +109,10 @@ public class ReportAccessorOracle extends AbstractAccessor {
             builderSelect.append(" from " + reportTable.getTableCode() );
             builderSelect.append(builderWhe).append(filterSql).append(builderGroup.substring(0,builderGroup.lastIndexOf(",")));
 
-            sql = builderSelect.toString();
+//            sql = builderSelect.toString();
 
+            //是否需要排序
+            sql = reportDynamicParam.toOrderSql(builderSelect,dbTypeEnumByName);
         }else if(SubjectTypeEnum.SUBJECT.getMsg().equals(subjectType)){
             //主题 （多张表）
 

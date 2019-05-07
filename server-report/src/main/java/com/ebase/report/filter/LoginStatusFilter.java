@@ -75,6 +75,7 @@ public class LoginStatusFilter implements Filter {
             chain.doFilter(request, response);
             return ;
         }
+
        //验证用户是否登录
         String sessionId = CookieUtil.getSessionIdRequest(servletRequest);
 
@@ -133,7 +134,7 @@ public class LoginStatusFilter implements Filter {
             }
         }
 
-        LOG.info("用户登录成功!");
+         LOG.info("用户登录成功!");
 
         //把用户数据放到session中 并初始化 数据
         String key = CookieUtil.getSessionIdRequest(servletRequest);

@@ -34,6 +34,8 @@ public class ReportMeasure extends Dimension {
     }
 
 
+
+
     public MeasureTypeEnum getMeasureType() {
         return measureType;
     }

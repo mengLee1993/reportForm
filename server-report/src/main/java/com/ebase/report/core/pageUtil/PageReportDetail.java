@@ -2,6 +2,8 @@ package com.ebase.report.core.pageUtil;
 
 import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.core.utils.StringUtil;
+import com.ebase.report.model.dynamic.ReportDatasource;
+import com.ebase.report.model.dynamic.ReportDynamicParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +31,21 @@ public class PageReportDetail extends PageDTO{
      * 拼装分页sql
      * @return
      */
-    public static String getDetailSql(String sql,String databaseType,PageDTO pageDTO,Integer count){
+    public static String getDetailSql(String sql, ReportDatasource reportDatasource, PageDTO pageDTO){
+
+        long count = pageDTO.getTotal(); //总数
+
+        String databaseType = reportDatasource.getDatabaseType(); //数据库类型
+
+        ReportDynamicParam reportDynamicParam = reportDatasource.getReportDynamicParam();  //参数 -- （再进行一次sql拼装，order逻辑)
 
         String detailSql = "";
         if(databaseType.equals(DataBaseType.TYPE_NAME_MYSQL)){
             //mysql
             pageDTO.setTotal(count);
+
+            sql = reportDynamicParam.toOrderSql(new StringBuilder(sql), reportDatasource.getDatabaseType()); //去排序
+
             detailSql = sql + limit + pageDTO.getStartRow() + "," + pageDTO.getPageSize();
 
         }else if(databaseType.equals(DataBaseType.TYPE_NAME_ORACLE)){
@@ -44,6 +55,9 @@ public class PageReportDetail extends PageDTO{
 
             Object offset = paging.getSearchMap().get(OFFSET);
             Object end = paging.getSearchMap().get(END);
+
+            //去排序
+            sql = reportDynamicParam.toOrderSql(new StringBuilder(sql), reportDatasource.getDatabaseType()); //去排序
 
             String[] strings2 = new String[]{sql,String.valueOf(offset),String.valueOf(end)};
 

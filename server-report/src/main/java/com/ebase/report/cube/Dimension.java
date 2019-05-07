@@ -1,9 +1,6 @@
 package com.ebase.report.cube;
 
-import com.ebase.report.common.DBFieldTypeEnum;
-import com.ebase.report.common.DemandType;
-import com.ebase.report.common.FilterTypeEnum;
-import com.ebase.report.common.MeasureTypeEnum;
+import com.ebase.report.common.*;
 import com.ebase.report.core.db.DataBaseType;
 import com.ebase.report.model.dynamic.CustomIndex;
 import com.ebase.report.model.dynamic.ReportDimension;
@@ -60,6 +57,9 @@ public class Dimension {
 
     //添加组合名称
     private String combinationName;
+
+    //排序
+    private DBFieldOrderEnum dbFieldOrderEnum = DBFieldOrderEnum.NONE;  // 默认不排序 -- (纬度能排序,指标不能排序)
 
 
     public String getKey() {
@@ -266,5 +266,30 @@ public class Dimension {
 
     public void setCombinationName(String combinationName) {
         this.combinationName = combinationName;
+    }
+
+    public DBFieldOrderEnum getDbFieldOrderEnum() {
+        return dbFieldOrderEnum;
+    }
+
+    public void setDbFieldOrderEnum(DBFieldOrderEnum dbFieldOrderEnum) {
+        this.dbFieldOrderEnum = dbFieldOrderEnum;
+    }
+
+    //获得排序
+    public String toOrder(String databaseType){
+        if(DemandType.DIMENSION.equals(this.getDemandType()) && !this.dbFieldOrderEnum.equals(DBFieldOrderEnum.NONE)){ //必须是纬度
+            StringBuilder builder = null;
+            if(DataBaseType.TYPE_NAME_ORACLE.equals(databaseType)){ //oracle
+                 builder = new StringBuilder(getKey());
+            }else{
+                 builder = new StringBuilder(fieldCode);
+            }
+
+            builder.append(" ").append(this.dbFieldOrderEnum.getOrder()).append(",");
+            return builder.toString();
+        }
+
+        return "";
     }
 }
