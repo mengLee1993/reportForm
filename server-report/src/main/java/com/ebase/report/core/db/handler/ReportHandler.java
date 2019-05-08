@@ -380,7 +380,6 @@ public class ReportHandler {
             //分页sql
             String detailSql = PageReportDetail.getDetailSql(sql, reportDatasource, pageDTO);
 
-
             ReportRespDetail reportRespDetail = reportAccessor.reportPageList(detailSql, conn, cubeTree, reportDetail.getFieldList());
 
             List<ReportRespDetail> list = new ArrayList<>();
