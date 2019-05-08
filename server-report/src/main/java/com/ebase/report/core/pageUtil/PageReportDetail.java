@@ -67,6 +67,10 @@ public class PageReportDetail extends PageDTO{
             //db2
 
             pageDTO.setTotal(count);
+
+            sql = reportDynamicParam.toOrderSql(new StringBuilder(sql), reportDatasource.getDatabaseType()); //去排序
+
+
             detailSql = sql + limit + pageDTO.getStartRow() + "," + pageDTO.getPageSize();
 
         }else if(databaseType.equals(DataBaseType.TYPE_NAME_HIVE)){
